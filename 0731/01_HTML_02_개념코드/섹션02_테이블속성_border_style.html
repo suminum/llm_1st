@@ -1,0 +1,40 @@
+<!doctype html>
+<!--
+  01_HTML_02 테이블·폼·시맨틱·HTML 품질 개념코드 — 섹션 2. 테이블 속성 — border·style (HTML)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  소재는 전부 일상적인 것으로 골랐습니다 — 태그에만 집중하기 위해서입니다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML_02 테이블·폼·시맨틱 — 섹션 2. 테이블 속성 — border·style</title>
+  </head>
+
+  <body>
+    <h2>섹션 2. 테이블 속성 — border·style</h2>
+
+    <!-- ── 섹션 2: 테이블 속성 — border·style ─────────────── -->
+    <!-- [기본] border: 테두리 두께. 그 외 cellspacing/cellpadding, align, bgcolor 등이 있음 -->
+    <table border="2">
+      <tr>
+        <th>항목</th>
+        <th>이번 달 금액</th>
+      </tr>
+      <!-- [다른 방법] style 속성으로 글자 색 지정 — style="color: 컬러이름;" -->
+      <!-- 예고: style 속성은 내일(CSS)부터 제대로 배움 — 오늘은 맛보기 -->
+      <tr>
+        <td>식비</td>
+        <td style="color: red">320,000원 (예산 초과)</td>
+      </tr>
+      <tr>
+        <td>교통비</td>
+        <td>45,000원</td>
+      </tr>
+    </table>
+    <!-- 표시: 두꺼운 테두리 표 — "320,000원 (예산 초과)"만 빨간 글자 -->
+    <!-- 참고: 표 스타일은 현재 대부분 CSS로 처리 — 속성 방식은 옛 코드를 읽을 때 참고 -->
+  </body>
+</html>

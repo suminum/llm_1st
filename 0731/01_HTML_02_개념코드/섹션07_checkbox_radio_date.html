@@ -1,0 +1,33 @@
+<!doctype html>
+<!--
+  01_HTML_02 테이블·폼·시맨틱·HTML 품질 개념코드 — 섹션 7. checkbox·radio·date (HTML)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  소재는 전부 일상적인 것으로 골랐습니다 — 태그에만 집중하기 위해서입니다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML_02 테이블·폼·시맨틱 — 섹션 7. checkbox·radio·date</title>
+  </head>
+
+  <body>
+    <h2>섹션 7. checkbox·radio·date</h2>
+
+    <!-- ── 섹션 7: checkbox·radio·date ────────────────────── -->
+    <!-- 소재: 영화 예매 화면 -->
+    <!-- [기본] checkbox: 다중 선택 — 같은 분류는 같은 name, checked로 기본 선택 -->
+    <label><input type="checkbox" name="snack" value="pop" checked /> 팝콘</label>
+    <label><input type="checkbox" name="snack" value="cola" /> 음료</label>
+    <br />
+    <!-- [기본] radio: 같은 name 중 하나만 선택 — 하나를 고르면 나머지는 자동 해제 -->
+    <label><input type="radio" name="seat" value="basic" checked /> 일반석</label>
+    <label><input type="radio" name="seat" value="couple" /> 커플석</label>
+    <br />
+    <!-- [기본] date: 날짜 선택 달력. [다른 방법] datetime-local: 날짜+시간 -->
+    <input type="date" />
+    <!-- 실수: radio마다 name을 다르게 지정  // 그룹이 안 묶여서 여러 개가 동시에 선택됨 -->
+  </body>
+</html>

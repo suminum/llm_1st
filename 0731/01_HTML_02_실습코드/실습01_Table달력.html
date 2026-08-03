@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<!--
+  01_HTML_02 테이블·폼 실습 정답코드 — 실습 1. Table 달력 실습 (HTML)
+  PPT의 실습 1~5와 번호·소재가 동일합니다. 각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML_02 테이블·폼 — 실습 1. Table 달력 실습</title>
+</head>
+
+<body>
+  <h2>실습 1. Table 달력 실습</h2>
+
+  <!-- ── 실습 1: Table 달력 실습 ────────────────────────────── -->
+  <!-- 표 만드는 순서: 행(tr) 먼저, 칸(th·td)은 행 안에 -->
+  <h3>2026년 8월</h3>
+  <table border="1">
+    <!-- 제목 행: colspan="7" — 한 칸이 7칸 자리를 차지 -->
+    <tr>
+      <th colspan="7">8월 달력</th>
+    </tr>
+    <!-- 요일 헤더 행: 제목 칸은 th (자동으로 굵게+가운데) -->
+    <!-- 일요일은 style="color: red;" 로 빨간색 표시 -->
+    <tr>
+      <th style="color: red;">일</th>
+      <th>월</th>
+      <th>화</th>
+      <th>수</th>
+      <th>목</th>
+      <th>금</th>
+      <th style="color: blue;">토</th>
+    </tr>
+    <tr>
+      <td style="color: red;"></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td style="color: blue;">1</td>
+    </tr>
+    <tr>
+      <td style="color: red;">2</td>
+      <td>3</td>
+      <td>4</td>
+      <td>5</td>
+      <td>6</td>
+      <td>7</td>
+      <td style="color: blue;">8</td>
+    </tr>
+    <tr>
+      <td style="color: red;">9</td>
+      <td>10</td>
+      <td>11</td>
+      <td>12</td>
+      <td>13</td>
+      <td>14</td>
+      <td style="color: blue;">15</td>
+    </tr>
+    <tr>
+      <td style="color: red;">16</td>
+      <td>17</td>
+      <td>18</td>
+      <td>19</td>
+      <td>20</td>
+      <td>21</td>
+      <td style="color: blue;">22</td>
+    </tr>
+    <tr>
+      <td style="color: red;">23</td>
+      <td>24</td>
+      <td>25</td>
+      <td>26</td>
+      <td>27</td>
+      <td>28</td>
+      <td style="color: blue;">29</td>
+    </tr>
+    <tr>
+      <td style="color: red;">30</td>
+      <td>31</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+  </table>
+  <!-- 확장(빨리 끝낸 학생용): 15일(광복절)도 빨간색으로, 또는 rowspan으로 메모 칸 만들기 -->
+</body>
+</html>

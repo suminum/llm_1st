@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_02_선택자 개념코드 — 섹션 4. Class 선택자 .ABC (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_02 선택자 — 섹션 4. Class 선택자 .ABC</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+    body { font-family: sans-serif; }   /* 원본 섹션 2(전체 선택자 *)의 글꼴 통일 효과 재현 */
+
+    /* ── 섹션 4: Class 선택자 .ABC ─────────────────────── */
+    /* [기본] 마침표(.) + class 이름. 여러 요소에 중복 사용 가능 */
+    .highlight {
+      background-color: yellow;
+    }
+    /* 표시: highlight 클래스가 붙은 요소만 노란 배경 */
+    /* 실수: highlight { ... }  // 마침표를 빠뜨리면 태그 선택자로 오해되어 적용 안 됨 */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 4. Class 선택자 .ABC</h2>
+
+  <!-- ── 섹션 4: Class 선택자 ── -->
+  <section>
+    <p class="highlight">노란 형광펜 (highlight)</p>
+    <p>클래스 없음 — 그대로</p>
+    <p class="highlight">클래스는 여러 곳에 재사용 가능</p>
+  </section>
+</body>
+</html>

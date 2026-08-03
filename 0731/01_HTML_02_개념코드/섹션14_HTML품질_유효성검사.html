@@ -1,0 +1,35 @@
+<!doctype html>
+<!--
+  01_HTML_02 테이블·폼·시맨틱·HTML 품질 개념코드 — 섹션 14. HTML 품질 — 유효성 검사·안티패턴·크로스 브라우징 (HTML)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  소재는 전부 일상적인 것으로 골랐습니다 — 태그에만 집중하기 위해서입니다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML_02 테이블·폼·시맨틱 — 섹션 14. HTML 품질 — 유효성 검사·안티패턴·크로스 브라우징</title>
+  </head>
+
+  <body>
+    <h2>섹션 14. HTML 품질 — 유효성 검사·안티패턴·크로스 브라우징</h2>
+
+    <!-- ── 섹션 14: HTML 품질 — 유효성 검사·안티패턴·크로스 브라우징 ── -->
+    <!-- [기본] W3C Validator(validator.w3.org): 표준 검사 도구 — Error는 필수 수정, Warning은 권고 -->
+    <p>
+      <a
+        href="https://validator.w3.org"
+        target="_blank"
+        rel="noopener noreferrer"
+        >W3C Validator에서 이 파일 검사해 보기</a
+      >
+    </p>
+    <!-- 검사 항목: 닫는 태그 누락 / 잘못된 중첩 / 필수 속성(img alt, input type) / 존재하지 않는 태그 -->
+    <!-- 실수(안티패턴): 줄 간격용 br 남발 / 레이아웃용 table / 인라인 style 대량 사용 / div 일색 구조 -->
+    <!-- 실수: 같은 id를 여러 요소에 중복 사용 / 글자 크기 조절용으로 h1~h6 선택 -->
+    <!-- 파일 관례: 소문자만, 공백 대신 하이픈(-), 한글·특수문자 금지. 폴더 진입점은 index.html -->
+    <!-- 크로스 브라우징: 표준 태그 사용 + Chrome·Edge·Safari 등에서 직접 확인 + caniuse.com에서 지원 여부 확인 -->
+  </body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_01_소개 실습 정답코드 — [추가 실습] 스터디룸 이용 안내판 (PPT에 없음 — 빨리 끝낸 학생용 보너스) (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_01 소개 — [추가 실습] 스터디룸 이용 안내판</title>
+
+  <style>
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── [추가 실습] 스터디룸 이용 안내판 (PPT에 없음 — 빨리 끝낸 학생용 보너스) ── */
+    /* 인라인 vs 내장 우선순위를 소재를 바꿔 한 번 더 연습합니다. */
+    /* Step 1: 공통 카드 모양은 내장으로 (재사용) */
+    .room-card {
+      background-color: #eef3f8;
+      padding: 10px;
+      width: 300px;
+      border-radius: 8px;
+    }
+    /* Step 2: 상태 문구 공통 스타일 */
+    .room-card .status {
+      color: white;
+      background-color: green;   /* 기본은 이용중(초록) */
+      padding: 2px 8px;
+    }
+    /* Step 3: 정리중 스터디룸만 인라인으로 덮어쓰기 -> 인라인이 내장을 이기는 것 확인 */
+  </style>
+</head>
+
+<body>
+  <h2>[추가 실습] 스터디룸 이용 안내판 (PPT에 없음 — 빨리 끝낸 학생용 보너스)</h2>
+
+  <!-- ── [추가 실습] 스터디룸 이용 안내판 (PPT에 없음 — 빨리 끝낸 학생용 보너스) ── -->
+  <section>
+    <div class="room-card">
+      <h4>스터디룸 1호</h4>
+      <span class="status">이용중</span>   <!-- 내장 기본값(초록) 그대로 -->
+    </div>
+    <div class="room-card">
+      <h4>스터디룸 2호</h4>
+      <!-- Step 3: 이 스터디룸만 인라인으로 빨강 덮어쓰기 (인라인 > 내장) -->
+      <span class="status" style="background-color: red;">정리중</span>
+    </div>
+  </section>
+</body>
+</html>

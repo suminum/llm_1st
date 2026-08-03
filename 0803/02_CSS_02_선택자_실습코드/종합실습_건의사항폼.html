@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_02_선택자 실습 정답코드 — 종합 실습: 건의 사항 폼 (가상 클래스) (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_02 선택자 — 종합 실습: 건의 사항 폼 (가상 클래스)</title>
+
+  <style>
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #999; padding: 12px; background: white; color: black; }
+
+    /* ── 종합 실습: 건의 사항 폼 (가상 클래스) ────────── */
+    form { width: 400px; }
+    textarea { width: 100%; }
+    /* Step 1: 제목에 마우스 올렸을 때 배경·글자색 변경 -> :hover */
+    form h3:hover {
+      background-color: #f96666;
+      color: white;
+    }
+    /* Step 2: textarea 클릭해 커서가 깜빡일 때 배경색 변경 -> :focus */
+    form textarea:focus {
+      background-color: lightyellow;
+    }
+    /* Step 3: 체크했을 때 체크박스 "옆 글씨" 배경색 변경 -> :checked + 인접 형제 */
+    input[type="checkbox"]:checked + label {
+      background-color: greenyellow;
+    }
+    /* Step 4: 제출 버튼 기본 모양 — 오른쪽 배치는 부모(.submit-row)에 text-align: right */
+    form .submit-row {
+      text-align: right;   /* 버튼(인라인 요소)의 가로 정렬은 부모에 지정 */
+    }
+    form button {
+      padding: 5px 15px;
+      background-color: #f96666;
+      color: white;
+      font-size: 17px;
+      border-radius: 10px;
+      border: none;
+    }
+    /* Step 5: 클릭하는 순간 버튼 색·글자 색 변경 -> :active */
+    form button:active {
+      background-color: navy;
+      color: gold;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>종합 실습: 건의 사항 폼 (가상 클래스)</h2>
+
+  <!-- ── 종합 실습: 건의 사항 폼 ── -->
+  <section>
+    <form>
+      <h3>건의 사항</h3>
+      <textarea rows="4" placeholder="건의 사항을 적어주세요"></textarea>
+      <div>
+        <!-- :checked + label 이 동작하려면 체크박스가 label "앞"에 있어야 함 -->
+        <input type="checkbox" id="agree" />
+        <label for="agree">작성 내용을 확인했습니다</label>
+      </div>
+      <div class="submit-row">
+        <button type="button">제출</button>
+      </div>
+    </form>
+  </section>
+</body>
+</html>

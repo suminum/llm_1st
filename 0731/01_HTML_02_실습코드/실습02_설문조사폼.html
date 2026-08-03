@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<!--
+  01_HTML_02 테이블·폼 실습 정답코드 — 실습 2. 설문조사 폼 (HTML)
+  PPT의 실습 1~5와 번호·소재가 동일합니다. 각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML_02 테이블·폼 — 실습 2. 설문조사 폼</title>
+</head>
+
+<body>
+  <h2>실습 2. 설문조사 폼</h2>
+
+  <!-- ── 실습 2: 설문조사 폼 ───────────────────────────────── -->
+  <!-- 설문조사 제목은 h3, '나이'와 '원하는 강의' 소제목은 h4 -->
+  <h3>수강생 설문조사</h3>
+  <form>
+    <h4>나이</h4>
+    <!-- 나이 — 여러 선택지 중 하나만: radio (같은 name이라야 한 조가 되어 하나만 선택됨) -->
+    <input type="radio" name="age" value="10s"> 10대
+    <input type="radio" name="age" value="20s"> 20대
+    <input type="radio" name="age" value="30s"> 30대
+    <input type="radio" name="age" value="40s"> 40대 이상
+
+    <h4>원하는 강의</h4>
+    <!-- 강의 — 여러 개 선택 가능: checkbox -->
+    <input type="checkbox" name="course" value="html"> HTML/CSS
+    <input type="checkbox" name="course" value="js"> JavaScript
+    <input type="checkbox" name="course" value="react"> React
+    <input type="checkbox" name="course" value="ai"> AI 활용
+    <br>
+    <button type="submit">제출</button>
+  </form>
+</body>
+</html>

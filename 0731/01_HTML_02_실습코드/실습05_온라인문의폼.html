@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+  01_HTML_02 테이블·폼 실습 정답코드 — 실습 5. 온라인 문의 폼 만들기 (HTML)
+  PPT의 실습 1~5와 번호·소재가 동일합니다. 각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML_02 테이블·폼 — 실습 5. 온라인 문의 폼 만들기</title>
+</head>
+
+<body>
+  <h2>실습 5. 온라인 문의 폼 만들기</h2>
+
+  <!-- ── 실습 5: 온라인 문의 폼 만들기 ─────────────────────── -->
+  <!-- 케이스 A: 제품 문의 또는 서비스 불편 신고 폼 -->
+  <h3>온라인 문의</h3>
+  <form method="post" action="/api/inquiry">
+    <!-- fieldset: 관련 입력 요소를 묶는 테두리 상자 / legend: 상자의 제목표 -->
+    <fieldset>
+      <legend>문의 분류</legend>
+      <!-- Step 1: 문의 유형 select + 심각도 radio 3개 -->
+      <label for="inq-type">문의 유형</label>
+      <select id="inq-type" name="type">
+        <option value="">-- 선택하세요 --</option>
+        <option value="product">제품 문의</option>
+        <option value="service">서비스 불편 신고</option>
+        <option value="etc">기타</option>
+      </select>
+      <br>
+      심각도:
+      <input type="radio" name="severity" value="low"> 낮음
+      <input type="radio" name="severity" value="mid"> 보통
+      <input type="radio" name="severity" value="high"> 높음
+    </fieldset>
+
+    <fieldset>
+      <legend>문의 내용 입력</legend>
+      <!-- Step 2: 발생 일시 input[date] + 내용 textarea (rows=6) -->
+      <label for="inq-date">발생 일시</label>
+      <input type="date" id="inq-date" name="date">
+      <br>
+      <label for="inq-detail">내용</label>
+      <br>
+      <textarea id="inq-detail" name="detail" rows="6" placeholder="내용을 작성해주세요"></textarea>
+      <br>
+      <!-- Step 3: 파일 첨부 — accept로 허용 파일 형식 안내 (완전한 차단은 아님) -->
+      <label for="inq-file">파일 첨부</label>
+      <input type="file" id="inq-file" name="attach" accept=".pdf,image/*">
+    </fieldset>
+
+    <button type="submit">제출</button>
+    <button type="reset">초기화</button>
+  </form>
+  <!-- 체크포인트: ①accept 지정 ②심각도 radio 하나만 선택 ③fieldset·legend 포함 ④F12 Elements로 전체 구조 확인 -->
+</body>
+</html>

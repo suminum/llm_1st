@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_01_소개 개념코드 — 섹션 2. HTML은 구조, CSS는 디자인 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_01 소개 — 섹션 2. HTML은 구조, CSS는 디자인</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 섹션 2: HTML은 구조, CSS는 디자인 ─────────────── */
+    /* [기본] 같은 HTML이라도 CSS만 바꾸면 모습이 달라짐 */
+    .old-way { }                 /* CSS 없음 -> 평범한 검은 글자 */
+    .new-way {
+      color: white;
+      background-color: #03c75a; /* 네이버 초록 느낌 */
+      padding: 6px;
+    }
+    /* 표시: 같은 문장이 위는 밋밋하게, 아래는 초록 배경 흰 글자로 보임 */
+    /* 참고: 예전에는 <font>, <center> 같은 디자인 태그를 HTML에 직접 썼음 -> 지금은 표준이 아님 */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 2. HTML은 구조, CSS는 디자인</h2>
+
+  <!-- ── 섹션 2: HTML은 구조, CSS는 디자인 ── -->
+  <section>
+    <p class="old-way">CSS가 없으면 — 검은 글자만 남습니다.</p>
+    <p class="new-way">CSS가 있으면 — 색·배치·서체가 살아납니다.</p>
+  </section>
+</body>
+</html>

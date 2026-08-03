@@ -1,0 +1,42 @@
+<!doctype html>
+<!--
+  01_HTML_02 테이블·폼·시맨틱·HTML 품질 개념코드 — 섹션 10. textarea·fieldset·legend·button (HTML)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  소재는 전부 일상적인 것으로 골랐습니다 — 태그에만 집중하기 위해서입니다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML_02 테이블·폼·시맨틱 — 섹션 10. textarea·fieldset·legend·button</title>
+  </head>
+
+  <body>
+    <h2>섹션 10. textarea·fieldset·legend·button</h2>
+
+    <!-- ── 섹션 10: textarea·fieldset·legend·button ───────── -->
+    <form>
+      <!-- [기본] fieldset: 관련 입력 요소 묶기, legend: 묶음의 제목 -->
+      <fieldset>
+        <legend>추가 요청사항</legend>
+        <!-- [기본] textarea: 여러 줄 입력 — rows로 표시 줄 수 -->
+        <textarea
+          name="detail"
+          rows="3"
+          placeholder="내용을 작성해주세요"
+        ></textarea>
+        <br />
+        <!-- [기본] file: 파일 첨부 — accept로 허용 형식 안내 -->
+        <input type="file" name="attach" accept=".pdf,image/*" />
+        <br />
+        <!-- [기본] submit: 제출 / reset: 폼 전체 초기화 -->
+        <button type="submit">제출</button>
+        <button type="reset">초기화</button>
+      </fieldset>
+    </form>
+    <!-- 표시: 테두리 상자에 "추가 요청사항" 제목이 걸쳐진 입력 묶음 -->
+    <!-- 실수: <textarea value="내용">  // textarea의 기본값은 value 속성이 아니라 태그 사이 내용 -->
+  </body>
+</html>

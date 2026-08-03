@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_02_선택자 실습 정답코드 — 실습 1. 기본 선택자 연습하기 (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_02 선택자 — 실습 1. 기본 선택자 연습하기</title>
+
+  <style>
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #999; padding: 12px; background: white; color: black; }
+
+    /* ── 실습 1: 기본 선택자 연습하기 ─────────────────── */
+    /* Step 1: 모든 글씨의 색은 white -> 전체 선택자 */
+    .practice1 * {
+      color: white;
+    }
+    /* Step 2: 배경색은 gray -> 실습 영역 배경 (원본 실습에선 body에 지정) */
+    .practice1 {
+      background-color: gray;
+    }
+    /* Step 3: span 태그의 배경색 red -> 태그 선택자 */
+    .practice1 span {
+      background-color: red;
+    }
+    /* Step 4: first 아이디 -> 배경색 blue (ID 선택자) */
+    #first {
+      background-color: blue;
+    }
+    /* Step 5: second 클래스 -> 배경색 green (Class 선택자) */
+    .second {
+      background-color: green;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>실습 1. 기본 선택자 연습하기</h2>
+
+  <!-- ── 실습 1: 기본 선택자 연습하기 ── -->
+  <section class="practice1">
+    <h1>기본 선택자 연습해보기</h1>
+    <p>기본선택자 연습을 해보아요!</p>
+    <span>안녕하세요</span>
+    <ol>
+      <li id="first">1</li>
+      <li class="second">2</li>
+      <li>3</li>
+      <li>4</li>
+      <li>5</li>
+    </ol>
+  </section>
+</body>
+</html>

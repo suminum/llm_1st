@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_02_선택자 개념코드 — 섹션 10. 가상 클래스 — 사용자 행동 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_02 선택자 — 섹션 10. 가상 클래스 — 사용자 행동</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+    body { font-family: sans-serif; }   /* 원본 섹션 2(전체 선택자 *)의 글꼴 통일 효과 재현 */
+
+    /* ── 섹션 10: 가상 클래스 — 사용자 행동 ────────────── */
+    /* [기본] :hover — 마우스가 올라갔을 때 */
+    .action-btn:hover {
+      background-color: gold;
+    }
+    /* [기본] :active — 클릭하고 있는 동안 */
+    .action-btn:active {
+      background-color: crimson;
+      color: white;
+    }
+    /* [기본] :focus — 포커스를 받았을 때 (input, textarea 등) */
+    .action-input:focus {
+      background-color: lightyellow;
+    }
+    /* [다른 방법] :checked — 체크박스·라디오가 "체크된 상태"일 때 (예: input:checked + label) */
+    /* 표시: 버튼에 올리면 노랑, 누르는 동안 빨강, 입력창 클릭하면 연노랑 */
+    /* 실수: .action-btn: hover  // 콜론 뒤에 공백을 넣으면 적용 안 됨 */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 10. 가상 클래스 — 사용자 행동</h2>
+
+  <!-- ── 섹션 10: 가상 클래스 — 사용자 행동 ── -->
+  <section>
+    <button class="action-btn">올려보고 눌러보세요</button>
+    <input class="action-input" placeholder="클릭(포커스)해 보세요" />
+  </section>
+</body>
+</html>

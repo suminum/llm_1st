@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_02_선택자 실습 정답코드 — 실습 2. 복합 선택자 — 동물원 (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_02 선택자 — 실습 2. 복합 선택자 — 동물원</title>
+
+  <style>
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #999; padding: 12px; background: white; color: black; }
+
+    /* ── 실습 2: 복합 선택자 — 동물원 ─────────────────── */
+    /* Step 1: 야생의 사자만 (zoo 밖의 lion = p.lion) -> 배경 빨강 (일치 선택자) */
+    p.lion {
+      background-color: red;
+    }
+    /* Step 2: 사파리(ul) 안의 사자만 -> 배경 greenyellow (후손 선택자) */
+    ul .lion {
+      background-color: greenyellow;
+    }
+    /* Step 3: 호랑이만 -> 배경 노랑 (ID 선택자) */
+    #tiger {
+      background-color: yellow;
+    }
+    /* Step 4: 사자 전부 -> 글자 sienna (Class 선택자) */
+    .lion {
+      color: sienna;
+    }
+    /* Step 5: 동물원(zoo) 안의 사자만 -> 굵게 (후손 선택자) */
+    .zoo .lion {
+      font-weight: bold;
+    }
+    /* Step 6: 호랑이 "바로 뒤"의 팬더 -> 배경 skyblue (인접 형제 +) */
+    #tiger + li {
+      background-color: skyblue;
+    }
+    /* Step 7: 사파리 사자(li.lion) 뒤의 사육사 모두 -> 배경 오렌지 (일반 형제 ~) */
+    li.lion ~ li {
+      background-color: orange;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>실습 2. 복합 선택자 — 동물원</h2>
+
+  <!-- ── 실습 2: 복합 선택자 — 동물원 ── -->
+  <section>
+    <h1>복합선택자 사용 연습</h1>
+    <p>동물원에 왔어요</p>
+    <div class="zoo">
+      <ul>
+        <span>여긴 사파리!</span>
+        <li>곰</li>
+        <li id="tiger">호랑이</li>
+        <li>팬더</li>
+        <span class="lion">사자1</span>
+        <li class="lion">사자2</li>
+        <li>사육사 allie</li>
+        <li>사육사 진형</li>
+      </ul>
+      <span class="lion">사파리 밖의 사자</span>
+    </div>
+    <p class="lion">야생의 사자</p>
+  </section>
+</body>
+</html>

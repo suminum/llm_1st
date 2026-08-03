@@ -1,0 +1,39 @@
+<!doctype html>
+<!--
+  01_HTML_02 테이블·폼·시맨틱·HTML 품질 개념코드 — 섹션 3. 셀 병합 — colspan·rowspan (HTML)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  소재는 전부 일상적인 것으로 골랐습니다 — 태그에만 집중하기 위해서입니다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML_02 테이블·폼·시맨틱 — 섹션 3. 셀 병합 — colspan·rowspan</title>
+  </head>
+
+  <body>
+    <h2>섹션 3. 셀 병합 — colspan·rowspan</h2>
+
+    <!-- ── 섹션 3: 셀 병합 — colspan·rowspan ──────────────── -->
+    <!-- [기본] colspan: 가로로 셀 합치기(점유하는 열의 수) / rowspan: 세로로 셀 합치기(행의 수) -->
+    <table border="1">
+      <tr>
+        <th colspan="2">이름</th>
+        <th>나이</th>
+      </tr>
+      <tr>
+        <td>홍</td>
+        <td>길동</td>
+        <td rowspan="2">25</td>
+      </tr>
+      <tr>
+        <td>김</td>
+        <td>철수</td>
+      </tr>
+    </table>
+    <!-- 표시: "이름" 칸이 두 칸 너비, "25" 칸이 두 줄 높이로 합쳐짐 -->
+    <!-- 실수: colspan="2" 를 쓰고도 그 행에 칸을 그대로 3개 작성  // 열이 밀려 표가 어긋남 -->
+  </body>
+</html>

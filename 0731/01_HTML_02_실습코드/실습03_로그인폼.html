@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<!--
+  01_HTML_02 테이블·폼 실습 정답코드 — 실습 3. 로그인 폼 만들기 (HTML)
+  PPT의 실습 1~5와 번호·소재가 동일합니다. 각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML_02 테이블·폼 — 실습 3. 로그인 폼 만들기</title>
+</head>
+
+<body>
+  <h2>실습 3. 로그인 폼 만들기</h2>
+
+  <!-- ── 실습 3: 로그인 폼 만들기 ──────────────────────────── -->
+  <!-- 케이스 A: 사용자 로그인 폼 -->
+  <h3>로그인</h3>
+  <!-- Step 1: form 태그 + ID input (label·name·required 포함) -->
+  <form method="post" action="/login">
+    <label for="uid">사용자 ID</label>
+    <input type="text" id="uid" name="user_id" required>
+    <br>
+    <!-- Step 2: 비밀번호 input (type="password"·required) — 타이핑하면 가려짐 -->
+    <label for="pw">비밀번호</label>
+    <input type="password" id="pw" name="pw" required>
+    <br>
+    <!-- Step 3: 로그인 button(submit) + 초기화 button(reset) -->
+    <button type="submit">로그인</button>
+    <button type="reset">초기화</button>
+  </form>
+  <!-- 체크포인트: ①모든 input에 label 연결 ②모든 input에 name ③빈 칸 제출 시 브라우저 경고 -->
+</body>
+</html>

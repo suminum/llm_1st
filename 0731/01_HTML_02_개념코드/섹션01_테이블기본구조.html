@@ -1,0 +1,36 @@
+<!doctype html>
+<!--
+  01_HTML_02 테이블·폼·시맨틱·HTML 품질 개념코드 — 섹션 1. 테이블 기본 구조 — table·tr·th·td (HTML)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  소재는 전부 일상적인 것으로 골랐습니다 — 태그에만 집중하기 위해서입니다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML_02 테이블·폼·시맨틱 — 섹션 1. 테이블 기본 구조 — table·tr·th·td</title>
+  </head>
+
+  <body>
+    <h2>섹션 1. 테이블 기본 구조 — table·tr·th·td</h2>
+
+    <!-- ── 섹션 1: 테이블 기본 구조 — table·tr·th·td ──────── -->
+    <!-- [기본] 행(tr)을 먼저 쓰고, 행의 자식으로 칸(th·td)을 넣는 구조 -->
+    <table border="1">
+      <tr>
+        <th>책 제목</th>
+        <!-- th = Table Header. 제목 칸 — 굵게 표시 -->
+        <th>지은이</th>
+      </tr>
+      <tr>
+        <td>어린 왕자</td>
+        <!-- td = Table Data. 일반 칸 -->
+        <td>생텍쥐페리</td>
+      </tr>
+    </table>
+    <!-- 표시: 2행 2열 표 — 첫 행은 굵은 글씨(제목 칸) -->
+    <!-- 실수: <table><td>칸</td></table>  // 칸은 반드시 tr(행) 안에! -->
+  </body>
+</html>

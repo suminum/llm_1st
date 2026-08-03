@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_02_선택자 개념코드 — 섹션 11. 가상 클래스 — 요소의 상황 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_02 선택자 — 섹션 11. 가상 클래스 — 요소의 상황</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+    body { font-family: sans-serif; }   /* 원본 섹션 2(전체 선택자 *)의 글꼴 통일 효과 재현 */
+
+    /* ── 섹션 11: 가상 클래스 — 요소의 상황 ────────────── */
+    /* [기본] :first-child / :last-child — 첫/마지막 자식 */
+    .order li:first-child { color: blue; }
+    .order li:last-child  { color: red; }
+    /* [기본] :nth-child(n) — n번째 자식 (1부터 시작) */
+    .order li:nth-child(3) { background-color: khaki; }
+    /* [다른 방법] even(짝수), odd(홀수), 3n+1(배수) 표현식 */
+    .order2 li:nth-child(even) { background-color: lightgray; }
+    /* 표시: 첫째 파랑·막내 빨강·3번째 노랑, 두 번째 목록은 짝수 줄만 회색 */
+    /* 실수: :nth-child(0)부터 센다고 생각  // n은 1부터! */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 11. 가상 클래스 — 요소의 상황</h2>
+
+  <!-- ── 섹션 11: 가상 클래스 — 요소의 상황 ── -->
+  <section>
+    <ol class="order">
+      <li>첫째 — 파랑</li>
+      <li>둘째</li>
+      <li>셋째 — 노란 배경</li>
+      <li>막내 — 빨강</li>
+    </ol>
+    <ol class="order2">
+      <li>1행</li>
+      <li>2행 — 회색</li>
+      <li>3행</li>
+      <li>4행 — 회색</li>
+    </ol>
+  </section>
+</body>
+</html>

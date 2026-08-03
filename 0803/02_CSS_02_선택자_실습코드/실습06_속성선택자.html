@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_02_선택자 실습 정답코드 — 실습 6. 속성 선택자 (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_02 선택자 — 실습 6. 속성 선택자</title>
+
+  <style>
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #999; padding: 12px; background: white; color: black; }
+
+    /* ── 실습 6: 속성 선택자 ──────────────────────────── */
+    /* Step 1: disabled 속성을 가진 태그 -> 배경 빨간색 ([속성명]) */
+    .practice6 input[disabled] {
+      background-color: red;
+    }
+    /* Step 2: placeholder 속성이 "이름"인 태그 -> 배경 오렌지 ([속성="값"]) */
+    .practice6 input[placeholder="이름"] {
+      background-color: orange;
+    }
+    /* Step 3: placeholder 속성을 가지지 않는 태그 -> 배경 파란색 (:not + 속성 선택자) */
+    .practice6 input:not([placeholder]) {
+      background-color: blue;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>실습 6. 속성 선택자</h2>
+
+  <!-- ── 실습 6: 속성 선택자 ── -->
+  <section class="practice6">
+    <input type="text" placeholder="이름" />
+    <input type="password" value="pw" />
+    <input type="text" value="000-0000-0000" />
+    <input type="text" placeholder="핸드폰" />
+    <input type="text" placeholder="주민번호" disabled />
+  </section>
+</body>
+</html>

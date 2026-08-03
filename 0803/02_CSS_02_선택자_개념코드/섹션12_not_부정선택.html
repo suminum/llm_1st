@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_02_선택자 개념코드 — 섹션 12. :not(XYZ) — 부정 선택 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_02 선택자 — 섹션 12. :not(XYZ) — 부정 선택</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+    body { font-family: sans-serif; }   /* 원본 섹션 2(전체 선택자 *)의 글꼴 통일 효과 재현 */
+
+    /* ── 섹션 12: :not(XYZ) — 부정 선택 ────────────────── */
+    /* [기본] 괄호 안 조건에 해당하지 "않는" 요소 선택 */
+    .fruits li:not(.sold-out) {
+      color: green;
+    }
+    /* 표시: 품절(sold-out)이 아닌 과일만 초록색 */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 12. :not(XYZ) — 부정 선택</h2>
+
+  <!-- ── 섹션 12: :not() 부정 선택 ── -->
+  <section>
+    <ul class="fruits">
+      <li>사과 — 판매중(초록)</li>
+      <li class="sold-out">바나나 — 품절(그대로)</li>
+      <li>포도 — 판매중(초록)</li>
+    </ul>
+  </section>
+</body>
+</html>

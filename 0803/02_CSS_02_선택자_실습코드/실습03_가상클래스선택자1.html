@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_02_선택자 실습 정답코드 — 실습 3. 가상 클래스 선택자 1 (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_02 선택자 — 실습 3. 가상 클래스 선택자 1</title>
+
+  <style>
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #999; padding: 12px; background: white; color: black; }
+
+    /* ── 실습 3: 가상 클래스 선택자 1 ─────────────────── */
+    /* Step 1: <h1>에 마우스가 올라가면 글자가 빨간색 -> :hover */
+    .practice3 h1:hover {
+      color: red;
+    }
+    /* Step 2: <a>를 클릭하고 있으면 배경이 파란색 -> :active */
+    .practice3 a:active {
+      background-color: blue;
+      color: white;
+    }
+    /* Step 3: <input>에 포커스가 가면 입력창이 오렌지색 -> :focus */
+    .practice3 input:focus {
+      background-color: orange;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>실습 3. 가상 클래스 선택자 1</h2>
+
+  <!-- ── 실습 3: 가상 클래스 선택자 1 ── -->
+  <section class="practice3">
+    <h1>가상 클래스 선택자 연습</h1>
+    <p><a href="#">이 링크를 꾹 누르고 있어 보세요 (배경 파랑)</a></p>
+    <input type="text" placeholder="클릭해서 포커스를 줘 보세요" size="30" />
+  </section>
+</body>
+</html>

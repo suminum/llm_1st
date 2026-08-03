@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<!--
+  ═══════════════════════════════════════════════════════════════
+  99_연습문제 정답 — 4일차 (CSS 적용 방법 · 선택자 · 간단한 속성들)
+  브라우저로 열면 완성 모습을 그대로 확인할 수 있습니다.
+  각 정답 아래 "해설:" 주석을 꼭 읽어 보세요.
+  ═══════════════════════════════════════════════════════════════
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>4일차 연습문제 정답 — CSS 선택자 · 간단한 속성들</title>
+
+  <style>
+    /* ── 기본 제공 스타일 (문제 아님) ── */
+    body { font-family: "맑은 고딕", "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border-bottom: 1px dashed #ccc; padding: 16px 8px; }
+    h2 { font-size: 17px; color: #333; }
+    .hint-text { color: #888; font-size: 13px; }
+    .inner-box { border: 1px solid #bbb; padding: 6px; margin: 6px 0; }
+
+    /* ═══ 문제 1 정답 ═══ */
+    /* 미리 선언되어 있던 규칙 (그대로 둠) */
+    .notice { background-color: gold; padding: 8px; }
+
+    /* 1-1) 태그 선택자 + color + text-align */
+    h1 {
+      color: #1a3a6e;
+      text-align: center;
+    }
+    /* 1-2) 같은 선택자를 "나중에" 다시 선언 */
+    .notice {
+      background-color: lightsteelblue;
+    }
+    /* 해설: 같은 우선순위라면 나중에 읽힌 선언이 이깁니다(캐스케이딩).
+       gold 선언을 지우지 않아도 아래의 lightsteelblue가 최종 적용됩니다. */
+
+    /* ═══ 문제 2 정답 ═══ */
+    .ok {
+      background-color: seagreen;
+      color: white;
+    }
+    .warn {
+      background-color: gold;
+    }
+    #critical {
+      background-color: crimson;
+      color: white;
+      font-weight: bold;
+    }
+    /* 해설: 클래스(.)는 여러 요소에 재사용, 아이디(#)는 페이지에 딱 하나.
+       "하나뿐인 예약 마감 스터디룸"처럼 유일한 대상에는 id가 어울립니다. */
+
+    /* ═══ 문제 3 정답 ═══ */
+    /* 3-1) 자식 선택자 > : 직계 자식만 */
+    .zone-a > p {
+      color: crimson;
+    }
+    /* 3-2) 후손 선택자(공백) : 몇 단계 아래든 전부 */
+    .zone-b p {
+      color: darkorange;
+    }
+    /* 3-3) 일치 선택자 : li이면서 .urgent인 것만 (붙여 쓰기!) */
+    li.urgent {
+      font-weight: bold;
+      color: firebrick;
+    }
+    /* 해설: "li .urgent"처럼 띄어 쓰면 li의 후손 중 .urgent를 찾는
+       전혀 다른 선택자가 됩니다. 일치 선택자는 반드시 붙여 씁니다. */
+
+    /* ═══ 문제 4 정답 ═══ */
+    /* 4-1) 현재 단계 강조 */
+    .now {
+      font-weight: bold;
+    }
+    /* 4-2) 인접 형제 + : 바로 다음 형제 "하나만" */
+    .now + li {
+      background-color: skyblue;
+    }
+    /* 4-3) 일반 형제 ~ : 뒤에 오는 형제 "전부" */
+    .now ~ li {
+      text-decoration: underline;
+    }
+    /* 해설: + 와 ~ 는 모두 "뒤쪽" 형제만 선택합니다.
+       그래서 기준 앞의 1번(회원증 준비)은 아무 변화가 없습니다. */
+
+    /* ═══ 문제 5 정답 ═══ */
+    /* 5-1) 짝수 줄 줄무늬 */
+    .visitor-log li:nth-child(even) {
+      background-color: #eee;
+    }
+    /* 5-2) 첫 줄 굵게 */
+    .visitor-log li:first-child {
+      font-weight: bold;
+    }
+    /* 5-3) 마지막 줄 빨강 */
+    .visitor-log li:last-child {
+      color: red;
+    }
+    /* 5-4) done이 "아닌" 항목만 초록 */
+    .task-list li:not(.done) {
+      color: green;
+    }
+    /* 해설: :nth-child(n)의 n은 0이 아니라 1부터 셉니다.
+       even(짝수)/odd(홀수)/3n+1 같은 표현식도 쓸 수 있습니다. */
+
+    /* ═══ 문제 6 정답 ═══ */
+    /* 6-1) ::before — 글자 앞에 삽입 (content 필수!) */
+    .alarm::before {
+      content: "▲ 경고 ";
+      color: red;
+    }
+    /* 6-2) ::after — 글자 뒤에 삽입 */
+    .fyi::after {
+      content: " (신규)";
+      color: blue;
+    }
+    /* 6-3) [속성] — disabled 속성을 가진 입력창 */
+    input[disabled] {
+      background-color: lightcoral;
+    }
+    /* 6-4) [속성="값"] — placeholder 값까지 일치하는 입력창만 */
+    input[placeholder="도서 번호"] {
+      background-color: lightyellow;
+    }
+    /* 해설: 가상 요소는 content가 없으면 아무것도 나타나지 않습니다.
+       마크업을 고치지 않고 장식을 붙일 수 있어 HTML이 깔끔해집니다. */
+
+    /* ═══ 문제 7 정답 ═══ */
+    /* 7-1) :hover — 마우스가 올라갔을 때 */
+    .search-btn:hover {
+      background-color: gold;
+    }
+    /* 7-2) :active — 클릭하고 있는 동안 */
+    .search-btn:active {
+      background-color: crimson;
+      color: white;
+    }
+    /* 7-3) :focus — 포커스를 받았을 때 */
+    .search-input:focus {
+      background-color: lightyellow;
+    }
+    /* 해설: 콜론 뒤에 공백을 넣으면(".search-btn: hover") 적용되지 않습니다.
+       :hover -> :active 순서로 상태가 겹칠 수 있다는 것도 기억해 두세요. */
+
+    /* ═══ 문제 8 [도전] 정답 ═══ */
+    /* 8-1) 카드 골격 — inline-block으로 나란히 + 박스 모델 */
+    .book-card {
+      display: inline-block;
+      width: 240px;
+      border: 2px solid #1971c2;
+      border-radius: 12px;
+      padding: 12px;
+      margin: 8px;
+    }
+    /* 8-2) 제목 띠 — height와 line-height를 같게 하면 세로 중앙 */
+    .card-title {
+      height: 36px;
+      line-height: 36px;
+      background-color: #e7f1ff;
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      border-radius: 8px;
+    }
+    /* 8-3) 말줄임 3종 세트 — 항상 셋이 한 묶음! */
+    .card-desc {
+      white-space: nowrap;      /* 줄바꿈 금지 */
+      overflow: hidden;         /* 넘친 부분 숨김 */
+      text-overflow: ellipsis;  /* ... 표시 */
+    }
+    /* 해설: inline-block은 "가로로 나란히 + width/height 적용"의 장점 결합.
+       말줄임은 nowrap/hidden/ellipsis 셋 중 하나라도 빠지면 동작하지 않습니다. */
+  </style>
+</head>
+<body>
+  <h1>동네 도서관 안내</h1>
+
+  <section>
+    <h2>문제 1. 기본 문법과 우선순위</h2>
+    <p class="notice">공지: 금일 14:00~15:00 어린이 열람실 소독이 진행됩니다.</p>
+    <p class="hint-text">확인: 위 제목이 진남색·가운데 정렬, 공지 띠가 연파랑이면 성공!</p>
+  </section>
+
+  <section>
+    <h2>문제 2. 클래스·ID 선택자로 스터디룸 상태 표시</h2>
+    <ul>
+      <li class="ok">스터디룸 A — 이용 가능</li>
+      <li class="warn">스터디룸 B — 정리 중</li>
+      <li class="ok">스터디룸 C — 이용 가능</li>
+      <li id="critical">스터디룸 D — 예약 마감</li>
+    </ul>
+    <p class="hint-text">확인: 초록 2줄 · 노랑 1줄 · 빨강(굵게) 1줄</p>
+  </section>
+
+  <section>
+    <h2>문제 3. 자식 · 후손 · 일치 선택자</h2>
+    <div class="zone-a">
+      <p>A구역(종합자료실) 안내 — 직계 문단 (빨강이 되어야 함)</p>
+      <div class="inner-box">
+        <p>사서 메모 — 안쪽 상자 속 문단 (검정 그대로)</p>
+      </div>
+    </div>
+    <div class="zone-b">
+      <p>B구역(어린이자료실) 안내 — 직계 문단 (주황)</p>
+      <div class="inner-box">
+        <p>사서 메모 — 안쪽 상자 속 문단 (이것도 주황!)</p>
+      </div>
+    </div>
+    <ul class="book-list">
+      <li>세계 문화 기행</li>
+      <li class="urgent">어린 왕자 (연체)</li>
+      <li>과학 상식 사전</li>
+      <li class="urgent">그리스 신화 (연체)</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>문제 4. 형제 선택자로 반납 절차 표시</h2>
+    <ol class="return-steps">
+      <li>회원증 준비</li>
+      <li class="now">반납 도서 확인 (현재 단계)</li>
+      <li>무인 반납기에 도서 투입</li>
+      <li>반납 완료 문자 확인</li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>문제 5. 구조 가상 클래스 — 방문자 기록 줄무늬</h2>
+    <ul class="visitor-log">
+      <li>월요일 — 방문 132명</li>
+      <li>화요일 — 방문 141명</li>
+      <li>수요일 — 방문 158명</li>
+      <li>목요일 — 방문 213명</li>
+      <li>금요일 — 방문 356명 (급증!)</li>
+    </ul>
+    <ul class="task-list">
+      <li class="done">신간 도서 등록 (완료)</li>
+      <li>서가 정리</li>
+      <li class="done">회원증 재발급 (완료)</li>
+      <li>독서 행사 준비</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>문제 6. 가상 요소와 속성 선택자</h2>
+    <p class="alarm">반납 기한이 지난 도서가 있습니다</p>
+    <p class="fyi">여름 독서 교실 참가자 모집</p>
+    <input type="text" placeholder="도서 번호" />
+    <input type="text" placeholder="지은이" />
+    <input type="text" placeholder="관리번호" disabled />
+  </section>
+
+  <section>
+    <h2>문제 7. 사용자 행동 가상 클래스 — 도서 검색 폼</h2>
+    <button class="search-btn">도서 검색</button>
+    <input class="search-input" type="text" placeholder="검색어 입력" />
+    <p class="hint-text">확인: 올리면 gold → 누르면 crimson → 입력창 클릭하면 연노랑</p>
+  </section>
+
+  <section>
+    <h2>문제 8. [도전] 추천 도서 카드 만들기</h2>
+    <div class="book-card">
+      <div class="card-title">파이썬 첫걸음</div>
+      <p class="card-desc">프로그래밍 입문서 · 총 320쪽 · 입고 2026-07-21 · 지은이 김철수 · 대출 가능</p>
+    </div>
+    <div class="book-card">
+      <div class="card-title">미술관 옆 산책</div>
+      <p class="card-desc">그림과 함께 읽는 에세이 · 총 248쪽 · 입고 2026-07-25 · 지은이 박영희 · 예약 대기 2명</p>
+    </div>
+    <p class="hint-text">확인: 카드 2장이 나란히 + 제목 세로/가로 중앙 + 설명 말줄임(...)</p>
+  </section>
+</body>
+</html>

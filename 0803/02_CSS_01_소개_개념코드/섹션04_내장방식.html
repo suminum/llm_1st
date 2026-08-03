@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_01_소개 개념코드 — 섹션 4. 내장(internal) 방식 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_01 소개 — 섹션 4. 내장(internal) 방식</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 섹션 4: 내장(internal) 방식 ───────────────────── */
+    /* [기본] <head> 안 <style> 태그에 스타일을 미리 선언 */
+    .internal-demo {
+      color: white;
+      background-color: steelblue;
+    }
+    /* 표시: 아래 문단 2개가 똑같이 파란 배경 흰 글자 (클래스만 붙이면 재사용!) */
+    /* 실수: <body> 안에 <style>을 쓰는 습관  // 동작은 해도 표준 위치는 <head> */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 4. 내장(internal) 방식</h2>
+
+  <!-- ── 섹션 4: 내장(internal) 방식 ── -->
+  <section>
+    <p class="internal-demo">내장 방식 — head의 style에서 선언</p>
+    <p class="internal-demo">클래스만 붙이면 같은 스타일 재사용!</p>
+    <!-- 한계: 다른 HTML 파일에서는 같은 스타일을 다시 작성해야 함 -->
+  </section>
+</body>
+</html>

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_02_선택자 실습 정답코드 — 실습: 상속 확인 (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_02 선택자 — 실습: 상속 확인</title>
+
+  <style>
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #999; padding: 12px; background: white; color: black; }
+
+    /* ── 실습: 상속 확인 ──────────────────────────────── */
+    /* Step 1: 부모(container)에만 font·color 지정 -> 자식들이 상속받는지 확인 */
+    .inherit-container {
+      font-family: Georgia, serif;   /* 상속됨 */
+      color: #2c3e50;                /* 상속됨 */
+    }
+    /* Step 2: background·border는 상속 안 됨 -> 부모(parent)에만 지정 */
+    .inherit-parent {
+      background-color: #e8f4fd;     /* 자식에게 전달되지 않음 */
+      border: 2px solid #74c0fc;     /* 자식에게 전달되지 않음 */
+      padding: 10px;
+    }
+    /* Step 3: inherit 키워드로 강제 상속 */
+    .inherit-force {
+      background-color: inherit;     /* 부모의 배경을 강제로 상속 */
+    }
+    /* Step 4: DevTools(F12) -> Computed 탭에서 자식 요소의 최종 적용값 확인 */
+  </style>
+</head>
+
+<body>
+  <h2>실습: 상속 확인</h2>
+
+  <!-- ── 실습: 상속 확인 ── -->
+  <section class="inherit-container">
+    <h4>상속 확인 — 부모에만 font-family·color 지정</h4>
+    <div class="inherit-parent">
+      부모 박스 (배경·테두리는 여기에만 지정)
+      <p>자식 1 — 글꼴·색은 상속받지만 배경·테두리는 상속 안 됨</p>
+      <p class="inherit-force">자식 2 — background: inherit 로 강제 상속</p>
+    </div>
+  </section>
+</body>
+</html>

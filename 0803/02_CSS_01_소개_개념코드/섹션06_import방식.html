@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_01_소개 개념코드 — 섹션 6. @import 방식 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_01 소개 — 섹션 6. @import 방식</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 섹션 6: @import 방식 ──────────────────────────── */
+    /* [기본] CSS 파일 "안에서" 다른 CSS를 불러오는 방식
+       main.css 맨 위에:
+       @import url("reset.css");
+       @import url("layout.css");
+       body { font-family: Pretendard; }
+
+       용도: 여러 CSS를 하나의 진입점으로 묶을 때
+       주의: <link>보다 로딩이 느릴 수 있어 실무에선 빌드 도구로 합치는 편 */
+    /* 실수: body { ... } 아래에 @import 작성  // @import는 반드시 CSS 맨 위에! */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 6. @import 방식</h2>
+
+  <!-- ── 섹션 6: @import 방식 ── -->
+  <section>
+    <p>@import — CSS 안에서 다른 CSS를 불러오는 방식 (코드는 위 style 주석 참고)</p>
+  </section>
+</body>
+</html>

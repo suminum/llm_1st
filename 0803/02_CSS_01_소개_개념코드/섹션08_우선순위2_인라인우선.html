@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_01_소개 개념코드 — 섹션 8. 우선순위 ② — 인라인이 무조건 우선 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_01 소개 — 섹션 8. 우선순위 ② — 인라인이 무조건 우선</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 섹션 8: 우선순위 ② — 인라인이 무조건 우선 ───── */
+    /* [기본] 인라인 방식은 내장·링크보다 항상 우선순위가 높음 */
+    .inline-wins { background-color: gray; }  /* 내장에서 gray로 선언했지만... */
+    /* 표시: 아래 데모는 인라인 style이 이겨서 주황 배경으로 보임 */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 8. 우선순위 ② — 인라인이 무조건 우선</h2>
+
+  <!-- ── 섹션 8: 우선순위 ② — 인라인이 무조건 우선 ── -->
+  <section>
+    <p class="inline-wins" style="background-color: orange;">내장(gray) vs 인라인(orange) — 인라인 승!</p>
+  </section>
+</body>
+</html>

@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+  01_HTML_01 HTML 기초와 텍스트 구조 실습 정답코드 — 실습 6. 링크·이미지 종합 — 제품 목록 페이지 (HTML)
+  PPT의 실습 1~6과 번호·소재가 동일합니다. 각 실습의 Step별 정답을 주석과 함께 정리합니다.
+  (실습 6은 새 페이지로 만드는 실습입니다)
+-->
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML_01 기초와 텍스트 구조 — 실습 6. 링크·이미지 종합 — 제품 목록 페이지</title>
+</head>
+
+<body>
+  <h2>실습 6. 링크·이미지 종합 — 제품 목록 페이지</h2>
+
+  <!-- ── 실습 6: 링크·이미지 종합 — 제품 목록 페이지 ───────── -->
+  <!-- 케이스 A: 제품 목록 페이지 (카드 3개) -->
+  <!-- 필수 1: 완전한 HTML 기본 구조 (이 파일 전체가 DOCTYPE·html·head·body 구조) -->
+  <h2>제품 목록</h2>
+  <!-- 필수 2: 상단 nav > ul > li > a 구조로 앵커 링크 목차 -->
+  <!-- 예고: nav는 내일 배울 "메뉴 영역" 시맨틱 태그 — 오늘은 따라 쓰기만 하면 됩니다 -->
+  <nav>
+    <ul>
+      <li><a href="#card-tumbler">텀블러</a></li>
+      <li><a href="#card-mug">머그컵</a></li>
+      <li><a href="#card-bottle">물병</a></li>
+    </ul>
+  </nav>
+
+  <!-- 필수 3·4: 카드 3개 — 각 카드에 id 속성(앵커 연결), 이미지+h3+p+링크 포함 -->
+  <h3 id="card-tumbler">보온 텀블러</h3>
+  <a href="https://www.example.com" target="_blank" rel="noopener noreferrer">
+    <img src="https://placehold.co/300x200?text=TUMBLER" alt="스테인리스 보온 텀블러 제품 사진" width="300" height="200">
+  </a>
+  <p>12시간 보온·보냉이 되는 스테인리스 텀블러입니다.</p>
+
+  <h3 id="card-mug">머그컵</h3>
+  <a href="https://www.example.com" target="_blank" rel="noopener noreferrer">
+    <img src="https://placehold.co/300x200?text=MUG" alt="흰색 도자기 머그컵 제품 사진" width="300" height="200">
+  </a>
+  <p>전자레인지 사용이 가능한 도자기 머그컵입니다.</p>
+
+  <h3 id="card-bottle">물병</h3>
+  <a href="https://www.example.com" target="_blank" rel="noopener noreferrer">
+    <img src="https://placehold.co/300x200?text=BOTTLE" alt="투명 트라이탄 물병 제품 사진" width="300" height="200">
+  </a>
+  <p>가볍고 깨지지 않는 트라이탄 소재 물병입니다.</p>
+
+  <!-- 하단 외부 링크 모음 — 전부 새 탭으로 열기 -->
+  <hr>
+  <p>
+    참고 사이트:
+    <a href="https://developer.mozilla.org/ko/" target="_blank" rel="noopener noreferrer">MDN 문서</a> ·
+    <a href="https://validator.w3.org" target="_blank" rel="noopener noreferrer">W3C Validator</a> ·
+    <a href="https://caniuse.com" target="_blank" rel="noopener noreferrer">Can I use</a>
+  </p>
+</body>
+</html>

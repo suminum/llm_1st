@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_01_소개 실습 정답코드 — 실습: 모든 CSS 적용 방법 해보기 (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_01 소개 — 실습: 모든 CSS 적용 방법 해보기</title>
+
+  <style>
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 실습: 모든 CSS 적용 방법 해보기 ────────────── */
+    /* Step 1: <h1> — 인라인 방식. body에서 style 속성으로 직접 지정 (아래 body 참고) */
+
+    /* Step 2: <h2> — 내장 방식. head의 <style> 태그에서 선언 */
+    h2 {
+      background-color: blue;
+      color: white;
+    }
+
+    /* Step 3: <p> — 링크 방식.
+       원래는 style.css 파일을 만들어 <link rel="stylesheet" href="style.css" />로 연결.
+       style.css 내용:
+       p.link-target { background-color: red; color: white; }
+       (한 파일 자료라서 같은 내용을 여기 재현) */
+    p.link-target {
+      background-color: red;
+      color: white;
+    }
+
+    /* Step 4: <span> — @import 방식.
+       원래는 main.css 맨 위에 @import url("point.css"); 를 쓰고 link로 main.css 연결.
+       point.css 내용:
+       span.import-target { background-color: orange; color: blue; }
+       (한 파일 자료라서 같은 내용을 여기 재현) */
+    span.import-target {
+      background-color: orange;
+      color: blue;
+    }
+
+    /* Step 5: <h3> — 우선순위.
+       링크(외부 css)에도 h3 { background: black; color: white; } 가 있다고 가정.
+       내장이 이기게 하려면 -> <style>이 <link>보다 "뒤에" 오면 됨 (늦게 읽힌 쪽 승) */
+    h3 {
+      background-color: black;
+      color: white;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>실습: 모든 CSS 적용 방법 해보기</h2>
+
+  <!-- ── 실습: 모든 CSS 적용 방법 해보기 ── -->
+  <section>
+    <!-- Step 1: <h1> — 인라인 방식. style 속성으로 직접 지정 -->
+    <h1 style="background-color: green; color: white;">h1 — 인라인 (초록 배경)</h1>
+    <h2>h2 — 내장 (파랑 배경)</h2>
+    <p class="link-target">p — 링크 (빨강 배경)</p>
+    <span class="import-target">span — @import (오렌지 배경, 파란 글자)</span>
+    <h3>h3 — 우선순위: 내장이 링크를 이기게 (검정 배경)</h3>
+  </section>
+</body>
+</html>

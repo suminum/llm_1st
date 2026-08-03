@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_02_선택자 개념코드 — 섹션 6. 일치 선택자 ABCXYZ (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_02 선택자 — 섹션 6. 일치 선택자 ABCXYZ</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+    body { font-family: sans-serif; }   /* 원본 섹션 2(전체 선택자 *)의 글꼴 통일 효과 재현 */
+
+    /* ── 섹션 6: 일치 선택자 ABCXYZ ───────────────────── */
+    /* [기본] 붙여 쓰면 "두 조건 모두 만족"하는 요소만 */
+    li.pick {
+      font-weight: bold;      /* li이면서 class가 pick인 것만 */
+    }
+    /* 표시: li 중 pick 클래스가 있는 항목만 굵게 */
+    /* 실수: li .pick  // 띄어 쓰면 후손 선택자! 전혀 다른 뜻이 됨 */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 6. 일치 선택자 ABCXYZ</h2>
+
+  <!-- ── 섹션 6: 일치 선택자 ── -->
+  <section>
+    <ul>
+      <li class="pick">li + .pick 둘 다 만족 -> 굵게</li>
+      <li>그냥 li — 그대로</li>
+      <li class="pick">이것도 굵게</li>
+    </ul>
+  </section>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<!--
+  01_HTML_01 HTML 기초와 텍스트 구조 개념코드 — 섹션 4. 중첩(Nested) — 부모·자식 관계 (HTML)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML_01 기초와 텍스트 구조 — 섹션 4. 중첩(Nested) — 부모·자식 관계</title>
+</head>
+
+<body>
+  <h2>섹션 4. 중첩(Nested) — 부모·자식 관계</h2>
+
+  <!-- ── 섹션 4: 중첩(Nested) — 부모·자식 관계 ──────────── -->
+  <!-- [기본] 요소 안에 또 다른 요소 — div(부모) > p(자식). 들여쓰기로 관계를 표현 -->
+  <div>
+    <p>부모 div 안에 들어 있는 자식 p 요소입니다.</p>
+  </div>
+  <!-- html > body > div > p 처럼 위로 계속 올라가면 조상, 아래로 내려가면 후손 -->
+  <!-- 실수: <div><p>내용</div></p>  // 닫는 순서가 뒤바뀜 — 연 순서의 역순으로 닫기 -->
+</body>
+</html>

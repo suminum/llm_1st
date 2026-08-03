@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_02_선택자 실습 정답코드 — 실습 4. 줄무늬 모양 만들기 (:nth-child) (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_02 선택자 — 실습 4. 줄무늬 모양 만들기 (:nth-child)</title>
+
+  <style>
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #999; padding: 12px; background: white; color: black; }
+
+    /* ── 실습 4: 줄무늬 모양 만들기 (:nth-child) ──────── */
+    /* Step 1: 기본은 전부 navy 배경 + 흰 글자 */
+    .stripes div {
+      background-color: navy;
+      color: white;
+      padding: 4px;
+    }
+    /* Step 2: 4n+2 번째(2, 6, 10...)만 yellow -> 4줄마다 노란 줄무늬 */
+    .stripes div:nth-child(4n + 2) {
+      background-color: yellow;
+      color: black;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>실습 4. 줄무늬 모양 만들기 (:nth-child)</h2>
+
+  <!-- ── 실습 4: 줄무늬 모양 만들기 ── -->
+  <section>
+    <div class="stripes">
+      <div>navy</div>
+      <div>yellow</div>
+      <div>navy</div>
+      <div>navy</div>
+      <div>navy</div>
+      <div>yellow</div>
+      <div>navy</div>
+      <div>navy</div>
+      <div>navy</div>
+      <div>yellow</div>
+      <div>navy</div>
+    </div>
+  </section>
+</body>
+</html>

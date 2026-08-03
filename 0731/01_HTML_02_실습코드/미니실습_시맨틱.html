@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!--
+  01_HTML_02 테이블·폼 실습 정답코드 — 미니 실습(시맨틱) (HTML)
+  "미니 실습(시맨틱)"은 PPT에 없는 추가 실습입니다 — 시맨틱 태그는 PPT에 실습이
+  없는데 연습문제 6·7이 골격 작성을 요구하므로, 섹션 12 강의 직후 10분간 직접 치게 합니다.
+  (강의노트 섹션 12 참고)
+-->
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML_02 테이블·폼 — 미니 실습(시맨틱)</title>
+</head>
+
+<body>
+  <h2>미니 실습(시맨틱) — PPT에 없는 추가 실습</h2>
+
+  <!-- ══ 미니 실습(시맨틱) — PPT에 없는 추가 실습 · 10분 · 강의노트 섹션 12 ══ -->
+  <!-- 목표: 시맨틱 태그를 "눈으로 보기"가 아니라 "손으로 치기"로 익힌다.
+             연습문제 6·7이 곧바로 시맨틱 골격 작성을 요구하므로 여기서 한 번은 쳐 봐야 한다.
+       진행: 아래 골격을 위에서부터 그대로 따라 친다.
+             실습 5를 이미 끝냈다면 아래 축약 폼 자리에 실습 5 폼을 통째로 옮겨 넣어도 된다.
+       ★ 다 치고 나면 화면이 하나도 안 변한다 — 그게 정상이다!
+         바뀐 것은 모양이 아니라 "의미"다. 확인은 눈이 아니라 F12 → Elements 탭에서 한다. -->
+
+  <!-- header = 상단 간판 영역 (로고·사이트 제목이 들어가는 자리) -->
+  <header>
+    <h3>우리 동네 도서관</h3>
+  </header>
+
+  <!-- nav = 이동 링크 모음. 아직 목적지가 없으니 href="#-"로 자리만 잡아 둔다 -->
+  <nav>
+    <a href="#-">도서 검색</a> <a href="#-">문의</a> <a href="#-">이용 안내</a>
+  </nav>
+
+  <!-- main = 이 페이지의 핵심 콘텐츠. 한 페이지에 딱 하나! (이 파일에서도 여기 한 번뿐) -->
+  <main>
+    <!-- section = 하나의 주제로 묶이는 덩어리 -->
+    <section>
+      <h4>온라인 문의</h4>
+      <!-- ↓ 지면 절약용 축약 폼. 실습 5 폼을 그대로 옮겨 넣으면 더 좋다 -->
+      <form method="post" action="/api/inquiry">
+        <label for="mini-type">문의 유형</label>
+        <select id="mini-type" name="type">
+          <option value="">-- 선택하세요 --</option>
+          <option value="book">희망 도서 신청</option>
+          <option value="facility">시설 이용 문의</option>
+        </select>
+        <br>
+        <label for="mini-detail">내용</label>
+        <br>
+        <textarea id="mini-detail" name="detail" rows="3" placeholder="내용을 작성해주세요"></textarea>
+        <br>
+        <button type="submit">제출</button>
+      </form>
+    </section>
+
+    <section>
+      <h4>자주 묻는 질문</h4>
+      <!-- article = 잘라내서 다른 페이지에 붙여도 혼자 말이 되는 한 덩어리.
+           질문 하나하나가 그 자체로 완결되므로 article이 맞다 -->
+      <article>
+        <h5>빌린 책은 며칠까지 볼 수 있나요?</h5>
+        <p>1인 5권까지 2주 동안 빌릴 수 있고, 한 번 연장할 수 있습니다.</p>
+      </article>
+      <article>
+        <h5>읽고 싶은 책이 없으면 어떻게 하나요?</h5>
+        <p>위 문의 폼에서 "희망 도서 신청"을 골라 제목을 적어 주세요.</p>
+      </article>
+    </section>
+
+    <!-- aside = 본문과 직접 관련 없는 옆 영역 (공지·광고) -->
+    <aside>공지: 8월 3일(월)은 정기 휴관일입니다. 도서 반납은 무인 반납함을 이용해 주세요.</aside>
+  </main>
+
+  <!-- footer = 저작권·연락처가 들어가는 하단 영역 -->
+  <footer>&copy; 2026 우리 동네 도서관</footer>
+  <!-- 체크포인트: ①화면이 안 변한 게 맞는가(정상!) ②main이 이 파일 전체에서 한 번만 쓰였는가
+       ③F12 Elements에서 header > nav > main(section·section·aside) > footer 계층이
+         건물 평면도처럼 읽히는가 ④div를 한 개도 쓰지 않았는가 -->
+</body>
+</html>

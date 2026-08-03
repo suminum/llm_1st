@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_02_선택자 개념코드 — 섹션 9. 형제 선택자 + 와 ~ (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_02 선택자 — 섹션 9. 형제 선택자 + 와 ~</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+    body { font-family: sans-serif; }   /* 원본 섹션 2(전체 선택자 *)의 글꼴 통일 효과 재현 */
+
+    /* ── 섹션 9: 형제 선택자 + 와 ~ ────────────────────── */
+    /* [기본] +: 바로 다음 형제 하나만 */
+    .base + li {
+      background-color: skyblue;
+    }
+    /* [기본] ~: 다음에 오는 모든 형제 */
+    .base ~ li {
+      text-decoration: underline;
+    }
+    /* 표시: 기준 다음 항목만 하늘색, 기준 뒤 항목 전부 밑줄 */
+    /* 실수: 기준 "앞"의 형제도 선택될 거라 기대  // + ~ 모두 뒤쪽 형제만! */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 9. 형제 선택자 + 와 ~</h2>
+
+  <!-- ── 섹션 9: 형제 선택자 + ~ ── -->
+  <section>
+    <ul>
+      <li>기준 앞 — 선택 안 됨</li>
+      <li class="base">기준(base)</li>
+      <li>바로 다음 형제 — 하늘색 + 밑줄</li>
+      <li>그다음 형제 — 밑줄만</li>
+    </ul>
+  </section>
+</body>
+</html>

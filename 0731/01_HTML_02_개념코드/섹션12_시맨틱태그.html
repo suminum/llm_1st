@@ -1,0 +1,41 @@
+<!doctype html>
+<!--
+  01_HTML_02 테이블·폼·시맨틱·HTML 품질 개념코드 — 섹션 12. 시맨틱 태그 — header·nav·main·aside·article·section·footer (HTML)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  소재는 전부 일상적인 것으로 골랐습니다 — 태그에만 집중하기 위해서입니다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML_02 테이블·폼·시맨틱 — 섹션 12. 시맨틱 태그 — header·nav·main·aside·article·section·footer</title>
+  </head>
+
+  <body>
+    <h2>섹션 12. 시맨틱 태그 — header·nav·main·aside·article·section·footer</h2>
+
+    <!-- ── 섹션 12: 시맨틱 태그 — header·nav·main·aside·article·section·footer ── -->
+    <!-- [기본] 태그 이름 자체가 영역의 의미를 전달 — SEO·스크린 리더·코드 협업에 유리 -->
+    <header>header — 로고·메뉴가 들어가는 상단 영역</header>
+    <nav>
+      nav — 이동 링크 모음:
+      <a href="#-">홈</a> <a href="#-">소개</a>
+    </nav>
+    <main>
+      <!-- main: 핵심 콘텐츠 — 한 페이지에 한 번만, 중첩 금지 -->
+      <section>
+        <!-- section: article들의 그룹 / article: 독립적으로 의미가 완성되는 한 덩어리 -->
+        <article>
+          <h4>오늘 배운 것</h4>
+          <p>article 하나가 그 자체로 하나의 글이 됩니다.</p>
+        </article>
+      </section>
+      <aside>aside — 본문과 직접 연관 없는 옆 영역 (공지·광고)</aside>
+    </main>
+    <footer>footer — 저작권·연락처가 들어가는 하단 영역</footer>
+    <!-- 시맨틱 태그가 자동으로 디자인을 입히지는 않음 — 구조는 HTML, 표현은 CSS -->
+    <!-- 실수: <div class="nav-container">...</div>  // <nav> 한 단어면 역할이 그대로 전달됨 -->
+  </body>
+</html>

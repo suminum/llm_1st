@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<!--
+  01_HTML_01 HTML 기초와 텍스트 구조 실습 정답코드 — 실습 4. 내부·외부·앵커 링크 만들기 (HTML)
+  PPT의 실습 1~6과 번호·소재가 동일합니다. 각 실습의 Step별 정답을 주석과 함께 정리합니다.
+  (실습 4는 원래 새 HTML 파일 links.html에 작성하는 실습입니다)
+-->
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HTML_01 기초와 텍스트 구조 — 실습 4. 내부·외부·앵커 링크 만들기</title>
+</head>
+
+<body>
+  <h2>실습 4. 내부·외부·앵커 링크 만들기</h2>
+
+  <!-- ── 실습 4: 내부·외부·앵커 링크 만들기 ────────────────── -->
+  <!-- 케이스 A: 원래는 새 HTML 파일(links.html)에 작성하는 실습 -->
+  <h2>링크 연습</h2>
+  <!-- Step 1: 외부 링크 — href에 외부 URL, target="_blank" + rel="noopener noreferrer" 반드시 함께 -->
+  <p><a href="https://www.kakao.com" target="_blank" rel="noopener noreferrer">카카오 홈페이지 (새 탭)</a></p>
+  <!-- Step 2: 내부 링크 — 같은 폴더의 about.html로 이동 (상대 경로, https:// 없이 파일명만) -->
+  <!-- 주의: about.html 파일을 먼저 만들어 두어야 클릭 시 404가 나지 않습니다 -->
+  <p><a href="about.html">소개 페이지(about.html)로 이동</a></p>
+  <!-- Step 3: 앵커 링크 — id 달린 섹션 3개 + 목차 링크 구성 (href="#이름" ↔ id="이름") -->
+  <ul>
+    <li><a href="#section1">섹션 1로 이동</a></li>
+    <li><a href="#section2">섹션 2로 이동</a></li>
+    <li><a href="#section3">섹션 3으로 이동</a></li>
+  </ul>
+  <h3 id="section1">섹션 1 — 소개</h3>
+  <p>앵커 링크의 첫 번째 목적지입니다.</p>
+  <h3 id="section2">섹션 2 — 활동</h3>
+  <p>앵커 링크의 두 번째 목적지입니다.</p>
+  <h3 id="section3">섹션 3 — 연락처</h3>
+  <p>앵커 링크의 세 번째 목적지입니다.</p>
+  <!-- 페이지가 짧으면 클릭해도 스크롤이 안 움직이는 것처럼 보임 — 내용을 늘려서 확인 -->
+</body>
+</html>

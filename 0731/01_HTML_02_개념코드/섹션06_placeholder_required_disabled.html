@@ -1,0 +1,31 @@
+<!doctype html>
+<!--
+  01_HTML_02 테이블·폼·시맨틱·HTML 품질 개념코드 — 섹션 6. placeholder·required·disabled (HTML)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  소재는 전부 일상적인 것으로 골랐습니다 — 태그에만 집중하기 위해서입니다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HTML_02 테이블·폼·시맨틱 — 섹션 6. placeholder·required·disabled</title>
+  </head>
+
+  <body>
+    <h2>섹션 6. placeholder·required·disabled</h2>
+
+    <!-- ── 섹션 6: placeholder·required·disabled ──────────── -->
+    <form>
+      <!-- [기본] placeholder: 입력 전 안내 문구 -->
+      <input type="text" name="nickname" placeholder="예: 코딩하는너구리" />
+      <!-- [기본] required: 필수 입력 — 비우고 제출하면 브라우저가 경고 -->
+      <input type="email" name="email" required placeholder="이메일 (필수)" />
+      <!-- [기본] disabled: 비활성화 — 입력도 전송도 안 됨 -->
+      <input type="text" value="자동 입력 값" disabled />
+      <button type="submit">확인</button>
+    </form>
+    <!-- 실수: placeholder를 label 대신 사용  // 입력을 시작하면 안내가 사라짐 — label과 함께 쓰기 -->
+  </body>
+</html>
