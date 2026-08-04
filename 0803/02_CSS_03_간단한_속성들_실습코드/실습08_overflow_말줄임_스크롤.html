@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 실습 정답코드 — 실습 8. overflow 말줄임·스크롤 (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — 실습 8. overflow 말줄임·스크롤</title>
+
+  <style>
+    /* 모든 상자를 border-box 기준으로 (이 PPT 실습 6에서 배우는 권장 설정) */
+    * { box-sizing: border-box; }
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 실습 8: overflow 말줄임·스크롤 ───────────────── */
+    /* Step 1: 설비 이름 말줄임(...) — 3종 세트 조합 */
+    .equip-name {
+      width: 220px;
+      white-space: nowrap;         /* 줄바꿈 금지 */
+      overflow: hidden;            /* 넘친 부분 자르기 */
+      text-overflow: ellipsis;     /* ... 표시 */
+      border: 1px solid #d0d7de;
+      padding: 6px;
+    }
+    /* Step 2: 대화(알림) 목록 스크롤 영역 — 고정 height + overflow: auto */
+    .alarm-list {
+      width: 300px;
+      height: 110px;               /* 높이를 고정하고 */
+      overflow: auto;              /* 넘치면 스크롤 */
+      border: 1px solid #d0d7de;
+      padding: 8px;
+    }
+    .alarm-list p {
+      margin: 0 0 6px 0;
+      font-size: 14px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>실습 8. overflow 말줄임·스크롤</h2>
+
+  <!-- ── 실습 8: overflow 말줄임·스크롤 ── -->
+  <section>
+    <!-- Step 1: 설비 이름 말줄임 -->
+    <p class="equip-name">3공장 2라인 고속 프레스 성형기 PRS-2000X (2024년식)</p>
+    <!-- Step 2: 대화(알림) 목록 스크롤 -->
+    <div class="alarm-list">
+      <p>[09:00] 1호기 가동 시작</p>
+      <p>[09:12] 2호기 온도 경고 (85도)</p>
+      <p>[09:15] 2호기 정지 — 점검 요청</p>
+      <p>[어제] 3호기 정기 점검 완료</p>
+      <p>[어제] 원자재 입고 확인</p>
+      <p>[그제] 야간 가동 이상 없음</p>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <!--
   ═══════════════════════════════════════════════════════════════
   99_연습문제 — 4일차 (CSS 적용 방법 · 선택자 · 간단한 속성들)
@@ -16,68 +16,16 @@
   * 다 풀면 99_연습문제_정답.html과 비교해 보세요.
 -->
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <title>4일차 연습문제 — CSS 선택자 · 간단한 속성들</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>4일차 연습문제 — CSS 선택자 · 간단한 속성들</title>
+    <link rel="stylesheet" href="./99_연습문제.css" />
+  </head>
+  <body>
+    <!-- 문제 1에서 스타일링할 페이지 제목입니다. -->
+    <h1>동네 도서관 안내</h1>
 
-  <style>
-    /* ── 기본 제공 스타일 (문제 아님 — 수정 금지) ── */
-    body { font-family: "맑은 고딕", "Malgun Gothic", sans-serif; margin: 20px; }
-    section { border-bottom: 1px dashed #ccc; padding: 16px 8px; }
-    h2 { font-size: 17px; color: #333; }
-    .hint-text { color: #888; font-size: 13px; }
-    .inner-box { border: 1px solid #bbb; padding: 6px; margin: 6px 0; }
-
-    /* ═══ 문제 1 ═══ */
-    /* 미리 선언된 규칙입니다. 수정·삭제 금지! (문제 1-2에서 덮어씁니다) */
-    .notice { background-color: gold; padding: 8px; }
-
-    /* 문제 1: 여기에 작성 */
-
-
-
-    /* ═══ 문제 2 ═══ */
-    /* 문제 2: 여기에 작성 */
-
-
-
-    /* ═══ 문제 3 ═══ */
-    /* 문제 3: 여기에 작성 */
-
-
-
-    /* ═══ 문제 4 ═══ */
-    /* 문제 4: 여기에 작성 */
-
-
-
-    /* ═══ 문제 5 ═══ */
-    /* 문제 5: 여기에 작성 */
-
-
-
-    /* ═══ 문제 6 ═══ */
-    /* 문제 6: 여기에 작성 */
-
-
-
-    /* ═══ 문제 7 ═══ */
-    /* 문제 7: 여기에 작성 */
-
-
-
-    /* ═══ 문제 8 [도전] — 5일차 진도(박스모델) 이후 풀기 ═══ */
-    /* 문제 8: 여기에 작성 */
-
-
-
-  </style>
-</head>
-<body>
-  <!-- 문제 1에서 스타일링할 페이지 제목입니다. -->
-  <h1>동네 도서관 안내</h1>
-
-  <!-- ═══ 문제 1 ═══════════════════════════════════════════
+    <!-- ═══ 문제 1 ═══════════════════════════════════════════
     [요구사항]
     1) 태그 선택자로 h1의 글자색을 #1a3a6e 로, 가로 정렬을 가운데로 만드세요.
     2) .notice 는 이미 배경이 gold 로 선언되어 있습니다(스타일 상단, 수정 금지).
@@ -90,13 +38,17 @@
     02_CSS_01_소개_개념코드 폴더의 섹션01 파일(기본 문법), 섹션07 파일(늦게 읽힌 스타일이 이김)
     02_CSS_03_간단한_속성들_개념코드 폴더의 섹션05 파일(text-align)
   -->
-  <section>
-    <h2>문제 1. 기본 문법과 우선순위</h2>
-    <p class="notice">공지: 금일 14:00~15:00 어린이 열람실 소독이 진행됩니다.</p>
-    <p class="hint-text">확인: 위 제목이 진남색·가운데 정렬, 공지 띠가 연파랑이면 성공!</p>
-  </section>
+    <section>
+      <h2>문제 1. 기본 문법과 우선순위</h2>
+      <p class="notice">
+        공지: 금일 14:00~15:00 어린이 열람실 소독이 진행됩니다.
+      </p>
+      <p class="hint-text">
+        확인: 위 제목이 진남색·가운데 정렬, 공지 띠가 연파랑이면 성공!
+      </p>
+    </section>
 
-  <!-- ═══ 문제 2 ═══════════════════════════════════════════
+    <!-- ═══ 문제 2 ═══════════════════════════════════════════
     [요구사항]
     1) class가 ok 인 항목: 배경 seagreen, 글자 white
     2) class가 warn 인 항목: 배경 gold
@@ -108,18 +60,18 @@
     02_CSS_02_선택자_개념코드 폴더의 섹션04 파일(Class 선택자), 섹션05 파일(ID 선택자)
     02_CSS_03_간단한_속성들_개념코드 폴더의 섹션03 파일(font-weight)
   -->
-  <section>
-    <h2>문제 2. 클래스·ID 선택자로 스터디룸 상태 표시</h2>
-    <ul>
-      <li class="ok">스터디룸 A — 이용 가능</li>
-      <li class="warn">스터디룸 B — 정리 중</li>
-      <li class="ok">스터디룸 C — 이용 가능</li>
-      <li id="critical">스터디룸 D — 예약 마감</li>
-    </ul>
-    <p class="hint-text">확인: 초록 2줄 · 노랑 1줄 · 빨강(굵게) 1줄</p>
-  </section>
+    <section>
+      <h2>문제 2. 클래스·ID 선택자로 스터디룸 상태 표시</h2>
+      <ul>
+        <li class="ok">스터디룸 A — 이용 가능</li>
+        <li class="warn">스터디룸 B — 정리 중</li>
+        <li class="ok">스터디룸 C — 이용 가능</li>
+        <li id="critical">스터디룸 D — 예약 마감</li>
+      </ul>
+      <p class="hint-text">확인: 초록 2줄 · 노랑 1줄 · 빨강(굵게) 1줄</p>
+    </section>
 
-  <!-- ═══ 문제 3 ═══════════════════════════════════════════
+    <!-- ═══ 문제 3 ═══════════════════════════════════════════
     [요구사항]
     1) .zone-a 의 "직계 자식" p만 글자색 crimson (안쪽 상자 속 p는 그대로!)
     2) .zone-b "안의 모든" p(후손 전부)를 글자색 darkorange
@@ -131,29 +83,29 @@
     02_CSS_02_선택자_개념코드 폴더의 섹션06 파일(일치), 섹션07 파일(자식 >), 섹션08 파일(후손 공백)
     "li .urgent"처럼 띄어 쓰면 후손 선택자가 되어 버립니다. 붙여 쓰세요!
   -->
-  <section>
-    <h2>문제 3. 자식 · 후손 · 일치 선택자</h2>
-    <div class="zone-a">
-      <p>A구역(종합자료실) 안내 — 직계 문단 (빨강이 되어야 함)</p>
-      <div class="inner-box">
-        <p>사서 메모 — 안쪽 상자 속 문단 (검정 그대로)</p>
+    <section>
+      <h2>문제 3. 자식 · 후손 · 일치 선택자</h2>
+      <div class="zone-a">
+        <p>A구역(종합자료실) 안내 — 직계 문단 (빨강이 되어야 함)</p>
+        <div class="inner-box">
+          <p>사서 메모 — 안쪽 상자 속 문단 (검정 그대로)</p>
+        </div>
       </div>
-    </div>
-    <div class="zone-b">
-      <p>B구역(어린이자료실) 안내 — 직계 문단 (주황)</p>
-      <div class="inner-box">
-        <p>사서 메모 — 안쪽 상자 속 문단 (이것도 주황!)</p>
+      <div class="zone-b">
+        <p>B구역(어린이자료실) 안내 — 직계 문단 (주황)</p>
+        <div class="inner-box">
+          <p>사서 메모 — 안쪽 상자 속 문단 (이것도 주황!)</p>
+        </div>
       </div>
-    </div>
-    <ul class="book-list">
-      <li>세계 문화 기행</li>
-      <li class="urgent">어린 왕자 (연체)</li>
-      <li>과학 상식 사전</li>
-      <li class="urgent">그리스 신화 (연체)</li>
-    </ul>
-  </section>
+      <ul class="book-list">
+        <li>세계 문화 기행</li>
+        <li class="urgent">어린 왕자 (연체)</li>
+        <li>과학 상식 사전</li>
+        <li class="urgent">그리스 신화 (연체)</li>
+      </ul>
+    </section>
 
-  <!-- ═══ 문제 4 ═══════════════════════════════════════════
+    <!-- ═══ 문제 4 ═══════════════════════════════════════════
     [요구사항]
     1) 현재 단계(.now)를 굵게(bold) 만드세요.
     2) .now "바로 다음" 한 단계만 배경 skyblue  (인접 형제 +)
@@ -166,17 +118,17 @@
     02_CSS_03_간단한_속성들_개념코드 폴더의 섹션05 파일(text-decoration)
     + 와 ~ 는 모두 "뒤쪽" 형제만 선택합니다!
   -->
-  <section>
-    <h2>문제 4. 형제 선택자로 반납 절차 표시</h2>
-    <ol class="return-steps">
-      <li>회원증 준비</li>
-      <li class="now">반납 도서 확인 (현재 단계)</li>
-      <li>무인 반납기에 도서 투입</li>
-      <li>반납 완료 문자 확인</li>
-    </ol>
-  </section>
+    <section>
+      <h2>문제 4. 형제 선택자로 반납 절차 표시</h2>
+      <ol class="return-steps">
+        <li>회원증 준비</li>
+        <li class="now">반납 도서 확인 (현재 단계)</li>
+        <li>무인 반납기에 도서 투입</li>
+        <li>반납 완료 문자 확인</li>
+      </ol>
+    </section>
 
-  <!-- ═══ 문제 5 ═══════════════════════════════════════════
+    <!-- ═══ 문제 5 ═══════════════════════════════════════════
     [요구사항]
     1) .visitor-log 의 "짝수 번째" 줄만 배경 #eee  (줄무늬 효과)
     2) .visitor-log 의 첫 줄을 굵게
@@ -190,24 +142,24 @@
     섹션12 파일(:not)
     짝수는 :nth-child(even) — n은 1부터 셉니다!
   -->
-  <section>
-    <h2>문제 5. 구조 가상 클래스 — 방문자 기록 줄무늬</h2>
-    <ul class="visitor-log">
-      <li>월요일 — 방문 132명</li>
-      <li>화요일 — 방문 141명</li>
-      <li>수요일 — 방문 158명</li>
-      <li>목요일 — 방문 213명</li>
-      <li>금요일 — 방문 356명 (급증!)</li>
-    </ul>
-    <ul class="task-list">
-      <li class="done">신간 도서 등록 (완료)</li>
-      <li>서가 정리</li>
-      <li class="done">회원증 재발급 (완료)</li>
-      <li>독서 행사 준비</li>
-    </ul>
-  </section>
+    <section>
+      <h2>문제 5. 구조 가상 클래스 — 방문자 기록 줄무늬</h2>
+      <ul class="visitor-log">
+        <li>월요일 — 방문 132명</li>
+        <li>화요일 — 방문 141명</li>
+        <li>수요일 — 방문 158명</li>
+        <li>목요일 — 방문 213명</li>
+        <li>금요일 — 방문 356명 (급증!)</li>
+      </ul>
+      <ul class="task-list">
+        <li class="done">신간 도서 등록 (완료)</li>
+        <li>서가 정리</li>
+        <li class="done">회원증 재발급 (완료)</li>
+        <li>독서 행사 준비</li>
+      </ul>
+    </section>
 
-  <!-- ═══ 문제 6 ═══════════════════════════════════════════
+    <!-- ═══ 문제 6 ═══════════════════════════════════════════
     [요구사항]
     1) .alarm 글자 "앞"에 "▲ 경고 " 를 빨간색으로 붙이세요. (::before)
     2) .fyi 글자 "뒤"에 " (신규)" 를 파란색으로 붙이세요. (::after)
@@ -220,16 +172,16 @@
     02_CSS_02_선택자_개념코드 폴더의 섹션13 파일(가상 요소), 섹션14 파일(속성 선택자)
     가상 요소에는 content 속성이 반드시 있어야 화면에 나타납니다!
   -->
-  <section>
-    <h2>문제 6. 가상 요소와 속성 선택자</h2>
-    <p class="alarm">반납 기한이 지난 도서가 있습니다</p>
-    <p class="fyi">여름 독서 교실 참가자 모집</p>
-    <input type="text" placeholder="도서 번호" />
-    <input type="text" placeholder="지은이" />
-    <input type="text" placeholder="관리번호" disabled />
-  </section>
+    <section>
+      <h2>문제 6. 가상 요소와 속성 선택자</h2>
+      <p class="alarm">반납 기한이 지난 도서가 있습니다</p>
+      <p class="fyi">여름 독서 교실 참가자 모집</p>
+      <input type="text" placeholder="도서 번호" />
+      <input type="text" placeholder="지은이" />
+      <input type="text" placeholder="관리번호" disabled />
+    </section>
 
-  <!-- ═══ 문제 7 ═══════════════════════════════════════════
+    <!-- ═══ 문제 7 ═══════════════════════════════════════════
     [요구사항]
     1) .search-btn 에 마우스를 올리면 배경 gold
     2) .search-btn 을 누르고 있는 동안 배경 crimson + 글자 white
@@ -241,14 +193,16 @@
     02_CSS_02_선택자_개념코드 폴더의 섹션10 파일(가상 클래스 — 사용자 행동)
     실수 주의: ".search-btn: hover" 처럼 콜론 뒤에 공백을 넣으면 적용 안 됩니다.
   -->
-  <section>
-    <h2>문제 7. 사용자 행동 가상 클래스 — 도서 검색 폼</h2>
-    <button class="search-btn">도서 검색</button>
-    <input class="search-input" type="text" placeholder="검색어 입력" />
-    <p class="hint-text">확인: 올리면 gold → 누르면 crimson → 입력창 클릭하면 연노랑</p>
-  </section>
+    <section>
+      <h2>문제 7. 사용자 행동 가상 클래스 — 도서 검색 폼</h2>
+      <button class="search-btn">도서 검색</button>
+      <input class="search-input" type="text" placeholder="검색어 입력" />
+      <p class="hint-text">
+        확인: 올리면 gold → 누르면 crimson → 입력창 클릭하면 연노랑
+      </p>
+    </section>
 
-  <!-- ═══ 문제 8 [도전] ═══════════════════════════════════
+    <!-- ═══ 문제 8 [도전] ═══════════════════════════════════
     [5일차 진도(박스모델) 이후 풀기] — width·padding·margin 등 박스모델은
     5일차에 배웁니다. (README 비고: CSS_03의 박스모델 섹션은 5일차에 진행)
     [요구사항]  추천 도서 카드 2장을 완성하세요.
@@ -269,17 +223,28 @@
     섹션04 파일(line-height 세로 중앙), 섹션07 파일(inline-block),
     섹션12 파일(border-radius), 섹션15 파일(말줄임 3종 세트)
   -->
-  <section>
-    <h2>문제 8. [도전] 추천 도서 카드 만들기 <span class="hint-text">[5일차 진도(박스모델) 이후 풀기]</span></h2>
-    <div class="book-card">
-      <div class="card-title">파이썬 첫걸음</div>
-      <p class="card-desc">프로그래밍 입문서 · 총 320쪽 · 입고 2026-07-21 · 지은이 김철수 · 대출 가능</p>
-    </div>
-    <div class="book-card">
-      <div class="card-title">미술관 옆 산책</div>
-      <p class="card-desc">그림과 함께 읽는 에세이 · 총 248쪽 · 입고 2026-07-25 · 지은이 박영희 · 예약 대기 2명</p>
-    </div>
-    <p class="hint-text">확인: 카드 2장이 나란히 + 제목 세로/가로 중앙 + 설명 말줄임(...)</p>
-  </section>
-</body>
+    <section>
+      <h2>
+        문제 8. [도전] 추천 도서 카드 만들기
+        <span class="hint-text">[5일차 진도(박스모델) 이후 풀기]</span>
+      </h2>
+      <div class="book-card">
+        <div class="card-title">파이썬 첫걸음</div>
+        <p class="card-desc">
+          프로그래밍 입문서 · 총 320쪽 · 입고 2026-07-21 · 지은이 김철수 · 대출
+          가능
+        </p>
+      </div>
+      <div class="book-card">
+        <div class="card-title">미술관 옆 산책</div>
+        <p class="card-desc">
+          그림과 함께 읽는 에세이 · 총 248쪽 · 입고 2026-07-25 · 지은이 박영희 ·
+          예약 대기 2명
+        </p>
+      </div>
+      <p class="hint-text">
+        확인: 카드 2장이 나란히 + 제목 세로/가로 중앙 + 설명 말줄임(...)
+      </p>
+    </section>
+  </body>
 </html>

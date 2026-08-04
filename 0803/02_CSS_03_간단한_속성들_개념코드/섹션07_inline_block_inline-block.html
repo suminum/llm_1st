@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 개념코드 — 섹션 7. inline / block / inline-block (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — 섹션 7. inline / block / inline-block</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 섹션 7: inline / block / inline-block ─────────── */
+    /* [기본] inline: 컨텐츠만큼만 차지, 가로 공간 공유. width/height 무시 (span, a, b) */
+    .demo-inline {
+      background-color: khaki;
+      /* 실수: width: 200px;  // inline 요소에는 width/height가 안 먹힘 */
+    }
+    /* [기본] block: 부모의 가로 전체를 독점. width/height 적용 (div, p, h1) */
+    .demo-block {
+      background-color: lightgreen;
+      width: 200px;
+    }
+    /* [다른 방법] inline-block: 가로로 나란히 + width/height도 적용 (둘의 장점 결합) */
+    .demo-ib {
+      display: inline-block;
+      width: 120px;
+      height: 40px;
+      background-color: lightsalmon;
+    }
+    /* 표시: inline은 글자만큼, block은 한 줄 독점, inline-block은 나란히 + 크기 지정 */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 7. inline / block / inline-block</h2>
+
+  <!-- ── 섹션 7: inline / block / inline-block ── -->
+  <section>
+    <span class="demo-inline">inline1</span>
+    <span class="demo-inline">inline2 (가로 공유)</span>
+    <div class="demo-block">block (한 줄 독점)</div>
+    <div class="demo-ib">inline-block</div>
+    <div class="demo-ib">나란히 + 크기 OK</div>
+  </section>
+</body>
+</html>

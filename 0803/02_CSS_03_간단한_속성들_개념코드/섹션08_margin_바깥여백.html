@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 개념코드 — 섹션 8. margin — 바깥 여백 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — 섹션 8. margin — 바깥 여백</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 섹션 8: margin — 바깥 여백 ────────────────────── */
+    /* [기본] 단축 속성: 값 개수에 따라 적용 방향이 다름 */
+    .m-1 { margin: 20px; }                    /* 1개: 4방향 모두 */
+    .m-2 { margin: 10px 30px; }               /* 2개: 상하 / 좌우 */
+    .m-4 { margin: 10px 20px 30px 40px; }     /* 4개: 상 우 하 좌 (시계방향) */
+    /* [다른 방법] 개별 속성 */
+    .m-each {
+      margin-top: 10px;
+      margin-right: 20px;
+      margin-bottom: 10px;
+      margin-left: 20px;
+    }
+    /* 실수: margin: 10px, 20px;  // CSS 값 나열은 쉼표가 아니라 공백! */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 8. margin — 바깥 여백</h2>
+
+  <!-- ── 섹션 8: margin ── -->
+  <section>
+    <div class="m-1" style="background: wheat;">margin: 20px (4방향)</div>
+    <div class="m-2" style="background: wheat;">margin: 10px 30px (상하/좌우)</div>
+    <div class="m-4" style="background: wheat;">margin: 10px 20px 30px 40px (상 우 하 좌)</div>
+  </section>
+</body>
+</html>

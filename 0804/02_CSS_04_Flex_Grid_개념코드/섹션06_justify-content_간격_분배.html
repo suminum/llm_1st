@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_04_Flex_Grid 개념코드 — 섹션 6. justify-content — 간격 분배 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_04 Flex_Grid — 섹션 6. justify-content — 간격 분배</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+    .item {                       /* 데모용 파란 박스 */
+      width: 60px; height: 60px;
+      background: #4dabf7; border: 2px solid #1971c2;
+      color: #fff; text-align: center; line-height: 56px;
+    }
+
+    /* 원본 섹션 5 정의 — 섹션 6 마크업이 함께 사용하는 기본 flex 컨테이너 */
+    .s5-base {
+      display: flex;
+      background: #e9ecef; border: 2px dashed #868e96; padding: 8px;
+    }
+
+    /* ── 섹션 6: justify-content — 간격 분배 ──────────── */
+    /* [기본] space-between: 양 끝에 붙이고 사이 간격을 균등 분배 */
+    .s6-between { justify-content: space-between; }
+    /* [다른 방법] space-around: 아이템 양옆 여백 균등 / space-evenly: 모든 간격 균등 */
+    .s6-around  { justify-content: space-around; }
+    .s6-evenly  { justify-content: space-evenly; }
+    /* 표시: between은 끝에 딱 붙고, around는 끝 여백이 절반, evenly는 전부 동일 */
+  </style>
+</head>
+
+<body>
+  <!-- ── 섹션 6: justify-content — 간격 분배 ── -->
+  <section>
+    <h2>섹션 6. justify-content — 간격 분배</h2>
+    <p>space-between</p>
+    <div class="s5-base s6-between">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+    <p>space-around</p>
+    <div class="s5-base s6-around">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+    <p>space-evenly</p>
+    <div class="s5-base s6-evenly">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+  </section>
+</body>
+</html>

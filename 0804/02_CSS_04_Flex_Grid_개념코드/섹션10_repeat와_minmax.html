@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_04_Flex_Grid 개념코드 — 섹션 10. repeat()와 minmax() (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_04 Flex_Grid — 섹션 10. repeat()와 minmax()</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+
+    /* 원본 섹션 9 정의 — 이 섹션 마크업이 함께 사용 */
+    .cell {                          /* 그리드 데모용 초록 셀 */
+      background: #69db7c; border: 2px solid #2f9e44;
+      color: #fff; text-align: center; line-height: 56px;
+    }
+
+    /* ── 섹션 10: repeat()와 minmax() ─────────────────── */
+    /* [기본] repeat(횟수, 크기): 같은 트랙 반복 */
+    .s10-repeat {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);   /* = 1fr 1fr 1fr 1fr */
+      background: #e9ecef; border: 2px dashed #868e96; padding: 8px;
+    }
+    /* [다른 방법] minmax(최소, 최대): 최소 100px, 남으면 늘어남 -> 반응형에 유용 */
+    .s10-minmax {
+      display: grid;
+      grid-template-columns: 1fr minmax(100px, 1fr) 1fr;
+      background: #e9ecef; border: 2px dashed #868e96; padding: 8px;
+    }
+    /* [다른 방법] 둘을 조합: grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));  -> 열 개수를 정하지 않아도 화면 폭에 맞춰 자동 결정 */
+    /* 실수: repeat(4 1fr)  // 쉼표 누락 -> 전체 선언이 무시됨 */
+  </style>
+</head>
+
+<body>
+  <!-- ── 섹션 10: repeat()와 minmax() ── -->
+  <section>
+    <h2>섹션 10. repeat()와 minmax()</h2>
+    <p>repeat(4, 1fr)</p>
+    <div class="s10-repeat">
+      <div class="cell">1</div>
+      <div class="cell">2</div>
+      <div class="cell">3</div>
+      <div class="cell">4</div>
+    </div>
+    <p>1fr minmax(100px, 1fr) 1fr</p>
+    <div class="s10-minmax">
+      <div class="cell">1</div>
+      <div class="cell">2</div>
+      <div class="cell">3</div>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_04_Flex_Grid 실습 정답코드 — [추가 실습] 카페 주문 현황판 (PPT에 없음 — 빨리 끝낸 학생용 보너스) (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_04 Flex_Grid — [추가 실습] 카페 주문 현황판</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 32px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+
+    /* ── [추가 실습] 카페 주문 현황판 (PPT에 없음 — 빨리 끝낸 학생용 보너스) ── */
+    /* Step 1: grid-template-areas로 대시보드 뼈대 만들기 */
+    .p5-dashboard {
+      display: grid;
+      grid-template-areas:
+        "header header"
+        "side   main"
+        "footer footer";
+      grid-template-columns: 160px 1fr;
+      grid-template-rows: 56px 1fr 40px;
+      gap: 8px;
+      height: 480px;
+      background: #dee2e6; padding: 8px;
+    }
+    .p5-header { grid-area: header; background: #212529; color: #fff;
+                 display: flex; align-items: center; padding: 0 16px; }
+    .p5-side   { grid-area: side; background: #495057; color: #dee2e6; padding: 12px; }
+    .p5-footer { grid-area: footer; background: #868e96; color: #fff;
+                 display: flex; align-items: center; justify-content: center; }
+    /* Step 2: main 영역 안에 주문 카드 그리드 (중첩 grid) */
+    .p5-main {
+      grid-area: main;
+      display: grid;
+      /* auto-fill + minmax: 화면이 넓으면 카드가 늘어나는 반응형 격자 */
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 8px;
+      align-content: start;            /* 카드 줄을 위에서부터 채움 */
+    }
+    /* Step 3: 주문 카드 — 카드 내부는 flex(column)로 세로 배치 */
+    .p5-card {
+      background: #fff; border: 1px solid #adb5bd; border-radius: 6px;
+      padding: 12px;
+      display: flex; flex-direction: column; gap: 6px;
+    }
+    .p5-card h3 { margin: 0; font-size: 15px; }
+    .p5-card .value { font-size: 22px; font-weight: bold; color: #1971c2; }
+    .p5-ok   { color: #2f9e44; font-size: 13px; }   /* 준비중·완료 */
+    .p5-warn { color: #e03131; font-size: 13px; }   /* 지연 */
+  </style>
+</head>
+
+<body>
+  <!-- ── [추가 실습] 카페 주문 현황판 (PPT에 없음 — 빨리 끝낸 학생용 보너스) ── -->
+  <section>
+    <h2>[추가 실습] 카페 주문 현황판 (areas + 카드 그리드)</h2>
+    <div class="p5-dashboard">
+      <header class="p5-header">카페 모카 주문 현황판</header>
+      <nav class="p5-side">
+        메뉴<br /><br />ㆍ주문 현황<br />ㆍ메뉴 관리<br />ㆍ재고 확인
+      </nav>
+      <main class="p5-main">
+        <div class="p5-card">
+          <h3>주문 101번</h3>
+          <div class="value">아메리카노 2잔</div>
+          <div class="p5-ok">● 준비 완료</div>
+        </div>
+        <div class="p5-card">
+          <h3>주문 102번</h3>
+          <div class="value">카페라떼 1잔</div>
+          <div class="p5-warn">● 대기 지연</div>
+        </div>
+        <div class="p5-card">
+          <h3>주문 103번</h3>
+          <div class="value">콜드브루 3잔</div>
+          <div class="p5-ok">● 준비중</div>
+        </div>
+        <div class="p5-card">
+          <h3>주문 104번</h3>
+          <div class="value">치즈케이크 2조각</div>
+          <div class="p5-ok">● 준비중</div>
+        </div>
+      </main>
+      <footer class="p5-footer">© Cafe Mocha</footer>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,90 @@
+<!doctype html>
+<!--
+  02_CSS_04_Flex_Grid 개념코드 — 섹션 15. grid-template-areas — 이름으로 레이아웃 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      CSS_04 Flex_Grid — 섹션 15. grid-template-areas — 이름으로 레이아웃
+    </title>
+
+    <style>
+      /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+      /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+      body {
+        font-family: "Malgun Gothic", sans-serif;
+        margin: 20px;
+      }
+      section {
+        border: 1px solid #ced4da;
+        padding: 16px;
+        margin-bottom: 28px;
+      }
+      h2 {
+        font-size: 17px;
+        margin: 0 0 12px;
+      }
+
+      /* ── 섹션 15: grid-template-areas — 이름으로 레이아웃 ── */
+      /* [기본] 컨테이너에서 영역 이름을 그리고, 아이템이 grid-area로 자리를 찾아감 */
+      .s15-container {
+        display: grid;
+        grid-template-areas:
+          "header header header"
+          "nav    main   aside"
+          "footer footer footer";
+        grid-template-columns: 100px 1fr 100px;
+        grid-template-rows: 50px 120px 50px;
+        gap: 6px;
+        background: #e9ecef;
+        border: 2px dashed #868e96;
+        padding: 8px;
+      }
+      .s15-container > div {
+        color: #fff;
+        text-align: center;
+        padding-top: 14px;
+      }
+      .s15-header {
+        grid-area: header;
+        background: #4dabf7;
+      }
+      .s15-nav {
+        grid-area: nav;
+        background: #69db7c;
+      }
+      .s15-main {
+        grid-area: main;
+        background: #f08c00;
+      }
+      .s15-aside {
+        grid-area: aside;
+        background: #b197fc;
+      }
+      .s15-footer {
+        grid-area: footer;
+        background: #868e96;
+      }
+      /* 실수: 각 행 문자열의 칸 수가 다르면("header header" / "nav main aside") 전체 무효 */
+      /* 표시: 홈페이지 뼈대(머리글/메뉴/본문/사이드/바닥글)가 한눈에 보임 */
+    </style>
+  </head>
+
+  <body>
+    <!-- ── 섹션 15: grid-template-areas — 이름으로 레이아웃 ── -->
+    <section>
+      <h2>섹션 15. grid-template-areas — 이름으로 레이아웃</h2>
+      <div class="s15-container">
+        <div class="s15-header">header</div>
+        <div class="s15-nav">nav</div>
+        <div class="s15-main">main</div>
+        <div class="s15-aside">aside</div>
+        <div class="s15-footer">footer</div>
+      </div>
+    </section>
+  </body>
+</html>

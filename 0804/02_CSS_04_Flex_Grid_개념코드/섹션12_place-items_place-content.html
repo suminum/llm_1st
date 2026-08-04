@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_04_Flex_Grid 개념코드 — 섹션 12. place-items / place-content — 그리드 정렬 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_04 Flex_Grid — 섹션 12. place-items / place-content — 그리드 정렬</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+    .item {                       /* 데모용 파란 박스 */
+      width: 60px; height: 60px;
+      background: #4dabf7; border: 2px solid #1971c2;
+      color: #fff; text-align: center; line-height: 56px;
+    }
+
+    /* 원본 섹션 9 정의 — 이 섹션 마크업이 함께 사용 */
+    .cell {                          /* 그리드 데모용 초록 셀 */
+      background: #69db7c; border: 2px solid #2f9e44;
+      color: #fff; text-align: center; line-height: 56px;
+    }
+
+    /* ── 섹션 12: place-items / place-content — 그리드 정렬 ── */
+    /* [기본] place-items: 각 셀 안에서 아이템 정렬 (align-items + justify-items) */
+    .s12-items {
+      display: grid;
+      grid-template-columns: repeat(3, 100px);
+      grid-template-rows: 80px;
+      place-items: center;           /* 셀 안 완전 중앙 */
+      background: #e9ecef; border: 2px dashed #868e96; padding: 8px;
+    }
+    /* [다른 방법] place-content: 트랙 묶음 전체를 컨테이너 안에서 정렬 */
+    .s12-content {
+      display: grid;
+      grid-template-columns: repeat(3, 60px);
+      grid-template-rows: 60px;
+      height: 140px;                 /* 컨테이너가 트랙보다 커야 효과가 보임 */
+      place-content: center;         /* 그리드 전체를 가운데로 */
+      background: #e9ecef; border: 2px dashed #868e96; padding: 8px;
+    }
+    /* 실수: place-items: flex-start;  // grid는 flex- 접두어 없이 start를 씀 */
+  </style>
+</head>
+
+<body>
+  <!-- ── 섹션 12: place-items / place-content — 그리드 정렬 ── -->
+  <section>
+    <h2>섹션 12. place-items / place-content</h2>
+    <p>place-items: center (셀 안 정렬)</p>
+    <div class="s12-items">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+    <p>place-content: center (그리드 전체 정렬)</p>
+    <div class="s12-content">
+      <div class="cell">1</div>
+      <div class="cell">2</div>
+      <div class="cell">3</div>
+    </div>
+  </section>
+</body>
+</html>

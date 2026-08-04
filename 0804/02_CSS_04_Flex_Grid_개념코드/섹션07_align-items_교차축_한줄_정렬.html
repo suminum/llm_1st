@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_04_Flex_Grid 개념코드 — 섹션 7. align-items — 교차 축 한 줄 정렬 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_04 Flex_Grid — 섹션 7. align-items — 교차 축 한 줄 정렬</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+    .item {                       /* 데모용 파란 박스 */
+      width: 60px; height: 60px;
+      background: #4dabf7; border: 2px solid #1971c2;
+      color: #fff; text-align: center; line-height: 56px;
+    }
+
+    /* ── 섹션 7: align-items — 교차 축 한 줄 정렬 ─────── */
+    /* [기본] stretch(기본): 아이템에 height가 없으면 교차 축으로 늘어남 */
+    .s7-base {
+      display: flex;
+      height: 120px;                 /* 교차 축 여유 공간 확보 */
+      background: #e9ecef; border: 2px dashed #868e96; padding: 8px;
+    }
+    .s7-stretch .item { height: auto; }        /* height를 풀어야 stretch가 보임 */
+    /* [다른 방법] flex-start / flex-end / center / baseline */
+    .s7-center { align-items: center; }        /* 세로 가운데 — 자주 씀! */
+    .s7-end    { align-items: flex-end; }
+    /* 실수: align-items: middle;  // 없는 값. 가운데는 center */
+    /* 표시: center는 세로 중앙, end는 바닥에 붙음 */
+  </style>
+</head>
+
+<body>
+  <!-- ── 섹션 7: align-items — 교차 축 한 줄 정렬 ── -->
+  <section>
+    <h2>섹션 7. align-items — 교차 축 한 줄 정렬</h2>
+    <p>stretch (기본값, 아이템 height 없음)</p>
+    <div class="s7-base s7-stretch">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+    <p>center</p>
+    <div class="s7-base s7-center">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+    <p>flex-end</p>
+    <div class="s7-base s7-end">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+  </section>
+</body>
+</html>

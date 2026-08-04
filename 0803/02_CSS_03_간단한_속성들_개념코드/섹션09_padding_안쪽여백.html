@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 개념코드 — 섹션 9. padding — 안쪽 여백 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — 섹션 9. padding — 안쪽 여백</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 섹션 9: padding — 안쪽 여백 ───────────────────── */
+    /* [기본] 단축 표기 규칙은 margin과 동일 */
+    .p-demo {
+      padding: 10px 30px;        /* 상하 10px / 좌우 30px */
+      background-color: lightcyan;
+    }
+    /* [다른 방법] padding-top / right / bottom / left 개별 지정 */
+    /* 표시: 글자와 배경 가장자리 사이가 벌어짐 (배경은 padding까지 칠해짐) */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 9. padding — 안쪽 여백</h2>
+
+  <!-- ── 섹션 9: padding ── -->
+  <section>
+    <div class="p-demo">padding: 10px 30px — 안쪽이 벌어짐</div>
+  </section>
+</body>
+</html>

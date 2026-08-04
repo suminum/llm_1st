@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 실습 정답코드 — 실습 1. 폰트 적용하기 (구글 / 눈누) (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — 실습 1. 폰트 적용하기 (구글 / 눈누)</title>
+
+  <!-- 실습 1 Step 2: 구글 폰트 — fonts.google.com 에서 받은 <link> (지우면 폴백 확인 가능) -->
+  <link href="https://fonts.googleapis.com/css2?family=Jua&display=swap" rel="stylesheet" />
+
+  <style>
+    /* 모든 상자를 border-box 기준으로 (이 PPT 실습 6에서 배우는 권장 설정) */
+    * { box-sizing: border-box; }
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 실습 1: 폰트 적용하기 (구글 / 눈누) ──────────── */
+    /* Step 1: 눈누 폰트 — noonnu.cc 에서 복사한 @font-face 코드로 등록 */
+    @font-face {
+      font-family: 'SUITE-Regular';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    /* Step 2: 첫 번째 p — 구글 폰트(Jua) 적용.
+       font-family 우선순위: 구글 -> 눈누 -> 글꼴 계열 순서로 나열 */
+    .font-google {
+      font-family: 'Jua', 'SUITE-Regular', sans-serif;
+      font-size: 22px;
+    }
+    /* Step 3: 두 번째 p — 눈누 폰트(SUITE) 적용 */
+    .font-noonnu {
+      font-family: 'SUITE-Regular', sans-serif;
+      font-size: 22px;
+    }
+    /* Step 4: head의 구글 폰트 <link>를 지우고 새로고침 -> 첫 p가 눈누 폰트로 폴백
+       Step 5: @font-face까지 지우면 -> 마지막 글꼴 계열(sans-serif)로 표시 */
+  </style>
+</head>
+
+<body>
+  <h2>실습 1. 폰트 적용하기 (구글 / 눈누)</h2>
+
+  <!-- ── 실습 1: 폰트 적용하기 ── -->
+  <section>
+    <p class="font-google">구글 폰트(Jua)가 적용된 문장입니다.</p>
+    <p class="font-noonnu">눈누 폰트(SUITE)가 적용된 문장입니다.</p>
+  </section>
+</body>
+</html>

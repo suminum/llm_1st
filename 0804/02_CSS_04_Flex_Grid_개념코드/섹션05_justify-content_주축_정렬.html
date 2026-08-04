@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_04_Flex_Grid 개념코드 — 섹션 5. justify-content — 주 축 정렬 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_04 Flex_Grid — 섹션 5. justify-content — 주 축 정렬</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+    .item {                       /* 데모용 파란 박스 */
+      width: 60px; height: 60px;
+      background: #4dabf7; border: 2px solid #1971c2;
+      color: #fff; text-align: center; line-height: 56px;
+    }
+
+    /* ── 섹션 5: justify-content — 주 축 정렬 ─────────── */
+    /* [기본] flex-start(기본) / flex-end / center */
+    .s5-base {
+      display: flex;
+      background: #e9ecef; border: 2px dashed #868e96; padding: 8px;
+    }
+    .s5-end    { justify-content: flex-end; }   /* 끝점으로 */
+    .s5-center { justify-content: center; }     /* 가운데로 */
+    /* 실수: justify-content: right;  // 동작은 하지만 표준은 flex-end 사용 */
+    /* 표시: 아이템 묶음이 왼쪽 / 오른쪽 / 가운데로 이동 */
+  </style>
+</head>
+
+<body>
+  <!-- ── 섹션 5: justify-content — 주 축 정렬 ── -->
+  <section>
+    <h2>섹션 5. justify-content — 주 축 정렬</h2>
+    <p>flex-start (기본값)</p>
+    <div class="s5-base">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+    <p>flex-end</p>
+    <div class="s5-base s5-end">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+    <p>center</p>
+    <div class="s5-base s5-center">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,54 @@
+<!doctype html>
+<!--
+  02_CSS_03_간단한_속성들 실습 정답코드 — 실습 6. 크기 비교하기 (box-sizing) (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CSS_03 간단한 속성들 — 실습 6. 크기 비교하기 (box-sizing)</title>
+
+    <style>
+      /* 모든 상자를 border-box 기준으로 (이 PPT 실습 6에서 배우는 권장 설정) */
+      * {
+        box-sizing: border-box;
+      }
+      /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+      section {
+        border-bottom: 1px dashed #ccc;
+        padding: 12px;
+      }
+
+      /* ── 실습 6: 크기 비교하기 (box-sizing) ───────────── */
+      /* 같은 속성의 div 두 개 — box-sizing만 다르게 주고 크기 비교 */
+      .size-box {
+        width: 100px;
+        height: 100px;
+        padding: 20px;
+        border: 15px solid red;
+        background-color: orange;
+        display: inline-block;
+        margin-right: 20px;
+        vertical-align: top;
+      }
+      /* Step 1: content-box(기본값) — 실제 폭 = 100 + 20*2 + 15*2 = 170px */
+      .size-content {
+        box-sizing: content-box;
+      }
+      /* Step 2: border-box — padding·border 포함 실제 폭 = 100px */
+      .size-border {
+        box-sizing: border-box;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>실습 6. 크기 비교하기 (box-sizing)</h2>
+
+    <!-- ── 실습 6: 크기 비교하기 (box-sizing) ── -->
+    <section>
+      <div class="size-box size-content">content-box</div>
+      <div class="size-box size-border">border-box</div>
+    </section>
+  </body>
+</html>

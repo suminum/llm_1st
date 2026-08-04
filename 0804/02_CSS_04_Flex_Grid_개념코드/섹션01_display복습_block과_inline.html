@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_04_Flex_Grid 개념코드 — 섹션 1. display 복습 — block과 inline (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_04 Flex_Grid — 섹션 1. display 복습 — block과 inline</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+
+    /* ── 섹션 1: display 복습 — block과 inline ────────── */
+    /* [기본] block: 한 줄 전체 차지 / inline: 내용 크기만큼 */
+    .s1-block  { display: block;  background: #ffd8a8; border: 1px solid #e8590c; }
+    .s1-inline { display: inline; background: #d0bfff; border: 1px solid #7048e8; }
+    /* 실수: .s1-inline { width: 200px; }  // inline은 width/height가 무시됨 */
+    /* 표시: block은 세로로 쌓이고, inline은 글자처럼 옆으로 이어짐 */
+  </style>
+</head>
+
+<body>
+  <!-- ── 섹션 1: display 복습 — block과 inline ── -->
+  <section>
+    <h2>섹션 1. display 복습 — block과 inline</h2>
+    <div class="s1-block">block 1</div>
+    <div class="s1-block">block 2</div>
+    <span class="s1-inline">inline 1</span>
+    <span class="s1-inline">inline 2</span>
+  </section>
+</body>
+</html>

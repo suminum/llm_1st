@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 실습 정답코드 — [추가 실습] 열람실 현황 카드 (PPT에 없음 — 빨리 끝낸 학생용 보너스) (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — [추가 실습] 열람실 현황 카드</title>
+
+  <style>
+    /* 모든 상자를 border-box 기준으로 (이 PPT 실습 6에서 배우는 권장 설정) */
+    * { box-sizing: border-box; }
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── [추가 실습] 열람실 현황 카드 (PPT에 없음 — 빨리 끝낸 학생용 보너스) ── */
+    /* 이번 시간에 배운 속성(폰트·박스·테두리·radius)을 종합해 카드를 만듭니다. */
+    .room-card {
+      width: 260px;
+      padding: 15px;
+      border: 1px solid #d0d7de;
+      border-radius: 12px;
+      margin: 10px;
+      display: inline-block;       /* 카드를 가로로 나란히 */
+      background-color: #f6f8fa;
+      font-family: "맑은 고딕", sans-serif;
+    }
+    .room-card h3 {
+      font-size: 18px;
+      font-weight: bold;
+      margin: 0 0 8px 0;           /* 아래쪽만 여백 */
+    }
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 10px;
+      color: white;
+      font-size: 13px;
+    }
+    .badge-open { background-color: seagreen; }   /* 개방중 */
+    .badge-full { background-color: crimson; }    /* 만석 */
+    .room-card .old-value {
+      color: gray;
+      text-decoration: line-through;   /* 이전 좌석 수 취소선 */
+    }
+    .room-card .new-value {
+      color: #1a73e8;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>[추가 실습] 열람실 현황 카드 (PPT에 없음 — 빨리 끝낸 학생용 보너스)</h2>
+
+  <!-- ── [추가 실습] 열람실 현황 카드 (PPT에 없음 — 빨리 끝낸 학생용 보너스) ── -->
+  <section>
+    <div class="room-card">
+      <h3>제1 열람실</h3>
+      <span class="badge badge-open">개방중</span>
+      <p>잔여 좌석: <span class="old-value">24석</span> <span class="new-value">12석</span></p>
+    </div>
+    <div class="room-card">
+      <h3>제2 열람실</h3>
+      <span class="badge badge-full">만석</span>
+      <p>잔여 좌석: <span class="old-value">6석</span> <span class="new-value">0석</span></p>
+    </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_04_Flex_Grid 실습 정답코드 — 실습 4. Flex Header 만들기 (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_04 Flex_Grid — 실습 4. Flex Header 만들기</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 32px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+
+    /* ── 실습 4: Flex Header 만들기 ───────────────────── */
+    .header {
+      display: flex;
+      align-items: center;             /* 로고/메뉴/버튼 높이 맞추기 */
+      background: #212529; color: #fff;
+      padding: 12px 24px; margin-bottom: 12px;
+    }
+    .logo { font-size: 20px; font-weight: bold; color: #4dabf7; }
+    .menu { display: flex; gap: 24px; list-style: none; margin: 0; padding: 0; }
+    .menu a { color: #dee2e6; text-decoration: none; }
+    .auth-btn {
+      background: #4dabf7; color: #fff; border: none;
+      padding: 8px 16px; border-radius: 4px;
+    }
+    /* Step 1: Header 1 — LOGO 왼쪽, MENU 3개 오른쪽 -> 두 덩어리 space-between */
+    .header1 { justify-content: space-between; }
+    /* Step 2: Header 2 — MENU 3개를 양 끝과 가운데로 균등 분배 -> space-between */
+    .header2 .menu {
+      width: 100%;                     /* 메뉴가 헤더 전체를 차지하게 */
+      justify-content: space-between;
+    }
+    /* Step 3: Header 3 — LOGO 왼쪽 · MENU 가운데 · LOGIN 오른쪽 (세 덩어리 분배) */
+    .header3 { justify-content: space-between; }
+    /* Step 4: Header 4 (선택) — LOGO+MENU 왼쪽 묶음, LOGIN·SIGNUP 오른쪽 묶음 */
+    .header4 { justify-content: space-between; }
+    .header-left, .header-right {
+      display: flex; align-items: center; gap: 24px;  /* flex 컨테이너 중첩 */
+    }
+  </style>
+</head>
+
+<body>
+  <!-- ── 실습 4: Flex Header 만들기 ── -->
+  <section>
+    <h2>실습 4. Flex Header 만들기</h2>
+    <!-- Header 1: LOGO 왼쪽, MENU 3개 오른쪽 -->
+    <header class="header header1">
+      <div class="logo">LOGO</div>
+      <ul class="menu">
+        <li><a href="#">MENU1</a></li>
+        <li><a href="#">MENU2</a></li>
+        <li><a href="#">MENU3</a></li>
+      </ul>
+    </header>
+    <!-- Header 2: MENU 3개를 양 끝과 가운데로 균등 분배 -->
+    <header class="header header2">
+      <ul class="menu">
+        <li><a href="#">MENU1</a></li>
+        <li><a href="#">MENU2</a></li>
+        <li><a href="#">MENU3</a></li>
+      </ul>
+    </header>
+    <!-- Header 3: LOGO 왼쪽 · MENU 가운데 · LOGIN 오른쪽 -->
+    <header class="header header3">
+      <div class="logo">LOGO</div>
+      <ul class="menu">
+        <li><a href="#">MENU1</a></li>
+        <li><a href="#">MENU2</a></li>
+        <li><a href="#">MENU3</a></li>
+      </ul>
+      <button class="auth-btn">LOGIN</button>
+    </header>
+    <!-- Header 4 (선택): LOGO+MENU 왼쪽 묶음, LOGIN·SIGNUP 오른쪽 묶음 -->
+    <header class="header header4">
+      <div class="header-left">
+        <div class="logo">LOGO</div>
+        <ul class="menu">
+          <li><a href="#">MENU1</a></li>
+          <li><a href="#">MENU2</a></li>
+          <li><a href="#">MENU3</a></li>
+        </ul>
+      </div>
+      <div class="header-right">
+        <button class="auth-btn">LOGIN</button>
+        <button class="auth-btn">SIGNUP</button>
+      </div>
+    </header>
+  </section>
+</body>
+</html>
