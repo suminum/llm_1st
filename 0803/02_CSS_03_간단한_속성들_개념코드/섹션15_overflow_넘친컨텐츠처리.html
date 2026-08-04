@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 개념코드 — 섹션 15. overflow — 넘친 컨텐츠 처리 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — 섹션 15. overflow — 넘친 컨텐츠 처리</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 섹션 15: overflow — 넘친 컨텐츠 처리 ──────────── */
+    /* [기본] visible(기본, 그대로 보임) / hidden(잘라냄) / scroll(항상 스크롤) / auto(넘칠 때만) */
+    .of-hidden {
+      width: 200px; height: 55px;
+      overflow: hidden;
+      background-color: mistyrose;
+    }
+    .of-auto {
+      width: 200px; height: 55px;
+      overflow: auto;
+      background-color: honeydew;
+    }
+    /* [다른 방법] overflow-x / overflow-y 로 가로·세로 각각 지정 */
+    /* [다른 방법] 한 줄 말줄임(...) 3종 세트 */
+    .ellipsis {
+      width: 200px;
+      white-space: nowrap;      /* 줄바꿈 금지 */
+      overflow: hidden;         /* 넘친 부분 숨김 */
+      text-overflow: ellipsis;  /* ... 표시 */
+      background-color: lavender;
+    }
+    /* 표시: 잘림 / 스크롤 / 말줄임(...) 세 가지 비교 */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 15. overflow — 넘친 컨텐츠 처리</h2>
+
+  <!-- ── 섹션 15: overflow ── -->
+  <section>
+    <div class="of-hidden">overflow: hidden — 넘친 내용은 잘려서 보이지 않습니다. 이 문장은 상자보다 깁니다.</div>
+    <div class="of-auto">overflow: auto — 넘치면 스크롤이 생깁니다. 이 문장은 상자보다 길어서 스크롤됩니다.</div>
+    <div class="ellipsis">말줄임 3종 세트: 이 긴 문장은 한 줄로 잘리고 ...이 붙습니다.</div>
+  </section>
+</body>
+</html>

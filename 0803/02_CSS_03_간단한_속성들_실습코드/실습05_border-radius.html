@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 실습 정답코드 — 실습 5. border-radius (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — 실습 5. border-radius</title>
+
+  <style>
+    /* 모든 상자를 border-box 기준으로 (이 PPT 실습 6에서 배우는 권장 설정) */
+    * { box-sizing: border-box; }
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 실습 5: border-radius ────────────────────────── */
+    /* 테두리 그리기에 이어서, 모든 방향(모서리)에 다른 라운드 값 적용 */
+    .radius-box {
+      display: inline-block;
+      width: 160px;
+      height: 100px;
+      margin: 8px;
+      border: 4px solid seagreen;
+      text-align: center;
+      line-height: 100px;
+      /* 좌상 / 우상 / 우하 / 좌하 순서로 각각 다르게 */
+      border-radius: 10px 40px 80px 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <h2>실습 5. border-radius</h2>
+
+  <!-- ── 실습 5: border-radius ── -->
+  <section>
+    <div class="radius-box">radius</div>
+  </section>
+</body>
+</html>

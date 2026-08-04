@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 개념코드 — 섹션 6. 박스 모델 — 4개 영역 구조 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — 섹션 6. 박스 모델 — 4개 영역 구조</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 섹션 6: 박스 모델 — 4개 영역 구조 ─────────────── */
+    /* [기본] 안에서 바깥으로: content -> padding -> border -> margin */
+    .box-model {
+      width: 220px;              /* content 크기 */
+      padding: 15px;             /* 내부 여백 (border와 content 사이) */
+      border: 5px solid navy;    /* 테두리 */
+      margin: 20px;              /* 외부 여백 (다른 요소와의 거리) */
+      background-color: lightyellow;
+    }
+    /* 표시: 노란 내용 주위로 여백 -> 남색 테두리 -> 바깥 여백 순서. F12로 박스 모델 확인! */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 6. 박스 모델 — 4개 영역 구조</h2>
+
+  <!-- ── 섹션 6: 박스 모델 4개 영역 ── -->
+  <section>
+    <div class="box-model">content -> padding -> border -> margin</div>
+  </section>
+</body>
+</html>

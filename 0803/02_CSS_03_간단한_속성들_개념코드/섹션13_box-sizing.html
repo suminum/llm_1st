@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 개념코드 — 섹션 13. box-sizing (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — 섹션 13. box-sizing</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 섹션 13: box-sizing ───────────────────────────── */
+    /* [기본] content-box(기본값): width = 컨텐츠만 -> padding·border가 밖으로 더해짐 */
+    .sizing-content {
+      box-sizing: content-box;
+      width: 150px; padding: 20px; border: 10px solid red;
+      background-color: orange;
+      /* 실제 가로 = 150 + 20*2 + 10*2 = 210px */
+    }
+    /* [기본] border-box(권장): width = padding + border 포함 전체 크기 */
+    .sizing-border {
+      box-sizing: border-box;
+      width: 150px; padding: 20px; border: 10px solid red;
+      background-color: orange;
+      /* 실제 가로 = 딱 150px (직관적!) */
+    }
+    /* [다른 방법] 모든 프로젝트에 * { box-sizing: border-box } 설정 권장 */
+    /* 표시: 같은 width인데 위 상자가 더 큼 -> 기준의 차이 */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 13. box-sizing</h2>
+
+  <!-- ── 섹션 13: box-sizing ── -->
+  <section>
+    <div class="sizing-content">content-box (실제 210px)</div>
+    <div class="sizing-border">border-box (딱 150px)</div>
+  </section>
+</body>
+</html>

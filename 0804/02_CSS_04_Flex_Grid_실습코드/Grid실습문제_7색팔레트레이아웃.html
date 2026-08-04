@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_04_Flex_Grid 실습 정답코드 — Grid 실습 문제: 7색 팔레트 레이아웃 (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_04 Flex_Grid — Grid 실습 문제: 7색 팔레트 레이아웃</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 32px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+
+    /* ── Grid 실습 문제: 7색 팔레트 레이아웃 ──────────── */
+    /* Step 1: 눈누 폰트 등록 (PPT 정답 코드와 동일) */
+    @font-face {
+      font-family: 'SUITE-Regular';
+      src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2304-2@1.0/SUITE-Regular.woff2') format('woff2');
+      font-weight: 400;
+      font-style: normal;
+    }
+    /* Step 2: 6열 x 4행 그리드 컨테이너 (화면 전체 높이) */
+    .container {
+      display: grid;
+      width: 100%;
+      height: 100vh;
+      grid-template-columns: repeat(6, 1fr);   /* 6열 균등 분할 */
+      grid-template-rows: 1fr 1fr 1fr 1fr;     /* 4행 균등 분할 */
+    }
+    /* Step 3: 아이템 공통 — 글씨 중앙 정렬은 flex 이용 */
+    .item {
+      font-family: 'SUITE-Regular';
+      font-size: 1.4rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    /* Step 4: span과 라인 번호로 각 아이템의 칸 수 지정 */
+    .item1 { background-color: #f94144; grid-column: auto / span 6; }  /* 1행 전체 */
+    .item2 { background-color: #f3722c; grid-row: 2 / 4; }             /* 세로 2칸 */
+    .item3 { background-color: #f9c74f; grid-column: 2 / 6; }          /* 가로 4칸 */
+    .item4 { background-color: #43aa8b; grid-row: auto / span 2; }     /* 세로 2칸(span) */
+    .item5 { background-color: #f8961e; grid-column: 2 / 4; }
+    .item6 { background-color: #90be6d; grid-column: 4 / 6; }
+    .item7 { background-color: #4444ff; grid-column: 1 / 7; }          /* 마지막 행 전체 */
+  </style>
+</head>
+
+<body>
+  <!-- ── Grid 실습 문제: 7색 팔레트 레이아웃 ── -->
+  <section>
+    <h2>Grid 실습 문제 — 7색 팔레트 레이아웃</h2>
+    <!-- Emmet: .container>.item.item$*7 -->
+    <div class="container">
+      <div class="item item1">#F94144</div>
+      <div class="item item2">#F3722C</div>
+      <div class="item item3">#F9C74F</div>
+      <div class="item item4">#43AA8B</div>
+      <div class="item item5">#F8961E</div>
+      <div class="item item6">#90BE6D</div>
+      <div class="item item7">#4444FF</div>
+    </div>
+  </section>
+</body>
+</html>

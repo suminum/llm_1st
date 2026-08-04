@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 개념코드 — 섹션 12. border 와 border-radius (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — 섹션 12. border 와 border-radius</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 섹션 12: border 와 border-radius ──────────────── */
+    /* [기본] 형식: border: 두께 종류 색상; */
+    .bd-solid  { border: 3px solid navy; }
+    .bd-dashed { border: 3px dashed crimson; }
+    .bd-dotted { border: 3px dotted green; }
+    /* [다른 방법] 방향별·속성별 분리 */
+    .bd-mix {
+      border-top: 5px solid red;
+      border-right: 5px dashed blue;
+      border-bottom-width: 10px;    /* 속성별로 더 잘게 분리도 가능 */
+      border-bottom-style: double;
+      border-bottom-color: green;
+      border-left: 5px dotted orange;
+    }
+    /* [기본] border-radius — 모서리 둥글게 (4방향 개별 지정 가능) */
+    .bd-radius {
+      border: 3px solid navy;
+      border-radius: 20px;
+    }
+    .bd-radius-each {
+      border: 3px solid navy;
+      border-radius: 0 10px 20px 40px;   /* 좌상 우상 우하 좌하 */
+    }
+    /* 실수: border: solid;  // 종류만 쓰면 색·두께는 기본값 -> 셋 다 적는 습관! */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 12. border 와 border-radius</h2>
+
+  <!-- ── 섹션 12: border 와 border-radius ── -->
+  <section>
+    <p class="bd-solid">solid</p>
+    <p class="bd-dashed">dashed</p>
+    <p class="bd-dotted">dotted</p>
+    <p class="bd-mix">4방향이 전부 다른 테두리</p>
+    <p class="bd-radius">border-radius: 20px</p>
+    <p class="bd-radius-each">4방향 다른 라운드</p>
+  </section>
+</body>
+</html>

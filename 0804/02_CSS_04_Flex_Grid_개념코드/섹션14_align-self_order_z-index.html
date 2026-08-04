@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_04_Flex_Grid 개념코드 — 섹션 14. 아이템 개별 속성 — align-self / order / z-index (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_04 Flex_Grid — 섹션 14. 아이템 개별 속성 — align-self / order / z-index</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+    .item {                       /* 데모용 파란 박스 */
+      width: 60px; height: 60px;
+      background: #4dabf7; border: 2px solid #1971c2;
+      color: #fff; text-align: center; line-height: 56px;
+    }
+
+    /* ── 섹션 14: 아이템 개별 속성 — align-self / order / z-index ── */
+    .s14-container {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 100px;
+      gap: 6px;
+      background: #e9ecef; border: 2px dashed #868e96; padding: 8px;
+    }
+    /* [기본] align-self: 이 아이템 하나만 세로 정렬 (justify-self는 가로) */
+    .s14-self  { align-self: end; height: 60px; }
+    /* [기본] order: 숫자가 작을수록 앞으로. HTML 순서는 그대로(접근성 주의) */
+    .s14-first { order: -1; background: #ff8787; border-color: #e03131; }
+    /* [기본] z-index: 겹칠 때 큰 값이 위. Grid 아이템은 position 없어도 적용됨 */
+    .s14-top   { z-index: 1; margin-left: -30px; background: #ffd43b; border-color: #f08c00; }
+    /* 표시: FIRST가 맨 앞, SELF는 바닥, TOP이 이웃 셀 위로 겹쳐 보임 */
+  </style>
+</head>
+
+<body>
+  <!-- ── 섹션 14: 아이템 개별 속성 — align-self / order / z-index ── -->
+  <section>
+    <h2>섹션 14. align-self / order / z-index</h2>
+    <div class="s14-container">
+      <div class="item">1</div>
+      <div class="item s14-self">SELF</div>
+      <div class="item s14-first">FIRST</div>
+      <div class="item s14-top">TOP</div>
+    </div>
+  </section>
+</body>
+</html>

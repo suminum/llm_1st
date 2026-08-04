@@ -1,0 +1,60 @@
+<!doctype html>
+<!--
+  02_CSS_03_간단한_속성들 실습 정답코드 — 실습 7. 요소 사라지게 하기 (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CSS_03 간단한 속성들 — 실습 7. 요소 사라지게 하기</title>
+
+    <style>
+      /* 모든 상자를 border-box 기준으로 (이 PPT 실습 6에서 배우는 권장 설정) */
+      * {
+        box-sizing: border-box;
+      }
+      /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+      section {
+        border-bottom: 1px dashed #ccc;
+        padding: 12px;
+      }
+
+      /* ── 실습 7: 요소 사라지게 하기 ───────────────────── */
+      /* Step 1: 200x200 파란 div 3개 */
+      .hide-box {
+        width: 200px;
+        height: 200px;
+        background-color: blue;
+        color: white;
+        display: inline-block;
+        margin-right: 12px;
+        text-align: center;
+        line-height: 200px;
+        vertical-align: top;
+      }
+      /* Step 2: opacity — 모습만 숨김 (자리 차지, 이벤트 남음 -> 계속 투명 유지) */
+      .hide-opacity:hover {
+        opacity: 0;
+      }
+      /* Step 3: visibility — 모습·속성 숨김 (자리는 차지, hover가 풀려 다시 나타남) */
+      .hide-visibility:hover {
+        visibility: hidden;
+      }
+      /* Step 4: display — 자리까지 사라짐 (사라지는 순간 hover도 풀려 깜빡임) */
+      .hide-display:hover {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h2>실습 7. 요소 사라지게 하기</h2>
+
+    <!-- ── 실습 7: 요소 사라지게 하기 ── -->
+    <section>
+      <div class="hide-box hide-opacity">opacity</div>
+      <div class="hide-box hide-display">display</div>
+      <div class="hide-box hide-visibility">visibility</div>
+    </section>
+  </body>
+</html>

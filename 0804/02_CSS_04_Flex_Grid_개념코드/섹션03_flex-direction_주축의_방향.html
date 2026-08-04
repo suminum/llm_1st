@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_04_Flex_Grid 개념코드 — 섹션 3. flex-direction — 주 축의 방향 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_04 Flex_Grid — 섹션 3. flex-direction — 주 축의 방향</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+    .item {                       /* 데모용 파란 박스 */
+      width: 60px; height: 60px;
+      background: #4dabf7; border: 2px solid #1971c2;
+      color: #fff; text-align: center; line-height: 56px;
+    }
+
+    /* ── 섹션 3: flex-direction — 주 축의 방향 ────────── */
+    /* [기본] row(기본값): 좌 -> 우 */
+    .s3-row {
+      display: flex;
+      flex-direction: row;
+      background: #e9ecef; border: 2px dashed #868e96; padding: 8px;
+    }
+    /* [다른 방법] column: 위 -> 아래, row-reverse / column-reverse: 반대 방향 */
+    .s3-column {
+      display: flex;
+      flex-direction: column;
+      background: #e9ecef; border: 2px dashed #868e96; padding: 8px;
+    }
+    .s3-row-reverse {
+      display: flex;
+      flex-direction: row-reverse;   /* 우 -> 좌 (1,2,3이 오른쪽부터) */
+      background: #e9ecef; border: 2px dashed #868e96; padding: 8px;
+    }
+    /* 실수: flex-direction: col;  // 없는 값. column을 끝까지 써야 함 */
+  </style>
+</head>
+
+<body>
+  <!-- ── 섹션 3: flex-direction — 주 축의 방향 ── -->
+  <section>
+    <h2>섹션 3. flex-direction — 주 축의 방향</h2>
+    <p>row (기본값)</p>
+    <div class="s3-row">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+    <p>column</p>
+    <div class="s3-column">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+    <p>row-reverse</p>
+    <div class="s3-row-reverse">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+  </section>
+</body>
+</html>

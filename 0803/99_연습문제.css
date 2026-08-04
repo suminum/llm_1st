@@ -1,0 +1,165 @@
+/* ── 기본 제공 스타일 (문제 아님 — 수정 금지) ── */
+body {
+  font-family: "맑은 고딕", "Malgun Gothic", sans-serif;
+  margin: 20px;
+}
+section {
+  border-bottom: 1px dashed #ccc;
+  padding: 16px 8px;
+}
+h2 {
+  font-size: 17px;
+  color: #333;
+}
+.hint-text {
+  color: #888;
+  font-size: 13px;
+}
+.inner-box {
+  border: 1px solid #bbb;
+  padding: 6px;
+  margin: 6px 0;
+}
+
+/* ═══ 문제 1 ═══ */
+/* 미리 선언된 규칙입니다. 수정·삭제 금지! (문제 1-2에서 덮어씁니다) */
+.notice {
+  background-color: gold;
+  padding: 8px;
+}
+
+/* 문제 1: 여기에 작성 */
+
+h1 {
+  color: #1a3a6e;
+  text-align: center;
+}
+
+.notice {
+  background-color: lightblue;
+}
+
+/* ═══ 문제 2 ═══ */
+/* 문제 2: 여기에 작성 */
+
+.ok {
+  background-color: seagreen;
+  color: white;
+}
+.warn {
+  background-color: gold;
+}
+#critical {
+  background-color: crimson;
+  color: white;
+  font-weight: bold;
+}
+
+/* ═══ 문제 3 ═══ */
+/* 문제 3: 여기에 작성 */
+
+.zone-a > p {
+  color: crimson;
+}
+
+.zone-b p {
+  color: darkorange;
+}
+
+li.urgent {
+  color: firebrick;
+  font-weight: bold;
+}
+/* ═══ 문제 4 ═══ */
+/* 문제 4: 여기에 작성 */
+.now {
+  font-weight: bold;
+}
+/* 인접 형제 +: 바로 다음 형제 "하나만" */
+.now + li {
+  background-color: skyblue;
+}
+
+/* 일반 형제 ~: 뒤에 오는 형제 "전부" */
+.now ~ li {
+  text-decoration: underline;
+}
+
+/* ═══ 문제 5 ═══ */
+/* 문제 5: 여기에 작성 */
+
+.visitor-log li:nth-child(even) {
+  background-color: #eee;
+}
+
+.visitor-log li:first-child {
+  font-weight: bold;
+}
+.visitor-log li:last-child {
+  color: red;
+}
+
+.task-list li:not(.done) {
+  color: green;
+}
+
+/* ═══ 문제 6 ═══ */
+/* 문제 6: 여기에 작성 */
+
+.alarm::before {
+  content: "▲ 경고 ";
+  color: red;
+}
+
+.fyi::after {
+  content: " (신규)";
+  color: blue;
+}
+
+input[disabled] {
+  background-color: lightcoral;
+}
+
+input[placeholder="도서 번호"] {
+  background-color: lightyellow;
+}
+
+/* ═══ 문제 7 ═══ */
+/* 문제 7: 여기에 작성 */
+
+.search-btn:hover {
+  background-color: gold;
+}
+
+.search-btn:active {
+  background-color: crimson;
+  color: white;
+}
+.search-input:focus {
+  background-color: lightyellow;
+}
+/* ═══ 문제 8 [도전] — 5일차 진도(박스모델) 이후 풀기 ═══ */
+/* 문제 8: 여기에 작성 */
+.book-card {
+  display: inline-block;
+  width: 240px;
+  border: 2px solid #1971c2;
+  border-radius: 12px;
+  padding: 12px;
+  margin: 8px;
+}
+.card-title {
+  height: 36px;
+  line-height: 36px;
+  background-color: #e7f1ff;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 8px;
+}
+
+.card-desc {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

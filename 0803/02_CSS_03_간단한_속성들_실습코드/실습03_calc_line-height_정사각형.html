@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 실습 정답코드 — 실습 3. calc & line-height — 정사각형 (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — 실습 3. calc &amp; line-height — 정사각형</title>
+
+  <style>
+    /* 모든 상자를 border-box 기준으로 (이 PPT 실습 6에서 배우는 권장 설정) */
+    * { box-sizing: border-box; }
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 실습 3: calc & line-height — 정사각형 ────────── */
+    /* Step 1: 화면 넓이의 1/10 = 10vw 를 변으로 하는 정사각형 */
+    .sesac-square {
+      width: calc(100vw / 10);     /* = 10vw */
+      height: calc(100vw / 10);    /* 가로와 같게 -> 정사각형 */
+      background-color: mediumseagreen;
+    }
+    /* Step 2: 안의 글자 세로 중앙 — line-height를 height와 같게 */
+    .sesac-square {
+      color: white;
+      text-align: center;              /* 가로 중앙 */
+      line-height: calc(100vw / 10);   /* 세로 중앙 */
+    }
+  </style>
+</head>
+
+<body>
+  <h2>실습 3. calc &amp; line-height — 정사각형</h2>
+
+  <!-- ── 실습 3: calc & line-height — 정사각형 ── -->
+  <section>
+    <div class="sesac-square">SeSAC</div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_04_Flex_Grid 개념코드 — 섹션 9. display: grid — 행과 열 정의 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_04 Flex_Grid — 섹션 9. display: grid — 행과 열 정의</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+
+    /* ── 섹션 9: display: grid — 행과 열 정의 ────────── */
+    /* [기본] 컨테이너에 grid 선언 + 열/행 크기 정의 (fr: 남은 공간 비율) */
+    .s9-container {
+      display: grid;
+      grid-template-columns: 1fr 2fr 1fr;   /* 열 3개, 1:2:1 비율 */
+      grid-template-rows: 60px 60px;        /* 행 2개, 고정 높이 */
+      background: #e9ecef; border: 2px dashed #868e96; padding: 8px;
+    }
+    .cell {                          /* 그리드 데모용 초록 셀 */
+      background: #69db7c; border: 2px solid #2f9e44;
+      color: #fff; text-align: center; line-height: 56px;
+    }
+    /* 실수: display: grid를 빼먹으면 grid-template-columns가 전혀 동작하지 않음 */
+    /* 표시: 6개의 셀이 3열 x 2행으로 배치, 가운데 열이 2배 넓음 */
+  </style>
+</head>
+
+<body>
+  <!-- ── 섹션 9: display: grid — 행과 열 정의 ── -->
+  <section>
+    <h2>섹션 9. display: grid — 행과 열 정의</h2>
+    <div class="s9-container">
+      <div class="cell">1</div>
+      <div class="cell">2</div>
+      <div class="cell">3</div>
+      <div class="cell">4</div>
+      <div class="cell">5</div>
+      <div class="cell">6</div>
+    </div>
+  </section>
+</body>
+</html>

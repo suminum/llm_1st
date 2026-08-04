@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 개념코드 — 섹션 5. 문자 속성 — color / text-align / text-decoration (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — 섹션 5. 문자 속성 — color / text-align / text-decoration</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 보기 편하게 섹션마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 섹션 5: 문자 속성 — color / text-align / text-decoration ── */
+    /* [기본] color: 키워드, HEX, RGB, HSL 모두 가능 */
+    .c-keyword { color: tomato; }
+    .c-hex     { color: #1a73e8; }
+    .c-rgb     { color: rgb(0, 128, 0); }
+    /* [기본] text-align: 가로 정렬 (left / center / right / justify) */
+    .ta-center { text-align: center; }
+    /* [기본] text-decoration: 밑줄·취소선 등 장식 */
+    .td-under  { text-decoration: underline; }
+    .td-line   { text-decoration: line-through; }
+    .td-none   { text-decoration: none; }   /* a 태그 밑줄 제거에 자주 사용 */
+    /* 실수: text-align: middle;  // middle은 없음, 가운데는 center! */
+  </style>
+</head>
+
+<body>
+  <h2>섹션 5. 문자 속성 — color / text-align / text-decoration</h2>
+
+  <!-- ── 섹션 5: color / text-align / text-decoration ── -->
+  <section>
+    <p class="c-keyword">키워드 tomato</p>
+    <p class="c-hex">HEX #1a73e8</p>
+    <p class="c-rgb">rgb(0, 128, 0)</p>
+    <p class="ta-center">text-align: center — 가운데 정렬</p>
+    <p class="td-under">밑줄</p>
+    <p class="td-line">취소선</p>
+  </section>
+</body>
+</html>

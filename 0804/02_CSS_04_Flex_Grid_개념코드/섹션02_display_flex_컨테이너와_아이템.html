@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_04_Flex_Grid 개념코드 — 섹션 2. display: flex — 컨테이너와 아이템 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_04 Flex_Grid — 섹션 2. display: flex — 컨테이너와 아이템</title>
+
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+    .item {                       /* 데모용 파란 박스 */
+      width: 60px; height: 60px;
+      background: #4dabf7; border: 2px solid #1971c2;
+      color: #fff; text-align: center; line-height: 56px;
+    }
+
+    /* ── 섹션 2: display: flex — 컨테이너와 아이템 ────── */
+    /* [기본] 부모(컨테이너)에 flex를 선언하면 자식(아이템)이 가로로 배치됨 */
+    .s2-container {
+      display: flex;
+      background: #e9ecef; border: 2px dashed #868e96; padding: 8px;
+    }
+    /* 실수: .item { display: flex; }  // 정렬은 아이템이 아니라 "부모"에 선언 */
+    /* 표시: block이던 div 3개가 가로 한 줄로 나란히 배치됨 */
+  </style>
+</head>
+
+<body>
+  <!-- ── 섹션 2: display: flex — 컨테이너와 아이템 ── -->
+  <section>
+    <h2>섹션 2. display: flex — 컨테이너와 아이템</h2>
+    <div class="s2-container">
+      <div class="item">1</div>
+      <div class="item">2</div>
+      <div class="item">3</div>
+    </div>
+  </section>
+</body>
+</html>

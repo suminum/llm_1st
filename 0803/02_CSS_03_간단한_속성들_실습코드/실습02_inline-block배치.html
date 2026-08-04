@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_03_간단한_속성들 실습 정답코드 — 실습 2. 아래 그림처럼 만들기 (inline-block 배치) (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_03 간단한 속성들 — 실습 2. 아래 그림처럼 만들기 (inline-block 배치)</title>
+
+  <style>
+    /* 모든 상자를 border-box 기준으로 (이 PPT 실습 6에서 배우는 권장 설정) */
+    * { box-sizing: border-box; }
+    /* 보기 편하게 실습마다 구분선 (수업 내용 아님) */
+    section { border-bottom: 1px dashed #ccc; padding: 12px; }
+
+    /* ── 실습 2: 아래 그림처럼 만들기 (inline-block 배치) ── */
+    /* Step 1: 오렌지 바깥 상자 — width는 auto(가로 전체), height 200px */
+    .orange-wrap {
+      width: auto;
+      height: 200px;
+      background-color: orange;
+      padding: 30px;               /* 안쪽 요소와의 간격 30px */
+    }
+    /* Step 2: 안의 요소 — 200px x 100px, inline-block으로 가로 나열 */
+    .orange-wrap .item {
+      display: inline-block;       /* span은 원래 inline -> 크기 적용 위해 변경 */
+      width: 200px;
+      height: 100px;
+      background-color: white;
+      margin-right: 30px;          /* 요소 간 간격 30px */
+      text-align: center;
+      line-height: 100px;          /* height와 같게 -> 세로 중앙 */
+    }
+  </style>
+</head>
+
+<body>
+  <h2>실습 2. 아래 그림처럼 만들기 (inline-block 배치)</h2>
+
+  <!-- ── 실습 2: 아래 그림처럼 만들기 (inline-block 배치) ── -->
+  <section>
+    <div class="orange-wrap">
+      <span class="item">1</span>
+      <span class="item">2</span>
+      <span class="item">3</span>
+    </div>
+  </section>
+</body>
+</html>
