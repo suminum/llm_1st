@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <!--
   ═══════════════════════════════════════════════════════════════
   99_연습문제 — 6일차 (Position · Background · 반응형 · CSS 변수)
@@ -18,111 +18,146 @@
   * 다 풀면 99_연습문제_정답.html과 비교해 보세요.
 -->
 <html lang="ko">
-<head>
-  <meta charset="UTF-8" />
-  <!-- 반응형의 시작: viewport 태그 — 02_CSS_07_반응형_개념코드 폴더의 섹션01 파일(viewport meta 태그) -->
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>6일차 연습문제 — Position · Background · 반응형</title>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- 반응형의 시작: viewport 태그 — 02_CSS_07_반응형_개념코드 폴더의 섹션01 파일(viewport meta 태그) -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>6일차 연습문제 — Position · Background · 반응형</title>
 
-  <style>
-    /* ── 기본 제공 스타일 (문제 아님 — 수정 금지) ── */
-    body { font-family: "맑은 고딕", "Malgun Gothic", sans-serif; margin: 20px; }
-    section { border-bottom: 1px dashed #ccc; padding: 16px 8px; }
-    h2 { font-size: 17px; color: #333; }
-    .hint-text { color: #888; font-size: 13px; }
+    <style>
+      /* ── 기본 제공 스타일 (문제 아님 — 수정 금지) ── */
+      body {
+        font-family: "맑은 고딕", "Malgun Gothic", sans-serif;
+        margin: 20px;
+      }
+      section {
+        border-bottom: 1px dashed #ccc;
+        padding: 16px 8px;
+      }
+      h2 {
+        font-size: 17px;
+        color: #333;
+      }
+      .hint-text {
+        color: #888;
+        font-size: 13px;
+      }
 
-    /* 문제 1 제공: 여행 스티커 모양 */
-    .sticker {
-      display: inline-block;
-      background-color: khaki; border: 1px solid #b0a24a;
-      padding: 4px 10px; border-radius: 6px;
-    }
-    /* 문제 2 제공: 여행지 카드와 배지 모양 */
-    .place-card {
-      width: 240px; border: 2px solid #1971c2; border-radius: 10px;
-      padding: 12px; background-color: #f8fbff;
-    }
-    .place-card h3 { font-size: 16px; margin: 4px 0; }
-    .badge {
-      display: inline-block;
-      background-color: seagreen; color: white;
-      padding: 3px 10px; border-radius: 10px; font-size: 13px;
-    }
-    /* 문제 3 제공: 맨 위로 버튼 모양 */
-    .top-btn {
-      width: 130px; height: 44px;
-      background-color: #c92a2a; color: white; font-weight: bold;
-      text-align: center; line-height: 44px; border-radius: 22px;
-    }
-    /* 문제 4 제공: 스크롤 여행 기록 상자 */
-    .log-box {
-      height: 150px; overflow: auto;
-      border: 2px dashed #868e96; padding: 0 8px;
-    }
-    .log-head {
-      background-color: #69db7c; color: white;
-      padding: 4px 8px; font-weight: bold;
-    }
-    /* 문제 5 제공: 배너 글자 / 아이콘 상자와 배경 이미지 */
-    .banner { color: white; font-weight: bold; padding: 14px; }
-    .icon-box {
-      height: 120px; margin-top: 8px;
-      border: 1px solid #adb5bd;
-      background-color: #e7f5ff;
-      /* 배경 이미지는 미리 제공 — 문제 5-2는 이 규칙 안에 이어서 작성 */
-      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><circle cx='30' cy='30' r='20' fill='%23f08c00'/><circle cx='30' cy='30' r='8' fill='%23fff3bf'/></svg>");
-      /* 문제 5-2: 여기에 작성 (이 중괄호 안에!) */
+      /* 문제 1 제공: 여행 스티커 모양 */
+      .sticker {
+        display: inline-block;
+        background-color: khaki;
+        border: 1px solid #b0a24a;
+        padding: 4px 10px;
+        border-radius: 6px;
+      }
+      /* 문제 2 제공: 여행지 카드와 배지 모양 */
+      .place-card {
+        width: 240px;
+        border: 2px solid #1971c2;
+        border-radius: 10px;
+        padding: 12px;
+        background-color: #f8fbff;
+      }
+      .place-card h3 {
+        font-size: 16px;
+        margin: 4px 0;
+      }
+      .badge {
+        display: inline-block;
+        background-color: seagreen;
+        color: white;
+        padding: 3px 10px;
+        border-radius: 10px;
+        font-size: 13px;
+      }
+      /* 문제 3 제공: 맨 위로 버튼 모양 */
+      .top-btn {
+        width: 130px;
+        height: 44px;
+        background-color: #c92a2a;
+        color: white;
+        font-weight: bold;
+        text-align: center;
+        line-height: 44px;
+        border-radius: 22px;
+      }
+      /* 문제 4 제공: 스크롤 여행 기록 상자 */
+      .log-box {
+        height: 150px;
+        overflow: auto;
+        border: 2px dashed #868e96;
+        padding: 0 8px;
+      }
+      .log-head {
+        background-color: #69db7c;
+        color: white;
+        padding: 4px 8px;
+        font-weight: bold;
+      }
+      /* 문제 5 제공: 배너 글자 / 아이콘 상자와 배경 이미지 */
+      .banner {
+        color: white;
+        font-weight: bold;
+        padding: 14px;
+      }
+      .icon-box {
+        height: 120px;
+        margin-top: 8px;
+        background-repeat: no-repeat;
+        background-position: center;
+        /* align-items: center; */
+        border: 1px solid #adb5bd;
+        background-size: contian;
+        background-color: #e7f5ff;
+        /* 배경 이미지는 미리 제공 — 문제 5-2는 이 규칙 안에 이어서 작성 */
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><circle cx='30' cy='30' r='20' fill='%23f08c00'/><circle cx='30' cy='30' r='8' fill='%23fff3bf'/></svg>");
+        /* 문제 5-2: 여기에 작성 (이 중괄호 안에!) */
+      }
+      /* 문제 6 제공: 여행지 카드 모양 */
+      .trip-card {
+        background-color: #4dabf7;
+        color: white;
+        border: 2px solid #1971c2;
+        border-radius: 8px;
+        padding: 12px;
+      }
+      /* 문제 7 제공: 패널 골격과 테마 구역 */
+      .light,
+      .dark {
+        padding: 10px;
+        margin: 6px 0;
+        border: 1px solid #ccc;
+      }
+      .status-panel {
+        padding: 16px;
+      }
+      .panel-title {
+        margin: 0 0 6px;
+      }
 
-    }
-    /* 문제 6 제공: 여행지 카드 모양 */
-    .trip-card {
-      background-color: #4dabf7; color: white;
-      border: 2px solid #1971c2; border-radius: 8px; padding: 12px;
-    }
-    /* 문제 7 제공: 패널 골격과 테마 구역 */
-    .light, .dark { padding: 10px; margin: 6px 0; border: 1px solid #ccc; }
-    .status-panel { padding: 16px; }
-    .panel-title { margin: 0 0 6px; }
+      /* ═══ 문제 1 ═══ */
+      /* 문제 1: 여기에 작성 */
 
-    /* ═══ 문제 1 ═══ */
-    /* 문제 1: 여기에 작성 */
+      /* ═══ 문제 2 ═══ */
+      /* 문제 2: 여기에 작성 */
 
+      /* ═══ 문제 3 ═══ */
+      /* 문제 3: 여기에 작성 */
 
+      /* ═══ 문제 4 ═══ */
+      /* 문제 4: 여기에 작성 */
 
-    /* ═══ 문제 2 ═══ */
-    /* 문제 2: 여기에 작성 */
+      /* ═══ 문제 5 ═══ */
+      /* 문제 5-1: 여기에 작성 (5-2는 위 .icon-box 규칙 안에!) */
 
+      /* ═══ 문제 6 ═══ */
+      /* 문제 6: 여기에 작성 */
 
-
-    /* ═══ 문제 3 ═══ */
-    /* 문제 3: 여기에 작성 */
-
-
-
-    /* ═══ 문제 4 ═══ */
-    /* 문제 4: 여기에 작성 */
-
-
-
-    /* ═══ 문제 5 ═══ */
-    /* 문제 5-1: 여기에 작성 (5-2는 위 .icon-box 규칙 안에!) */
-
-
-
-    /* ═══ 문제 6 ═══ */
-    /* 문제 6: 여기에 작성 */
-
-
-
-    /* ═══ 문제 7 [도전] ═══ */
-    /* 문제 7: 여기에 작성 */
-
-
-
-  </style>
-</head>
-<body>
-  <h1>여행 블로그 화면 연습</h1>
+      /* ═══ 문제 7 [도전] ═══ */
+      /* 문제 7: 여기에 작성 */
+    </style>
+  </head>
 
   <!-- ═══ 문제 1 ═══════════════════════════════════════════
     [요구사항]
@@ -135,83 +170,78 @@
     02_CSS_05_Position_Background_개념코드 폴더의 섹션02 파일(relative)
     위로 올리려면 top에 음수(-8px)를 줍니다.
   -->
-  <section>
-    <h2>문제 1. relative — 삐뚤게 붙은 여행 스티커</h2>
-    <span class="sticker">제주</span>
-    <span class="sticker sticker-move">부산</span>
-    <span class="sticker">강릉</span>
-  </section>
+  <style>
+    .sticker-move {
+      position: relative;
+      top: 8px;
+      right: 12px;
+    }
+    .place-card {
+      position: relative;
+    }
+    .badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    .top-btn {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 10;
+    }
+    .log-head {
+      position: sticky;
+      top: 0;
+    }
+  </style>
+  <body>
+    <h1>여행 블로그 화면 연습</h1>
+    <section>
+      <h2>문제 1. relative — 삐뚤게 붙은 여행 스티커</h2>
+      <span class="sticker">제주</span>
+      <span class="sticker sticker-move">부산</span>
+      <span class="sticker">강릉</span>
+    </section>
+    <section>
+      <h2>문제 2. absolute — 카드 우상단 인기 배지</h2>
+      <div class="place-card">
+        <div class="badge">인기</div>
+        <h3>제주도</h3>
+        <p>성산 일출봉 · 3박 4일</p>
+      </div>
+    </section>
+    <section>
+      <h2>문제 3. fixed — 화면에 떠 있는 맨 위로 버튼</h2>
+      <div class="top-btn">맨 위로</div>
+      <p class="hint-text">
+        확인: 스크롤해도 버튼이 우하단에 그대로 있으면 성공!
+      </p>
+    </section>
 
-  <!-- ═══ 문제 2 ═══════════════════════════════════════════
-    [요구사항]
-    1) .place-card 를 배지의 "기준점"으로 만드세요. (position: relative)
-    2) .badge 를 카드의 우상단 모서리(위 10px, 오른쪽 10px)에 붙이세요.
-       (position: absolute + top/right)
-    [완성 모습]
-    "인기" 초록 배지가 글 흐름에서 빠져나와
-    카드 오른쪽 위 구석에 딱 붙어 보입니다.
-    [힌트]
-    02_CSS_05_Position_Background_개념코드 폴더의 섹션03 파일(absolute)
-    실수 주의: 부모에 relative가 없으면 배지가 화면(뷰포트) 기준으로
-    엉뚱한 곳에 붙어 버립니다. "부모 relative + 자식 absolute"는 단골 패턴!
+    <!-- ═══ 문제 4 ═══════════════════════════════════════════
+    
   -->
-  <section>
-    <h2>문제 2. absolute — 카드 우상단 인기 배지</h2>
-    <div class="place-card">
-      <div class="badge">인기</div>
-      <h3>제주도</h3>
-      <p>성산 일출봉 · 3박 4일</p>
-    </div>
-  </section>
 
-  <!-- ═══ 문제 3 ═══════════════════════════════════════════
-    [요구사항]
-    .top-btn (맨 위로 버튼)을
-    1) 브라우저 화면 우하단(오른쪽 20px, 아래 20px)에 고정하고
-    2) 다른 요소에 가려지지 않게 z-index: 10 을 주세요.
-    [완성 모습]
-    페이지를 아래로 스크롤해도 빨간 알약 버튼이
-    항상 화면 오른쪽 아래에 떠 있습니다.
-    [힌트]
-    02_CSS_05_Position_Background_개념코드 폴더의 섹션04 파일(fixed), 섹션07 파일(z-index)
-    fixed는 "뷰포트(브라우저 창)" 기준 — 스크롤을 따라다닙니다.
-  -->
-  <section>
-    <h2>문제 3. fixed — 화면에 떠 있는 맨 위로 버튼</h2>
-    <div class="top-btn">맨 위로</div>
-    <p class="hint-text">확인: 스크롤해도 버튼이 우하단에 그대로 있으면 성공!</p>
-  </section>
+    <section>
+      <h2>문제 4. sticky — 일차별 기록 제목 고정</h2>
+      <div class="log-box">
+        <div class="log-head">1일차 기록</div>
+        <p>09:00 공항 도착</p>
+        <p>09:05 렌터카 수령</p>
+        <p>09:12 해안도로 드라이브</p>
+        <p>09:20 성산 일출봉 도착</p>
+        <p>09:31 전망대에서 사진 촬영</p>
+        <div class="log-head">2일차 기록</div>
+        <p>09:02 숙소에서 아침 식사</p>
+        <p>09:08 우도 배편 탑승</p>
+        <p>09:15 자전거 대여</p>
+        <p>09:27 등대 앞 기념 촬영</p>
+        <p>09:40 해변 산책</p>
+      </div>
+    </section>
 
-  <!-- ═══ 문제 4 ═══════════════════════════════════════════
-    [요구사항]
-    .log-head (일차 제목 띠)가 기록 상자를 스크롤할 때
-    상자 위쪽(top: 0)에 닿으면 붙어 있게 만드세요. (position: sticky)
-    [완성 모습]
-    기록을 아래로 스크롤하면 "1일차 기록" 제목이 위에 붙어 따라오다가,
-    "2일차 기록"이 올라오면 자연스럽게 교대합니다.
-    [힌트]
-    02_CSS_05_Position_Background_개념코드 폴더의 섹션05 파일(sticky)
-    실수 주의: top 값을 안 주면 sticky는 동작하지 않습니다(임계점이 없어서).
-  -->
-  <section>
-    <h2>문제 4. sticky — 일차별 기록 제목 고정</h2>
-    <div class="log-box">
-      <div class="log-head">1일차 기록</div>
-      <p>09:00 공항 도착</p>
-      <p>09:05 렌터카 수령</p>
-      <p>09:12 해안도로 드라이브</p>
-      <p>09:20 성산 일출봉 도착</p>
-      <p>09:31 전망대에서 사진 촬영</p>
-      <div class="log-head">2일차 기록</div>
-      <p>09:02 숙소에서 아침 식사</p>
-      <p>09:08 우도 배편 탑승</p>
-      <p>09:15 자전거 대여</p>
-      <p>09:27 등대 앞 기념 촬영</p>
-      <p>09:40 해변 산책</p>
-    </div>
-  </section>
-
-  <!-- ═══ 문제 5 ═══════════════════════════════════════════
+    <!-- ═══ 문제 5 ═══════════════════════════════════════════
     [요구사항]
     1) .banner : 왼쪽 -> 오른쪽(90deg)으로 #1971c2 에서 #4dabf7 로
        변하는 그라데이션 배경을 까세요. (linear-gradient)
@@ -227,37 +257,41 @@
     02_CSS_05_Position_Background_개념코드 폴더의 섹션10 파일(linear-gradient),
     섹션11 파일(background-repeat), 섹션12 파일(position), 섹션14 파일(size)
   -->
-  <section>
-    <h2>문제 5. background — 여행 배너와 아이콘 상자</h2>
-    <div class="banner">여름 휴가 특집 — 제주 바다 사진전</div>
-    <div class="icon-box"></div>
-  </section>
+    <style>
+      .banner {
+        background: linear-gradient(90deg, #1971c2, #333);
+      }
+      .card-grid {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      @media (min-width: 720px) {
+        .card-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+    </style>
+    <section>
+      <h2>문제 5. background — 여행 배너와 아이콘 상자</h2>
+      <div class="banner">여름 휴가 특집 — 제주 바다 사진전</div>
+      <div class="icon-box"></div>
+    </section>
 
-  <!-- ═══ 문제 6 ═══════════════════════════════════════════
-    [요구사항]  모바일 퍼스트로 반응형 카드 그리드를 만드세요.
-    1) .card-grid 기본값: grid 1열(1fr), 간격 10px  (좁은 화면용)
-    2) 창 너비 768px "이상"이면: 3열(1fr씩)로 변경  (@media + min-width)
-    [완성 모습]
-    창을 좁히면 카드 6장이 1열로 세로로 쌓이고,
-    768px 이상으로 넓히면 3열 x 2행 격자로 재배치됩니다.
-    (F12 -> Ctrl+Shift+M 으로 확인!)
-    [힌트]
-    02_CSS_07_반응형_개념코드 폴더의 섹션02 파일(@media min-width), 섹션05 파일(모바일 퍼스트)
-    실수 주의: (min-width: 768) 처럼 px를 빠뜨리면 조건 전체가 무시됩니다!
-  -->
-  <section>
-    <h2>문제 6. 미디어 쿼리 — 반응형 여행지 카드 그리드</h2>
-    <div class="card-grid">
-      <div class="trip-card">제주도</div>
-      <div class="trip-card">부산</div>
-      <div class="trip-card">강릉</div>
-      <div class="trip-card">경주</div>
-      <div class="trip-card">전주</div>
-      <div class="trip-card">여수</div>
-    </div>
-  </section>
+    -->
+    <section>
+      <h2>문제 6. 미디어 쿼리 — 반응형 여행지 카드 그리드</h2>
+      <div class="card-grid">
+        <div class="trip-card">제주도</div>
+        <div class="trip-card">부산</div>
+        <div class="trip-card">강릉</div>
+        <div class="trip-card">경주</div>
+        <div class="trip-card">전주</div>
+        <div class="trip-card">여수</div>
+      </div>
+    </section>
 
-  <!-- ═══ 문제 7 [도전] ═══════════════════════════════════
+    <!-- ═══ 문제 7 [도전] ═══════════════════════════════════
     [요구사항]  CSS 변수로 라이트/다크 겸용 상태 패널을 만드세요.
     1) :root 에 전역 변수 2개 선언
        --accent: #f08c00   /  --radius: 10px
@@ -277,21 +311,49 @@
     02_CSS_07_반응형_개념코드 폴더의 섹션10 파일(clamp), 섹션11~13 파일(CSS 변수·스코프·테마)
     실수 주의: var() 없이 "background: --panel-bg;" 라고 쓰면 적용 안 됩니다!
   -->
-  <section>
-    <h2>문제 7. [도전] CSS 변수 — 라이트/다크 상태 패널</h2>
-    <div class="light">
-      <div class="status-panel">
-        <h3 class="panel-title">제주 여행 현황</h3>
-        <p>방문 8곳 · 예정 1곳 · 보류 1곳 · 사진 1,248장</p>
+    <style>
+      .light {
+        --panel-bg: #ffffff;
+        --panel-text: #1a1a2e;
+      }
+      .dark {
+        --panel-bg: #1a1a2e;
+        --panel-text: #ffffff;
+      }
+      :root {
+        --accent: #f08c00;
+        --radius: 10px;
+      }
+
+      .status-panel {
+        background-color: var(--panel-bg);
+        color: var(--panel-text);
+        border: 2px solid var(--accent);
+        border-radius: var(--radius);
+      }
+      /* 7-4) 포인트 색 + 반응형 타이포그래피 */
+      .panel-title {
+        color: var(--accent);
+        font-size: clamp(16px, 3vw, 28px); /* 최소 16px ~ 최대 28px */
+      }
+    </style>
+    <section>
+      <h2>문제 7. [도전] CSS 변수 — 라이트/다크 상태 패널</h2>
+      <div class="light">
+        <div class="status-panel">
+          <h3 class="panel-title">제주 여행 현황</h3>
+          <p>방문 8곳 · 예정 1곳 · 보류 1곳 · 사진 1,248장</p>
+        </div>
       </div>
-    </div>
-    <div class="dark">
-      <div class="status-panel">
-        <h3 class="panel-title">제주 여행 현황</h3>
-        <p>방문 8곳 · 예정 1곳 · 보류 1곳 · 사진 1,248장</p>
+      <div class="dark">
+        <div class="status-panel">
+          <h3 class="panel-title">제주 여행 현황</h3>
+          <p>방문 8곳 · 예정 1곳 · 보류 1곳 · 사진 1,248장</p>
+        </div>
       </div>
-    </div>
-    <p class="hint-text">확인: 같은 패널이 밝게/어둡게 + 주황 포인트 + 제목 크기 변화</p>
-  </section>
-</body>
+      <p class="hint-text">
+        확인: 같은 패널이 밝게/어둡게 + 주황 포인트 + 제목 크기 변화
+      </p>
+    </section>
+  </body>
 </html>
