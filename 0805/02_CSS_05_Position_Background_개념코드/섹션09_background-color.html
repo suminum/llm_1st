@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_05_Position_Background 개념코드 — 섹션 9. background-color — 배경 색상 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_05 Position &amp; Background — 섹션 9. background-color — 배경 색상</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+    .box {                        /* 데모용 파란 박스 */
+      width: 80px; height: 80px;
+      background: #4dabf7; border: 2px solid #1971c2;
+      color: #fff; text-align: center; line-height: 76px;
+    }
+    .frame {                      /* 데모용 회색 틀 */
+      height: 180px;
+      background: #f1f3f5; border: 2px dashed #868e96; padding: 8px;
+    }
+
+    /* ── 섹션 9: background-color — 배경 색상 ─────────── */
+    /* [기본] 키워드, HEX, RGB 모두 가능 (기본값 transparent: 부모가 비쳐 보임) */
+    .s9-hex  { background-color: #ffd8a8; }
+    /* [다른 방법] rgba의 4번째 값 = 불투명도(0~1) */
+    .s9-rgba { background-color: rgba(77, 171, 247, 0.3); }
+    /* 실수: background-color: #ffd8a;  // HEX 자릿수 오류(5자리) -> 무시됨 */
+    .s9-box { padding: 10px; border: 1px solid #adb5bd; margin-bottom: 6px; }
+  </style>
+</head>
+<body>
+  <!-- ── 섹션 9: background-color ── -->
+  <section>
+    <h2>섹션 9. background-color</h2>
+    <div class="s9-box s9-hex">HEX: #ffd8a8</div>
+    <div class="s9-box s9-rgba">RGBA: 반투명 파랑</div>
+  </section>
+</body>
+</html>

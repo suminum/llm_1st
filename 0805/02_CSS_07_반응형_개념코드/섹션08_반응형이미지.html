@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_07_반응형 개념코드 — 섹션 8. 반응형 이미지 (max-width: 100%)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  * 확인 방법: 개발자도구(F12) -> Ctrl+Shift+M (Device Toolbar)로 화면 너비를 바꿔 보세요.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_07 반응형 — 섹션 8. 반응형 이미지 (max-width: 100%)</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 24px; }
+    section { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+    .cell { background: #2563eb; color: #fff; padding: 12px; border-radius: 6px; text-align: center; }
+
+    /* ── 섹션 8: 반응형 이미지 (max-width: 100%) ────────── */
+    /* [기본] 이미지가 부모를 넘치지 않게 — 모든 프로젝트 기본 설정 권장 */
+    .resp-img { max-width: 100%; height: auto; display: block; }
+    /* [다른 방법] 정해진 틀에 꽉 채우기: .thumbnail { object-fit: cover; } */
+    /* 실수: width: 100% 는 작은 이미지도 강제로 늘려 화질이 깨짐 -> max-width 사용 */
+    /* 표시: 창을 좁혀도 이미지가 부모 밖으로 튀어나가지 않음 */
+  </style>
+</head>
+<body>
+  <!-- ── 섹션 8: 반응형 이미지 ── -->
+  <section>
+    <h2>섹션 8. 반응형 이미지 (max-width: 100%)</h2>
+    <img class="resp-img" src="https://placehold.co/800x200" alt="넓은 이미지 예시">
+    <p class="hint">창을 좁혀도 이미지가 넘치지 않습니다. (오프라인이면 이미지 대신 대체 텍스트 표시)</p>
+  </section>
+</body>
+</html>

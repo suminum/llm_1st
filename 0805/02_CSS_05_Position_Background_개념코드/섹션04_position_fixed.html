@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_05_Position_Background 개념코드 — 섹션 4. position: fixed — 뷰포트 고정 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_05 Position &amp; Background — 섹션 4. position: fixed — 뷰포트 고정</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+    .box {                        /* 데모용 파란 박스 */
+      width: 80px; height: 80px;
+      background: #4dabf7; border: 2px solid #1971c2;
+      color: #fff; text-align: center; line-height: 76px;
+    }
+    .frame {                      /* 데모용 회색 틀 */
+      height: 180px;
+      background: #f1f3f5; border: 2px dashed #868e96; padding: 8px;
+    }
+
+    /* ── 섹션 4: position: fixed — 뷰포트 고정 ────────── */
+    /* [기본] 브라우저 창(뷰포트) 기준. 스크롤해도 그 자리에 그대로! */
+    .s4-fixed {
+      position: fixed;
+      right: 20px; bottom: 20px;  /* 화면 우하단 */
+      width: 140px; height: 48px;
+      background: #212529; color: #fff;
+      text-align: center; line-height: 48px;
+      border-radius: 24px;
+    }
+    /* 표시: 페이지를 스크롤해도 우하단 배지가 따라다님 (활용: 상단 고정 헤더, TOP 버튼) */
+  </style>
+</head>
+<body>
+  <!-- ── 섹션 4: position: fixed — 뷰포트 고정 ── -->
+  <section>
+    <h2>섹션 4. position: fixed</h2>
+    <p>화면 우하단의 검은 배지를 확인하고, 스크롤해 보세요.</p>
+    <div class="s4-fixed">fixed 배지</div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<!--
+  02_CSS_05_Position_Background 실습 정답코드 — 실습. 배경 적용하기 (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>CSS_05 Position &amp; Background — 실습. 배경 적용하기</title>
+    <style>
+      /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+      /* ── 공통 스타일 ── */
+      body {
+        font-family: "Malgun Gothic", sans-serif;
+        margin: 20px;
+      }
+      /* (원본 body의 padding-top: 64px는 [추가 실습] 고정 헤더 전용 — 추가실습 파일에만 복제) */
+      section {
+        border: 1px solid #ced4da;
+        padding: 16px;
+        margin-bottom: 32px;
+      }
+      h2 {
+        font-size: 17px;
+        margin: 0 0 12px;
+      }
+
+      /* ── 실습: 배경 적용하기 ──────────────────────────── */
+      /* 800x500 하늘색 div 3개에 라이언 이미지를 각각 다른 방식으로 적용합니다. */
+      /* Step 1: 공통 — 800x500, 배경색 하늘색, 라이언 이미지 지정 */
+      .p4-bg {
+        width: 800px;
+        height: 500px;
+        background-color: skyblue;
+        /* 아래 placeholder 주소는 수업에서 제공하는 라이언 이미지 파일(경로)로 교체하세요.
+         PPT 참고 링크: https://www.nicepng.com/png/full/317-3179513_21-.png */
+        background-image: url("https://www.nicepng.com/png/full/317-3179513_21-.png");
+        border: 1px solid #74c0fc;
+        margin-bottom: 12px;
+      }
+      /* Step 2: 1번 div — 이미지 크기 그대로(auto), 수직 중앙 배치, x축으로만 반복 */
+      .p4-bg1 {
+        background-size: auto; /* 기본값(실제 크기) */
+        background-position: left center; /* 수직 중앙 */
+        background-repeat: repeat-x; /* x축으로만 반복 */
+      }
+      /* Step 3: 2번 div — 짧은 축에 맞춤(contain), 왼쪽 100px · 위에서 30px */
+      .p4-bg2 {
+        background-size: contain;
+        background-position: 100px 30px;
+        background-repeat: no-repeat;
+      }
+      /* Step 4: 3번 div — 긴 축에 맞춤(cover), 포지션 값 조정해 보기 */
+      .p4-bg3 {
+        background-size: cover;
+        background-position: center; /* 값을 바꿔 가며 잘리는 위치 확인 */
+        background-repeat: no-repeat;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── 실습: 배경 적용하기 ── -->
+    <section>
+      <h2>실습. 배경 적용하기 (repeat / position / size)</h2>
+      <p>1번 — 이미지 크기 그대로, 수직 중앙, x축으로만 반복</p>
+      <div class="p4-bg p4-bg1"></div>
+      <p>2번 — 짧은 축에 맞춤(contain), 왼쪽 100px 위 30px</p>
+      <div class="p4-bg p4-bg2"></div>
+      <p>3번 — 긴 축에 맞춤(cover), 포지션 값 조정해 보기</p>
+      <div class="p4-bg p4-bg3"></div>
+    </section>
+  </body>
+</html>

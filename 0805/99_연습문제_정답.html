@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<!--
+  ═══════════════════════════════════════════════════════════════
+  99_연습문제 정답 — 6일차 (Position · Background · 반응형 · CSS 변수)
+  브라우저로 열면 완성 모습을 그대로 확인할 수 있습니다.
+  각 정답 아래 "해설:" 주석을 꼭 읽어 보세요.
+  반응형 문제는 F12 -> Ctrl+Shift+M 으로 화면 너비를 바꿔 확인!
+  ═══════════════════════════════════════════════════════════════
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>6일차 연습문제 정답 — Position · Background · 반응형</title>
+
+  <style>
+    /* ── 기본 제공 스타일 (문제 아님) ── */
+    body { font-family: "맑은 고딕", "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border-bottom: 1px dashed #ccc; padding: 16px 8px; }
+    h2 { font-size: 17px; color: #333; }
+    .hint-text { color: #888; font-size: 13px; }
+
+    .sticker {
+      display: inline-block;
+      background-color: khaki; border: 1px solid #b0a24a;
+      padding: 4px 10px; border-radius: 6px;
+    }
+    .place-card {
+      width: 240px; border: 2px solid #1971c2; border-radius: 10px;
+      padding: 12px; background-color: #f8fbff;
+    }
+    .place-card h3 { font-size: 16px; margin: 4px 0; }
+    .badge {
+      display: inline-block;
+      background-color: seagreen; color: white;
+      padding: 3px 10px; border-radius: 10px; font-size: 13px;
+    }
+    .top-btn {
+      width: 130px; height: 44px;
+      background-color: #c92a2a; color: white; font-weight: bold;
+      text-align: center; line-height: 44px; border-radius: 22px;
+    }
+    .log-box {
+      height: 150px; overflow: auto;
+      border: 2px dashed #868e96; padding: 0 8px;
+    }
+    .log-head {
+      background-color: #69db7c; color: white;
+      padding: 4px 8px; font-weight: bold;
+    }
+    .banner { color: white; font-weight: bold; padding: 14px; }
+    .icon-box {
+      height: 120px; margin-top: 8px;
+      border: 1px solid #adb5bd;
+      background-color: #e7f5ff;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><circle cx='30' cy='30' r='20' fill='%23f08c00'/><circle cx='30' cy='30' r='8' fill='%23fff3bf'/></svg>");
+      /* ═══ 문제 5-2 정답 (규칙 안에 이어서 작성) ═══ */
+      background-repeat: no-repeat;   /* 바둑판 반복 제거 -> 1개만 */
+      background-position: center;    /* 정중앙 배치 */
+      background-size: contain;       /* 비율 유지, 상자 안에 전부 보이게 */
+    }
+    .trip-card {
+      background-color: #4dabf7; color: white;
+      border: 2px solid #1971c2; border-radius: 8px; padding: 12px;
+    }
+    .light, .dark { padding: 10px; margin: 6px 0; border: 1px solid #ccc; }
+    .status-panel { padding: 16px; }
+    .panel-title { margin: 0 0 6px; }
+
+    /* ═══ 문제 1 정답 ═══ */
+    .sticker-move {
+      position: relative;
+      top: -8px;      /* 음수 = 위로 */
+      left: 12px;     /* 양수 = 오른쪽으로 */
+    }
+    /* 해설: relative는 "자기 원래 자리"를 기준으로 이동하고,
+       원래 자리는 그대로 차지합니다. 그래서 옆 스티커가 밀리지 않습니다. */
+
+    /* ═══ 문제 2 정답 ═══ */
+    /* 2-1) 부모를 기준점으로 */
+    .place-card {
+      position: relative;
+    }
+    /* 2-2) 자식을 부모의 우상단에 */
+    .badge {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+    }
+    /* 해설: absolute는 "position이 지정된 가장 가까운 부모" 기준입니다.
+       부모 relative를 빼먹으면 화면(뷰포트) 기준이 되어 엉뚱한 곳에 붙습니다. */
+
+    /* ═══ 문제 3 정답 ═══ */
+    .top-btn {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      z-index: 10;
+    }
+    /* 해설: fixed는 뷰포트 기준이라 스크롤해도 그 자리에 떠 있습니다.
+       떠 있는 버튼은 다른 요소에 가려지지 않게 z-index를 넉넉히 줍니다.
+       (z-index는 position이 static이 아닐 때만 동작!) */
+
+    /* ═══ 문제 4 정답 ═══ */
+    .log-head {
+      position: sticky;
+      top: 0;
+    }
+    /* 해설: sticky는 임계점(top: 0)에 닿기 전엔 제자리(relative처럼),
+       닿으면 고정(fixed처럼), 자기 구역이 끝나면 다음 제목과 교대합니다.
+       top/bottom 값이 없으면 임계점이 없어 아예 동작하지 않습니다. */
+
+    /* ═══ 문제 5-1 정답 ═══ */
+    .banner {
+      background: linear-gradient(90deg, #1971c2, #4dabf7);
+    }
+    /* 해설: 90deg는 왼쪽 -> 오른쪽 방향입니다(기본값은 위 -> 아래).
+       색을 1개만 쓰면 그라데이션이 만들어지지 않는 것도 기억하세요.
+       (5-2 정답은 위쪽 .icon-box 규칙 안에 주석과 함께 있습니다) */
+
+    /* ═══ 문제 6 정답 ═══ */
+    /* 기본(모바일): 1열 */
+    .card-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+    }
+    /* 768px 이상(태블릿~): 3열로 확장 */
+    @media (min-width: 768px) {
+      .card-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    /* 해설: 기본 CSS를 좁은 화면(1열)으로 두고 min-width로 넓은 화면을
+       "추가"하는 것이 모바일 퍼스트 전략입니다.
+       (min-width: 768) 처럼 px가 빠지면 조건 전체가 무시됩니다! */
+
+    /* ═══ 문제 7 [도전] 정답 ═══ */
+    /* 7-1) 전역 변수 — :root에 선언하면 어디서나 사용 가능 */
+    :root {
+      --accent: #f08c00;
+      --radius: 10px;
+    }
+    /* 7-2) 지역 변수 — 각 테마 구역과 그 자손에서만 유효 */
+    .light {
+      --panel-bg: #ffffff;
+      --panel-text: #1a1a2e;
+    }
+    .dark {
+      --panel-bg: #1a1a2e;
+      --panel-text: #e8e8e8;
+    }
+    /* 7-3) 같은 패널 규칙 하나로 두 테마를 모두 처리 */
+    .status-panel {
+      background-color: var(--panel-bg);
+      color: var(--panel-text);
+      border: 2px solid var(--accent);
+      border-radius: var(--radius);
+    }
+    /* 7-4) 포인트 색 + 반응형 타이포그래피 */
+    .panel-title {
+      color: var(--accent);
+      font-size: clamp(16px, 3vw, 28px);   /* 최소 16px ~ 최대 28px */
+    }
+    /* 해설: 패널 CSS는 한 벌인데 부모(.light/.dark)의 변수 값만 달라서
+       테마가 자동 전환됩니다 — 다크 모드 구현의 핵심 패턴!
+       clamp(최소, 기준, 최대)는 미디어 쿼리 없이 글자 크기를 부드럽게 바꿉니다. */
+  </style>
+</head>
+<body>
+  <h1>여행 블로그 화면 연습</h1>
+
+  <section>
+    <h2>문제 1. relative — 삐뚤게 붙은 여행 스티커</h2>
+    <span class="sticker">제주</span>
+    <span class="sticker sticker-move">부산</span>
+    <span class="sticker">강릉</span>
+  </section>
+
+  <section>
+    <h2>문제 2. absolute — 카드 우상단 인기 배지</h2>
+    <div class="place-card">
+      <div class="badge">인기</div>
+      <h3>제주도</h3>
+      <p>성산 일출봉 · 3박 4일</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>문제 3. fixed — 화면에 떠 있는 맨 위로 버튼</h2>
+    <div class="top-btn">맨 위로</div>
+    <p class="hint-text">확인: 스크롤해도 버튼이 우하단에 그대로 있으면 성공!</p>
+  </section>
+
+  <section>
+    <h2>문제 4. sticky — 일차별 기록 제목 고정</h2>
+    <div class="log-box">
+      <div class="log-head">1일차 기록</div>
+      <p>09:00 공항 도착</p>
+      <p>09:05 렌터카 수령</p>
+      <p>09:12 해안도로 드라이브</p>
+      <p>09:20 성산 일출봉 도착</p>
+      <p>09:31 전망대에서 사진 촬영</p>
+      <div class="log-head">2일차 기록</div>
+      <p>09:02 숙소에서 아침 식사</p>
+      <p>09:08 우도 배편 탑승</p>
+      <p>09:15 자전거 대여</p>
+      <p>09:27 등대 앞 기념 촬영</p>
+      <p>09:40 해변 산책</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>문제 5. background — 여행 배너와 아이콘 상자</h2>
+    <div class="banner">여름 휴가 특집 — 제주 바다 사진전</div>
+    <div class="icon-box"></div>
+  </section>
+
+  <section>
+    <h2>문제 6. 미디어 쿼리 — 반응형 여행지 카드 그리드</h2>
+    <div class="card-grid">
+      <div class="trip-card">제주도</div>
+      <div class="trip-card">부산</div>
+      <div class="trip-card">강릉</div>
+      <div class="trip-card">경주</div>
+      <div class="trip-card">전주</div>
+      <div class="trip-card">여수</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>문제 7. [도전] CSS 변수 — 라이트/다크 상태 패널</h2>
+    <div class="light">
+      <div class="status-panel">
+        <h3 class="panel-title">제주 여행 현황</h3>
+        <p>방문 8곳 · 예정 1곳 · 보류 1곳 · 사진 1,248장</p>
+      </div>
+    </div>
+    <div class="dark">
+      <div class="status-panel">
+        <h3 class="panel-title">제주 여행 현황</h3>
+        <p>방문 8곳 · 예정 1곳 · 보류 1곳 · 사진 1,248장</p>
+      </div>
+    </div>
+    <p class="hint-text">확인: 같은 패널이 밝게/어둡게 + 주황 포인트 + 제목 크기 변화</p>
+  </section>
+</body>
+</html>

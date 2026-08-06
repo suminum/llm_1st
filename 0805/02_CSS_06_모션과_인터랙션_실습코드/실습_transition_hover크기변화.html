@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_06_모션과 인터랙션 실습 정답코드 — 실습 (transition) — hover 크기 변화
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_06 모션과 인터랙션 — 실습 (transition) — hover 크기 변화</title>
+  <style>
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 24px; background: #f5f6f8; }
+    section { background: #fff; border: 1px solid #ddd; border-radius: 8px;
+              padding: 20px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+
+    /* ── 실습 (transition): hover 크기 변화 ──────────────── */
+    /* 목표: 100px 검정 상자가 hover 시 300px로 커진다 (delay 0.5s, 진행 1s) */
+    .grow-box {
+      /* Step 1: 100x100 검정 상자, 흰 글자 */
+      width: 100px; height: 100px;
+      background: #000; color: #fff;
+      display: flex; align-items: center; justify-content: center;
+      /* Step 3~4: 전환 효과 — 진행 1s, 대기 0.5s (평소 상태에 작성!) */
+      transition: width 1s ease 0.5s, height 1s ease 0.5s;
+    }
+    /* Step 2: hover 시 300x300으로 변경 */
+    .grow-box:hover { width: 300px; height: 300px; }
+  </style>
+</head>
+<body>
+  <h1>CSS 모션과 인터랙션 — 실습 정답코드</h1>
+
+  <!-- ── 실습 (transition): hover 크기 변화 ── -->
+  <section>
+    <h2>실습 (transition) — hover 크기 변화</h2>
+    <div class="grow-box">HOVER</div>
+    <p class="hint">마우스를 올리면 0.5초 뒤부터 1초 동안 300x300으로 커집니다.</p>
+  </section>
+</body>
+</html>

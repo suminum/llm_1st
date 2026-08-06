@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_06_모션과 인터랙션 실습 정답코드 — 실습 5. 페이지 로딩 바 애니메이션
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_06 모션과 인터랙션 — 실습 5. 페이지 로딩 바 애니메이션</title>
+  <style>
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 24px; background: #f5f6f8; }
+    section { background: #fff; border: 1px solid #ddd; border-radius: 8px;
+              padding: 20px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+
+    /* ── 실습 5: 페이지 로딩 바 애니메이션 ───────────────── */
+    /* 목표: 페이지 상단 고정 진행 바와 다양한 상태 표시 애니메이션을 구현한다 */
+
+    /* Step 1: 케이스 A — position: fixed + height: 3px 상단 바 */
+    .progress-track {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: 3px; background: #e5e7eb;
+      z-index: 100;
+    }
+    /* Step 2: 진행률에 따라 늘어나다 완료 후 사라짐.
+       실제 서비스는 8일차부터 배울 JavaScript로 width를 조절 —
+       여기서는 키프레임으로 진행률을 시뮬레이션 */
+    @keyframes pageLoad {
+      0%   { width: 0;    opacity: 1; }
+      60%  { width: 70%;  opacity: 1; }   /* 빠르게 70%까지 */
+      85%  { width: 100%; opacity: 1; }   /* 완료 */
+      100% { width: 100%; opacity: 0; }   /* 완료 후 사라짐 */
+    }
+    .progress-fill {
+      height: 100%; background: #2563eb; width: 0;
+      animation: pageLoad 3s ease-out forwards;
+    }
+    /* Step 3: 케이스 B — 불확정 로딩 바 (translateX로 좌->우 무한 이동) */
+    .indeterminate-track {
+      position: relative; height: 3px; background: #e5e7eb;
+      overflow: hidden; margin-top: 8px;
+    }
+    @keyframes indeterminate {
+      0%   { transform: translateX(-100%); }
+      100% { transform: translateX(400%); }
+    }
+    .indeterminate-fill {
+      width: 30%; height: 100%; background: #2563eb;
+      animation: indeterminate 1.5s ease-in-out infinite;
+    }
+    /* Step 4: 단계별 처리 표시 문구 */
+    .load-steps { font-size: 13px; color: #555; margin-top: 6px; }
+
+    /* 접근성: 움직임 줄이기 설정 시 애니메이션 정지 (실습 1·5 체크포인트) */
+    @media (prefers-reduced-motion: reduce) {
+      .progress-fill, .indeterminate-fill {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 실습 5 케이스 A: 상단 고정 로딩 바 (새로고침하면 다시 재생) -->
+  <div class="progress-track"><div class="progress-fill"></div></div>
+
+  <h1>CSS 모션과 인터랙션 — 실습 정답코드</h1>
+
+  <!-- ── 실습 5: 페이지 로딩 바 애니메이션 ── -->
+  <section>
+    <h2>실습 5. 페이지 로딩 바 애니메이션</h2>
+    <p class="hint">케이스 A: 화면 맨 위의 3px 파란 바 — 늘어나다 완료 후 사라짐 (새로고침하면 다시 재생)</p>
+    <!-- 케이스 B: 불확정 로딩 바 + 단계별 처리 표시 -->
+    <div class="indeterminate-track"><div class="indeterminate-fill"></div></div>
+    <p class="load-steps">1. 데이터 불러오는 중 → 2. 분석 중 → 3. 요약 생성 중</p>
+  </section>
+</body>
+</html>

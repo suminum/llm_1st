@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_06_모션과 인터랙션 실습 정답코드 — 실습 2. 점 세 개 타이핑 인디케이터
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_06 모션과 인터랙션 — 실습 2. 점 세 개 타이핑 인디케이터</title>
+  <style>
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 24px; background: #f5f6f8; }
+    section { background: #fff; border: 1px solid #ddd; border-radius: 8px;
+              padding: 20px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+
+    /* ── 실습 2: 점 세 개 타이핑 인디케이터 ──────────────── */
+    /* 목표: AI가 답변을 생성하는 동안의 점 세 개 순차 움직임을 animation-delay로 구현 */
+
+    .dots { display: flex; gap: 6px; align-items: center; height: 24px; }
+    /* Step 1: 케이스 A — 바운스 키프레임 */
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30%           { transform: translateY(-8px); }
+    }
+    .dot {
+      width: 8px; height: 8px; border-radius: 50%; background: #2563eb;
+      animation: typingBounce 1.2s ease-in-out infinite;
+    }
+    /* Step 2: 각 점을 0.2초씩 늦게 시작 -> 순차 효과 */
+    .dot:nth-child(2) { animation-delay: 0.2s; }
+    .dot:nth-child(3) { animation-delay: 0.4s; }
+    /* Step 3: 케이스 B — 페이드 키프레임 (opacity만 왕복) */
+    @keyframes typingFade {
+      0%, 60%, 100% { opacity: 0.2; }
+      30%           { opacity: 1; }
+    }
+    .dot-fade {
+      width: 8px; height: 8px; border-radius: 50%; background: #2563eb;
+      animation: typingFade 1.2s ease-in-out infinite;
+    }
+    .dot-fade:nth-child(2) { animation-delay: 0.2s; }
+    .dot-fade:nth-child(3) { animation-delay: 0.4s; }
+
+    /* 접근성: 움직임 줄이기 설정 시 애니메이션 정지 (실습 1·5 체크포인트) */
+    @media (prefers-reduced-motion: reduce) {
+      .dot, .dot-fade {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>CSS 모션과 인터랙션 — 실습 정답코드</h1>
+
+  <!-- ── 실습 2: 점 세 개 타이핑 인디케이터 ── -->
+  <section>
+    <h2>실습 2. 점 세 개 타이핑 인디케이터</h2>
+    <!-- 케이스 A: 바운스 -->
+    <div class="dots">
+      <div class="dot"></div>
+      <div class="dot"></div>
+      <div class="dot"></div>
+    </div>
+    <!-- 케이스 B: 페이드 -->
+    <div class="dots" style="margin-top: 12px;">
+      <div class="dot-fade"></div>
+      <div class="dot-fade"></div>
+      <div class="dot-fade"></div>
+    </div>
+    <p class="hint">위는 바운스, 아래는 페이드. 각 점이 animation-delay 0.2초 간격으로 순차 동작합니다.</p>
+  </section>
+</body>
+</html>

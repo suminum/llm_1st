@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_07_반응형 개념코드 — 섹션 10. clamp() — 반응형 타이포그래피
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  * 확인 방법: 개발자도구(F12) -> Ctrl+Shift+M (Device Toolbar)로 화면 너비를 바꿔 보세요.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_07 반응형 — 섹션 10. clamp() — 반응형 타이포그래피</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 24px; }
+    section { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+    .cell { background: #2563eb; color: #fff; padding: 12px; border-radius: 6px; text-align: center; }
+
+    /* ── 섹션 10: clamp() — 반응형 타이포그래피 ─────────── */
+    /* [기본] clamp(최솟값, 기준값, 최댓값) — 미디어 쿼리 없이 부드럽게 변함 */
+    .fluid-title { font-size: clamp(24px, 5vw, 48px); }
+    /* [다른 방법] 여백에도 사용: .container { padding: clamp(16px, 4vw, 48px); } */
+    /* 실수: clamp(48px, 5vw, 24px)  최솟값·최댓값 순서를 바꾸면 의도대로 동작 안 함 */
+    /* 표시: 창을 늘리면 제목이 커지되 24px~48px 범위를 벗어나지 않음 */
+  </style>
+</head>
+<body>
+  <!-- ── 섹션 10: clamp() ── -->
+  <section>
+    <h2>섹션 10. clamp() — 반응형 타이포그래피</h2>
+    <p class="fluid-title" style="margin: 0;">창 크기에 따라 커지는 제목</p>
+    <p class="hint">최소 24px ~ 최대 48px 사이에서 화면 너비의 5%로 변합니다.</p>
+  </section>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_07_반응형 개념코드 — 섹션 13. CSS 변수로 다크/라이트 테마 전환
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  * 확인 방법: 개발자도구(F12) -> Ctrl+Shift+M (Device Toolbar)로 화면 너비를 바꿔 보세요.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_07 반응형 — 섹션 13. CSS 변수로 다크/라이트 테마 전환</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 24px; }
+    section { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+    .cell { background: #2563eb; color: #fff; padding: 12px; border-radius: 6px; text-align: center; }
+
+    /* ── 섹션 13: CSS 변수로 다크/라이트 테마 전환 ──────── */
+    /* [기본] 클래스마다 변수 값만 바꾸면 모든 스타일이 자동 전환 */
+    .light { --bg: #ffffff; --text: #1a1a2e; }
+    .dark  { --bg: #1a1a2e; --text: #e8e8e8; }
+    .theme-box {
+      background: var(--bg); color: var(--text);
+      padding: 16px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 8px;
+    }
+    /* 표시: 같은 .theme-box인데 부모 클래스(light/dark)에 따라 색이 다름 */
+  </style>
+</head>
+<body>
+  <!-- ── 섹션 13: 다크/라이트 테마 전환 ── -->
+  <section>
+    <h2>섹션 13. CSS 변수로 테마 전환</h2>
+    <div class="light"><div class="theme-box">라이트 테마 (.light 안)</div></div>
+    <div class="dark"><div class="theme-box">다크 테마 (.dark 안)</div></div>
+  </section>
+</body>
+</html>

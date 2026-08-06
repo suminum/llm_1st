@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_06_모션과 인터랙션 개념코드 — 섹션 7. backface-visibility
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_06 모션과 인터랙션 — 섹션 7. backface-visibility</title>
+  <style>
+    /* 공통: 데모가 잘 보이도록 하는 최소 스타일 (수업 내용 아님) */
+    body { font-family: sans-serif; margin: 24px; }
+    section { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+    .box { width: 100px; height: 100px; background: #2563eb; color: #fff;
+           display: flex; align-items: center; justify-content: center; }
+    .stage { perspective: 400px; }   /* 원본 섹션 5의 perspective 재현 (수업 내용 아님) */
+
+    /* ── 섹션 7: backface-visibility — 뒷면 숨김 ─────────── */
+    /* [기본] hidden이면 180도 뒤집혔을 때 뒷면이 안 보임 (카드 뒤집기의 핵심) */
+    .t-back { backface-visibility: hidden; }
+    .t-back:hover { transform: rotateY(180deg); }
+    /* 표시: 마우스를 올리면 상자가 뒤집히며 사라짐 (기본값 visible이면 글자가 거울상으로 보임) */
+  </style>
+</head>
+<body>
+  <h1>CSS 모션과 인터랙션 — 개념코드</h1>
+  <p class="hint">각 상자에 마우스를 올려 보세요. 애니메이션 섹션은 새로고침하면 처음부터 재생됩니다.</p>
+
+  <!-- ── 섹션 7: backface-visibility ── -->
+  <section>
+    <h2>섹션 7. backface-visibility</h2>
+    <div class="stage">
+      <div class="box t-back">앞면</div>
+    </div>
+    <p class="hint">마우스를 올리면 뒤집히며 뒷면이 숨겨집니다.</p>
+  </section>
+</body>
+</html>

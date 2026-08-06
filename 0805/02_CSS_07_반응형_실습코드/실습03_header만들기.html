@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_07_반응형 실습 정답코드 — 실습 3. header 만들기
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+  * 확인 방법: 개발자도구(F12) -> Ctrl+Shift+M 으로 창 너비를 바꿔 보세요.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_07 반응형 — 실습 3. header 만들기</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 0; }
+    section { border-bottom: 4px solid #e5e7eb; padding: 20px 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+
+    /* ── 실습 3: header 만들기 ───────────────────────────── */
+    /* 목표: 768px 이하일 때 헤더 메뉴가 가로 -> 세로 정렬로 바뀐다 */
+
+    /* Step 1: 기본(768px 초과) — 높이 100px, 메뉴 가로 정렬 */
+    .site-header {
+      height: 100px; background: #1a1a2e; color: #fff;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+    }
+    .site-header nav { display: flex; gap: 24px; }
+    .site-header a { color: #fff; text-decoration: none; }
+
+    /* Step 2: 768px 이하 -> 높이 60px 기준(auto)으로 풀고 세로 정렬 */
+    @media (max-width: 768px) {
+      .site-header {
+        height: auto; min-height: 60px;
+        flex-direction: column; align-items: flex-start;
+        padding: 12px 24px; gap: 8px;
+      }
+      .site-header nav { flex-direction: column; gap: 8px; }  /* 메뉴 세로 정렬 */
+    }
+  </style>
+</head>
+<body>
+  <h2>실습 3. header 만들기</h2>
+
+  <!-- ── 실습 3: header 만들기 ── -->
+  <section style="padding: 0;">
+    <header class="site-header">
+      <strong>여행 플래너</strong>
+      <nav>
+        <a href="#">대시보드</a>
+        <a href="#">여행지</a>
+        <a href="#">알림</a>
+        <a href="#">설정</a>
+      </nav>
+    </header>
+    <p class="hint" style="padding: 12px 24px;">
+      실습 3. 768px 초과: 높이 100px·메뉴 가로 / 768px 이하: 높이 60px·메뉴 세로
+    </p>
+  </section>
+</body>
+</html>

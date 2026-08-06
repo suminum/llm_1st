@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_06_모션과 인터랙션 개념코드 — 섹션 12. @keyframes 기본 (from / to)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_06 모션과 인터랙션 — 섹션 12. @keyframes 기본 (from / to)</title>
+  <style>
+    /* 공통: 데모가 잘 보이도록 하는 최소 스타일 (수업 내용 아님) */
+    body { font-family: sans-serif; margin: 24px; }
+    section { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+    .box { width: 100px; height: 100px; background: #2563eb; color: #fff;
+           display: flex; align-items: center; justify-content: center; }
+
+    /* ── 섹션 12: @keyframes + animation (from / to) ─────── */
+    /* [기본] @keyframes로 시작/끝 상태 정의 -> animation으로 적용 */
+    @keyframes fade {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .ani-fade {
+      animation-name: fade;        /* @keyframes 이름 */
+      animation-duration: 2s;      /* 지속 시간 */
+    }
+    /* 실수: animation-name만 쓰고 duration을 빼면 기본 0s -> 재생 안 됨 */
+    /* 표시: 페이지를 새로고침하면 상자가 2초 동안 서서히 나타남 */
+  </style>
+</head>
+<body>
+  <h1>CSS 모션과 인터랙션 — 개념코드</h1>
+  <p class="hint">각 상자에 마우스를 올려 보세요. 애니메이션 섹션은 새로고침하면 처음부터 재생됩니다.</p>
+
+  <!-- ── 섹션 12: @keyframes + animation (from/to) ── -->
+  <section>
+    <h2>섹션 12. @keyframes 기본 (from / to)</h2>
+    <div class="box ani-fade">fade</div>
+    <p class="hint">새로고침하면 2초 동안 서서히 나타납니다.</p>
+  </section>
+</body>
+</html>

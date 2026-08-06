@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_07_반응형 실습 정답코드 — 실습 1. 미디어 쿼리 사용하기
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+  * 확인 방법: 개발자도구(F12) -> Ctrl+Shift+M 으로 창 너비를 바꿔 보세요.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_07 반응형 — 실습 1. 미디어 쿼리 사용하기</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 0; }
+    section { border-bottom: 4px solid #e5e7eb; padding: 20px 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+
+    /* ── 실습 1: 미디어 쿼리 사용하기 ────────────────────── */
+    /* 목표: 창의 너비/높이에 따라 배경색과 폰트가 바뀐다 */
+
+    /* Step 1: 너비 500px 이상 -> 실습 1 영역 배경 하늘색 (원본 실습에선 body에 지정) */
+    @media (min-width: 500px) {
+      .p1 { background: skyblue; }
+    }
+    /* Step 2: 너비 300px 이하 -> 배경 오렌지 */
+    @media (max-width: 300px) {
+      .p1 { background: orange; }
+    }
+    /* Step 3: 높이 300px 이하 -> 문단 폰트 변경 */
+    @media (max-height: 300px) {
+      .p1 p { font-family: serif; font-style: italic; }
+    }
+    /* Step 4: 높이 500px 이상 -> 문단 배경 초록색 */
+    @media (min-height: 500px) {
+      .p1 p { background: lightgreen; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ── 실습 1: 미디어 쿼리 사용하기 ── -->
+  <section class="p1">
+    <h2>실습 1. 미디어 쿼리 사용하기</h2>
+    <p>미디어 쿼리 실습</p>
+    <p class="hint">
+      너비 500px 이상: 배경 하늘색 / 300px 이하: 오렌지<br>
+      높이 300px 이하: 문단 폰트 변경 / 500px 이상: 문단 배경 초록색
+    </p>
+  </section>
+</body>
+</html>

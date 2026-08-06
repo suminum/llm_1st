@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_06_모션과 인터랙션 개념코드 — 섹션 15. shimmer — 스켈레톤 로딩
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_06 모션과 인터랙션 — 섹션 15. shimmer — 스켈레톤 로딩</title>
+  <style>
+    /* 공통: 데모가 잘 보이도록 하는 최소 스타일 (수업 내용 아님) */
+    body { font-family: sans-serif; margin: 24px; }
+    section { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+
+    /* ── 섹션 15: shimmer — 스켈레톤 로딩 효과 ───────────── */
+    /* [기본] 그라디언트 배경을 요소보다 크게 깔고 background-position을 이동 */
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .skeleton {
+      width: 260px; height: 16px; border-radius: 4px; margin-bottom: 8px;
+      background: linear-gradient(90deg, #e0e0e0 0%, #f5f5f5 50%, #e0e0e0 100%);
+      background-size: 200% 100%;              /* 요소보다 2배 크게 */
+      animation: shimmer 1.6s infinite linear; /* 1.5~2초 주기가 자연스러움 */
+    }
+    /* 실수: transform으로 요소 자체를 움직이면 블록 위치가 흔들림
+       -> background-position만 움직여야 자리는 그대로, 빛만 흐름 */
+    /* 표시: 회색 막대 위로 밝은 빛이 계속 훑고 지나감 (로딩 중 느낌) */
+  </style>
+</head>
+<body>
+  <h1>CSS 모션과 인터랙션 — 개념코드</h1>
+  <p class="hint">각 상자에 마우스를 올려 보세요. 애니메이션 섹션은 새로고침하면 처음부터 재생됩니다.</p>
+
+  <!-- ── 섹션 15: shimmer 스켈레톤 ── -->
+  <section>
+    <h2>섹션 15. shimmer — 스켈레톤 로딩</h2>
+    <div class="skeleton"></div>
+    <div class="skeleton" style="width: 200px;"></div>
+    <div class="skeleton" style="width: 140px;"></div>
+    <p class="hint">회색 막대 위로 빛이 좌우로 흐릅니다. (로딩 중 표시)</p>
+  </section>
+</body>
+</html>

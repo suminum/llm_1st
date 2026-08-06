@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_06_모션과 인터랙션 실습 정답코드 — [추가 실습] 알림 배지 깜빡임 (PPT에 없음 — 빨리 끝낸 학생용 보너스)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_06 모션과 인터랙션 — [추가 실습] 알림 배지 깜빡임</title>
+  <style>
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 24px; background: #f5f6f8; }
+    section { background: #fff; border: 1px solid #ddd; border-radius: 8px;
+              padding: 20px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+
+    /* ── [추가 실습] 알림 배지 깜빡임 (PPT에 없음 — 빨리 끝낸 학생용 보너스) ── */
+    /* 경고 배지 깜빡임 — opacity 왕복 */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50%      { opacity: 0.25; }
+    }
+    .badge-alert {
+      display: inline-block; background: #dc2626; color: #fff;
+      border-radius: 11px; padding: 3px 10px; font-size: 12px;
+      animation: blink 1s ease-in-out infinite;
+    }
+
+    /* 접근성: 움직임 줄이기 설정 시 애니메이션 정지 (실습 1·5 체크포인트) */
+    @media (prefers-reduced-motion: reduce) {
+      .badge-alert {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>CSS 모션과 인터랙션 — 실습 정답코드</h1>
+
+  <!-- ── [추가 실습] 알림 배지 깜빡임 (PPT에 없음 — 빨리 끝낸 학생용 보너스) ── -->
+  <section>
+    <h2>[추가 실습] 알림 배지 깜빡임</h2>
+    <p>3관 19시 회차 <span class="badge-alert">상영 10분 전</span></p>
+    <p class="hint">opacity를 왕복시키는 blink 키프레임으로 배지가 계속 깜빡입니다.</p>
+  </section>
+</body>
+</html>

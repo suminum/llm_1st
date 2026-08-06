@@ -1,0 +1,95 @@
+<!doctype html>
+<!--
+  02_CSS_05_Position_Background 개념코드 — 섹션 6. 요소 쌓임 순서 (Stack Order) (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>
+      CSS_05 Position &amp; Background — 섹션 6. 요소 쌓임 순서 (Stack Order)
+    </title>
+    <style>
+      /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+      /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+      body {
+        font-family: "Malgun Gothic", sans-serif;
+        margin: 20px;
+      }
+      section {
+        border: 1px solid #ced4da;
+        padding: 16px;
+        margin-bottom: 28px;
+      }
+      h2 {
+        font-size: 17px;
+        margin: 0 0 12px;
+      }
+      .box {
+        /* 데모용 파란 박스 */
+        width: 80px;
+        height: 80px;
+        background: #4dabf7;
+        border: 2px solid #1971c2;
+        color: #fff;
+        text-align: center;
+        line-height: 76px;
+      }
+      .frame {
+        /* 데모용 회색 틀 */
+        height: 180px;
+        background: #f1f3f5;
+        border: 2px dashed #868e96;
+        padding: 8px;
+      }
+
+      /* ── 섹션 6: 요소 쌓임 순서 (Stack Order) ─────────── */
+      /* [기본] 겹칠 때의 규칙 3가지
+       1. position 지정 요소(relative 등)가 static보다 위
+       2. 같은 레벨이면 z-index 큰 쪽이 위
+       3. 그것도 같으면 HTML에서 나중에 쓴 요소가 위          */
+      .s6-parent {
+        position: relative;
+        height: 160px;
+        background: #f1f3f5;
+        border: 2px dashed #868e96;
+      }
+      .s6-a {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #ff8787;
+        border-color: #e03131;
+      }
+      .s6-b {
+        position: absolute;
+        top: 40px;
+        left: 50px;
+        background: #ffd43b;
+        border-color: #f08c00;
+        color: #333;
+      }
+      .s6-c {
+        position: absolute;
+        top: 70px;
+        left: 90px;
+        background: #69db7c;
+        border-color: #2f9e44;
+      }
+      /* 표시: z-index가 없으므로 HTML 순서대로 A < B < C (C가 맨 위) */
+    </style>
+  </head>
+  <body>
+    <!-- ── 섹션 6: 요소 쌓임 순서 (Stack Order) ── -->
+    <section>
+      <h2>섹션 6. 요소 쌓임 순서 — HTML 순서대로</h2>
+      <div class="s6-parent">
+        <div class="box s6-a">A</div>
+        <div class="box s6-b">B</div>
+        <div class="box s6-c">C</div>
+      </div>
+    </section>
+  </body>
+</html>

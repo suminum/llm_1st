@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_05_Position_Background 개념코드 — 섹션 12. background-position — 배경 위치 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_05 Position &amp; Background — 섹션 12. background-position — 배경 위치</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+    .box {                        /* 데모용 파란 박스 */
+      width: 80px; height: 80px;
+      background: #4dabf7; border: 2px solid #1971c2;
+      color: #fff; text-align: center; line-height: 76px;
+    }
+    .frame {                      /* 데모용 회색 틀 */
+      height: 180px;
+      background: #f1f3f5; border: 2px dashed #868e96; padding: 8px;
+    }
+
+    /* 원본 섹션 11의 배경 데모 베이스 재사용 (수업 내용 아님 — 섹션11 파일 참고) */
+    .s11-base {
+      height: 150px; border: 1px solid #adb5bd; margin-bottom: 6px;
+      background-color: #e7f5ff;
+      background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='60' height='60'><circle cx='30' cy='30' r='20' fill='%23f08c00'/><circle cx='30' cy='30' r='8' fill='%23fff3bf'/></svg>");
+    }
+    .s11-no { background-repeat: no-repeat; }  /* 반복 없음 - 1개만 */
+
+    /* ── 섹션 12: background-position — 배경 위치 ─────── */
+    /* [기본] 방향 키워드 조합: top/bottom/left/right/center */
+    .s12-center { background-position: center; }          /* 정중앙 */
+    .s12-br     { background-position: bottom right; }    /* 우하단 */
+    /* [다른 방법] 단위 값: 왼쪽에서 100px, 위에서 30px */
+    .s12-px     { background-position: 100px 30px; }
+    /* 표시: no-repeat 상태에서 아이콘 1개가 지정한 위치로 이동 */
+  </style>
+</head>
+<body>
+  <!-- ── 섹션 12: background-position ── -->
+  <section>
+    <h2>섹션 12. background-position</h2>
+    <p>center</p>
+    <div class="s11-base s11-no s12-center"></div>
+    <p>bottom right</p>
+    <div class="s11-base s11-no s12-br"></div>
+    <p>100px 30px</p>
+    <div class="s11-base s11-no s12-px"></div>
+  </section>
+</body>
+</html>

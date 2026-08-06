@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_07_반응형 실습 정답코드 — 실습 2. 크기에 따라 자리 바꾸기
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+  * 확인 방법: 개발자도구(F12) -> Ctrl+Shift+M 으로 창 너비를 바꿔 보세요.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_07 반응형 — 실습 2. 크기에 따라 자리 바꾸기</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 0; }
+    section { border-bottom: 4px solid #e5e7eb; padding: 20px 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+
+    /* ── 실습 2: 크기에 따라 자리 바꾸기 ─────────────────── */
+    /* 목표: 700px 초과면 박스 가로 배치, 이하면 세로 배치로 바뀐다 */
+
+    /* Step 1: 기본(모바일 퍼스트) — 박스 3개 세로 1열 */
+    .box-wrap { display: flex; flex-direction: column; gap: 8px; }
+    .box {
+      color: #fff; border-radius: 8px;
+      padding: 20px; text-align: center; flex: 1;
+      font-size: 20px; font-weight: bold;
+    }
+    .box1 { background: #f94144; }
+    .box2 { background: #f8961e; }
+    .box3 { background: #43aa8b; }
+    /* Step 2: 700px 초과 -> 가로 배치 */
+    @media (min-width: 701px) {
+      .box-wrap { flex-direction: row; }
+    }
+  </style>
+</head>
+<body>
+  <!-- ── 실습 2: 크기에 따라 자리 바꾸기 ── -->
+  <section>
+    <h2>실습 2. 크기에 따라 자리 바꾸기</h2>
+    <div class="box-wrap">
+      <div class="box box1">1</div>
+      <div class="box box2">2</div>
+      <div class="box box3">3</div>
+    </div>
+    <p class="hint">700px 초과: 가로 3칸 / 700px 이하: 세로 3줄</p>
+  </section>
+</body>
+</html>

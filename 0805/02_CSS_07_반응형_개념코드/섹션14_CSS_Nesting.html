@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_07_반응형 개념코드 — 섹션 14. CSS Nesting (현대 CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  * 확인 방법: 개발자도구(F12) -> Ctrl+Shift+M (Device Toolbar)로 화면 너비를 바꿔 보세요.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_07 반응형 — 섹션 14. CSS Nesting (현대 CSS)</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 24px; }
+    section { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+    .cell { background: #2563eb; color: #fff; padding: 12px; border-radius: 6px; text-align: center; }
+
+    /* ── 섹션 14: CSS Nesting (현대 CSS) ────────────────── */
+    /* [기본] 선택자를 중첩해 관련 스타일을 한 블록에 묶음 (2023년~ 지원) */
+    .nest-card {
+      background: white; border: 1px solid #ddd; border-radius: 8px; padding: 16px;
+      &:hover { background: #dbeafe; }                          /* & = .nest-card 자신 */
+      .title { font-size: 18px; margin: 0; }                    /* .nest-card .title */
+      @media (max-width: 768px) { padding: 12px; }              /* 미디어 쿼리도 중첩 가능 */
+    }
+    /* 표시: 카드에 마우스를 올리면 배경이 연파랑으로 바뀜, 좁은 화면에선 여백이 줄어듦 */
+  </style>
+</head>
+<body>
+  <!-- ── 섹션 14: CSS Nesting ── -->
+  <section>
+    <h2>섹션 14. CSS Nesting</h2>
+    <div class="nest-card">
+      <p class="title">중첩 문법 카드 — 마우스를 올려 보세요</p>
+    </div>
+  </section>
+</body>
+</html>

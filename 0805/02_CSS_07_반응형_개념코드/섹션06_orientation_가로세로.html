@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_07_반응형 개념코드 — 섹션 6. orientation — 가로/세로 모드
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  * 확인 방법: 개발자도구(F12) -> Ctrl+Shift+M (Device Toolbar)로 화면 너비를 바꿔 보세요.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_07 반응형 — 섹션 6. orientation — 가로/세로 모드</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 24px; }
+    section { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+    .cell { background: #2563eb; color: #fff; padding: 12px; border-radius: 6px; text-align: center; }
+
+    /* ── 섹션 6: orientation — 가로/세로 모드 ───────────── */
+    /* [기본] landscape(가로) / portrait(세로)에 따라 다른 CSS */
+    .orient { padding: 12px; }
+    @media (orientation: landscape) {
+      .orient { background: bisque; }
+      .orient::after { content: " — 지금은 가로(landscape) 모드"; }
+    }
+    @media (orientation: portrait) {
+      .orient { background: tomato; color: #fff; }
+      .orient::after { content: " — 지금은 세로(portrait) 모드"; }
+    }
+    /* 표시: 창이 가로로 넓으면 살구색, 세로로 길면 토마토색 */
+  </style>
+</head>
+<body>
+  <!-- ── 섹션 6: orientation ── -->
+  <section>
+    <h2>섹션 6. orientation — 가로/세로 모드</h2>
+    <div class="orient">창의 가로·세로 비율을 바꿔 보세요.</div>
+  </section>
+</body>
+</html>

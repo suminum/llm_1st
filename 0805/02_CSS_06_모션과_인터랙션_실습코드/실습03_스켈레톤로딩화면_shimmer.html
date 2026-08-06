@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_06_모션과 인터랙션 실습 정답코드 — 실습 3. 스켈레톤 로딩 화면 구현 (shimmer)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_06 모션과 인터랙션 — 실습 3. 스켈레톤 로딩 화면 구현 (shimmer)</title>
+  <style>
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 24px; background: #f5f6f8; }
+    section { background: #fff; border: 1px solid #ddd; border-radius: 8px;
+              padding: 20px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+
+    /* ── 실습 3: 스켈레톤 로딩 화면 구현 ─────────────────── */
+    /* 목표: shimmer 스켈레톤을 만들고 버튼으로 실제 콘텐츠와 전환한다 */
+
+    /* Step 1: shimmer 키프레임 — background-position만 이동 */
+    @keyframes shimmer { to { background-position: -200% 0; } }
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e5e5e5 50%, #f0f0f0 75%);
+      background-size: 300% 100%;
+      background-position: 200% 0;
+      animation: shimmer 1.5s linear infinite;
+      border-radius: 4px;
+    }
+
+    /* Step 2: 실제 콘텐츠와 "크기가 같은" 스켈레톤 형태 만들기 */
+    /* 케이스 A: 설비 목록 (아이콘·텍스트·배지 형태) */
+    .machine-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+    .sk-icon  { width: 40px; height: 40px; border-radius: 8px; }
+    .sk-text  { width: 180px; height: 14px; }
+    .sk-badge { width: 56px; height: 22px; border-radius: 11px; }
+    /* 케이스 B: AI 채팅 메시지 (말풍선 안의 글줄 형태) */
+    .chat-bubble {
+      max-width: 420px; background: #eef2ff; border-radius: 8px;
+      padding: 12px 14px; margin-top: 8px;
+    }
+    .sk-line { height: 12px; margin-bottom: 6px; }
+    .sk-line:last-child { margin-bottom: 0; }
+
+    /* 실제 콘텐츠 쪽 스타일 */
+    .m-icon { width: 40px; height: 40px; border-radius: 8px; background: #2563eb;
+              color: #fff; display: flex; align-items: center; justify-content: center; }
+    .badge-ok { background: #dcfce7; color: #16a34a; border-radius: 11px;
+                padding: 3px 10px; font-size: 12px; }
+
+    /* Step 3: 버튼으로 전환 — 아직 JS를 배우기 전이라 숨긴 체크박스의
+       :checked(선택자 시간에 배움) + label 버튼으로 같은 동작을 구현.
+       8일차부터 배울 JavaScript를 쓰면 진짜 버튼 클릭 이벤트로 전환할 수 있음 */
+    #loadDone { display: none; }
+    .load-btn {
+      display: inline-block; background: #2563eb; color: #fff;
+      border-radius: 6px; padding: 8px 14px; cursor: pointer;
+      font-size: 14px; margin-bottom: 8px;
+    }
+    #loadDone:checked ~ .view-skeleton { display: none; }
+    .view-content { display: none; }
+    #loadDone:checked ~ .view-content { display: block; }
+
+    /* 접근성: 움직임 줄이기 설정 시 애니메이션 정지 (실습 1·5 체크포인트) */
+    @media (prefers-reduced-motion: reduce) {
+      .skeleton {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>CSS 모션과 인터랙션 — 실습 정답코드</h1>
+
+  <!-- ── 실습 3: 스켈레톤 로딩 화면 구현 ── -->
+  <section>
+    <h2>실습 3. 스켈레톤 로딩 화면 구현 (shimmer)</h2>
+
+    <!-- Step 3: 버튼(label)을 누르면 스켈레톤 <-> 실제 콘텐츠 전환 -->
+    <input type="checkbox" id="loadDone" />
+    <label class="load-btn" for="loadDone">로딩 완료 / 다시 로딩</label>
+
+    <!-- 로딩 중: 스켈레톤 -->
+    <div class="view-skeleton">
+      <!-- 케이스 A: 설비 목록 스켈레톤 (아이콘·텍스트·배지 형태) -->
+      <div class="machine-row">
+        <div class="skeleton sk-icon"></div>
+        <div class="skeleton sk-text"></div>
+        <div class="skeleton sk-badge"></div>
+      </div>
+      <div class="machine-row">
+        <div class="skeleton sk-icon"></div>
+        <div class="skeleton sk-text" style="width: 140px;"></div>
+        <div class="skeleton sk-badge"></div>
+      </div>
+      <!-- 케이스 B: AI 채팅 메시지 스켈레톤 (말풍선 안의 글줄 형태) -->
+      <div class="chat-bubble">
+        <div class="skeleton sk-line"></div>
+        <div class="skeleton sk-line" style="width: 90%;"></div>
+        <div class="skeleton sk-line" style="width: 60%;"></div>
+      </div>
+    </div>
+
+    <!-- 로딩 완료: 실제 콘텐츠 (평소엔 display: none으로 숨김) -->
+    <div class="view-content">
+      <div class="machine-row">
+        <div class="m-icon">P1</div>
+        <div>프레스 1호기 — 가동 시간 132h</div>
+        <span class="badge-ok">정상</span>
+      </div>
+      <div class="machine-row">
+        <div class="m-icon">C2</div>
+        <div>컨베이어 2호기 — 가동 시간 88h</div>
+        <span class="badge-ok">정상</span>
+      </div>
+      <div class="chat-bubble">
+        두 설비 모두 정상 범위에서 가동 중입니다. 다음 정기 점검은 금요일로 예정되어 있습니다.
+      </div>
+    </div>
+    <p class="hint">스켈레톤 요소의 크기를 실제 콘텐츠와 비슷하게 맞추는 것이 포인트입니다.</p>
+  </section>
+</body>
+</html>

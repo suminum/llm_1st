@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_05_Position_Background 개념코드 — 섹션 3. position: absolute — 부모 기준 배치 (HTML/CSS)
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_05 Position &amp; Background — 섹션 3. position: absolute — 부모 기준 배치</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통: 데모가 잘 보이도록 하는 기본 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 28px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+    .box {                        /* 데모용 파란 박스 */
+      width: 80px; height: 80px;
+      background: #4dabf7; border: 2px solid #1971c2;
+      color: #fff; text-align: center; line-height: 76px;
+    }
+    .frame {                      /* 데모용 회색 틀 */
+      height: 180px;
+      background: #f1f3f5; border: 2px dashed #868e96; padding: 8px;
+    }
+
+    /* ── 섹션 3: position: absolute — 부모 기준 배치 ──── */
+    /* [기본] "position이 지정된 가장 가까운 부모"를 기준으로 배치 */
+    .s3-parent {
+      position: relative;         /* 부모에 relative -> 기준점이 됨 (단골 패턴!) */
+      height: 180px;
+      background: #f1f3f5; border: 2px dashed #868e96;
+    }
+    .s3-child {
+      position: absolute;
+      top: 20px; right: 20px;     /* 부모의 우상단 기준 */
+      background: #ffd43b; border-color: #f08c00; color: #333;
+    }
+    /* 실수: 부모에 relative가 없으면 -> 조상을 거슬러 올라가 뷰포트 기준이 되어 엉뚱한 곳에 붙음 */
+    /* 표시: absolute 요소는 일반 흐름에서 빠져나감(자리를 차지하지 않음) */
+  </style>
+</head>
+<body>
+  <!-- ── 섹션 3: position: absolute — 부모 기준 배치 ── -->
+  <section>
+    <h2>섹션 3. position: absolute</h2>
+    <div class="s3-parent">
+      <div class="box">1</div>
+      <div class="box s3-child">2</div>
+    </div>
+  </section>
+</body>
+</html>

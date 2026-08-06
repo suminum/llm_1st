@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_05_Position_Background 실습 정답코드 — 실습. relative / absolute / fixed (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_05 Position &amp; Background — 실습. relative / absolute / fixed</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px; }
+    /* (원본 body의 padding-top: 64px는 [추가 실습] 고정 헤더 전용 — 추가실습 파일에만 복제) */
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 32px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+
+    /* ── 실습: relative / absolute / fixed ────────────── */
+    /* 500x500 컨테이너 안에 3개의 아이템을 서로 다른 기준으로 배치합니다. */
+    /* Step 1: 컨테이너 — absolute의 기준점이 되도록 relative 지정 */
+    .p1-container {
+      position: relative;
+      width: 500px; height: 500px;
+      border: 3px solid #343a40; background: #f1f3f5;
+    }
+    .p1-item {
+      width: 100px; height: 100px;
+      color: #fff; text-align: center; line-height: 96px;
+    }
+    /* Step 2: Item 1 — 자기 자신(원래 자리) 기준, 왼쪽에서 50px · 위에서 30px */
+    .p1-item1 {
+      position: relative;
+      left: 50px; top: 30px;              /* 원래 자리 기준 이동 */
+      background: #4dabf7; border: 2px solid #1971c2;
+    }
+    /* Step 3: Item 2 — 컨테이너 기준, 오른쪽 30px · 아래 100px */
+    .p1-item2 {
+      position: absolute;
+      right: 30px; bottom: 100px;         /* 부모(relative) 기준 */
+      background: #69db7c; border: 2px solid #2f9e44;
+    }
+    /* Step 4: Item 3 — 뷰포트 기준, 오른쪽 100px · 위 100px (스크롤해도 고정) */
+    .p1-item3 {
+      position: fixed;
+      right: 100px; top: 100px;
+      background: #ff8787; border: 2px solid #e03131;
+      z-index: 10;                        /* 다른 내용 위에 보이도록 */
+    }
+  </style>
+</head>
+<body>
+  <!-- ── 실습: relative / absolute / fixed ── -->
+  <section>
+    <h2>실습. relative / absolute / fixed</h2>
+    <p>Item 3(빨강)은 뷰포트 기준이라 스크롤해도 고정됩니다.</p>
+    <div class="p1-container">
+      <div class="p1-item p1-item1">1</div>
+      <div class="p1-item p1-item2">2</div>
+      <div class="p1-item p1-item3">3</div>
+    </div>
+  </section>
+</body>
+</html>

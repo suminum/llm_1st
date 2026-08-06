@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_06_모션과 인터랙션 개념코드 — 섹션 5. 3D 회전과 perspective
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_06 모션과 인터랙션 — 섹션 5. 3D 회전과 perspective</title>
+  <style>
+    /* 공통: 데모가 잘 보이도록 하는 최소 스타일 (수업 내용 아님) */
+    body { font-family: sans-serif; margin: 24px; }
+    section { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+    .box { width: 100px; height: 100px; background: #2563eb; color: #fff;
+           display: flex; align-items: center; justify-content: center; }
+
+    /* ── 섹션 5: rotateX / rotateY + perspective — 3D 회전 ─ */
+    /* [기본] perspective는 "부모"에 지정 — 관찰 거리(px) */
+    .stage { perspective: 400px; }
+    .t-3d:hover { transform: rotateY(60deg); }   /* y축 기준 — 좌우로 기울임 */
+    /* [다른 방법] rotateX(60deg) -> x축 기준 — 앞뒤로 기울임 */
+    /* 실수: perspective 없이 rotateY만 쓰면 입체감 없이 납작하게 좁아져 보임 */
+    /* 표시: 마우스를 올리면 카드가 문처럼 좌우로 회전 */
+  </style>
+</head>
+<body>
+  <h1>CSS 모션과 인터랙션 — 개념코드</h1>
+  <p class="hint">각 상자에 마우스를 올려 보세요. 애니메이션 섹션은 새로고침하면 처음부터 재생됩니다.</p>
+
+  <!-- ── 섹션 5: rotateX / rotateY + perspective ── -->
+  <section>
+    <h2>섹션 5. 3D 회전과 perspective</h2>
+    <div class="stage">
+      <div class="box t-3d">3D</div>
+    </div>
+    <p class="hint">마우스를 올리면 카드가 문처럼 회전합니다. (perspective가 원근감을 만듦)</p>
+  </section>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_06_모션과 인터랙션 실습 정답코드 — 실습 4. AI 응답 텍스트 페이드인 등장 효과
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_06 모션과 인터랙션 — 실습 4. AI 응답 텍스트 페이드인 등장 효과</title>
+  <style>
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 24px; background: #f5f6f8; }
+    section { background: #fff; border: 1px solid #ddd; border-radius: 8px;
+              padding: 20px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+
+    /* ── 실습 4: AI 응답 텍스트 페이드인 등장 효과 ────────── */
+    /* 목표: 메시지가 페이드인 + 슬라이드업으로 등장하고, 순차적으로 나타난다 */
+
+    /* Step 1: 케이스 A — 등장 키프레임 (opacity + translateY 동시 변화) */
+    @keyframes messageAppear {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .message {
+      background: #eef2ff; border-radius: 8px; padding: 10px 14px;
+      margin-top: 8px; max-width: 420px;
+      opacity: 0;                                          /* 등장 전엔 투명 */
+      /* Step 2: forwards(animation-fill-mode)가 없으면 재생 후 다시 투명해짐! */
+      animation: messageAppear 0.35s ease forwards;
+    }
+    /* Step 3: 케이스 B — 단락별 delay로 순차 등장 (staggered) */
+    .message:nth-child(2) { animation-delay: 0.3s; }
+    .message:nth-child(3) { animation-delay: 0.6s; }
+
+    /* 접근성: 움직임 줄이기 설정 시 애니메이션 정지 (실습 1·5 체크포인트) */
+    @media (prefers-reduced-motion: reduce) {
+      .message { animation: none; opacity: 1; }   /* 애니메이션 없이 바로 표시 */
+    }
+  </style>
+</head>
+<body>
+  <h1>CSS 모션과 인터랙션 — 실습 정답코드</h1>
+
+  <!-- ── 실습 4: AI 응답 텍스트 페이드인 등장 효과 ── -->
+  <section>
+    <h2>실습 4. AI 응답 텍스트 페이드인 등장 효과</h2>
+    <div>
+      <div class="message">문의하신 영화의 상영 일정을 확인했습니다.</div>
+      <div class="message">오늘 저녁 회차는 18시와 21시입니다.</div>
+      <div class="message">18시 회차 관람을 추천드립니다.</div>
+    </div>
+    <p class="hint">메시지 3개가 새로고침 시 0.3초 간격으로 페이드인 + 슬라이드업 순차 등장합니다.</p>
+  </section>
+</body>
+</html>

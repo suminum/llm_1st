@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_05_Position_Background 실습 정답코드 — [추가 실습] 상단 고정 헤더 (PPT에 없음 — 빨리 끝낸 학생용 보너스) (HTML/CSS)
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>CSS_05 Position &amp; Background — [추가 실습] 상단 고정 헤더</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* ── 공통 스타일 ── */
+    body { font-family: "Malgun Gothic", sans-serif; margin: 20px;
+           padding-top: 64px; }     /* [추가 실습] 고정 헤더에 가려지지 않도록 */
+    section { border: 1px solid #ced4da; padding: 16px; margin-bottom: 32px; }
+    h2 { font-size: 17px; margin: 0 0 12px; }
+
+    /* ── [추가 실습] 상단 고정 헤더 (PPT에 없음 — 빨리 끝낸 학생용 보너스) ── */
+    /* fixed + top: 0 + 그라데이션 배경. body에 padding-top으로 자리 확보 */
+    .top-header {
+      position: fixed;
+      top: 0; left: 0; right: 0;          /* 화면 상단에 꽉 차게 */
+      height: 48px;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 24px;
+      background: linear-gradient(90deg, #1971c2, #4dabf7);  /* 그라데이션 배경 */
+      color: #fff; font-weight: bold;
+      z-index: 100;                       /* 항상 다른 내용 위에 */
+    }
+  </style>
+</head>
+<body>
+  <h2>[추가 실습] 상단 고정 헤더 (PPT에 없음 — 빨리 끝낸 학생용 보너스)</h2>
+
+  <!-- ── [추가 실습] 상단 고정 헤더 (PPT에 없음 — 빨리 끝낸 학생용 보너스) ── -->
+  <!-- fixed라서 코드는 여기 있어도 화면 맨 위에 붙습니다. 스크롤해도 그대로! -->
+  <header class="top-header">
+    <span>TRAVEL LOG 여행 일지</span>
+    <span>2026-08-05</span>
+  </header>
+</body>
+</html>

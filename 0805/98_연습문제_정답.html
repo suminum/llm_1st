@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<!--
+  ═══════════════════════════════════════════════════════════════
+  99_연습문제 정답 — 7일차 (Transition · Transform · Animation)
+  브라우저로 열면 완성 모습을 그대로 확인할 수 있습니다.
+  각 정답 아래 "해설:" 주석을 꼭 읽어 보세요.
+  (마우스를 올려 보고, 애니메이션은 F5로 처음부터 재생해 보세요)
+  ═══════════════════════════════════════════════════════════════
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>7일차 연습문제 정답 — Transition · Transform · Animation</title>
+
+  <style>
+    /* ── 기본 제공 스타일 (문제 아님) ── */
+    body { font-family: "맑은 고딕", "Malgun Gothic", sans-serif; margin: 20px; }
+    section { border-bottom: 1px dashed #ccc; padding: 16px 8px; }
+    h2 { font-size: 17px; color: #333; }
+    .hint-text { color: #888; font-size: 13px; }
+
+    .book-btn {
+      background-color: #2563eb; color: white;
+      border: none; padding: 10px 20px; border-radius: 6px;
+      font-size: 15px; cursor: pointer;
+    }
+    .lift-card {
+      width: 240px; border: 2px solid #1971c2; border-radius: 10px;
+      padding: 14px; background-color: #f8fbff;
+    }
+    .lift-card h3 { font-size: 16px; margin: 0 0 6px; }
+    .play-btn {
+      display: inline-block;
+      width: 64px; height: 64px; border-radius: 32px;
+      background-color: #495057; color: white;
+      text-align: center; line-height: 64px; font-weight: bold;
+    }
+    .race { border: 2px dashed #868e96; padding: 10px; }
+    .runner {
+      width: 90px; margin-bottom: 6px;
+      background-color: #4dabf7; border: 2px solid #1971c2;
+      color: white; text-align: center; padding: 8px 0; font-size: 14px;
+    }
+    .alert-new {
+      background-color: #fff3bf; border-left: 6px solid #f08c00;
+      padding: 10px 14px;
+    }
+    .counter { background-color: #dee2e6; padding: 10px; border-radius: 6px; }
+    .snack-box {
+      width: 70px; background-color: #f08c00; border: 2px solid #e8590c;
+      color: white; text-align: center; padding: 10px 0; font-weight: bold;
+    }
+    .warn-card {
+      width: 280px; border: 2px solid #e03131; border-radius: 12px;
+      padding: 14px; background-color: #fff5f5;
+    }
+    .warn-card h3 { font-size: 16px; margin: 8px 0 4px; }
+    .warn-card p { margin: 0; font-size: 14px; color: #555; }
+    .warn-badge {
+      display: inline-block;
+      background-color: crimson; color: white;
+      padding: 2px 10px; border-radius: 10px; font-size: 13px;
+    }
+    .loading-bar {
+      height: 12px; border-radius: 6px;
+      background-color: #e0e0e0; margin-top: 10px;
+    }
+
+    /* ═══ 문제 1 정답 ═══ */
+    /* 전환 선언은 "평소 상태"에! */
+    .book-btn {
+      transition-property: background-color;
+      transition-duration: 0.4s;
+    }
+    .book-btn:hover {
+      background-color: #16a34a;
+    }
+    /* 해설: transition을 :hover 쪽에 쓰면 마우스를 뗄 때 전환 선언도
+       함께 사라져 뚝 끊깁니다. 평소 상태에 걸면 갈 때도 올 때도 부드럽습니다. */
+
+    /* ═══ 문제 2 정답 ═══ */
+    .lift-card {
+      transition: transform 0.3s;   /* 단축: 속성 지속시간 */
+    }
+    .lift-card:hover {
+      transform: translateY(-8px);  /* Y축 음수 = 위로 */
+    }
+    /* 해설: width/margin 대신 transform으로 움직이면
+       주변 요소를 밀지 않아 레이아웃이 흔들리지 않습니다. */
+
+    /* ═══ 문제 3 정답 ═══ */
+    .play-btn {
+      transition: transform 0.5s;
+    }
+    .play-btn:hover {
+      transform: rotate(90deg) scale(1.2);   /* 공백으로 나열 = 동시 적용 */
+    }
+    /* 해설: transform을 두 줄로 나눠 쓰면 마지막 선언만 남습니다.
+       회전+확대처럼 여러 변환은 반드시 한 줄에 공백으로 나열! */
+
+    /* ═══ 문제 4 정답 ═══ */
+    /* 4-1) 공통 전환 */
+    .runner {
+      transition: transform 1s;
+    }
+    /* 4-2) 트리거: 트랙에 올리면 모든 runner 이동 (후손 선택자 + hover) */
+    .race:hover .runner {
+      transform: translateX(260px);
+    }
+    /* 4-3) 관객별 타이밍 함수 */
+    .r-linear  { transition-timing-function: linear; }     /* 일정한 속도 */
+    .r-easein  { transition-timing-function: ease-in; }    /* 천천히 출발 */
+    .r-easeout { transition-timing-function: ease-out; }   /* 천천히 도착 */
+    /* 4-4) 반 박자 늦게 출발 */
+    .r-delay   { transition-delay: 0.5s; }
+    /* 해설: 같은 1초, 같은 260px여도 타이밍 함수에 따라 느낌이 다릅니다.
+       delay는 duration 뒤의 "두 번째 시간값" — 순서에 주의하세요. */
+
+    /* ═══ 문제 5 정답 ═══ */
+    @keyframes fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    .alert-new {
+      animation-name: fade-in;
+      animation-duration: 2s;
+    }
+    /* 해설: @keyframes는 "대본", animation은 "배우에게 대본 배정"입니다.
+       duration이 없으면 기본 0초라 아무것도 재생되지 않습니다! */
+
+    /* ═══ 문제 6 정답 ═══ */
+    @keyframes move-box {
+      from { transform: translateX(0); }
+      to   { transform: translateX(220px); }
+    }
+    .snack-box {
+      animation: move-box 2s ease-in-out infinite alternate;
+    }
+    /* 해설: alternate가 없으면 220px에서 순간이동으로 처음으로 돌아갑니다.
+       alternate는 "갔다가 되돌아오기"라 왕복이 자연스럽습니다.
+       단축 순서: 이름 duration 타이밍함수 (delay) 반복횟수 방향 */
+
+    /* ═══ 문제 7 [도전] 정답 ═══ */
+    /* 7-1) 카드 호버 모션 */
+    .warn-card {
+      transition: transform 0.3s;
+    }
+    .warn-card:hover {
+      transform: translateY(-6px) scale(1.02);
+    }
+    /* 7-2) 배지 깜빡임 — 중간 지점(50%)을 직접 제어 */
+    @keyframes blink {
+      0%, 100% { opacity: 1; }     /* 여러 지점은 콤마로 묶기 */
+      50%      { opacity: 0.2; }
+    }
+    .warn-badge {
+      animation: blink 1s infinite;
+    }
+    /* 7-3) [보너스] shimmer — 배경만 움직여 빛이 흐르는 효과 */
+    @keyframes shimmer {
+      0%   { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    .loading-bar {
+      background: linear-gradient(90deg, #e0e0e0 0%, #f5f5f5 50%, #e0e0e0 100%);
+      background-size: 200% 100%;               /* 요소보다 2배 크게 */
+      animation: shimmer 1.6s infinite linear;
+    }
+    /* 해설: transition(호버 반응)과 animation(스스로 반복)은 역할이 다릅니다.
+       깜빡임·로딩처럼 "사용자 입력 없이 계속" 움직이는 것은 animation!
+       shimmer는 요소가 아니라 background-position만 움직여야
+       카드 레이아웃이 흔들리지 않습니다. */
+  </style>
+</head>
+<body>
+  <h1>영화관 홈페이지에 생기 불어넣기</h1>
+
+  <section>
+    <h2>문제 1. transition — 부드러운 예매 버튼</h2>
+    <button class="book-btn">지금 예매하기</button>
+  </section>
+
+  <section>
+    <h2>문제 2. transform — 떠오르는 영화 카드</h2>
+    <div class="lift-card">
+      <h3>우주 대모험</h3>
+      <p>평점 9.2 · 절찬 상영 중</p>
+    </div>
+  </section>
+
+  <section>
+    <h2>문제 3. transform 조합 — 도는 재생 버튼</h2>
+    <div class="play-btn">재생</div>
+  </section>
+
+  <section>
+    <h2>문제 4. timing-function — 관객 입장 비교</h2>
+    <div class="race">
+      <div class="runner r-linear">관객-1</div>
+      <div class="runner r-easein">관객-2</div>
+      <div class="runner r-easeout">관객-3</div>
+      <div class="runner r-delay">관객-4</div>
+    </div>
+    <p class="hint-text">확인: 트랙에 마우스를 올리면 4명이 다른 리듬으로 입장!</p>
+  </section>
+
+  <section>
+    <h2>문제 5. @keyframes — 서서히 나타나는 신규 소식</h2>
+    <div class="alert-new">신규 소식 — 이번 주 개봉작 예매가 시작되었습니다.</div>
+    <p class="hint-text">확인: F5를 누르면 알림이 스르륵 나타나면 성공!</p>
+  </section>
+
+  <section>
+    <h2>문제 6. animation — 매점 진열대 위 팝콘 상자</h2>
+    <div class="counter">
+      <div class="snack-box">팝콘</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>문제 7. [도전] 깜빡이는 배지 + 호버 카드 + 로딩 바</h2>
+    <div class="warn-card">
+      <span class="warn-badge">매진 임박</span>
+      <h3>우주 대모험 좌석 매진 임박</h3>
+      <p>잔여 좌석이 얼마 남지 않았습니다. 예매율 집계 중...</p>
+      <div class="loading-bar"></div>
+    </div>
+    <p class="hint-text">확인: 배지 깜빡임 + 카드 호버 모션 + 로딩 바 빛 흐름</p>
+  </section>
+</body>
+</html>

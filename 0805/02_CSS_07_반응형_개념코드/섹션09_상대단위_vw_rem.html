@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_07_반응형 개념코드 — 섹션 9. 상대 단위 — %, vw/vh, rem
+  강사·교육생이 위에서부터 한 줄씩 따라 칩니다.
+  각 개념: [기본] -> [축약/다른 방법] -> [실수] 순서
+  실수 코드는 주석 처리하고 "실수:"로 표시합니다.
+  * 확인 방법: 개발자도구(F12) -> Ctrl+Shift+M (Device Toolbar)로 화면 너비를 바꿔 보세요.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_07 반응형 — 섹션 9. 상대 단위 — %, vw/vh, rem</title>
+  <style>
+    /* 공통 기본 스타일 (원본 공통 — 수업 내용 아님) */
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 24px; }
+    section { border: 1px solid #ddd; border-radius: 8px; padding: 16px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+    .cell { background: #2563eb; color: #fff; padding: 12px; border-radius: 6px; text-align: center; }
+
+    /* ── 섹션 9: 상대 단위 — %, vw/vh, rem ──────────────── */
+    /* [기본] % = 부모 기준, vw/vh = 뷰포트 너비/높이의 1%, rem = 루트 글자 크기 기준 */
+    .unit-percent { width: 50%; }         /* 부모의 절반 */
+    .unit-vw      { width: 50vw; }        /* 화면 너비의 절반 */
+    .unit-rem     { font-size: 1.5rem; }  /* 16px × 1.5 = 24px */
+    /* 실수: px로만 만들면 화면이 좁아져도 크기가 고정 -> 반응형이 안 됨 */
+    /* 표시: 창 크기를 바꾸면 %·vw 상자 너비가 함께 변함 */
+  </style>
+</head>
+<body>
+  <!-- ── 섹션 9: 상대 단위 ── -->
+  <section>
+    <h2>섹션 9. 상대 단위 — %, vw, rem</h2>
+    <div class="cell unit-percent">width: 50% (부모 기준)</div>
+    <div class="cell unit-vw" style="margin-top: 8px;">width: 50vw (화면 기준)</div>
+    <p class="unit-rem">font-size: 1.5rem (= 24px)</p>
+  </section>
+</body>
+</html>

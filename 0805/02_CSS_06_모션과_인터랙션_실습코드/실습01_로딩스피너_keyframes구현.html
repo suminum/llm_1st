@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<!--
+  02_CSS_06_모션과 인터랙션 실습 정답코드 — 실습 1. 로딩 스피너 @keyframes 구현
+  각 실습의 Step별 정답을 주석과 함께 정리합니다.
+-->
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS_06 모션과 인터랙션 — 실습 1. 로딩 스피너 @keyframes 구현</title>
+  <style>
+    /* 공통: 데모 배치용 최소 스타일 */
+    body { font-family: sans-serif; margin: 24px; background: #f5f6f8; }
+    section { background: #fff; border: 1px solid #ddd; border-radius: 8px;
+              padding: 20px; margin-bottom: 24px; }
+    h2 { font-size: 16px; margin: 0 0 12px; }
+    .hint { color: #888; font-size: 13px; }
+
+    /* ── 실습 1: 로딩 스피너 @keyframes 구현 ─────────────── */
+    /* 목표: @keyframes와 animation 속성으로 다양한 형태의 로딩 스피너를 구현한다 */
+
+    /* Step 1: 회전 키프레임 — to만 정의해도 됨 (from은 현재 상태) */
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Step 2: 케이스 A-1 기본 스피너 — border 한 변의 색만 바꾸면 완성 */
+    .spinner {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 3px solid #e0e0e0;
+      border-top-color: #2563eb;
+      animation: spin 0.7s linear infinite;
+    }
+    /* Step 3: 케이스 A-2 이중 링 — 마주 보는 두 변에 색 지정 */
+    .spinner-double {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 3px solid #e0e0e0;
+      border-top-color: #2563eb;
+      border-bottom-color: #2563eb;
+      animation: spin 1s linear infinite;
+    }
+    /* Step 4: 케이스 A-3 펄스 — 크기·투명도가 왕복하는 원 */
+    @keyframes pulse {
+      0%, 100% { transform: scale(1);   opacity: 1; }
+      50%      { transform: scale(0.6); opacity: 0.4; }
+    }
+    .spinner-pulse {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: #2563eb;
+      animation: pulse 1s ease-in-out infinite;
+    }
+    /* Step 5: 케이스 B — AI 응답 대기 박스 (스피너 + 텍스트) */
+    .wait-box {
+      display: flex; align-items: center; gap: 12px;
+      border: 1px solid #ddd; border-radius: 8px;
+      padding: 12px 16px; max-width: 360px; margin-top: 12px;
+    }
+
+    /* 접근성: 움직임 줄이기 설정 시 애니메이션 정지 (실습 1·5 체크포인트) */
+    @media (prefers-reduced-motion: reduce) {
+      .spinner, .spinner-double, .spinner-pulse {
+        animation: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>CSS 모션과 인터랙션 — 실습 정답코드</h1>
+
+  <!-- ── 실습 1: 로딩 스피너 @keyframes 구현 ── -->
+  <section>
+    <h2>실습 1. 로딩 스피너 @keyframes 구현</h2>
+    <!-- 케이스 A: 원형 스피너 3종 (기본 · 이중 링 · 펄스) -->
+    <div style="display: flex; align-items: center; gap: 24px;">
+      <div class="spinner"></div>
+      <div class="spinner-double"></div>
+      <div class="spinner-pulse"></div>
+    </div>
+    <!-- 케이스 B: AI 응답 대기 박스 (스피너 + 텍스트) -->
+    <div class="wait-box">
+      <div class="spinner"></div>
+      <span>AI가 답변을 생성하는 중...</span>
+    </div>
+    <p class="hint">왼쪽부터 기본 · 이중 링 · 펄스 스피너입니다. 모두 무한 반복(infinite)입니다.</p>
+  </section>
+</body>
+</html>
