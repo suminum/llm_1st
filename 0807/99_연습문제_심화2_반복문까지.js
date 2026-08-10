@@ -101,7 +101,12 @@ console.log("===== 워밍업 D =====");
 console.log("===== 문제 1 =====");
 const scores = [78, 92, 45, 88, 61, 95, 73];
 // TODO: 여기에 작성
+let min = Infinity;
 
+for (let i = 0; i < scores.length; i++) {
+  min = min > scores[i] ? scores[i] : min;
+}
+console.log(min);
 // ═══ 문제 2 ═══ break 로 찾기 + 못 찾았을 때 [응용]
 // (1) 요구사항: 재고 배열에서 "처음으로 5개 미만인 상품"의 위치를 찾아 출력하세요.
 //     - 찾으면 break 로 즉시 반복을 끝냅니다.
@@ -117,7 +122,13 @@ const scores = [78, 92, 45, 88, 61, 95, 73];
 console.log("===== 문제 2 =====");
 const stocks = [12, 8, 3, 5, 0];
 // TODO: 여기에 작성
-
+let a = 0;
+for (let i = 0; i < stocks.length; i++) {
+  if (stocks[i] < 5) {
+    console.log(i + 1);
+    break;
+  }
+}
 // ═══ 문제 3 ═══ 중첩 for + continue + break 함께 쓰기 [응용]
 // (1) 요구사항: 2단부터 5단까지 구구단을 출력하되, 아래 두 규칙을 적용하세요.
 //     - 홀수 단(3단, 5단)은 건너뜁니다 (continue 사용)
@@ -141,7 +152,11 @@ const stocks = [12, 8, 3, 5, 0];
 // (3) 힌트: 섹션11(중첩 for), 섹션13(break), 섹션14(continue), 8일차 섹션13(% 로 홀짝 판별)
 console.log("===== 문제 3 =====");
 // TODO: 여기에 작성
-
+for (let i = 1; i < 10; i++) {
+  for (let j = 1; j < 10; j++) {
+    console.log(i * j > 20 ? "" : i * j);
+  }
+}
 // ═══ 문제 4 ═══ while 로 "언제 끝날지 모르는" 반복 [응용]
 // (1) 요구사항: 통장에 50000원이 있고 매일 3500원씩 씁니다.
 //     - 잔액이 3500원 미만이 되어 더 쓸 수 없을 때까지 while 로 반복하세요.
@@ -157,7 +172,23 @@ console.log("===== 문제 3 =====");
 //     조건이 거짓이 되는 순간 반복이 끝난다는 것을 이용하세요.
 console.log("===== 문제 4 =====");
 // TODO: 여기에 작성
+let date = 0;
+let total = 50000;
+let totalwithoutc = 50000;
+let datewithoutc = 0;
 
+while (total >= 3500) {
+  total -= 3500;
+  date++;
+  if (date % 5 == 0) {
+    total -= 4000;
+  }
+}
+while (totalwithoutc >= 3500) {
+  totalwithoutc -= 3500;
+  datewithoutc++;
+}
+console.log(date, totalwithoutc, datewithoutc);
 // ═══ 문제 5 ═══ [도전] 중첩 for 로 모양 만들기
 // (1) 요구사항: 아래 모양을 중첩 for 로 출력하세요.
 //     - 바깥 반복이 줄(1~5줄), 안쪽 반복이 그 줄에 찍을 별 개수입니다.
@@ -171,25 +202,42 @@ console.log("===== 문제 4 =====");
 //     *****
 // (3) 힌트: 섹션11(중첩 for), 8일차 섹션14(+=), 8일차 섹션05(문자열 연결).
 //     안쪽 반복 횟수가 바깥 변수에 따라 달라진다는 점이 핵심입니다.
-console.log("===== 문제 5 =====");
-// TODO: 여기에 작성
+for (let i = 0; i < 5; i++) {
+  let star = "";
+  for (let j = 0; j <= i; j++) {
+    star += "*";
+  }
+  console.log(star);
+}
 
 // ═══ 문제 6 ═══ [도전] 결과 예측하기 — 반복문의 함정
 // (1) 요구사항: 아래 네 덩어리가 각각 무엇을 출력할지 먼저 종이에 적으세요.
 //     그다음 (가)~(다)의 주석을 풀어 실행하고, 예상과 다른 것은 이유를 설명해 보세요.
 //     (라)는 에러가 나는 덩어리라 맨 뒤에 따로 두었습니다. 아래 ⚠️ 를 꼭 읽으세요.
 //
-//       // (가)
-//       let point = 0;
-//       for (let i = 1; i <= 3; i++) { let point = 0; point += i; }
-//       console.log(point);
-//
-//       // (나)
-//       for (let i = 0; i < 5; i++) { if (i === 2) continue; if (i === 4) break; console.log(i); }
-//
-//       // (다)
-//       for (let i = 0; i < 2; i++) { for (let j = 0; j < 3; j++) { if (j === 1) break; console.log(i, j); } }
-//
+// (가)6//
+let point = 0;
+for (let i = 1; i <= 3; i++) {
+  let point = 0;
+  point += i;
+}
+console.log(point);
+
+// (나)13
+for (let i = 0; i < 5; i++) {
+  if (i === 2) continue;
+  if (i === 4) break;
+  console.log(i);
+}
+
+// (다)
+for (let i = 0; i < 2; i++) {
+  for (let j = 0; j < 3; j++) {
+    if (j === 1) break;
+    console.log(i, j);
+  }
+}
+
 //       // (라)  ← 이 덩어리는 에러가 납니다
 //       for (let i = 0; i < 3; i++) { }
 //       console.log(i);
@@ -233,6 +281,7 @@ console.log("===== 문제 6 =====");
 //     완료 금액 합계: 97000원
 //     취소: 1건
 //     최고 금액 고객: 김철수
+
 //     김철수: VIP
 //     박민수: VIP
 //     정수진: 일반
@@ -246,6 +295,23 @@ const orders = [
   { customer: "최지우", amount: 27000, status: "shipping" },
   { customer: "정수진", amount: 17000, status: "done" },
 ];
+let count = 0;
+let money = 0;
+let cancel = 0;
+let hightestcustomer = 0;
+for (let i = 0; i < orders.length; i++) {
+  count++;
+  let cur = orders[i].status;
+  if (cur == "done") {
+    money += orders[i].amount;
+  } else if (cur == "cancel") {
+    cancel++;
+  }
+}
+console.log(count, money, cancel);
+
+
+
 // TODO: 여기에 작성
 
 // 다 풀었다면 99_연습문제_심화2_반복문까지_정답.js 와 비교해 보세요.

@@ -65,9 +65,18 @@ const dustLevel = 94;
 //     배송비 3000원
 // (3) 힌트: 섹션03(논리 연산자), 8일차 섹션08(비교 결과를 boolean 변수에 담기)
 console.log("===== 문제 1 =====");
-const isMember = false;
-const orderAmount = 52000;
-const hasCoupon = true;
+let isMember = false;
+let orderAmount = 52000;
+let hasCoupon = true;
+let isFreeShipping = false;
+if (isMember && (hasCoupon || orderAmount >= 30000)) {
+  isFreeShipping = true;
+}
+if (isFreeShipping) {
+  console.log("무료배송");
+} else {
+  console.log("배송비3000원");
+}
 // TODO: 여기에 작성
 
 // ═══ 문제 2 ═══ else if 순서가 틀린 코드 고치기 [응용]
@@ -87,18 +96,18 @@ console.log("===== 문제 2 =====");
 const deliveryCount = 63;
 // TODO: 여기에 작성
 
+if (deliveryCount >= 50) {
+  console.log("vip 배송");
+} else if (deliveryCount >= 10) {
+  console.log("우수 고객 무료배송");
+} else if (deliveryCount >= 1) {
+  console.log("일반 배송");
+}
 // ═══ 문제 3 ═══ 중첩 펼치기 — 왜 안 되는지 알려주기 [응용]
 // (1) 요구사항: 아래 3중 중첩 코드는 결제가 실패해도 "아무것도 출력하지 않습니다".
 //     사용자는 왜 결제가 안 되는지 알 수가 없습니다.
 //
-//       if (cardNumber) {
-//         if (balance >= payAmount) {
-//           if (isCardValid) {
-//             console.log("결제 완료");
-//           }
-//         }
-//       }
-//
+
 //     - 이것을 else if 로 펼쳐서, 걸린 이유를 사용자에게 알려주도록 고치세요.
 //     - 검사 순서: 카드번호 없음 → 잔액 부족 → 카드 정지 → (전부 통과하면) 결제 완료
 // (2) 기대 출력:
@@ -110,6 +119,15 @@ const balance = 12000;
 const payAmount = 45000;
 const isCardValid = true;
 // TODO: 여기에 작성
+if (cardNumber) {
+  if (balance >= payAmount) {
+    if (isCardValid) {
+      console.log("결제 완료");
+    }
+  } else {
+    console.log("결제 실패");
+  }
+}
 
 // ═══ 문제 4 ═══ 입력값은 문자열이다 [응용]
 // (1) 요구사항: 화면 입력창에서 받은 값은 숫자를 쳐도 항상 문자열로 들어옵니다.
@@ -127,6 +145,9 @@ const isCardValid = true;
 console.log("===== 문제 4 =====");
 const inputAge = "22";
 // TODO: 여기에 작성
+console.log(typeof inputAge);
+console.log(inputAge >= 20);
+console.log(Number(inputAge) >= 20 ? "성인" : "미성년자");
 
 // ═══ 문제 5 ═══ [도전] switch 로 여러 값을 한 묶음으로
 // (1) 요구사항: 요일 코드(1=월 … 7=일)를 받아 "평일" 또는 "주말"을 출력합니다.
@@ -142,21 +163,35 @@ const inputAge = "22";
 console.log("===== 문제 5 =====");
 const dayCode = 7;
 // TODO: 여기에 작성
+switch (dayCode) {
+  case (1, 2, 3, 4, 5):
+    console.log("평일");
+
+  case (6, 7):
+    console.log("주말");
+}
 
 // ═══ 문제 6 ═══ [도전] 결과 예측하기 — 조건문의 함정 모음
 // (1) 요구사항: 아래 다섯 줄이 각각 무엇을 출력할지 먼저 종이에 적으세요.
 //     그다음 주석을 풀어 실행하고, 예상과 다른 줄은 이유를 설명해 보세요.
-//
-//       if ("0") console.log("A"); else console.log("B");
-//       if (0) console.log("C"); else console.log("D");
-//       if ("") console.log("E"); else console.log("F");
-//       console.log(5 > 3 > 1);
-//       let n = 5;  if (n = 3) console.log("G");  console.log(n);
-//
+
+if ("0") console.log("A");
+else console.log("B");
+if (0) console.log("C");
+else console.log("D");
+
+if ("") console.log("E");
+else console.log("F");
+//자바스크립트는 왼쪽부터 차례대로 계산합니다.
+console.log(5 > 3 > 1);
+let n = 5;
+if ((n = 3)) console.log("G");
+console.log(n);
+
 // (2) 기대 출력:
-//     A
-//     D
-//     F
+//     A a
+//     D d
+//     F e
 //     false
 //     G
 //     3
@@ -196,6 +231,15 @@ const order = {
 };
 // TODO: 여기에 작성
 
+console.log(order.items.length);
+console.log(order.items[order.items.length - 1]);
+let total = 0;
+for (let i = 0; i < order.items.length; i++) {
+  total += order.items[i].price;
+}
+console.log(total);
+console.log(total >= 50000 ? "무배" : "배송비 3000원");
+
 // ═══ 문제 8 ═══ [도전] 카페 스탬프 적립 — 값이 계속 바뀌는 상황
 // (1) 요구사항: 손님이 오늘 3잔을 주문했습니다. 아래 순서대로 여섯 줄을 출력하세요.
 //     ① 오늘 주문 3잔을 스탬프에 더하고(복합 대입 연산자 사용) 현재 스탬프를 출력
@@ -222,5 +266,9 @@ let stamp = 8;
 let visitCount = 24;
 const memberPhone = null;
 // TODO: 여기에 작성
+stamp += 3;
+visitCount += 1;
+console.log(visitCount % 5 == 0 ? "단골 쿠폰 지급" : "쿠폰 미지급");
+console.log(memberPhone != 0 ? "sms" : "전화번호 미등록");
 
 // 다 풀었다면 99_연습문제_심화1_조건문까지_정답.js 와 비교해 보세요.
