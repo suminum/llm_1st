@@ -5,9 +5,15 @@
 // - 각 문제의 "// TODO: 여기에 작성" 부분을 채우면 (2) 기대 출력과 같은 결과가 나옵니다.
 // - 사용 범위: 08일차 전체 + if·else if·switch·삼항 + for·while·break·continue·중첩 for
 //   (함수, 배열 메소드(push·map·filter), for...of 는 10일차에 배우므로 사용하지 않습니다!)
+//
+// ⏱ 분량 안내 — 전체 11문항, 다 풀면 약 100분입니다. 두 교시 분량이니 나눠서 푸세요.
+//   1교시분 : 워밍업 A~D + 문제 1 ~ 3   (약 50분)  ← 오늘은 여기까지가 목표
+//   2교시분 : 문제 4 ~ 7                (약 50분)  ← 남는 시간·복습·자습용
+//   특히 문제 4(while 두 번)와 문제 6(예측 4덩어리)은 각각 한 문제처럼 보이지만
+//   실제로는 두 문제 분량입니다. 시간이 부족하면 이 둘을 뒤로 미루세요.
 
 // ┌──────────────────────────────────────────────────────────┐
-// │ 워밍업 A~C — 99_연습문제를 풀었다면 여기서 시작하세요.      │
+// │ 워밍업 A~D — 99_연습문제를 풀었다면 여기서 시작하세요.      │
 // │ 문제 1부터가 본 문제입니다. 빠른 학생은 워밍업을 건너뛰어도 │
 // │ 됩니다.                                                    │
 // └──────────────────────────────────────────────────────────┘
@@ -195,10 +201,10 @@ console.log(date, totalwithoutc, datewithoutc);
 //     - console.log 는 한 줄씩만 출력하므로, 안쪽 반복에서는 문자열을 변수에 "누적"하고
 //       한 줄이 완성되면 그때 출력합니다. (문자열도 += 로 이어 붙일 수 있습니다)
 // (2) 기대 출력:
-//     *
-//     **
-//     ***
-//     ****
+//         *
+//        **
+//       ***
+//      ****
 //     *****
 // (3) 힌트: 섹션11(중첩 for), 8일차 섹션14(+=), 8일차 섹션05(문자열 연결).
 //     안쪽 반복 횟수가 바깥 변수에 따라 달라진다는 점이 핵심입니다.
@@ -209,6 +215,8 @@ for (let i = 0; i < 5; i++) {
   }
   console.log(star);
 }
+
+console.log(line);
 
 // ═══ 문제 6 ═══ [도전] 결과 예측하기 — 반복문의 함정
 // (1) 요구사항: 아래 네 덩어리가 각각 무엇을 출력할지 먼저 종이에 적으세요.
@@ -310,8 +318,34 @@ for (let i = 0; i < orders.length; i++) {
 }
 console.log(count, money, cancel);
 
-
-
 // TODO: 여기에 작성
+console.log(`총 주문:${orders.length}`);
+let doneSum = 0;
+let cancelCount = 0;
+let maxAmount = 0;
+let maxCustomer = "";
 
+for (let i = 0; i < orders.length; i++) {
+  if (orders[i].status === "done") {
+    doneSum += orders[i].amount;
+  }
+  if (orders[i].status === "cancel") {
+    cancelCount++;
+  }
+  if (maxAmount < orders[i].amount) {
+    maxAmount = orders[i].amount;
+    maxCustomer = orders[i].customer;
+  }
+}
+console.log(`완료 금액 합계:${doneSum}`);
+console.log(`취소:${cancelCount}`);
+console.log(`최고 금액 고객:${maxCustomer}`);
+
+for (let j = 0; j < orders.length; j++) {
+  if (orders[j].status !== "done") {
+    continue;
+  }
+  let grade = orders[j].amount >= 30000 ? "VIP" : "일반";
+  console.log(`${orders[j].customer}:${grade}`);
+}
 // 다 풀었다면 99_연습문제_심화2_반복문까지_정답.js 와 비교해 보세요.
