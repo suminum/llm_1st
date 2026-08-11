@@ -31,7 +31,10 @@
 // (3) 힌트: 개념코드 섹션01(함수 선언문), 섹션02(return - 값을 밖으로 내보내기)
 console.log("===== 워밍업 A =====");
 // TODO: 여기에 작성
-
+function getCircleArea(radius) {
+  return radius * radius;
+}
+console.log(getCircleArea(5));
 // ═══ 워밍업 B ═══ 매개변수 두 개 + 기본값 [기본]
 // (1) 요구사항: 배송비를 계산하는 함수 getShippingFee 를 만드세요.
 //     - 매개변수: 주문금액, 지역추가금(기본값 0)
@@ -44,7 +47,10 @@ console.log("===== 워밍업 A =====");
 // (3) 힌트: 섹션03(매개변수와 인자 - 순서로 짝지어짐), 섹션04(기본 매개변수는 뒤쪽에)
 console.log("===== 워밍업 B =====");
 // TODO: 여기에 작성
-
+function getShippingFee(oreder, area = 0) {
+  return oreder > 30000 ? area : area + 3000;
+}
+console.log(getShippingFee(50000, 2000));
 // ═══ 워밍업 C ═══ 세 가지 표기법으로 같은 함수 쓰기 [기본]
 // (1) 요구사항: "숫자를 두 배로 만드는" 함수를 세 가지 표기법으로 각각 만들고,
 //     전부 7을 넣어 호출해 출력하세요.
@@ -58,6 +64,17 @@ console.log("===== 워밍업 B =====");
 // (3) 힌트: 섹션05(함수 표현식 - 끝에 세미콜론), 섹션07(화살표 함수 축약 3단계)
 console.log("===== 워밍업 C =====");
 // TODO: 여기에 작성
+function double1(int) {
+  return int * 2;
+}
+const double2 = function (int) {
+  return int * 2;
+};
+const double3 = (int) => int * 2;
+
+console.log(double1(7));
+console.log(double2(7));
+console.log(double3(7));
 
 // ┌──────────────────────────────────────────────────────────┐
 // │ 여기부터 본 문제입니다.                                    │
@@ -80,6 +97,19 @@ console.log("===== 워밍업 C =====");
 // (3) 힌트: 섹션02(return 은 값을 돌려주고 함수를 끝낸다),
 //     9일차 섹션06(잘못된 경우를 위에서 먼저 쳐내고, 정상 처리는 마지막에)
 console.log("===== 문제 1 =====");
+function checkSignup(id, password, age) {
+  if (id == null) {
+    return console.log("아이디를 입력하세요");
+  } else if (password.length < 8) {
+    return console.log("비밀번호는 8자이상");
+  } else if (age < 14) {
+    return console.log("14세 이상만 가입 가능");
+  }
+  return console.log("가입완료");
+}
+checkSignup("hong", "1234", 20);
+checkSignup("hong", "12345678", 12);
+checkSignup("hong", "12345678", 25);
 // 호출: checkSignup("hong", "1234", 20)
 //      checkSignup("hong", "12345678", 12)
 //      checkSignup("hong", "12345678", 25)
@@ -102,6 +132,23 @@ console.log("===== 문제 1 =====");
 console.log("===== 문제 2 =====");
 const fruits = ["사과", "바나나", "참외"];
 // TODO: 여기에 작성
+function runEach(list, callback) {
+  for (let i = 0; i < list.length; i++) {
+    callback(list[i]);
+  }
+}
+function apple(item) {
+  if (item == "사과") {
+    return console.log(item);
+  }
+}
+function three(item) {
+  if (item.length >= 3) {
+    return console.log(item);
+  }
+}
+runEach(fruits, apple);
+runEach(fruits, three);
 
 // ═══ 문제 3 ═══ 구조 분해로 짧게 쓰기 [응용]
 // (1) 요구사항: 아래 데이터를 구조 분해로 꺼내 세 줄을 출력하세요.
@@ -112,13 +159,24 @@ const fruits = ["사과", "바나나", "참외"];
 // (2) 기대 출력:
 //     위도 37.5665 / 경도 126.978
 //     어린 왕자 - 생텍쥐페리
+
 //     첫 점수: 90 / 나머지: [ 85, 77, 92 ]
 // (3) 힌트: 섹션12(배열 구조 분해 - 건너뛰기는 쉼표만, 나머지는 ...),
 //     섹션13(객체 구조 분해 - 매개변수 자리에서 바로)
 console.log("===== 문제 3 =====");
 const coords = [37.5665, 126.978, 38];
+const a = { ...coords };
+
+console.log(a[0], a[1]);
+function printBook({ title, author }) {
+  console.log(title + "-" + author);
+}
+
 const book = { title: "어린 왕자", author: "생텍쥐페리", year: 1943 };
 const scores = [90, 85, 77, 92];
+const [first, ...rest] = scores;
+//...rest는 scores와 연결된 배열이 아니라, 구조분해할 때 새로 만들어진 배열이야.
+console.log("첫번째:" + first + "나머지 :" + rest);
 // TODO: 여기에 작성
 
 // ┌──────────────────────────────────────────────────────────┐
@@ -144,6 +202,15 @@ const scores = [90, 85, 77, 92];
 //     모인 배열의 개수는 .length 로 셉니다. Math.floor 는 소수점을 버립니다.
 console.log("===== 문제 4 =====");
 // TODO: 여기에 작성
+function splitBill(total, ...name) {
+  //total 빼고 나머지 인자를 name으로 받음
+  let num = Math.floor(total / name.length);
+
+  return console.log(name.length + "명이 각" + num);
+}
+//{}는 객체 /[]는 배열
+const names = ["김", "이", "박"];
+splitBill(76000, "김", "이", "박");
 
 // ═══ 문제 5 ═══ [도전] 클로저로 값 지키기
 // (1) 요구사항: 도서관 대출 카운터를 만드세요.
@@ -164,6 +231,29 @@ console.log("===== 문제 4 =====");
 //     개념코드의 createCounter 와 같은 구조입니다. 세 함수가 같은 변수를 공유합니다.
 console.log("===== 문제 5 =====");
 // TODO: 여기에 작성
+function createLoanCounter(total) {
+  let book = total;
+  return {
+    borrow() {
+      if (book <= 0) {
+        return console.log("대출한도초과");
+      }
+      return console.log("대출완료 남은 " + --book + "권");
+    },
+    giveBack() {
+      return console.log("반납완료 남은 책 권수: " + ++book);
+    },
+    left() {
+      return console.log(book);
+    },
+  };
+}
+const a3 = createLoanCounter(2);
+a3.borrow();
+a3.borrow();
+a3.borrow();
+a3.giveBack();
+a3.left();
 
 // ═══ 문제 6 ═══ [도전] 결과 예측하기 — 함수의 함정
 // (1) 요구사항: 아래 다섯 덩어리가 각각 무엇을 출력할지 먼저 종이에 적으세요.

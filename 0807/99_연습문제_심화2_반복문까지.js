@@ -159,6 +159,9 @@ for (let i = 0; i < stocks.length; i++) {
 console.log("===== 문제 3 =====");
 // TODO: 여기에 작성
 for (let i = 1; i < 10; i++) {
+  if (i == 3 || i == 5) {
+    continue;
+  }
   for (let j = 1; j < 10; j++) {
     console.log(i * j > 20 ? "" : i * j);
   }
@@ -177,7 +180,9 @@ for (let i = 1; i < 10; i++) {
 // (3) 힌트: 섹션12(while - 증감을 직접 챙겨야 함), 8일차 섹션13(%),
 //     조건이 거짓이 되는 순간 반복이 끝난다는 것을 이용하세요.
 console.log("===== 문제 4 =====");
+
 // TODO: 여기에 작성
+
 let date = 0;
 let total = 50000;
 let totalwithoutc = 50000;
