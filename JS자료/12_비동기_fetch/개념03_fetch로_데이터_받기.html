@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>12단원 개념03 - fetch 로 데이터 받기</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 8px 16px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 6px;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+        min-height: 24px;
+      }
+      ul {
+        padding-left: 22px;
+        margin: 0;
+      }
+      li {
+        margin: 4px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 03 — fetch 로 데이터 받기</h1>
+
+    <p class="guide">
+      <strong>인터넷 연결이 필요합니다.</strong> 브라우저로 열고 버튼을 눌러 보세요.
+      <strong>F12 → Console</strong> 과 <strong>Network</strong> 탭을 함께 보면 실제로
+      데이터를 받아오는 게 보입니다.
+    
+      <br /><br />
+      <strong>인터넷이 막혀 있어 안 된다면</strong> 이 파일 아래쪽
+      <code>&lt;script&gt;</code> 바로 위에 있는 <code>오프라인_대체.js</code> 줄에서
+      주석 기호를 지우세요. 인터넷 없이도 똑같이 동작합니다.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>① 데이터 하나 받아오기</h3>
+      <button id="oneBtn">글 1개 가져오기</button>
+      <div class="output" id="out1">버튼을 눌러 보세요</div>
+
+      <h3>② 목록 받아서 화면에 그리기</h3>
+      <button id="listBtn">글 목록 가져오기</button>
+      <div class="output"><ul id="postList"></ul></div>
+
+      <h3>③ 사용자 목록</h3>
+      <button id="userBtn">사용자 가져오기</button>
+      <div class="output"><ul id="userList"></ul></div>
+    </div>
+
+    <!-- 인터넷이 막혀 이 파일이 동작하지 않으면, 바로 아래 줄을 감싼 주석 기호를 지워서 켜세요. 설명은 오프라인_대체.js 맨 위에 있습니다. -->
+    <!-- <script src="오프라인_대체.js"></script> -->
+    <script>
+      // ============================================================
+      // 12단원 · 개념 03 — fetch 로 데이터 받기
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 버튼 클릭. 인터넷 연결 필요.
+      // ============================================================
+      //
+      // 서버에서 데이터를 받아오는 함수입니다. 브라우저가 기본으로 제공합니다.
+      //
+      //     fetch(주소)
+      //       .then((res) => res.json())   ← 받은 것을 자바스크립트 값으로 변환
+      //       .then((data) => { ... })     ← 그 값을 사용
+      //
+      // fetch 는 Promise 를 돌려줍니다. 그래서 개념02 의 then 이 그대로 쓰입니다.
+
+      // [처음 나오는 용어 네 개]
+      //   API   프로그램끼리 데이터를 주고받는 창구. 여기서는 "데이터를 주는 주소" 정도로
+      //         생각하면 됩니다.
+      //   JSON  데이터를 글자로 적어 주고받는 형식. 생김새가 자바스크립트 객체와 거의 같습니다.
+      //         서버는 객체를 그대로 못 보내니 글자로 바꿔서 보냅니다.
+      //   파싱   그 글자를 프로그램이 다룰 수 있는 값으로 되돌리는 일. res.json() 이 합니다.
+      //   상태 코드  서버가 함께 보내는 세 자리 숫자.
+      //         200 성공 / 404 그런 거 없음 / 500 서버가 고장남
+      //
+      // 연습용 무료 API 를 씁니다. 가짜 데이터를 돌려주는 사이트입니다.
+      const BASE_URL = "https://jsonplaceholder.typicode.com";
+
+      // ── 섹션 1: 가장 기본 ──
+
+      const out1 = document.querySelector("#out1");
+
+      document.querySelector("#oneBtn").addEventListener("click", () => {
+        out1.textContent = "불러오는 중...";
+        console.log("요청 보냄");
+
+        fetch(`${BASE_URL}/posts/1`)
+          .then((res) => {
+            console.log("응답 도착:", res.status);
+            // 콘솔: 응답 도착: 200
+            return res.json(); // ★ 이 return 을 빠뜨리면 다음 then 이 undefined 를 받습니다
+          })
+          .then((data) => {
+            console.log("데이터:", data);
+            out1.textContent = data.title;
+          })
+          .catch((error) => {
+            out1.textContent = "가져오지 못했습니다";
+            console.log("실패:", error.message);
+          });
+
+        console.log("이 줄은 데이터를 기다리지 않고 먼저 실행됩니다");
+      });
+
+      // then 이 왜 두 번일까요?
+      //   1) fetch 가 끝나면 '응답 객체(Response)' 를 줍니다. 아직 내용은 안 읽었습니다.
+      //   2) res.json() 이 그 내용을 읽어 자바스크립트 값으로 바꿉니다.
+      //      이것도 시간이 걸리는 일이라 또 Promise 입니다.
+      //
+      // 그래서 then 이 두 번 필요합니다. 처음엔 다들 헷갈립니다.
+
+      // ✏️ 직접 해보기 1 — /posts/2 를 가져와 body 를 화면에 넣어 보세요.
+
+      // ── 섹션 2: 받은 데이터의 모양 ──
+
+      // /posts/1 을 요청하면 이런 객체가 옵니다.
+      //
+      //   {
+      //     userId: 1,
+      //     id: 1,
+      //     title: "sunt aut facere ...",
+      //     body: "quia et suscipit ..."
+      //   }
+      //
+      // 07단원에서 배운 객체 그대로입니다. 점으로 꺼내면 됩니다.
+      //
+      // 목록을 요청하면 객체들이 담긴 '배열' 이 옵니다. (07단원 개념05)
+      // 그러면 08단원의 map, filter 를 그대로 쓸 수 있습니다.
+      //
+      // 데이터가 어떻게 생겼는지 모르겠으면 일단 console.log(data) 로 찍어 보세요.
+      // 이게 가장 확실한 방법입니다.
+
+      // ✏️ 직접 해보기 2 — /posts/1 을 받아서 title 과 userId 를 각각 콘솔에 찍어 보세요.
+      //                    (받은 것은 07단원의 그냥 객체입니다)
+
+      // ── 섹션 3: 목록을 받아 화면에 그리기 ──
+
+      const postList = document.querySelector("#postList");
+
+      document.querySelector("#listBtn").addEventListener("click", () => {
+        postList.innerHTML = "<li>불러오는 중...</li>";
+
+        fetch(`${BASE_URL}/posts?_limit=5`)
+          .then((res) => res.json())
+          .then((posts) => {
+            console.log("받은 글 개수:", posts.length);
+            // 콘솔: 받은 글 개수: 5
+
+            // 08단원의 map + join + innerHTML (10단원 개념02)
+            postList.innerHTML = posts
+              .map((post) => `<li>${post.id}. ${post.title}</li>`)
+              .join("");
+          })
+          .catch(() => {
+            postList.innerHTML = "<li>불러오지 못했습니다</li>";
+          });
+      });
+
+      // 주소 뒤의 ?_limit=5 는 "5개만 주세요" 라는 뜻입니다.
+      // ? 뒤에 붙이는 이런 값을 쿼리 문자열이라고 합니다.
+      //
+      // 지금까지 배운 게 전부 여기서 만납니다.
+      //   fetch(비동기) → 배열(06단원) → map(08단원) → innerHTML(10단원)
+
+      // ✏️ 직접 해보기 3 — _limit 를 3 으로 바꿔 보세요.
+
+      // ── 섹션 4: createElement 로 안전하게 그리기 ──
+
+      const userList = document.querySelector("#userList");
+
+      document.querySelector("#userBtn").addEventListener("click", () => {
+        userList.innerHTML = "<li>불러오는 중...</li>";
+
+        fetch(`${BASE_URL}/users?_limit=4`)
+          .then((res) => res.json())
+          .then((users) => {
+            userList.innerHTML = ""; // 먼저 비우기
+
+            users.forEach((user) => {
+              const li = document.createElement("li");
+              // 서버에서 온 값이므로 textContent 로 넣습니다 (10단원 개념02)
+              li.textContent = `${user.name} (${user.email})`;
+              userList.appendChild(li);
+            });
+
+            console.log("사용자 이름들:", users.map((u) => u.name));
+          })
+          .catch(() => {
+            userList.innerHTML = "<li>불러오지 못했습니다</li>";
+          });
+      });
+
+      // 서버에서 온 데이터를 innerHTML 에 그대로 넣으면 위험합니다.
+      // 남이 입력한 글이 섞여 있을 수 있으니까요. (10단원 개념02 섹션 5)
+      // 실무에서는 이 방식(createElement + textContent)을 씁니다.
+
+      // ✏️ 직접 해보기 4 — 위 users 에서 name 말고 email 만 모아
+      //                    배열로 콘솔에 찍어 보세요. (08단원 map)
+
+      // ── 섹션 5: 다시 한 번, 순서 ──
+
+      // 버튼을 누르면 콘솔에 이 순서로 찍힙니다.
+      //
+      //   요청 보냄
+      //   이 줄은 데이터를 기다리지 않고 먼저 실행됩니다
+      //   응답 도착: 200
+      //   데이터: {...}
+      //
+      // fetch 아래 줄이 먼저 실행됩니다. 개념01 에서 본 그대로입니다.
+      //
+      // 그래서 이렇게 쓰면 안 됩니다.
+      //
+      //   let posts = [];
+      //   fetch(url).then((res) => res.json()).then((d) => { posts = d; });
+      //   console.log(posts.length);   ← 0 입니다. 아직 안 왔으니까요.
+      //
+      // 데이터를 쓰는 코드는 반드시 then 안에 넣어야 합니다.
+
+      // ✏️ 직접 해보기 5 — 바로 위의 '이렇게 쓰면 안 되는' 세 줄을 직접 실행해
+      //                    posts.length 가 정말 0 으로 나오는지 확인해 보세요.
+
+      // ── 섹션 6: 다른 요청 방법 (맛보기) ──
+
+      // 지금까지는 '가져오기(GET)' 만 했습니다. 보내는 것도 있습니다.
+      //
+      //   fetch(url, {
+      //     method: "POST",
+      //     headers: { "Content-Type": "application/json" },
+      //     body: JSON.stringify({ title: "새 글" }),
+      //   })
+      //
+      // JSON.stringify 는 자바스크립트 객체를 문자열로 바꿉니다.
+      // 반대는 JSON.parse 입니다. res.json() 이 그 일을 대신해 주는 것입니다.
+      console.log(JSON.stringify({ a: 1, b: "글자" }));
+      // 콘솔: {"a":1,"b":"글자"}
+      console.log(JSON.parse('{"a":1}'));
+      // 콘솔: { a: 1 }
+      //
+      // [주의] 이 연습용 사이트는 POST 를 받아 주는 척만 하고 실제로 저장하지 않습니다.
+      //        그래서 새로 만든 글을 다시 GET 하면 404 가 납니다. 정상입니다.
+
+      // ✏️ 직접 해보기 6 — { name: "홍길동", age: 20 } 을 JSON.stringify 로 바꿔 찍고,
+      //                    그 결과를 다시 JSON.parse 로 되돌려 age 만 꺼내 보세요.
+
+      // ── 섹션 7: 자주 하는 실수 ──
+
+      // [실수 1] res.json() 앞에 return 을 빠뜨림
+      // .then((res) => { res.json(); })
+      // 실수: 다음 then 이 undefined 를 받습니다. 화살표 한 줄로 쓰면 자동 return 됩니다.
+      //       .then((res) => res.json())
+
+      // [실수 2] res 를 데이터라고 생각
+      // .then((res) => console.log(res.title))
+      // 실수: undefined 입니다. res 는 응답 객체이지 내용이 아닙니다.
+
+      // [실수 3] fetch 결과를 밖에서 바로 씀 (섹션 5)
+
+      // [실수 4] catch 를 안 붙임
+      // 인터넷이 끊기거나 주소가 틀리면 조용히 아무 일도 안 일어납니다.
+
+      // [실수 5] 주소를 틀리게 씀
+      // 오타가 있어도 fetch 는 에러를 던지지 않고 404 응답을 '성공' 으로 처리합니다.
+      // 이 문제는 개념05 에서 res.ok 로 해결합니다.
+
+      // ── 정리 ──
+
+      // 1. fetch(주소).then((res) => res.json()).then((data) => { ... })
+      // 2. then 이 두 번인 이유: 응답 받기 → 내용 읽기, 둘 다 시간이 걸린다.
+      // 3. res 는 응답 객체, data 가 진짜 내용이다.
+      // 4. 받은 데이터는 객체나 배열이므로 07·08단원 그대로 다룬다.
+      // 5. 데이터를 쓰는 코드는 반드시 then 안에 넣는다.
+      // 6. 서버에서 온 값은 innerHTML 보다 textContent 가 안전하다.
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) fetch(`${BASE_URL}/posts/2`)
+      //      .then((res) => res.json())
+      //      .then((data) => {
+      //        out1.textContent = data.body;
+      //      });
+      //
+      // 2) fetch(`${BASE_URL}/posts/1`)
+      //      .then((res) => res.json())
+      //      .then((data) => {
+      //        console.log(data.title);
+      //        console.log(data.userId);
+      //      });
+      //    // 콘솔: sunt aut facere repellat provident occaecati excepturi optio reprehenderit
+      //    // 콘솔: 1
+      //    → 서버에서 왔다는 것만 다를 뿐, 꺼내는 방법은 07단원의 객체와 똑같습니다.
+      //
+      // 3) fetch(`${BASE_URL}/posts?_limit=3`)
+      //    주소의 숫자만 바꾸면 됩니다.
+      //
+      // 4) fetch(`${BASE_URL}/users?_limit=4`)
+      //      .then((res) => res.json())
+      //      .then((users) => {
+      //        console.log(users.map((u) => u.email));
+      //      });
+      //    // 콘솔: ['Sincere@april.biz', 'Shanna@melissa.tv',
+      //    //        'Nathan@yesenia.net', 'Julianne.OConner@kory.org']
+      //    → 받은 것이 배열이니 08단원의 map 을 그대로 쓸 수 있습니다.
+      //      "서버에서 온 데이터" 라고 특별한 것이 아니라 그냥 배열입니다.
+      //
+      // 5) let posts = [];
+      //    fetch(`${BASE_URL}/posts?_limit=5`)
+      //      .then((res) => res.json())
+      //      .then((d) => {
+      //        posts = d;
+      //      });
+      //    console.log("바로 읽으면:", posts.length);
+      //    // 콘솔: 바로 읽으면: 0
+      //    → 5개를 받아 왔는데도 0 입니다. console.log 가 먼저 실행되고
+      //      데이터는 그 뒤에 도착하기 때문입니다.
+      //      개념01 섹션 3에서 setTimeout 으로 본 것과 완전히 같은 문제입니다.
+      //
+      // 6) const person = { name: "홍길동", age: 20 };
+      //    const text = JSON.stringify(person);
+      //    console.log(text);
+      //    // 콘솔: {"name":"홍길동","age":20}
+      //    console.log(typeof text);
+      //    // 콘솔: string
+      //
+      //    const back = JSON.parse(text);
+      //    console.log(back.age);
+      //    // 콘솔: 20
+      //    → 겉모습은 객체와 비슷해 보이지만 typeof 가 string 입니다.
+      //      서버로 보낼 때는 글자로 바꿔서 보내고, 받을 때는 다시 객체로
+      //      되돌려야 합니다. res.json() 이 그 '되돌리기' 를 대신해 주는 것입니다.
+    </script>
+  </body>
+</html>

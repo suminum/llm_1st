@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- ↓ 이 한 줄이 이 파일의 주인공입니다. 섹션 2 에서 설명합니다. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>13단원 개념03 - 화면 크기와 미디어쿼리</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ── 섹션 1 : 고정 폭과 유연한 폭 ── */
+      .scroll-frame {
+        overflow-x: auto;
+        border: 1px dashed #bbb;
+        padding: 6px;
+      }
+      /* 화면: 안의 내용이 넘치면 이 상자 안에만 가로 스크롤 막대가 생깁니다 */
+
+      .fixed-card {
+        width: 700px;
+        box-sizing: border-box;
+        background: #ffe0e0;
+        border: 1px solid #e0a0a0;
+        padding: 10px;
+      }
+      /* 화면: 창을 아무리 좁혀도 폭이 700px 에서 안 변합니다 */
+
+      .fluid-card {
+        background: #e0f2e0;
+        border: 1px solid #8cc48c;
+        padding: 10px;
+      }
+      /* 화면: 폭을 안 정했으므로 부모 폭을 그대로 채웁니다 (1280 에서 824px) */
+
+      /* ── 섹션 4 : @media (max-width) ── */
+      .size-badge {
+        border: 2px solid #333;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+      }
+      .wide-only {
+        display: block;
+        background: #cfe0ff;
+      }
+      .narrow-only {
+        display: none;
+        background: #ffd9a8;
+      }
+      @media (max-width: 600px) {
+        .wide-only {
+          display: none;
+        }
+        .narrow-only {
+          display: block;
+        }
+      }
+      /* 화면: 창이 601px 이상이면 파란 띠, 600px 이하면 주황 띠 하나만 보입니다 */
+
+      /* ── 섹션 5 : @media (min-width) ── */
+      .mq-min {
+        background: #eeeeee;
+        border: 1px solid #bbbbbb;
+        padding: 10px;
+      }
+      @media (min-width: 700px) {
+        .mq-min {
+          background: #d9f0d9;
+          border-color: #8cc48c;
+        }
+      }
+      /* 화면: 창이 700px 이상이면 초록, 그 미만이면 회색입니다 */
+
+      /* ── 섹션 6 : 미디어쿼리로 칸 수 바꾸기 ── */
+      .mq-cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .mq-cards div {
+        background: #dbe7fb;
+        border: 1px solid #9ab8e8;
+        padding: 10px;
+        text-align: center;
+      }
+      @media (min-width: 600px) {
+        .mq-cards {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (min-width: 900px) {
+        .mq-cards {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+      }
+      /* 화면: 1280 에서 268px 3칸, 768 에서 341px 2칸, 480 에서 404px 1칸입니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         13단원 · 개념 03 — 화면 크기와 미디어쿼리
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              ★ 이 파일은 창 크기를 바꿔 가며 봐야 합니다.
+                브라우저 창의 오른쪽 끝을 잡고 좁혔다 넓혔다 해 보세요.
+                섹션 3 에서 더 정확한 방법(F12 기기 툴바) 을 배웁니다.
+         ============================================================
+
+         지금까지 만든 화면은 전부 "지금 이 창 크기" 에서만 예뻤습니다.
+         그런데 같은 페이지를 보는 화면의 크기는 사람마다 다릅니다.
+
+             휴대폰       가로 약 360 ~ 430px
+             태블릿       가로 약 768 ~ 1024px
+             노트북       가로 약 1280 ~ 1600px
+             큰 모니터    가로 1920px 이상
+
+         가로 1200px 을 기준으로 만든 3단 화면을 폭 360px 짜리 휴대폰에서 열면
+         칸 하나가 100px 도 안 됩니다. 글자가 한 글자씩 세로로 쌓입니다.
+         반대로 휴대폰에 맞춰 1단으로 만들면 큰 모니터에서는 가운데만 쓰고
+         좌우가 텅 빕니다.
+
+         그래서 필요한 것이 반응형(responsive) 입니다.
+         "화면 폭에 반응해서 배치를 바꾸는 것" 이라는 뜻입니다.
+
+             화면이 좁으면        화면이 넓으면
+             ┌──────────┐         ┌─────┬─────┬─────┐
+             │    1     │         │  1  │  2  │  3  │
+             ├──────────┤         └─────┴─────┴─────┘
+             │    2     │
+             ├──────────┤
+             │    3     │
+             └──────────┘
+
+         개념02 의 auto-fit 도 반응형의 한 방법이었습니다. 다만 칸 수만 바뀝니다.
+         글자 크기, 메뉴 방향, 숨길 요소까지 바꾸려면 @media 가 필요합니다.
+
+         먼저 용어 하나를 정합니다.
+
+             뷰포트(viewport)
+             브라우저 창에서 웹페이지가 실제로 그려지는 네모난 영역입니다.
+             주소창·즐겨찾기 막대·창 테두리는 빼고, 페이지가 차지하는 부분만입니다.
+             "화면 폭" 이라고 하면 보통 이 뷰포트의 가로 길이를 말합니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 03 — 화면 크기와 미디어쿼리</h1>
+    <p class="doc-sub">13단원 · Grid 와 반응형</p>
+
+    <p class="doc-guide">
+      이 파일은 <strong>창 크기를 바꿔 가며</strong> 봐야 합니다.
+      브라우저 창의 오른쪽 끝을 마우스로 잡고 좁혔다 넓혔다 해 보세요.
+      아래 상자들의 색과 칸 수가 바뀝니다. 섹션 3 에서 폭을 숫자로 정확히 맞추는
+      방법(<strong>F12 기기 툴바</strong>)을 단계별로 배웁니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: 고정 폭이 만드는 문제 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 왜 반응형이 필요한가</h2>
+      <p class="doc-desc">
+        폭을 <code>px</code> 로 못 박아 두면 창이 좁아져도 그대로입니다.
+        좁은 화면에서는 <strong>화면 밖으로 삐져나갑니다.</strong>
+      </p>
+
+      <!--
+        아래 상자에는 두 개의 카드가 들어 있습니다.
+
+            .fixed-card { width: 700px; }   폭을 700px 로 못 박았습니다
+            .fluid-card {  }                폭을 아예 안 정했습니다
+
+        div 는 블록 요소이므로 폭을 안 정하면 부모 폭을 그대로 채웁니다(10단원).
+        부모가 좁아지면 같이 좁아진다는 뜻입니다. 이것이 "유연하다" 는 것입니다.
+
+        지금 이 창(폭 1280) 에서는 두 카드 다 멀쩡해 보입니다.
+        빨간 카드가 700px, 초록 카드가 824px 입니다. 문제가 안 보입니다.
+
+        창을 폭 480px 정도로 좁혀 보세요. 그때 차이가 드러납니다.
+
+            빨간 카드   700px 그대로  → 상자 밖으로 나가서 가로 스크롤이 생깁니다
+            초록 카드   404px 로 줄어듦 → 그대로 다 보입니다
+
+        빨간 카드는 일부러 점선 상자(.scroll-frame) 안에 넣어 두었습니다.
+        그 상자에 overflow-x: auto 를 줬기 때문에(10단원) 넘치는 부분이
+        페이지 전체가 아니라 그 상자 안에서만 스크롤됩니다.
+        진짜 웹페이지에서 이런 일이 생기면 페이지 전체에 가로 스크롤 막대가 생깁니다.
+        휴대폰에서 이것만큼 짜증나는 것이 없습니다.
+
+        반응형의 첫걸음은 사실 아주 단순합니다.
+        "꼭 필요한 곳이 아니면 폭을 px 로 못 박지 않는다." 이것 하나입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 위는 고정 700px, 아래는 폭을 안 정한 카드</p>
+        <div class="scroll-frame">
+          <div class="fixed-card" id="fixedCard">width: 700px — 창을 좁혀도 안 줄어듭니다</div>
+        </div>
+        <div class="fluid-card" id="fluidCard">폭을 안 정함 — 창을 좁히면 같이 줄어듭니다</div>
+        <!-- 화면: 폭 1280 에서 빨간 카드 700px, 초록 카드 824px 입니다.
+                  폭 480 으로 좁히면 빨간 카드는 700px 그대로라 점선 상자 안에
+                  가로 스크롤 막대가 생기고, 초록 카드는 404px 로 줄어듭니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 브라우저 창의 오른쪽 끝을 마우스로 잡고 화면 절반 정도까지
+        좁혀 보세요. 두 카드 중 어느 쪽이 줄어드는지 확인하고, 다시 넓혀 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: viewport meta ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — viewport meta 가 없으면 벌어지는 일</h2>
+      <p class="doc-desc">
+        반응형을 만들기 전에 <strong>반드시 먼저 넣어야 하는 한 줄</strong>이 있습니다.
+        이것을 빠뜨리면 아래에서 배울 내용이 전부 헛일이 됩니다.
+      </p>
+
+      <!--
+        이 한 줄입니다. 이 파일의 head 안에도 이미 들어 있습니다.
+
+            <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        01단원에서 meta 태그를 배웠습니다. "브라우저에게 주는 안내문" 이었습니다.
+        charset 이 "이 파일 글자는 UTF-8 로 읽어라" 였다면,
+        이 줄은 "이 페이지의 뷰포트를 이렇게 잡아라" 라는 안내문입니다.
+
+            name="viewport"                뷰포트에 대한 안내라는 뜻
+            width=device-width             뷰포트 폭을 기기의 실제 화면 폭으로 잡아라
+            initial-scale=1                처음 확대 배율을 1배(원래 크기)로 해라
+
+        ★ 이 줄이 없으면 휴대폰에서 무슨 일이 일어나나요
+
+        휴대폰 브라우저는 옛날 PC 전용 페이지도 어떻게든 보여 줘야 했습니다.
+        그래서 이 줄이 없으면 이렇게 행동합니다.
+
+            1) 실제 폭이 390px 인데도 "폭 980px 짜리 가상 화면" 이 있다고 칩니다
+            2) 거기에 페이지를 다 그립니다
+            3) 그림 전체를 390 ÷ 980 = 약 0.4배로 축소해서 화면에 붙입니다
+
+        결과는 이렇습니다.
+
+            글자가 개미만큼 작아집니다. 손가락으로 확대해야 읽힙니다
+            버튼이 너무 작아서 누르기 힘듭니다
+            @media (max-width: 600px) 이 절대 안 먹습니다
+                → 브라우저는 지금 폭이 980px 이라고 믿고 있기 때문입니다
+
+        세 번째가 특히 무섭습니다. 미디어쿼리를 아무리 정성껏 써도
+        조건이 한 번도 맞지 않아서 "아무 일도 안 일어납니다."
+        코드는 완벽한데 화면만 안 바뀌는, 원인 찾기가 가장 어려운 상황입니다.
+
+        ★ 왜 PC 에서는 확인이 안 되나요
+
+        PC 브라우저에는 저 가상 화면 개념이 없습니다.
+        그래서 이 줄을 지우고 PC 에서 창을 좁혀도 화면이 똑같습니다.
+        "지웠는데 멀쩡한데요?" 라는 말이 여기서 나옵니다.
+        차이를 보려면 진짜 휴대폰이나, 섹션 3 의 기기 툴바가 필요합니다.
+
+        규칙은 간단합니다. 새 HTML 파일을 만들면 charset 바로 아래에 이 줄을 넣으세요.
+        고민할 것 없이 항상 같은 내용입니다.
+      -->
+      <div class="doc-code">&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;
+  &lt;title&gt;내 페이지&lt;/title&gt;
+&lt;/head&gt;</div>
+      <!-- 화면: 검은 코드 상자 안에 head 예시 네 줄이 보입니다 -->
+
+      <p class="doc-note">
+        이 줄은 <strong>휴대폰에서만</strong> 효과가 있습니다. PC 브라우저에서는
+        넣으나 빼나 화면이 같습니다. 그래서 더 잘 빠뜨립니다.
+        <strong>새 파일을 만들 때마다 charset 바로 아래에 같이 쓰는 습관</strong>을 들이세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 이 파일 맨 위 <code>&lt;head&gt;</code> 안에서
+        viewport 줄을 찾아보세요. 찾았으면 그 줄 앞뒤를 소리 내어 읽어 보고,
+        여러분이 앞 단원에서 만든 파일 중 하나를 열어 그 줄이 있는지 확인해 보세요.
+        없다면 지금 넣어 두세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 기기 툴바 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — F12 기기 툴바로 화면 폭 바꿔 보기</h2>
+      <p class="doc-desc">
+        창을 손으로 끄는 것으로는 <strong>지금 폭이 몇 px 인지</strong> 알 수 없습니다.
+        크롬에 폭을 숫자로 정해 놓고 보는 기능이 있습니다. 이 단원은 이것 없이는 못 배웁니다.
+      </p>
+
+      <!--
+        기기 툴바(Device Toolbar) 는 크롬 개발자 도구의 기능입니다.
+        휴대폰이나 태블릿 화면인 척하고 페이지를 보여 줍니다.
+        폭을 숫자로 입력할 수 있어서, 미디어쿼리가 정확히 언제 바뀌는지 확인할 수 있습니다.
+
+        중요한 점: 기기 툴바를 켜면 viewport meta 도 진짜 휴대폰처럼 동작합니다.
+        그래서 섹션 2 에서 배운 내용을 여기서 눈으로 확인할 수 있습니다.
+
+        아래 순서대로 한 번만 해 보면 그다음부터는 손에 익습니다.
+      -->
+      <ol class="doc-demo">
+        <li><strong>F12</strong> 를 누릅니다. 화면 오른쪽(또는 아래) 에 개발자 도구가 열립니다.</li>
+        <li>
+          <strong>Ctrl + Shift + M</strong> 을 누릅니다. 개발자 도구 왼쪽 위의
+          <strong>휴대폰 모양 아이콘</strong>을 눌러도 같습니다. 페이지가 좁은 화면으로 바뀝니다.
+        </li>
+        <li>
+          페이지 위쪽에 생긴 막대에서 기기 이름 칸을 <strong>Responsive</strong>
+          (반응형) 로 바꿉니다. 그래야 폭을 마음대로 정할 수 있습니다.
+        </li>
+        <li>
+          그 옆의 숫자 칸에 폭을 직접 칩니다. <strong>360</strong> 을 넣어 보세요.
+          작은 휴대폰 크기입니다.
+        </li>
+        <li>
+          폭을 <strong>480 → 600 → 768 → 1024</strong> 로 하나씩 바꾸면서
+          이 페이지의 섹션 4, 5, 6 상자가 어떻게 변하는지 보세요.
+        </li>
+        <li>
+          다 봤으면 <strong>Ctrl + Shift + M</strong> 을 다시 눌러 끄고,
+          <strong>F12</strong> 로 개발자 도구를 닫습니다.
+        </li>
+      </ol>
+      <!-- 화면: 여섯 단계짜리 번호 목록이 점선 상자 안에 보입니다 -->
+
+      <p class="doc-note">
+        폭 숫자가 이상하게 나온다면 브라우저 확대 배율을 확인하세요.
+        <strong>Ctrl + 0</strong> 을 누르면 100% 로 돌아갑니다.
+        확대가 걸려 있으면 미디어쿼리가 판단하는 폭도 같이 달라집니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 순서대로 기기 툴바를 켜고 폭을 <strong>375</strong> 로 맞춰 보세요.
+        그 상태에서 아래 섹션 4 의 띠가 무슨 색인지 확인하고, 폭을 <strong>800</strong> 으로
+        바꿔 다시 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: @media (max-width) ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — @media (max-width) 로 좁을 때만 다르게</h2>
+      <p class="doc-desc">
+        <code>@media</code> 는 <strong>"이 조건일 때만 이 CSS 를 적용해라"</strong> 라는 뜻입니다.
+        조건이 안 맞으면 그 안의 규칙은 아예 없는 것이 됩니다.
+      </p>
+
+      <!--
+        문법은 이렇게 생겼습니다. 중괄호가 두 겹이라는 점이 핵심입니다.
+
+            @media (max-width: 600px) {
+              .narrow-only {
+                display: block;
+              }
+            }
+            └─ 바깥 중괄호: 조건이 맞을 때 적용할 규칙들을 담는 자루
+               안쪽 중괄호: 원래 쓰던 그냥 CSS 규칙 (선택자 + 선언)
+
+        읽는 법: "뷰포트 폭이 최대 600px 일 때(= 600px 이하일 때) 아래 규칙을 적용해라."
+
+        max-width 는 "최댓값" 입니다. 조건이 걸리는 쪽이 좁은 화면입니다.
+        처음 배울 때 이것이 정말 헷갈립니다. 이렇게 읽으면 덜 헷갈립니다.
+
+            max-width: 600px   폭이 600 을 넘지 않을 때 → 좁을 때
+            min-width: 600px   폭이 600 이상일 때       → 넓을 때
+
+        경계값은 포함입니다. max-width: 600px 은 폭이 정확히 600px 일 때도 맞습니다.
+        그래서 min-width: 600px 과 겹칩니다. 겹치면 나중에 쓴 규칙이 이깁니다(08단원).
+        겹치지 않게 하려면 601px 부터 잡거나, 아예 한쪽만 씁니다.
+
+        아래 상자에는 띠 두 개가 들어 있습니다. 기본 상태는 이렇습니다.
+
+            .wide-only   { display: block; }   보임
+            .narrow-only { display: none; }    안 보임
+
+        그리고 폭이 600px 이하가 되면 이 둘이 서로 뒤바뀝니다.
+        display 는 11단원에서 배웠습니다. none 이면 자리까지 통째로 사라집니다.
+
+        지금 화면에는 둘 중 하나만 보입니다. 창을 좁히면 다른 하나로 바뀝니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 창 폭에 따라 띠가 바뀝니다</p>
+        <p class="size-badge wide-only" id="wideBadge">넓은 화면입니다 (601px 이상)</p>
+        <p class="size-badge narrow-only" id="narrowBadge">좁은 화면입니다 (600px 이하)</p>
+        <!-- 화면: 폭 1280 에서는 파란 "넓은 화면입니다" 띠 하나만 보입니다.
+                  폭 480 으로 좁히면 그 자리에 주황 "좁은 화면입니다" 띠가 대신 보입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>@media (max-width: 600px)</code> 의 600 을
+        <code>1000</code> 으로 바꿔 보세요. 창을 좁히지 않아도 주황 띠로 바뀝니다.
+        왜 그런지 설명해 보고, 확인했으면 600 으로 되돌리세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: @media (min-width) 와 중단점 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — @media (min-width) 와 흔한 중단점</h2>
+      <p class="doc-desc">
+        <code>min-width</code> 는 반대입니다. <strong>"이 폭 이상일 때"</strong> 적용합니다.
+        배치가 바뀌는 기준 폭을 <strong>중단점(breakpoint)</strong> 이라고 부릅니다.
+      </p>
+
+      <!--
+        아래 상자에는 이렇게 썼습니다.
+
+            .mq-min { background: #eeeeee; }              기본은 회색
+
+            @media (min-width: 700px) {
+              .mq-min { background: #d9f0d9; }            700px 이상이면 초록
+            }
+
+        기본값을 먼저 쓰고, 조건이 맞을 때 덮어쓰는 구조입니다.
+        조건이 안 맞으면 회색인 채로 남습니다. "없는 셈" 이 되기 때문입니다.
+
+        ★ 중단점은 어디에 잡나요
+
+        정해진 답은 없습니다. 다만 기기 크기가 몰려 있는 자리가 있습니다.
+
+            360px    작은 휴대폰
+            390px    요즘 흔한 휴대폰
+            480px    큰 휴대폰 / 작은 화면의 경계로 많이 씁니다
+            768px    태블릿 세로. 가장 널리 쓰이는 중단점입니다
+            1024px   태블릿 가로, 작은 노트북
+            1280px   보통 노트북과 데스크톱
+
+        실무에서는 보통 두세 개면 충분합니다. 예를 들어 600px 과 900px 두 개만 잡아도
+        휴대폰·태블릿·데스크톱 세 가지를 다룰 수 있습니다.
+
+        중단점을 기기 이름으로 정하려 하지 마세요. 기기는 매년 새로 나옵니다.
+        "이 폭부터 화면이 못생겨진다" 는 자리를 직접 눈으로 찾아 거기에 잡는 것이
+        훨씬 좋은 방법입니다. 창을 천천히 좁히면서 어색해지는 순간을 보면 됩니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 700px 이상이면 초록</p>
+        <p class="mq-min" id="minBox">min-width: 700px 조건이 맞으면 초록, 아니면 회색입니다</p>
+        <!-- 화면: 폭 1280 에서 연초록 상자입니다. 폭 480 으로 좁히면 회색으로 바뀝니다 -->
+      </div>
+
+      <table class="doc-demo">
+        <thead>
+          <tr>
+            <th>중단점</th>
+            <th>대략 어떤 기기</th>
+            <th>보통 이렇게 씁니다</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>기본 (조건 없음)</td>
+            <td>휴대폰</td>
+            <td>1단으로 세로로 쌓기</td>
+          </tr>
+          <tr>
+            <td>600px 이상</td>
+            <td>큰 휴대폰 가로, 작은 태블릿</td>
+            <td>2단으로 나누기</td>
+          </tr>
+          <tr>
+            <td>900px 이상</td>
+            <td>태블릿 가로, 노트북</td>
+            <td>3단, 옆 메뉴 보이기</td>
+          </tr>
+          <tr>
+            <td>1280px 이상</td>
+            <td>데스크톱</td>
+            <td>가운데 폭 제한, 여백 늘리기</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- 화면: 네 줄짜리 중단점 표가 점선 상자 안에 그려집니다 -->
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>.mq-min</code> 의 조건을
+        <code>@media (max-width: 700px)</code> 로 바꿔 보세요.
+        색이 언제 초록이 되는지가 정확히 반대로 뒤집힙니다. 확인했으면 되돌리세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 미디어쿼리 + grid ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 미디어쿼리로 격자의 칸 수를 바꿉니다</h2>
+      <p class="doc-desc">
+        13단원의 두 축이 여기서 만납니다.
+        <strong>grid 로 칸을 만들고, @media 로 칸 수를 바꿉니다.</strong>
+      </p>
+
+      <!--
+        아래 상자에는 이렇게 썼습니다. 위에서부터 순서대로 읽으면 됩니다.
+
+            .mq-cards {
+              display: grid;
+              grid-template-columns: 1fr;        기본은 1칸
+              gap: 10px;
+            }
+
+            @media (min-width: 600px) {
+              .mq-cards { grid-template-columns: 1fr 1fr; }        600 이상이면 2칸
+            }
+
+            @media (min-width: 900px) {
+              .mq-cards { grid-template-columns: 1fr 1fr 1fr; }    900 이상이면 3칸
+            }
+
+        조건이 겹치는 구간이 있습니다. 폭이 1000px 이면 600 조건도 맞고 900 조건도 맞습니다.
+        이럴 때는 나중에 쓴 규칙이 이깁니다(08단원에서 배운 순서 규칙).
+        그래서 900px 짜리를 아래에 써야 3칸이 됩니다. 순서를 바꾸면 영영 2칸입니다.
+
+        폭마다 실제 칸 크기를 재 보면 이렇습니다.
+
+            폭 1280  상자 안쪽 824px  → 268px 짜리 3칸
+            폭  768  상자 안쪽 692px  → 341px 짜리 2칸
+            폭  480  상자 안쪽 404px  → 404px 짜리 1칸
+
+        ★ 개념02 의 auto-fit 과 무엇이 다른가요
+
+            auto-fit  칸 수만 자동으로 바뀝니다. 짧고 편합니다
+            @media    무엇이든 바꿀 수 있습니다. 글자 크기, 메뉴 방향, 숨기기까지
+
+        카드 목록처럼 칸 수만 바뀌면 되는 곳은 auto-fit 이 훨씬 짧습니다.
+        "좁을 때는 옆 메뉴를 숨긴다" 같은 일은 @media 로만 됩니다.
+        둘은 경쟁 관계가 아니라 같이 씁니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 1칸 → 2칸 → 3칸</p>
+        <div class="mq-cards" id="mqCards">
+          <div>카드 1</div>
+          <div>카드 2</div>
+          <div>카드 3</div>
+          <div>카드 4</div>
+          <div>카드 5</div>
+          <div>카드 6</div>
+        </div>
+        <!-- 화면: 폭 1280 에서 268px 짜리 3칸이 두 줄로 놓입니다.
+                  폭 768 에서는 341px 짜리 2칸, 폭 480 에서는 404px 짜리 1칸이 됩니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — 기기 툴바에서 폭을 <strong>599</strong> 로 맞췄다가
+        <strong>600</strong> 으로 한 칸 올려 보세요. 1px 차이로 배치가 바뀝니다.
+        이 순간이 바로 중단점입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        미디어쿼리의 실수는 대부분 <strong>"아무 일도 안 일어난다"</strong> 로 나타납니다.
+        조건이 한 번도 맞지 않으면 그 안의 CSS 는 없는 것과 같기 때문입니다.
+      </p>
+
+      <!-- [실수 1] viewport meta 를 빠뜨림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — viewport meta 를 빠뜨림</span>
+        <div class="doc-code">&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+  &lt;title&gt;내 페이지&lt;/title&gt;
+&lt;/head&gt;</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> PC 에서는 멀쩡합니다.
+          그런데 휴대폰에서 열면 <strong>글자가 개미만 하게 축소되어</strong> 보이고,
+          정성껏 쓴 미디어쿼리가 하나도 안 먹습니다. 브라우저가 화면 폭을
+          980px 이라고 믿고 있기 때문입니다. 이 단원에서 가장 비싼 실수입니다.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code"
+          >&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</div>
+      </div>
+
+      <!-- [실수 2] min-width 와 max-width 를 반대로 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — min-width 와 max-width 를 반대로 씀</span>
+        <div class="doc-code">/* 휴대폰에서 1칸으로 만들려고 */
+@media (min-width: 600px) {
+  .cards { grid-template-columns: 1fr; }
+}</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 정확히 반대로 동작합니다.
+          <strong>넓은 화면에서 1칸</strong>이 되고 휴대폰에서는 그대로입니다.
+          <code>min-width</code> 는 "이 값 이상", <code>max-width</code> 는 "이 값 이하" 입니다.
+          이름의 min/max 가 화면 크기가 아니라 <strong>조건의 경계값</strong>을 가리킨다고
+          생각하면 덜 헷갈립니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] 선택자를 안 감쌈 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — @media 안에 선택자를 안 씀</span>
+        <div class="doc-code">@media (max-width: 600px) {
+  grid-template-columns: 1fr;
+}</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 아무 일도 안 일어납니다.
+          <code>@media</code> 안에는 <strong>규칙 전체</strong>가 들어가야 합니다.
+          즉 선택자와 중괄호를 한 번 더 써야 합니다. 선언만 덜렁 쓰면 무시됩니다.
+          "중괄호가 두 겹" 이라는 것을 기억하세요.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">@media (max-width: 600px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}</div>
+      </div>
+
+      <!-- [실수 4] 단위 누락 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 조건에 단위를 안 씀</span>
+        <div class="doc-code">@media (max-width: 600) {
+  .cards { grid-template-columns: 1fr; }
+}</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 조건이 절대 맞지 않아
+          그 안의 CSS 가 한 번도 적용되지 않습니다.
+          <code>600</code> 이 아니라 <code>600px</code> 이어야 합니다.
+          <strong>CSS 는 0 말고는 단위를 생략할 수 없습니다.</strong>
+        </p>
+      </div>
+
+      <!-- [실수 5] 순서를 거꾸로 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — @media 를 기본 규칙보다 위에 씀</span>
+        <div class="doc-code">@media (min-width: 900px) {
+  .cards { grid-template-columns: 1fr 1fr 1fr; }
+}
+
+.cards { grid-template-columns: 1fr; }   /* 나중에 쓴 이쪽이 이깁니다 */</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 넓은 화면에서도 계속 1칸입니다.
+          명시도가 같으면 <strong>나중에 쓴 규칙이 이깁니다</strong>(08단원).
+          <code>@media</code> 는 명시도를 올려 주지 않으므로 순서에서 밀리면 그냥 집니다.
+          <strong>기본 규칙을 먼저, 미디어쿼리를 아래에</strong> 쓰세요.
+        </p>
+      </div>
+
+      <!-- [실수 6] 명시도에서 짐 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 6 — 미디어쿼리 안의 규칙이 명시도에서 짐</span>
+        <div class="doc-code">#cardList { grid-template-columns: 1fr 1fr 1fr; }   /* 1-0-0 */
+
+@media (max-width: 600px) {
+  .cards { grid-template-columns: 1fr; }            /* 0-1-0 */
+}</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 좁은 화면에서도 3칸 그대로입니다.
+          <code>@media</code> 안에 있다고 해서 더 세지지 않습니다.
+          id 선택자가 클래스 선택자를 이기는 것은 그대로입니다(08단원).
+          <strong>안에서든 밖에서든 같은 선택자를 쓰는 것</strong>이 가장 안전합니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <strong>뷰포트</strong>는 브라우저에서 페이지가 실제로 그려지는 영역입니다.</p>
+      <p>
+        2. <code>&lt;meta name="viewport" content="width=device-width, initial-scale=1" /&gt;</code>
+        를 <strong>항상</strong> 넣습니다. 없으면 휴대폰에서 미디어쿼리가 안 먹습니다.
+      </p>
+      <p>3. <strong>F12 → Ctrl+Shift+M</strong> 으로 폭을 숫자로 정해 놓고 확인합니다.</p>
+      <p>
+        4. <code>@media (max-width: 600px)</code> 는 좁을 때,
+        <code>@media (min-width: 600px)</code> 는 넓을 때입니다. 경계값은 포함입니다.
+      </p>
+      <p>5. <code>@media</code> 안에는 <strong>선택자까지</strong> 씁니다. 중괄호가 두 겹입니다.</p>
+      <p>6. 흔한 중단점은 <strong>600px</strong> 과 <strong>900px</strong> 두 개면 대개 충분합니다.</p>
+      <p>7. <code>@media</code> 는 명시도를 올려 주지 않습니다. 순서와 선택자 무게를 지키세요.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 창을 절반 정도(약 640px) 로 좁히면
+
+            → 초록 카드만 줄어들어 약 564px 이 되고, 빨간 카드는 700px 그대로입니다.
+              점선 상자보다 빨간 카드가 넓어졌으므로 그 상자 안쪽에
+              가로 스크롤 막대가 생깁니다.
+              폭을 안 정한 쪽만 화면을 따라간다는 것을 눈으로 확인하는 것이 목적입니다.
+
+         2) 이 파일 head 의 두 번째 줄에 있습니다.
+
+                <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+            → 앞 단원에서 만든 파일에 이 줄이 없다면 charset 줄 바로 아래에 넣으세요.
+              PC 화면은 넣기 전과 똑같습니다. 휴대폰에서만 달라집니다.
+
+         3) 기기 툴바에서 폭을 375 로 맞추면
+
+            → 섹션 4 의 띠가 주황색("좁은 화면입니다") 으로 바뀝니다.
+              375 는 600 이하이므로 max-width: 600px 조건이 맞기 때문입니다.
+              폭을 800 으로 바꾸면 다시 파란 띠("넓은 화면입니다") 가 됩니다.
+
+         4) style 안의 조건을 이렇게 바꿉니다.
+
+                @media (max-width: 1000px) {
+
+            → 지금 창 폭이 1000px 보다 좁다면 창을 좁히지 않아도 바로 주황 띠가 됩니다.
+              조건의 기준선을 옮겼으니 지금 폭이 그 안에 들어온 것입니다.
+              미디어쿼리는 "화면이 작아졌는지" 가 아니라 "지금 폭이 조건에 맞는지" 만 봅니다.
+              확인했으면 600 으로 되돌리세요.
+
+         5) .mq-min 의 조건을 이렇게 바꿉니다.
+
+                @media (max-width: 700px) {
+
+            → 폭 1280 인 지금은 회색이 되고, 창을 700px 이하로 좁혀야 초록이 됩니다.
+              색이 바뀌는 방향이 정확히 반대로 뒤집힙니다.
+
+         6) 기기 툴바에서 폭을 599 로 맞추면 섹션 6 의 카드가 1칸이고,
+            600 으로 올리는 순간 2칸이 됩니다.
+
+            → min-width: 600px 은 600 을 포함하기 때문입니다.
+              1px 차이로 배치가 갈리는 이 지점이 중단점입니다.
+              같은 방법으로 899 와 900 도 확인해 보세요. 2칸에서 3칸으로 바뀝니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #fixedCard | ~width | 700
+      #fluidCard | ~width | 824
+      #wideBadge | ?visible | yes
+      #narrowBadge | ?visible | no
+      #minBox | background-color | rgb(217, 240, 217)
+      #mqCards | grid-template-columns | 268px 268px 268px
+      @폭 768
+      #fluidCard | ~width | 692
+      #wideBadge | ?visible | yes
+      #minBox | background-color | rgb(217, 240, 217)
+      #mqCards | grid-template-columns | 341px 341px
+      @폭 600
+      #wideBadge | ?visible | no
+      #narrowBadge | ?visible | yes
+      #minBox | background-color | rgb(238, 238, 238)
+      #mqCards | grid-template-columns | 257px 257px
+      @폭 480
+      #fixedCard | ~width | 700
+      #fluidCard | ~width | 404
+      #wideBadge | ?visible | no
+      #narrowBadge | ?visible | yes
+      #minBox | background-color | rgb(238, 238, 238)
+      #mqCards | grid-template-columns | 404px
+    -->
+  </body>
+</html>

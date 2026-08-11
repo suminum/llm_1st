@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>07단원 개념02 - CSS 연결하는 3가지 방법</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <link rel="stylesheet" href="연습용.css" />
+    <style>
+      /* ── 섹션 3: style 태그로 쓴 규칙 ── */
+      #styleTagDemo {
+        color: #ffffff;
+        background-color: #2d6cdf;
+      }
+      /* 화면: 파란 배경 위에 흰 글자 한 줄이 보입니다 */
+
+      #styleTagDemo2 {
+        color: #ffffff;
+        background-color: #2d6cdf;
+      }
+      /* 화면: 위와 똑같이 파란 배경에 흰 글자입니다.
+               규칙 하나로 두 곳을 칠할 수는 없어서 규칙을 하나 더 썼습니다 */
+
+      /* ── 섹션 6 [실수 5]: 인라인과 style 태그가 같은 요소를 건드릴 때 ── */
+      .mix-blue {
+        color: #2d6cdf;
+      }
+      /* 화면: 이 규칙은 파란 글자를 지시하지만, 같은 요소에 붙은 인라인 style 이
+               이겨서 실제로는 빨간 글자로 보입니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         07단원 · 개념 02 — CSS 를 HTML 에 연결하는 세 가지 방법
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              같은 폴더의 연습용.css 도 VS Code 로 함께 열어 두세요.
+         ============================================================
+
+         개념01 에서 CSS 가 무엇인지 봤습니다.
+         그런데 CSS 를 아무리 잘 써도, HTML 파일이 그 CSS 를 읽지 않으면
+         화면은 하나도 안 바뀝니다. 저절로 붙는 일은 없습니다.
+
+         CSS 를 HTML 에 붙이는 방법은 세 가지입니다.
+
+             ① 인라인      태그 안에 style="..." 을 직접 씀
+             ② style 태그  head 안에 <style> 을 열고 그 안에 규칙을 씀
+             ③ 외부 파일   .css 파일을 따로 만들고 <link> 로 불러옴
+
+         셋 다 화면을 바꾸는 힘은 같습니다. 다른 것은 '관리하기 좋은 정도' 입니다.
+         결론부터 말하면 ③ 외부 파일이 정답이고, ① 인라인은 거의 안 씁니다.
+         왜 그런지는 섹션 5 에서 이유를 하나씩 봅니다.
+
+         지금 이 파일은 세 가지를 전부 쓰고 있습니다.
+
+             head 안에  <link rel="stylesheet" href="../공통.css" />     ← ③ 외부 파일
+             head 안에  <link rel="stylesheet" href="연습용.css" />      ← ③ 외부 파일
+             head 안에  <style> ... </style>                            ← ②
+             본문 안에  <p style="color: #c0392b;">                      ← ①
+
+         VS Code 로 이 파일 맨 위를 열어서 실제로 그렇게 되어 있는지 보세요.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 02 — CSS 를 연결하는 세 가지 방법</h1>
+    <p class="doc-sub">07단원 · CSS 시작하기</p>
+
+    <p class="doc-guide">
+      이 파일에서는 세 가지 연결 방법을 <strong>전부 실제로 동작시켜</strong> 보여 줍니다.
+      같은 폴더에 있는 <code>연습용.css</code> 파일도 함께 열어 두면
+      "다른 파일에 적은 규칙이 이 화면에 나타난다" 는 것을 확인하기 좋습니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: 세 가지 방법 한눈에 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 세 가지 방법 한눈에 보기</h2>
+      <p class="doc-desc">
+        CSS 를 적는 <strong>자리</strong>가 세 군데 있습니다. 문법은 자리마다 조금씩 다릅니다.
+      </p>
+
+      <!--
+        먼저 세 가지가 각각 어떻게 생겼는지만 눈에 익혀 두겠습니다.
+        섹션 2 부터 하나씩 실제로 동작시켜 볼 것이니 지금 외우지 마세요.
+
+            ① 인라인
+               <p style="color: #c0392b;">글자</p>
+               → 중괄호가 없습니다. 선택자도 없습니다. 속성과 값만 적습니다.
+                 이미 "이 요소" 라고 정해진 자리라서 누구를 고를 필요가 없습니다.
+
+            ② style 태그
+               <style>
+                 p { color: #c0392b; }
+               </style>
+               → 선택자와 중괄호가 있습니다. 한 파일 안에서만 쓰입니다.
+
+            ③ 외부 파일
+               style.css 파일 안에    p { color: #c0392b; }
+               HTML 의 head 안에      <link rel="stylesheet" href="style.css" />
+               → 규칙 모양은 ② 와 똑같습니다. 사는 곳만 다른 파일입니다.
+
+        세 가지의 차이를 한 줄로 정리하면 이렇습니다.
+
+            ① 요소 하나에만       ② 파일 하나 안에서만       ③ 여러 파일이 함께
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">세 가지가 실제로 다 동작하고 있는 모습</p>
+        <p style="color: #c0392b">① 인라인으로 빨갛게 칠한 줄입니다.</p>
+        <p id="styleTagDemo2">② style 태그로 칠한 줄입니다.</p>
+        <p class="notice-warn">③ 외부 파일 연습용.css 로 칠한 줄입니다.</p>
+        <!-- 화면: 세 줄이 보입니다. 첫 줄은 빨간 글씨, 둘째 줄은 파란 배경에 흰 글씨,
+                  셋째 줄은 빨간 배경에 흰 글씨입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 세 줄이 각각 파일의 어느 자리에서 색을 받아 왔는지
+        VS Code 에서 찾아보세요. 첫 줄은 그 줄 자체에, 둘째 줄은 파일 맨 위
+        <code>&lt;style&gt;</code> 안에, 셋째 줄은 <code>연습용.css</code> 안에 있습니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 방법 ① 인라인 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 방법 ① 인라인 (태그에 직접 쓰기)</h2>
+      <p class="doc-desc">
+        태그 안에 <code>style</code> 이라는 속성을 붙이고, 그 값으로 스타일을 적습니다.
+        <strong>선택자도 중괄호도 없습니다.</strong>
+      </p>
+
+      <!--
+        아래 상자 안에는 이렇게 썼습니다.
+
+            <p id="inlineDemo" style="color: #c0392b; background-color: #fff3a0;">
+              저는 인라인으로 칠해졌습니다.
+            </p>
+
+        생김새를 뜯어보면 이렇습니다.
+
+            style="color: #c0392b; background-color: #fff3a0;"
+                   └─ 속성: 값;  ─┘└──── 속성: 값;  ────────┘
+
+        속성과 값 사이에는 콜론(:), 선언과 선언 사이에는 세미콜론(;) 을 찍습니다.
+        이 문법 자체는 개념03 에서 제대로 다룹니다.
+
+        인라인은 "이 요소 하나" 에만 적용됩니다.
+        옆에 똑같이 생긴 문단이 열 개 있어도 그 열 개는 하나도 안 바뀝니다.
+        같은 모양을 열 곳에 주려면 style="..." 을 열 번 복사해 붙여야 합니다.
+        고칠 일이 생기면 열 곳을 전부 찾아 고쳐야 합니다. 이것이 인라인의 문제입니다.
+
+        그래도 인라인이 완전히 쓸모없지는 않습니다. 언제 쓰는지는 섹션 5 에서 봅니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p id="inlineDemo" style="color: #c0392b; background-color: #fff3a0">
+          저는 인라인으로 칠해졌습니다.
+        </p>
+        <p>저는 바로 옆 문단이지만 아무것도 안 붙었습니다.</p>
+        <!-- 화면: 첫 줄만 노란 배경에 빨간 글씨이고, 둘째 줄은 평범한 검은 글씨입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>style</code> 속성 값 안에서는 큰따옴표를 다시 쓰면 안 됩니다.
+        값을 감싸는 큰따옴표가 거기서 끝나 버리기 때문입니다.
+        (01단원 개념04 섹션4 에서 배운 따옴표 규칙이 여기서도 그대로 적용됩니다.
+        안쪽에 또 큰따옴표가 필요하면 작은따옴표를 쓰세요)
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위 상자의 둘째 문단에도
+        <code>style="color: #2d6cdf;"</code> 를 붙여 파란 글씨로 만들어 보세요.
+        <code>&lt;p</code> 와 <code>&gt;</code> 사이에 한 칸 띄고 씁니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 방법 ② style 태그 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 방법 ② &lt;style&gt; 태그</h2>
+      <p class="doc-desc">
+        <code>&lt;head&gt;</code> 안에 <code>&lt;style&gt;</code> 을 열고
+        그 안에 규칙을 적습니다. <strong>그 파일 전체</strong>에 적용됩니다.
+      </p>
+
+      <!--
+        이 파일 맨 위 head 안에 이렇게 적혀 있습니다.
+
+            <style>
+              #styleTagDemo {
+                color: #ffffff;
+                background-color: #2d6cdf;
+              }
+            </style>
+
+        그리고 본문에는 이렇게 썼습니다.
+
+            <p id="styleTagDemo">저는 style 태그에서 색을 받았습니다.</p>
+
+        인라인과 달리 여기에는 선택자(#styleTagDemo) 와 중괄호가 있습니다.
+        "누구를 꾸밀지" 를 먼저 고르고, 중괄호 안에 "어떻게" 를 적는 방식입니다.
+
+        style 태그의 장점은 한 곳에 모여 있다는 것입니다.
+        색을 바꾸고 싶으면 파일 맨 위 style 만 보면 됩니다.
+        본문을 뒤질 필요가 없습니다.
+
+        단점은 '그 파일 안에서만' 이라는 점입니다.
+        페이지가 열 개면 열 개 파일의 style 을 전부 고쳐야 합니다.
+        그래서 실제 사이트에서는 ③ 외부 파일을 씁니다.
+
+        style 태그는 head 안에 넣는 것이 약속입니다.
+        body 안에 넣어도 브라우저는 대충 알아듣지만, 남이 코드를 읽을 때
+        "스타일이 어디 있지?" 하고 헤매게 됩니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p id="styleTagDemo">저는 style 태그에서 색을 받았습니다.</p>
+        <!-- 화면: 파란 배경 위에 흰 글자 한 줄이 보입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 파일 맨 위 <code>&lt;style&gt;</code> 안의
+        <code>#styleTagDemo</code> 규칙에서 <code>background-color</code> 값을
+        <code>#8e44ad</code> 로 바꿔 보세요. 배경이 보라색이 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 방법 ③ 외부 파일 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 방법 ③ 외부 파일과 &lt;link&gt;</h2>
+      <p class="doc-desc">
+        CSS 만 들어 있는 <strong>따로 된 파일</strong>을 만들고,
+        HTML 에서 <code>&lt;link&gt;</code> 로 불러옵니다. 실무에서 쓰는 방법입니다.
+      </p>
+
+      <!--
+        이 폴더에는 연습용.css 라는 파일이 하나 더 있습니다.
+        VS Code 에서 열어 보세요. 안에 이렇게만 적혀 있습니다.
+
+            .notice {
+              color: #ffffff;
+              background-color: #2d6cdf;
+            }
+            .notice-warn {
+              color: #ffffff;
+              background-color: #c0392b;
+            }
+            .notice-ok {
+              color: #ffffff;
+              background-color: #27853f;
+            }
+
+        중요한 점이 두 가지 있습니다.
+
+            1. <style> 태그가 없습니다. .css 파일 안에는 규칙만 적습니다.
+               거기에 <style> 을 또 쓰면 파일 전체가 망가집니다.
+            2. <html> 도 <body> 도 없습니다. HTML 문서가 아니기 때문입니다.
+
+        이 파일을 불러오는 줄은 이 HTML 의 head 안에 있습니다.
+
+            <link rel="stylesheet" href="연습용.css" />
+
+            rel="stylesheet"  이 파일이 '스타일 시트' 라는 뜻입니다. 빠뜨리면 안 붙습니다.
+            href="연습용.css"  불러올 파일의 경로입니다. 04단원에서 배운 상대 경로입니다.
+
+        <link> 는 닫는 태그가 없는 빈 태그입니다. (01단원 개념02 의 <br /> 과 같은 종류)
+
+        경로는 이 HTML 파일이 있는 자리를 기준으로 씁니다.
+        연습용.css 는 같은 폴더에 있으니 파일 이름만 적으면 됩니다.
+        한 단계 위 폴더에 있는 공통.css 는 ../공통.css 라고 적습니다.
+        이 파일 맨 위에 그 줄도 같이 있습니다. 찾아보세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">연습용.css 안의 규칙이 실제로 적용된 모습</p>
+        <p class="notice">저는 연습용.css 의 .notice 규칙으로 칠해졌습니다.</p>
+        <p class="notice-warn">저는 .notice-warn 규칙으로 칠해졌습니다.</p>
+        <!-- 화면: 첫 줄은 파란 배경에 흰 글씨, 둘째 줄은 빨간 배경에 흰 글씨입니다 -->
+      </div>
+
+      <div class="doc-code">&lt;link rel="stylesheet" href="연습용.css" /&gt;</div>
+
+      <p class="doc-note">
+        위 <code>&lt;link&gt;</code> 줄은 <code>&lt;head&gt;</code> 안에 넣습니다.
+        브라우저가 본문을 그리기 전에 스타일을 먼저 읽어야
+        글자가 잠깐 안 꾸며진 채로 번쩍하는 일이 없습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>연습용.css</code> 파일을 열어
+        <code>.notice</code> 의 <code>background-color</code> 를 <code>#8e44ad</code> 로
+        바꾸고 저장하세요. 그다음 이 HTML 을 새로고침하면 첫 줄이 보라색이 됩니다.
+        <strong>HTML 파일은 한 글자도 안 고쳤는데</strong> 화면이 바뀝니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 왜 외부 파일이 정답인가 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 왜 외부 파일이 정답인가</h2>
+      <p class="doc-desc">
+        이유는 두 가지입니다.
+        <strong>여러 페이지가 나눠 쓸 수 있고, 고칠 곳이 한 군데</strong>입니다.
+      </p>
+
+      <!--
+        이 자료 자체가 가장 좋은 예입니다.
+
+        여러분이 지금 보고 있는 노란 안내 상자, 파란 제목 띠, 점선 데모 상자는
+        전부 공통.css 라는 파일 하나에 적혀 있습니다.
+        01단원부터 14단원까지 모든 파일이 그 파일 하나를 함께 씁니다.
+
+            01단원/개념01.html  ┐
+            01단원/개념02.html  ├→  ../공통.css   (규칙은 여기 한 곳에만 있습니다)
+            07단원/개념02.html  ┘
+
+        제목 띠의 파란색을 바꾸고 싶다고 합시다.
+
+            외부 파일이면   공통.css 한 줄을 고칩니다. 끝입니다.
+            style 태그면    파일마다 들어가서 같은 줄을 고칩니다. 백 번 고칩니다.
+            인라인이면      제목마다 들어가서 고칩니다. 수백 번 고칩니다.
+
+        하나 더 있습니다. 브라우저는 한 번 받은 .css 파일을 기억해 둡니다.
+        그래서 두 번째 페이지부터는 다시 받지 않아 화면이 빨리 뜹니다.
+        인라인은 페이지를 열 때마다 같은 글자를 계속 다시 받습니다.
+
+        그러면 인라인은 언제 쓰나요? 아주 좁게 씁니다.
+
+            - 딱 한 요소에만, 다시는 안 쓸 예외적인 값을 줄 때
+            - 자바스크립트가 화면을 보고 그때그때 값을 계산해 넣을 때 (14단원 범위 밖)
+            - 메일 본문처럼 <style> 이나 <link> 를 못 쓰는 특수한 자리
+
+        수업 중에 "일단 빨리 확인만" 할 때 인라인을 쓰는 것은 괜찮습니다.
+        다만 확인이 끝나면 style 이나 외부 파일로 옮기세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">규칙 하나가 여러 곳을 칠하는 모습</p>
+        <p class="notice-ok" id="shareA">첫 번째 완료 안내입니다.</p>
+        <p>가운데에 아무것도 안 붙은 줄을 하나 끼워 두었습니다.</p>
+        <p class="notice-ok" id="shareB">두 번째 완료 안내입니다.</p>
+        <!-- 화면: 첫 줄과 셋째 줄이 똑같은 초록 배경에 흰 글씨이고,
+                  가운데 둘째 줄만 평범한 검은 글씨입니다 -->
+      </div>
+
+      <p class="doc-note">
+        위 두 줄은 <code>연습용.css</code> 의 <code>.notice-ok</code> 규칙
+        <strong>한 개</strong>에서 색을 받아 왔습니다.
+        그 규칙 한 줄만 고치면 두 줄이 동시에 바뀝니다.
+        인라인이었다면 두 곳을 따로 고쳐야 합니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>연습용.css</code> 의 <code>.notice-ok</code> 의
+        <code>background-color</code> 를 <code>#b7791f</code> 로 바꾸고 저장한 뒤
+        새로고침하세요. 위 상자의 <strong>두 줄이 한꺼번에</strong> 바뀝니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        연결이 안 됐을 때 브라우저는 <strong>아무 말도 하지 않습니다.</strong>
+        그냥 안 꾸며진 화면이 나올 뿐입니다. 아래 다섯 가지를 먼저 의심하세요.
+      </p>
+
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — rel="stylesheet" 를 빠뜨림</span>
+        <div class="doc-code">&lt;link href="연습용.css" /&gt;</div>
+        <p>
+          <strong>아무 일도 안 일어납니다.</strong> 파일 경로는 맞는데도 그렇습니다.
+          <code>rel</code> 은 "이 파일이 나와 어떤 관계인가" 를 알려 주는 속성입니다.
+          <code>rel="stylesheet"</code> 가 없으면 브라우저는 이 파일을 스타일로 취급하지
+          않습니다. 에러도 안 납니다.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">&lt;link rel="stylesheet" href="연습용.css" /&gt;</div>
+      </div>
+
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — href 경로나 파일 이름이 틀림</span>
+        <div class="doc-code">&lt;link rel="stylesheet" href="연습용css" /&gt;</div>
+        <p>
+          <strong>아무 일도 안 일어납니다.</strong> 위 예에서는 점 하나가 빠졌습니다.
+          <code>style.css</code> 를 <code>styles.css</code> 로 쓰거나, 파일은 하위 폴더에
+          있는데 폴더 이름을 안 적은 경우도 같습니다.
+          F12 를 눌러 <strong>Network</strong> 탭을 보면 그 파일이 빨갛게 표시됩니다.
+          화면만 봐서는 알 수 없으니 이때만 F12 를 쓰세요.
+        </p>
+      </div>
+
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 인라인 style 안에 선택자와 중괄호를 씀</span>
+        <div class="doc-code">&lt;p style="p { color: #c0392b; }"&gt;글자&lt;/p&gt;</div>
+        <p>
+          <strong>아무 일도 안 일어납니다.</strong> 아래 상자의 첫 줄이 그 결과입니다.
+          인라인 자리는 이미 "이 요소" 라고 정해져 있어서 선택자를 쓸 자리가 없습니다.
+          중괄호 없이 <code>속성: 값;</code> 만 적습니다.
+        </p>
+        <div class="doc-demo">
+          <p id="badInline" style="p { color: #c0392b; }">선택자를 넣어 봤습니다.</p>
+          <p style="color: #c0392b">이쪽은 속성과 값만 적었습니다.</p>
+          <!-- 화면: 첫 줄은 평범한 검은 글씨 그대로이고, 둘째 줄만 빨간 글씨입니다 -->
+        </div>
+      </div>
+
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — .css 파일 안에 &lt;style&gt; 태그를 씀</span>
+        <div class="doc-code">&lt;style&gt;
+  .notice { color: #ffffff; }
+&lt;/style&gt;</div>
+        <p>
+          <strong>그 파일의 규칙이 전부 안 먹습니다.</strong>
+          <code>.css</code> 파일은 처음부터 끝까지 CSS 로 읽힙니다.
+          거기에 HTML 태그가 들어오면 브라우저는 그 자리에서 헷갈려서
+          뒤에 적은 규칙까지 같이 버립니다.
+          <code>.css</code> 파일 안에는 <strong>규칙만</strong> 적으세요.
+        </p>
+      </div>
+
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 인라인이 이기는 줄 모르고 style 태그만 고침</span>
+        <div class="doc-code">&lt;p class="mix-blue" style="color: #c0392b;"&gt;
+  어느 쪽이 이길까요
+&lt;/p&gt;</div>
+        <p>
+          아래 줄에는 <code>.mix-blue</code> 클래스(파란 글씨) 와
+          인라인 <code>style</code>(빨간 글씨) 이 둘 다 붙어 있습니다.
+          <strong>실제로는 빨간 글씨로 보입니다. 인라인이 이깁니다.</strong>
+          <code>&lt;style&gt;</code> 만 열심히 고치는 동안 화면이 안 바뀌면
+          그 요소에 인라인이 붙어 있는지 먼저 확인하세요.
+          규칙이 겹칠 때 누가 이기는지는 <strong>08단원 명시도</strong>에서 배웁니다.
+        </p>
+        <div class="doc-demo">
+          <p id="mixDemo" class="mix-blue" style="color: #c0392b">어느 쪽이 이길까요</p>
+          <!-- 화면: 빨간 글씨 한 줄로 보입니다. 파란색이 아닙니다 -->
+        </div>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. CSS 는 저절로 붙지 않습니다. HTML 이 불러와야 합니다.</p>
+      <p>2. <strong>인라인</strong>은 <code>style="속성: 값;"</code>. 선택자도 중괄호도 없습니다.</p>
+      <p>3. <strong>style 태그</strong>는 <code>&lt;head&gt;</code> 안. 그 파일 하나에만 적용됩니다.</p>
+      <p>
+        4. <strong>외부 파일</strong>은
+        <code>&lt;link rel="stylesheet" href="..." /&gt;</code>. 여러 파일이 함께 씁니다.
+      </p>
+      <p>5. 실무에서는 <strong>외부 파일</strong>을 씁니다. 고칠 곳이 한 군데이기 때문입니다.</p>
+      <p>6. 연결이 안 되면 에러가 아니라 <strong>안 꾸며진 화면</strong>이 나옵니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 찾아본 결과는 이렇습니다.
+
+                첫 줄  → 그 <p> 태그 안의 style="color: #c0392b"
+                둘째 줄 → 이 파일 head 안 <style> 의 #styleTagDemo2 규칙
+                셋째 줄 → 연습용.css 의 .notice-warn 규칙
+
+            → 같은 화면 안의 색이 서로 다른 세 자리에서 온다는 것을 확인하는 것이 목적입니다.
+
+         2) 섹션 2 상자의 둘째 문단을 이렇게 고칩니다.
+
+                <p style="color: #2d6cdf;">저는 바로 옆 문단이지만 아무것도 안 붙었습니다.</p>
+
+            → 그 줄만 파란 글씨가 됩니다. 첫 줄은 그대로 노란 배경에 빨간 글씨입니다.
+              인라인은 붙인 요소 하나에만 효과가 있다는 뜻입니다.
+
+         3) 파일 맨 위 style 안을 이렇게 고칩니다.
+
+                #styleTagDemo {
+                  color: #ffffff;
+                  background-color: #8e44ad;
+                }
+
+            → 섹션 3 상자의 배경이 파란색에서 보라색으로 바뀝니다.
+              섹션 1 의 둘째 줄은 #styleTagDemo2 라는 다른 규칙을 쓰므로 그대로 파랗습니다.
+
+         4) 연습용.css 를 이렇게 고칩니다.
+
+                .notice {
+                  color: #ffffff;
+                  background-color: #8e44ad;
+                }
+
+            → 섹션 4 상자의 첫 줄이 보라색이 됩니다.
+              HTML 파일은 손대지 않았는데 화면이 바뀌었다는 점이 핵심입니다.
+              확인했으면 #2d6cdf 로 되돌려 놓으세요.
+
+         5) 연습용.css 를 이렇게 고칩니다.
+
+                .notice-ok {
+                  color: #ffffff;
+                  background-color: #b7791f;
+                }
+
+            → 섹션 5 상자의 첫 줄과 셋째 줄이 동시에 갈색으로 바뀝니다.
+              가운데 줄은 class 가 없어서 그대로입니다.
+              규칙 한 개가 여러 곳을 담당한다는 것이 외부 파일의 힘입니다.
+              확인했으면 #27853f 로 되돌려 놓으세요.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #inlineDemo | color | rgb(192, 57, 43)
+      #inlineDemo | background-color | rgb(255, 243, 160)
+      #styleTagDemo | color | rgb(255, 255, 255)
+      #styleTagDemo | background-color | rgb(45, 108, 223)
+      #styleTagDemo2 | background-color | rgb(45, 108, 223)
+      .notice | color | rgb(255, 255, 255)
+      .notice | background-color | rgb(45, 108, 223)
+      .notice-warn | background-color | rgb(192, 57, 43)
+      #shareA | background-color | rgb(39, 133, 63)
+      #shareB | background-color | rgb(39, 133, 63)
+      #badInline | color | rgb(34, 34, 34)
+      #mixDemo | color | rgb(192, 57, 43)
+    -->
+  </body>
+</html>

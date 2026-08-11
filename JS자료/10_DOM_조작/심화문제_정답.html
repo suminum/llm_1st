@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>10단원 심화문제 정답 - DOM 조작</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      table {
+        border-collapse: collapse;
+        background: #fff;
+        width: 100%;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 6px 10px;
+        text-align: left;
+      }
+      th {
+        background: #eee;
+      }
+      tr.soldout td {
+        color: #999;
+        text-decoration: line-through;
+      }
+      .box {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 6px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>10단원 심화문제 정답 — DOM 조작</h1>
+
+    <p class="guide">
+      먼저 스스로 풀어 본 다음에 보세요. <strong>F12 → Console</strong> 을 함께 보세요.
+    </p>
+
+    <div class="demo">
+      <h3>심화 1 — 표 만들기</h3>
+      <table id="productTable">
+        <thead>
+          <tr>
+            <th>이름</th>
+            <th>가격</th>
+            <th>재고</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+
+      <h3>심화 3 — textContent 와 innerHTML</h3>
+      <div class="box" id="safeBox">여기에 textContent 로</div>
+      <div class="box" id="unsafeBox">여기에 innerHTML 로</div>
+    </div>
+
+    <script>
+      // ============================================================
+      // 10단원 심화문제 정답 — DOM 조작
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+
+      const products = [
+        { name: "아메리카노", price: 4000, stock: 10 },
+        { name: "라떼", price: 4500, stock: 0 },
+        { name: "케이크", price: 6000, stock: 3 },
+      ];
+
+      // ───── 심화 1 ─────
+      const tableBody = document.querySelector("#tableBody");
+
+      products.forEach((product) => {
+        const tr = document.createElement("tr");
+
+        const nameTd = document.createElement("td");
+        nameTd.textContent = product.name;
+
+        const priceTd = document.createElement("td");
+        priceTd.textContent = `${product.price.toLocaleString()}원`;
+
+        const stockTd = document.createElement("td");
+
+        if (product.stock === 0) {
+          tr.classList.add("soldout");
+          stockTd.textContent = "품절";
+        } else {
+          stockTd.textContent = product.stock;
+        }
+
+        // ★ tr 안을 다 채운 뒤에 tbody 에 붙입니다
+        tr.appendChild(nameTd);
+        tr.appendChild(priceTd);
+        tr.appendChild(stockTd);
+        tableBody.appendChild(tr);
+      });
+      // 화면: 세 줄짜리 표가 생기고, 라떼 줄은 회색 + 취소선이 됩니다
+
+      // toLocaleString() 이 하는 일
+      //   4000 → "4,000" 처럼 세 자리마다 쉼표를 넣어 줍니다.
+      //   돈을 보여 줄 때 거의 항상 씁니다. 결과는 문자열입니다.
+      //
+      // 왜 tr 을 먼저 만들고 나중에 붙이나
+      //   빈 tr 을 먼저 tbody 에 붙이고 td 를 하나씩 넣으면
+      //   브라우저가 화면을 네 번 다시 그립니다.
+      //   다 채운 뒤 한 번에 붙이면 한 번만 그립니다. (11단원 개념05와 같은 이야기)
+      //
+      // classList.add 를 tr 에 붙인 이유
+      //   CSS 가 tr.soldout td 로 되어 있어서, tr 에 클래스를 붙이면
+      //   그 안의 td 세 개가 전부 회색 + 취소선이 됩니다.
+      //   td 마다 붙일 필요가 없습니다.
+
+      // ───── 심화 2 ─────
+      const allRows = document.querySelectorAll("#tableBody tr");
+      const soldOutRows = document.querySelectorAll("#tableBody tr.soldout");
+      const onSaleNames = [...document.querySelectorAll("#tableBody tr:not(.soldout)")].map(
+        (tr) => tr.querySelector("td").textContent
+      );
+
+      console.log(`전체 ${allRows.length} 행`);
+      // 콘솔: 전체 3 행
+      console.log(`품절 ${soldOutRows.length} 행`);
+      // 콘솔: 품절 1 행
+      console.log(`판매 중: ${onSaleNames.join(", ")}`);
+      // 콘솔: 판매 중: 아메리카노, 케이크
+      //
+      // onSaleNames 자체를 찍어도 됩니다. 다만 배열을 그대로 찍으면
+      // 크롬은 (2) ['아메리카노', '케이크'] 처럼 개수를 앞에 붙이고,
+      // 다른 브라우저는 또 다르게 보여 줍니다. 비교하기 번거로우니
+      // 이 자료에서는 join 으로 글자를 만들어 찍습니다.
+
+      // 왜 products 배열이 아니라 화면에서 세나
+      //   "내가 그린 것이 진짜 그려졌는가" 를 확인하는 것이 목적입니다.
+      //   실무에서도 화면이 안 나올 때 이렇게 세어 보며 원인을 찾습니다.
+      //   0 이 나오면 아예 안 그려진 것이고,
+      //   개수는 맞는데 화면에 안 보이면 CSS 문제입니다.
+      //
+      // :not(.soldout) 은 CSS 선택자입니다
+      //   "soldout 클래스가 없는 것" 이라는 뜻입니다.
+      //   querySelectorAll 은 CSS 선택자를 그대로 받으므로 이런 것도 됩니다.
+      //
+      // tr.querySelector("td") 는 그 행의 '첫 번째' td 입니다
+      //   querySelector 는 언제나 첫 하나만 고릅니다. 여기서는 이름칸입니다.
+      //   요소에 대고 부르면 그 요소 '안에서만' 찾습니다. document 전체가 아닙니다.
+      //
+      // [...] 로 감싼 이유
+      //   NodeList 는 배열이 아니라서 map 이 없습니다. (개념01 섹션 4)
+
+      // ───── 심화 3 ─────
+      const userInput = "<b>굵게</b> 그리고 <span style='color:red'>빨강</span>";
+
+      document.querySelector("#safeBox").textContent = userInput;
+      // 화면: <b>굵게</b> 그리고 <span style='color:red'>빨강</span>  ← 글자 그대로
+
+      document.querySelector("#unsafeBox").innerHTML = userInput;
+      // 화면: 굵게 그리고 빨강  ← 진짜로 굵어지고 빨개집니다
+
+      // 답: 사용자가 입력한 글은 textContent 로 넣어야 합니다.
+      //
+      // 왜인가
+      //   innerHTML 은 받은 글자를 'HTML 코드' 로 읽어서 실행합니다.
+      //   태그가 들어 있으면 진짜 태그가 됩니다.
+      //
+      //   지금은 굵어지는 정도라 귀엽지만, 누군가 이런 걸 입력하면 어떨까요?
+      //     <img src="없는주소" onerror="...">
+      //   화면에 그려지는 순간 그 안의 코드가 실행됩니다.
+      //   남의 사이트에서 내 정보를 빼 가는 공격이 이렇게 시작됩니다.
+      //   이걸 XSS 라고 부릅니다. 이름은 몰라도 됩니다.
+      //
+      //   textContent 는 무엇이 들어오든 '글자' 로만 취급합니다. 그래서 안전합니다.
+      //
+      // 규칙 하나만 기억하세요.
+      //   내가 쓴 문자열   → innerHTML 써도 됨 (목록 만들기 등)
+      //   사용자가 쓴 글자 → 무조건 textContent
+      //
+      // 13단원 종합03·04가 사용자 입력을 textContent 로 넣은 이유가 이것입니다.
+    </script>
+  </body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>13단원 종합04 정답 - 사용자 검색</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 640px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .controls {
+        display: flex;
+        gap: 6px;
+        margin: 16px 0;
+      }
+      #searchInput {
+        flex: 1;
+        padding: 8px;
+        font-size: 15px;
+      }
+      button {
+        padding: 8px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      #message {
+        padding: 10px;
+        min-height: 24px;
+      }
+      #message.error {
+        color: #c00;
+        font-weight: bold;
+      }
+      #message.loading {
+        color: #888;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px 12px;
+        margin: 6px 0;
+        cursor: pointer;
+      }
+      li:hover {
+        background: #eef3ff;
+      }
+      .name {
+        font-weight: bold;
+      }
+      .sub {
+        color: #666;
+        font-size: 14px;
+      }
+      #detail {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 12px;
+        margin-top: 12px;
+        white-space: pre-line;
+        min-height: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>종합 04 정답 — 사용자 검색</h1>
+
+    <p class="guide">
+      먼저 스스로 만들어 본 다음에 보세요. <strong>인터넷 연결</strong>이 필요합니다.
+      <strong>F12 → Console</strong> 도 함께 보세요.
+    
+      <br /><br />
+      <strong>인터넷이 막혀 있어 안 된다면</strong> 이 파일 아래쪽
+      <code>&lt;script&gt;</code> 바로 위에 있는 <code>오프라인_대체.js</code> 줄에서
+      주석 기호를 지우세요. 인터넷 없이도 똑같이 동작합니다.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="controls">
+      <input type="text" id="searchInput" placeholder="이름이나 도시로 검색" />
+      <button id="loadBtn">불러오기</button>
+      <button id="sortBtn">이름순 정렬</button>
+    </div>
+
+    <div id="message"></div>
+    <ul id="userList"></ul>
+    <div id="detail">목록에서 사람을 눌러 보세요</div>
+
+    <!-- 인터넷이 막혀 이 파일이 동작하지 않으면, 바로 아래 줄을 감싼 주석 기호를 지워서 켜세요. 설명은 오프라인_대체.js 맨 위에 있습니다. -->
+    <!-- <script src="../12_비동기_fetch/오프라인_대체.js"></script> -->
+    <script>
+      // ============================================================
+      // 13단원 · 종합 04 정답 — 사용자 검색
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+
+      const API_URL = "https://jsonplaceholder.typicode.com/users";
+
+      let allUsers = [];
+      let sortByName = false;
+      let hasError = false; // 불러오기에 실패했는지 (render 에서 씁니다)
+
+      const searchInput = document.querySelector("#searchInput");
+      const loadBtn = document.querySelector("#loadBtn");
+      const sortBtn = document.querySelector("#sortBtn");
+      const message = document.querySelector("#message");
+      const userList = document.querySelector("#userList");
+      const detail = document.querySelector("#detail");
+
+      // ───── 문제 1 ─────
+      async function loadUsers() {
+        hasError = false; // 다시 시도할 때 이전 실패 표시를 지웁니다
+        loadBtn.disabled = true;
+        sortBtn.disabled = true;
+        message.className = "loading";
+        message.textContent = "불러오는 중...";
+
+        try {
+          const res = await fetch(API_URL);
+
+          // ★ fetch 는 404·500 을 실패로 치지 않습니다. 직접 확인해야 합니다.
+          if (!res.ok) {
+            throw new Error(`서버 오류 ${res.status}`);
+          }
+
+          allUsers = await res.json();
+
+          message.className = "";
+          message.textContent = "";
+          render();
+
+          console.log("받은 사용자 수:", allUsers.length);
+        } catch (error) {
+          hasError = true; // render 가 이 안내를 지우지 않도록 표시해 둡니다
+          message.className = "error";
+          message.textContent = "불러오지 못했습니다. 다시 시도해 주세요.";
+          console.log("에러 내용:", error.message);
+        } finally {
+          // ★ 성공하든 실패하든 버튼은 반드시 풀어 줘야 합니다
+          loadBtn.disabled = false;
+          sortBtn.disabled = false;
+        }
+      }
+
+      loadBtn.addEventListener("click", loadUsers);
+
+      // ───── 문제 2 ─────
+      function getVisibleUsers() {
+        const keyword = searchInput.value.trim().toLowerCase();
+
+        let result = allUsers;
+
+        if (keyword) {
+          result = allUsers.filter(({ name, address }) => {
+            const nameMatch = name.toLowerCase().includes(keyword);
+            const cityMatch = address.city.toLowerCase().includes(keyword);
+            return nameMatch || cityMatch;
+          });
+        }
+
+        if (sortByName) {
+          // ★ [...result] 로 복사한 뒤 정렬해야 원본이 안 바뀝니다
+          result = [...result].sort((a, b) => a.name.localeCompare(b.name));
+        }
+
+        return result;
+      }
+
+      // 양쪽 다 toLowerCase 를 해야 대소문자 구분 없이 찾을 수 있습니다.
+      // 문자열 정렬은 a - b 가 아니라 localeCompare 를 씁니다. (08단원 개념06)
+
+      // ───── 문제 3 ─────
+      function render() {
+        const visible = getVisibleUsers();
+
+        userList.innerHTML = "";
+
+        // 불러오기 자체가 실패한 상태라면 그 안내를 덮어쓰지 않습니다.
+        // "데이터를 못 받았다" 와 "검색 결과가 없다" 는 전혀 다른 이야기입니다.
+        // 이 검사가 없으면, 실패한 뒤 검색창에 글자만 쳐도
+        // 에러 안내가 "검색 결과가 없습니다" 로 바뀌어 원인을 알 수 없게 됩니다.
+        if (hasError) {
+          return;
+        }
+
+        if (visible.length === 0) {
+          message.className = "";
+          message.textContent = "검색 결과가 없습니다";
+          return;
+        }
+
+        message.className = "";
+        message.textContent = "";
+
+        visible.forEach(({ id, name, email, address }) => {
+          const li = document.createElement("li");
+          li.dataset.id = id;
+
+          const nameDiv = document.createElement("div");
+          nameDiv.classList.add("name");
+          nameDiv.textContent = name;
+
+          const subDiv = document.createElement("div");
+          subDiv.classList.add("sub");
+          subDiv.textContent = `${address.city} · ${email}`;
+
+          li.appendChild(nameDiv);
+          li.appendChild(subDiv);
+          userList.appendChild(li);
+        });
+
+        console.log("표시:", visible.length, "명");
+      }
+
+      // 서버에서 온 값이므로 innerHTML 이 아니라 textContent 로 넣습니다.
+
+      // ───── 문제 4 ─────
+      searchInput.addEventListener("input", render);
+      // input 이벤트는 글자가 바뀔 때마다 실행됩니다. 그래서 실시간 검색이 됩니다.
+      // render 에 괄호를 붙이면 안 됩니다. 함수를 넘기는 것입니다.
+
+      // ───── 문제 5 ─────
+      sortBtn.addEventListener("click", () => {
+        sortByName = !sortByName;
+        sortBtn.textContent = sortByName ? "원래 순서" : "이름순 정렬";
+        render();
+        console.log("정렬:", sortByName);
+      });
+
+      // ───── 문제 6 ─────
+      userList.addEventListener("click", (e) => {
+        const li = e.target.closest("li");
+        if (!li) return; // 목록의 빈 곳을 눌렀을 때
+
+        const id = Number(li.dataset.id); // dataset 은 문자열이므로 변환
+        const user = allUsers.find((u) => u.id === id);
+
+        if (!user) {
+          detail.textContent = "정보를 찾을 수 없습니다";
+          return;
+        }
+
+        detail.textContent = `이름: ${user.name}
+이메일: ${user.email}
+전화: ${user.phone}
+도시: ${user.address.city}
+회사: ${user.company.name}`;
+
+        console.log("선택:", user.name);
+      });
+
+      // e.target 은 눌린 그 요소(div)일 수 있으므로 closest("li") 로 항목을 찾습니다.
+      // 백틱 안에서 엔터를 치면 줄바꿈이 되고, CSS 의 white-space: pre-line 덕분에
+      // 화면에서도 여러 줄로 보입니다.
+
+      // ───── 문제 7 ─────
+      loadUsers();
+      // 페이지를 열자마자 한 번 부릅니다.
+      // 이벤트는 '무슨 일이 생겼을 때' 만 실행되므로 처음 한 번은 직접 불러야 합니다.
+
+      // ============================================================
+      // 정리 — 이 파일에서 쓴 것들
+      // ============================================================
+      //
+      //   05단원  함수, 조기 반환
+      //   07단원  객체, 중첩 객체(address.city)
+      //   08단원  filter, find, forEach, sort + localeCompare
+      //   09단원  구조분해, 스프레드 복사
+      //   10단원  createElement, textContent, classList, dataset
+      //   11단원  click / input 이벤트, 이벤트 위임, closest
+      //   12단원  async/await, res.ok, try/catch/finally, 로딩 상태
+      //
+      // 여기까지 왔으면 자바스크립트 기초는 끝났습니다.
+      // 다음은 이 구조를 자동으로 해 주는 React 입니다.
+    </script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 손으로 그린 SVG 그림입니다. 도형과 글자만 들어 있습니다. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <rect x="0" y="0" width="200" height="200" fill="#eef4ff" />
+  <polygon points="56,80 68,30 98,62" fill="#f0a860" />
+  <polygon points="144,80 132,30 102,62" fill="#f0a860" />
+  <polygon points="64,76 72,45 92,64" fill="#f8cfa8" />
+  <polygon points="136,76 128,45 108,64" fill="#f8cfa8" />
+  <circle cx="100" cy="104" r="52" fill="#f0a860" />
+  <circle cx="82" cy="96" r="7" fill="#3a3a3a" />
+  <circle cx="118" cy="96" r="7" fill="#3a3a3a" />
+  <polygon points="100,110 93,118 107,118" fill="#e07a7a" />
+  <line x1="46" y1="112" x2="76" y2="116" stroke="#8a5a2b" stroke-width="2" />
+  <line x1="46" y1="126" x2="76" y2="124" stroke="#8a5a2b" stroke-width="2" />
+  <line x1="154" y1="112" x2="124" y2="116" stroke="#8a5a2b" stroke-width="2" />
+  <line x1="154" y1="126" x2="124" y2="124" stroke="#8a5a2b" stroke-width="2" />
+  <text x="100" y="188" text-anchor="middle" font-size="18"
+        font-family="Malgun Gothic, sans-serif" fill="#3a3a3a">고양이</text>
+</svg>

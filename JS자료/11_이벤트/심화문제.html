@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>11단원 심화문제 - 이벤트</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      input[type="text"] {
+        padding: 6px 8px;
+        font-size: 15px;
+        width: 220px;
+      }
+      button {
+        padding: 5px 10px;
+        font-size: 14px;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 4px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      li .name {
+        flex: 1;
+      }
+      .count {
+        min-width: 28px;
+        text-align: center;
+        display: inline-block;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+        min-height: 22px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>11단원 심화문제 — 이벤트</h1>
+
+    <p class="guide">
+      <strong>이건 선택 과제입니다.</strong> 연습문제를 다 푼 사람만 하세요.
+      안 풀어도 다음 단원에 지장 없습니다.<br />
+      <strong>F12 → Console</strong> 을 함께 보세요.
+    </p>
+
+    <div class="demo">
+      <h3>심화 1 — 장바구니 (위임 하나로 세 가지 동작)</h3>
+      <ul id="cartList">
+        <li data-id="1">
+          <span class="name">아메리카노</span>
+          <button class="minus">-</button>
+          <span class="count">1</span>
+          <button class="plus">+</button>
+          <button class="remove">삭제</button>
+        </li>
+        <li data-id="2">
+          <span class="name">케이크</span>
+          <button class="minus">-</button>
+          <span class="count">2</span>
+          <button class="plus">+</button>
+          <button class="remove">삭제</button>
+        </li>
+      </ul>
+      <div class="output" id="cartInfo">담긴 상품 2종 / 총 3개</div>
+
+      <h3>심화 2 — 실시간 검증</h3>
+      <input type="text" id="idInput" placeholder="아이디 (영문 4자 이상)" />
+      <div class="error" id="idError"></div>
+      <button id="submitBtn" disabled>가입</button>
+
+      <h3>심화 3 — 키보드 단축키</h3>
+      <input type="text" id="memoInput" placeholder="입력 후 Enter / Escape" />
+      <div class="output" id="memoOut">대기 중</div>
+    </div>
+
+    <script>
+      // ============================================================
+      // 11단원 심화문제 — 이벤트
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+
+      // ───── 심화 1 ───── 위임 하나로 세 가지 동작
+      // cartList 에 click 을 '한 번만' 붙여서 아래 세 가지를 모두 처리하세요.
+      //
+      //   .plus   누르면 그 줄의 수량 +1
+      //   .minus  누르면 그 줄의 수량 -1 (단, 1 아래로는 안 내려갑니다)
+      //   .remove 누르면 그 줄(li)을 삭제
+      //
+      // 그리고 무엇이 바뀌든 cartInfo 를 다시 채우세요.
+      //   "담긴 상품 2종 / 총 3개"  (종류 수 / 수량 합계)
+      //
+      // 힌트: e.target.classList.contains(...) 로 어느 버튼인지 가릅니다.
+      //       수량은 그 줄의 .count 요소에서 textContent 를 읽어 Number 로 바꿉니다.
+      //       줄을 찾을 때는 closest("li") 입니다.
+      //       정보 갱신은 함수로 빼서 세 곳에서 부르세요.
+      //
+      // 기대 결과 (화면):
+      //   아메리카노의 + 를 두 번 → 수량 3, 정보 "담긴 상품 2종 / 총 5개"
+      //   케이크의 - 를 세 번    → 수량 1 에서 멈춤 (0 이나 음수가 되면 안 됩니다)
+      //   케이크 삭제            → 정보 "담긴 상품 1종 / 총 3개"
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 심화 2 ───── 실시간 검증
+      // idInput 에 글자를 칠 때마다 아래를 판정하세요.
+      //
+      //   비어 있으면        → 안내 없음, 버튼 잠금
+      //   4글자 미만이면     → "4자 이상 입력하세요", 버튼 잠금
+      //   영문이 아닌 게 있으면 → "영문만 쓸 수 있습니다", 버튼 잠금
+      //   둘 다 통과하면     → 안내 비우고 버튼 잠금 해제
+      //
+      // 힌트: 영문만 있는지는 아직 배운 게 없습니다. 아래 함수를 그대로 쓰세요.
+      //       (정규표현식이라는 것인데 이 자료의 범위 밖입니다)
+      //
+      //       버튼 잠금은 disabled = true / false 입니다. (12단원에서도 씁니다)
+
+      function isEnglishOnly(text) {
+        // 영문 대소문자만 있으면 true
+        for (const ch of text) {
+          const isUpper = ch >= "A" && ch <= "Z";
+          const isLower = ch >= "a" && ch <= "z";
+          if (!isUpper && !isLower) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      // 기대 결과 (화면):
+      //   "ab"    → 4자 이상 입력하세요 / 버튼 잠김
+      //   "abcd"  → 안내 없음 / 버튼 눌림
+      //   "abc1"  → 영문만 쓸 수 있습니다 / 버튼 잠김
+      //   전부 지움 → 안내 없음 / 버튼 잠김
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 심화 3 ───── 키보드 단축키
+      // memoInput 에서 아래 세 가지를 처리하세요.
+      //
+      //   Enter        → memoOut 에 "저장: 입력값" 을 넣고 입력칸 비우기
+      //                  (빈 값이면 아무 일도 안 함)
+      //   Escape       → 입력칸 비우기, memoOut 에 "취소했습니다"
+      //   그 외 키      → 아무 일도 안 함
+      //
+      // 힌트: e.key 로 어떤 키인지 알 수 있습니다. 대소문자를 정확히 쓰세요.
+      //       "Enter" / "Escape" 입니다.
+      //       조건에 안 맞으면 return 으로 빨리 빠져나오는 방식을 쓰세요.
+      //
+      // 기대 결과 (화면):
+      //   "회의 준비" 치고 Enter  → 저장: 회의 준비 / 입력칸 비워짐
+      //   글자 치다가 Escape      → 취소했습니다 / 입력칸 비워짐
+      //   빈 칸에서 Enter         → 아무 변화 없음
+
+      // TODO: 여기에 코드를 쓰세요
+    </script>
+  </body>
+</html>

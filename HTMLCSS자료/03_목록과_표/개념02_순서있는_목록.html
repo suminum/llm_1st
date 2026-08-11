@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>03단원 개념02 - 순서 있는 목록</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ════════════════════════════════════════════════════════════
+         03단원 · 개념 02 — 순서 있는 목록
+         ────────────────────────────────────────────────────────────
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ════════════════════════════════════════════════════════════
+
+         앞 파일에서 ul 로 목록을 만들었습니다. 항목 앞에 점(•) 이 붙었습니다.
+         그런데 이런 목록은 점으로는 부족합니다.
+
+             라면 끓이는 법
+               물 550mL 를 끓입니다
+               면과 스프를 넣습니다
+               4분 30초 더 끓입니다
+
+         이 셋은 순서를 바꾸면 안 됩니다. 순서 자체가 뜻입니다.
+         면을 먼저 넣고 물을 끓일 수는 없으니까요.
+
+         이럴 때 쓰는 태그가 ol 입니다. ordered list, 순서 있는 목록입니다.
+
+             <ol>
+               <li>물 550mL 를 끓입니다</li>
+               <li>면과 스프를 넣습니다</li>
+             </ol>
+
+         바뀐 것은 바깥 태그 이름 하나뿐입니다. ul 이 ol 로 바뀌었습니다.
+         안쪽 항목은 그대로 li 를 씁니다. 새로 외울 태그는 없습니다.
+
+             ul  →  • 점이 붙습니다      순서가 뜻이 없을 때
+             ol  →  1. 번호가 붙습니다   순서가 뜻일 때
+
+         여기서 제일 중요한 것은 다음 한 가지입니다.
+
+             번호는 여러분이 쓰는 것이 아니라 브라우저가 세어 줍니다.
+
+         손으로 "1." 이라고 쓰지 않습니다. li 만 나열하면 브라우저가 위에서부터 셉니다.
+         그래서 중간에 항목을 하나 끼워 넣어도 아래 번호가 저절로 다시 매겨집니다.
+         손으로 썼다면 그 아래 번호를 전부 고쳐야 했을 것입니다.
+    ════════════════════════════════════════════════════════════ -->
+
+    <h1 class="doc-head">개념 02 — 순서 있는 목록</h1>
+    <p class="doc-sub">03단원 · 목록과 표</p>
+
+    <p class="doc-guide">
+      이 파일에서는 <strong>번호가 앞에 붙는 목록</strong>을 만듭니다.
+      태그는 <code>ol</code> 하나만 새로 배우고, 번호 모양을 바꾸는 속성
+      <code>type</code>, <code>start</code>, <code>reversed</code>, <code>value</code> 를 봅니다.
+      그리고 <strong>언제 <code>ul</code> 이고 언제 <code>ol</code> 인지</strong> 고르는 기준을 익힙니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: ol 로 순서 있는 목록 만들기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — ol 로 순서 있는 목록 만들기</h2>
+      <p class="doc-desc">
+        <code>ul</code> 을 <code>ol</code> 로 바꾸기만 하면 됩니다. 안쪽은 그대로 <code>li</code> 입니다.
+      </p>
+
+      <!--
+        아래 상자 안에 이렇게 썼습니다.
+
+            <ol id="recipe-list">
+              <li>물 550mL 를 끓입니다</li>
+              <li>면과 스프를 넣습니다</li>
+              <li>4분 30초 더 끓입니다</li>
+            </ol>
+
+        코드 어디에도 1, 2, 3 이라는 글자가 없습니다.
+        그런데 화면에는 번호가 붙습니다. 브라우저가 li 를 위에서부터 세어 준 것입니다.
+
+        번호는 왼쪽 여백 안쪽에 오른쪽을 맞춰서 놓입니다.
+        그래서 항목이 9개를 넘어 10. 11. 처럼 두 자리가 되어도 글자 시작 위치가
+        흐트러지지 않고 나란히 유지됩니다.
+
+        앞 파일과 마찬가지로 ol 의 자식 자리에도 li 만 옵니다.
+        점이 번호로 바뀌었을 뿐, 규칙은 똑같습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <ol id="recipe-list">
+          <li>물 550mL 를 끓입니다</li>
+          <li>면과 스프를 넣습니다</li>
+          <li>4분 30초 더 끓입니다</li>
+        </ol>
+        <!-- 화면: "1." "2." "3." 이 앞에 붙은 세 줄이 보입니다.
+                  번호 뒤 글자 시작 위치는 세 줄 모두 같습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>ol</code> 은 ordered list 의 줄임말입니다. <code>ul</code> 의 u 는 unordered(순서 없는),
+        <code>ol</code> 의 o 는 ordered(순서 있는) 입니다. 글자 하나 차이라 헷갈리기 쉬우니
+        <strong>o 는 순서(order)</strong> 로 외워 두세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 목록의 <strong>맨 앞</strong>에
+        <code>&lt;li&gt;냄비를 꺼냅니다&lt;/li&gt;</code> 를 끼워 넣어 보세요.
+        아래 항목들의 번호가 어떻게 되는지 확인하는 것이 목적입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 언제 ul 이고 언제 ol 인가 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 언제 ul 이고 언제 ol 인가</h2>
+      <p class="doc-desc">
+        판단 기준은 하나입니다.
+        <strong>순서를 바꿔도 뜻이 그대로면 <code>ul</code>, 뜻이 망가지면 <code>ol</code></strong> 입니다.
+      </p>
+
+      <!--
+        고민될 때는 항목의 순서를 마음속으로 뒤집어 보세요.
+
+            장바구니:  사과 · 바나나 · 포도
+            뒤집으면:  포도 · 바나나 · 사과   → 뜻이 똑같습니다. 그러니 ul.
+
+            라면:      물 끓이기 · 면 넣기 · 4분 30초 끓이기
+            뒤집으면:  4분 30초 끓이기 · 면 넣기 · 물 끓이기   → 말이 안 됩니다. 그러니 ol.
+
+        "번호가 보기 좋아서" 나 "점이 촌스러워서" 로 고르면 안 됩니다.
+        01단원에서 배웠듯 HTML 은 뜻을 붙이는 일이고, 겉모양은 CSS 가 담당합니다.
+        번호가 붙은 모양이 마음에 들면, 07단원부터 배우는 CSS 로 ul 을 그렇게 꾸미면 됩니다.
+
+        판단이 쉬워지는 예를 몇 개 적어 둡니다.
+
+            ol 이 맞는 것 : 요리 순서, 가입 절차, 달리기 순위, 회의 안건 번호, 법 조항
+            ul 이 맞는 것 : 준비물, 메뉴판, 취미, 회원 명단, 태그 목록
+
+        회원 명단이 ul 인 이유는 "누가 먼저 적혔는지" 가 뜻을 갖지 않기 때문입니다.
+        만약 가입한 순서가 중요한 명단이라면 그때는 ol 이 맞습니다.
+        태그 이름은 내용의 성격을 보고 고르는 것이지 정답이 하나로 정해져 있지 않습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">같은 세 줄을 ul 로 쓴 것 (준비물)</p>
+        <ul id="unordered-sample">
+          <li>연필</li>
+          <li>지우개</li>
+          <li>공책</li>
+        </ul>
+        <!-- 화면: 점(•) 이 붙은 세 줄이 보입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">순서가 뜻인 세 줄을 ol 로 쓴 것 (가입 절차)</p>
+        <ol id="ordered-sample">
+          <li>약관에 동의합니다</li>
+          <li>아이디와 비밀번호를 정합니다</li>
+          <li>가입 완료 화면을 확인합니다</li>
+        </ol>
+        <!-- 화면: "1." "2." "3." 이 붙은 세 줄이 보입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — "우리 반 달리기 1등 · 2등 · 3등" 목록을 만든다면
+        <code>ul</code> 과 <code>ol</code> 중 무엇을 써야 할까요?
+        직접 목록을 만들어 위 상자 아래에 넣어 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: type 으로 번호 모양 바꾸기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — type 으로 번호 모양 바꾸기</h2>
+      <p class="doc-desc">
+        <code>ol</code> 에 <code>type</code> 속성을 주면 번호가 알파벳이나 로마자로 바뀝니다.
+      </p>
+
+      <!--
+        01단원에서 속성을 배웠습니다. 여는 태그 안에 "이름=값" 형태로 넣는 추가 정보였습니다.
+        ol 에 쓸 수 있는 속성 중 첫 번째가 type 입니다.
+
+            <ol type="A">
+                 └ 속성 이름   └ 값 (큰따옴표로 감쌉니다)
+
+        값은 다섯 가지입니다.
+
+            type="1"   1. 2. 3.        숫자 (아무것도 안 쓰면 이것입니다)
+            type="A"   A. B. C.        대문자 알파벳
+            type="a"   a. b. c.        소문자 알파벳
+            type="I"   I. II. III.     대문자 로마 숫자
+            type="i"   i. ii. iii.     소문자 로마 숫자
+
+        대문자 A 와 소문자 a 는 서로 다른 값입니다. 속성 값은 대소문자를 가립니다.
+        01단원에서 태그 이름은 대소문자를 안 가린다고 했는데, 값은 다릅니다. 헷갈리지 마세요.
+
+        겉모양을 바꾸는 일은 원래 CSS 몫입니다. 그런데도 type 이 HTML 에 남아 있는 이유가 있습니다.
+        계약서의 "제2조 나항" 처럼 번호 모양 자체가 내용의 일부인 글이 있기 때문입니다.
+        그런 경우가 아니라 단지 보기 좋으라고 바꾸는 것이라면, 07단원 이후 CSS 로 하는 편이 맞습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">type="A" — 대문자 알파벳</p>
+        <ol id="type-upper" type="A">
+          <li>첫 번째 항목</li>
+          <li>두 번째 항목</li>
+        </ol>
+        <!-- 화면: "A." "B." 가 앞에 붙은 두 줄이 보입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">type="a" — 소문자 알파벳</p>
+        <ol id="type-lower" type="a">
+          <li>첫 번째 항목</li>
+          <li>두 번째 항목</li>
+        </ol>
+        <!-- 화면: "a." "b." 가 앞에 붙은 두 줄이 보입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">type="I" — 대문자 로마 숫자</p>
+        <ol id="type-roman" type="I">
+          <li>첫 번째 항목</li>
+          <li>두 번째 항목</li>
+          <li>세 번째 항목</li>
+          <li>네 번째 항목</li>
+        </ol>
+        <!-- 화면: "I." "II." "III." "IV." 가 앞에 붙은 네 줄이 보입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">type="i" — 소문자 로마 숫자</p>
+        <ol id="type-roman-lower" type="i">
+          <li>첫 번째 항목</li>
+          <li>두 번째 항목</li>
+          <li>세 번째 항목</li>
+          <li>네 번째 항목</li>
+        </ol>
+        <!-- 화면: "i." "ii." "iii." "iv." 가 앞에 붙은 네 줄이 보입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 <code>type="A"</code> 목록의 값을 <code>type="i"</code> 로 바꿔 보세요.
+        그다음 <code>type="Z"</code> 처럼 없는 값도 한 번 넣어 보고 어떻게 되는지 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: start 와 reversed ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — start 로 시작 번호 바꾸기, reversed 로 거꾸로 세기</h2>
+      <p class="doc-desc">
+        번호는 기본이 1 부터 오름차순입니다. 두 속성으로 시작점과 방향을 바꿀 수 있습니다.
+      </p>
+
+      <!--
+        start 는 첫 항목의 번호를 정합니다.
+
+            <ol start="5">    → 5. 6. 7. ...
+
+        언제 쓸까요? 긴 목록을 중간에 끊고 설명을 넣은 뒤 다시 이어 쓸 때입니다.
+        앞에서 4번까지 썼다면 뒤쪽 목록을 start="5" 로 시작해야 번호가 이어집니다.
+        그냥 새 ol 을 만들면 다시 1. 부터 시작해 버립니다.
+
+        start 의 값은 type 이 무엇이든 항상 숫자로 씁니다.
+        type="A" 이면서 start="3" 이면 C. 부터 시작합니다. start="C" 라고 쓰지 않습니다.
+
+        reversed 는 번호를 거꾸로 셉니다.
+
+            <ol reversed>     → 항목이 3개면 3. 2. 1.
+
+        이 속성은 생김새가 다릅니다. 등호도 값도 없이 이름만 씁니다.
+        이런 속성을 불리언 속성이라고 부릅니다.
+        "있으면 켜짐, 없으면 꺼짐" 두 가지뿐이라 값이 필요 없습니다.
+        05단원에서 배울 required 도 같은 종류입니다.
+
+        여기서 초보자가 크게 놀라는 일이 하나 있습니다.
+
+            <ol reversed="false">   ← 꺼질 것 같지만 그대로 켜집니다
+
+        false 라고 썼는데도 거꾸로 나옵니다. 불리언 속성은 값을 아예 보지 않고
+        "이름이 적혀 있는가" 만 보기 때문입니다. 끄고 싶으면 속성을 통째로 지워야 합니다.
+        섹션 6 에서 실제 결과를 나란히 놓고 봅니다.
+
+        순위를 3위부터 1위 순으로 발표할 때 reversed 가 유용합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">start="5" — 5번부터 시작</p>
+        <ol id="start-list" start="5">
+          <li>다섯 번째 순서입니다</li>
+          <li>여섯 번째 순서입니다</li>
+        </ol>
+        <!-- 화면: "5." "6." 이 앞에 붙은 두 줄이 보입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">reversed — 거꾸로 세기</p>
+        <ol id="reversed-list" reversed>
+          <li>동메달</li>
+          <li>은메달</li>
+          <li>금메달</li>
+        </ol>
+        <!-- 화면: "3. 동메달" "2. 은메달" "1. 금메달" 순서로 세 줄이 보입니다.
+                  줄 순서는 코드에 쓴 그대로이고 번호만 거꾸로 붙습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>reversed</code> 는 <strong>번호만</strong> 거꾸로 붙입니다.
+        줄의 순서를 뒤집어 주지는 않습니다. 위 상자에서 "동메달" 이 여전히 첫 줄인 것을 보세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 <code>start="5"</code> 목록에 <code>type="A"</code> 를 같이 넣어 보세요.
+        (<code>&lt;ol type="A" start="5"&gt;</code>) 어떤 글자부터 시작하는지 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: value 로 번호 하나만 바꾸기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — value 로 번호 하나만 바꾸기</h2>
+      <p class="doc-desc">
+        <code>value</code> 는 <strong><code>li</code> 에 붙이는</strong> 속성입니다.
+        그 항목의 번호를 직접 정합니다.
+      </p>
+
+      <!--
+        여기까지 나온 속성 세 개는 전부 ol 에 붙였습니다.
+        value 만 li 에 붙습니다. 붙이는 자리가 다르니 주의하세요.
+
+            <ol>
+              <li>하나</li>
+              <li value="10">열</li>     ← 이 항목만 번호를 10 으로 지정
+              <li>열하나</li>            ← 그다음은 11 로 이어집니다
+            </ol>
+
+        중요한 것은 value 가 그 항목 하나만 바꾸는 게 아니라는 점입니다.
+        브라우저는 그 항목부터 다시 세기 시작합니다.
+        그래서 아래 항목들의 번호도 따라 바뀝니다.
+
+        이 속성은 자주 쓰지 않습니다. 목록 중간에 몇 개를 생략하고
+        "1번, 그리고 10번부터" 처럼 건너뛰어 보여 줘야 할 때 정도입니다.
+
+        요약해 두면 이렇습니다.
+
+            ol 에 붙는 것 : type, start, reversed
+            li 에 붙는 것 : value
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">가운데 항목에만 value="10" 을 준 결과</p>
+        <ol id="value-list">
+          <li>하나</li>
+          <li value="10">열</li>
+          <li>열하나</li>
+        </ol>
+        <!-- 화면: "1. 하나" "10. 열" "11. 열하나" 순서로 세 줄이 보입니다.
+                  두 자리 번호가 생기면서 번호가 왼쪽으로 조금 더 나와 붙습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 위 목록의 <code>value="10"</code> 을 <code>value="100"</code> 으로
+        바꿔 보세요. 마지막 줄 번호가 몇으로 바뀌는지 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        아래 실수들도 에러가 나지 않습니다.
+        <strong>번호가 이상하게 보이거나, 아무 일도 안 일어나거나</strong> 둘 중 하나입니다.
+      </p>
+
+      <!-- [실수 1] 번호를 손으로 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 번호를 손으로 씀</span>
+        <div class="doc-code">&lt;ol&gt;
+  &lt;li&gt;1. 물을 끓입니다&lt;/li&gt;
+  &lt;li&gt;2. 면을 넣습니다&lt;/li&gt;
+&lt;/ol&gt;</div>
+        <ol id="double-number">
+          <li>1. 물을 끓입니다</li>
+          <li>2. 면을 넣습니다</li>
+        </ol>
+        <p>
+          <strong>번호가 두 번 나옵니다.</strong> 브라우저가 붙인 번호와 손으로 쓴 번호가
+          겹치기 때문입니다. 게다가 중간에 항목을 끼워 넣으면 손으로 쓴 번호는
+          자동으로 안 고쳐져서 앞뒤가 어긋납니다. <strong>번호는 쓰지 마세요.</strong>
+        </p>
+        <!-- 화면: "1. 1. 물을 끓입니다" "2. 2. 면을 넣습니다" 처럼 번호가 두 번씩 보입니다 -->
+      </div>
+
+      <!-- [실수 2] reversed 를 값으로 끄려고 함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — reversed 를 "false" 로 끄려고 함</span>
+        <div class="doc-code">&lt;ol reversed="false"&gt;</div>
+        <ol id="reversed-false" reversed="false">
+          <li>첫 줄</li>
+          <li>둘째 줄</li>
+          <li>셋째 줄</li>
+        </ol>
+        <p>
+          <strong>false 라고 썼는데도 그대로 거꾸로 나옵니다.</strong>
+          불리언 속성은 값을 보지 않고 이름이 있는지만 보기 때문입니다.
+          끄려면 <code>reversed</code> 를 통째로 지우세요.
+        </p>
+        <!-- 화면: "3. 첫 줄" "2. 둘째 줄" "1. 셋째 줄" 로 번호가 거꾸로 붙습니다 -->
+      </div>
+
+      <!-- [실수 3] 없는 type 값을 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 없는 type 값을 씀</span>
+        <div class="doc-code">&lt;ol type="가"&gt;</div>
+        <ol id="bad-type" type="가">
+          <li>첫 줄</li>
+          <li>둘째 줄</li>
+        </ol>
+        <p>
+          <strong>아무 일도 일어나지 않고 그냥 숫자로 나옵니다.</strong>
+          경고도 없습니다. 브라우저는 모르는 값을 만나면 조용히 무시하고 기본값을 씁니다.
+          "가. 나. 다." 같은 한글 번호는 <code>type</code> 으로는 만들 수 없습니다.
+        </p>
+        <!-- 화면: "1." "2." 로 평범한 숫자 번호가 붙습니다 -->
+      </div>
+
+      <!-- [실수 4] value 를 ol 에 붙임 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — value 를 ol 에 붙임</span>
+        <div class="doc-code">&lt;ol value="5"&gt;
+  &lt;li&gt;첫 줄&lt;/li&gt;
+&lt;/ol&gt;</div>
+        <ol id="wrong-value" value="5">
+          <li>첫 줄</li>
+          <li>둘째 줄</li>
+        </ol>
+        <p>
+          <strong>아무 일도 일어나지 않습니다.</strong> 1 부터 그대로 셉니다.
+          <code>value</code> 는 <code>li</code> 에 붙는 속성입니다.
+          <code>ol</code> 에서 시작 번호를 정하는 것은 <code>start</code> 입니다.
+          붙이는 자리를 바꿔 쓰면 조용히 무시되니 화면을 꼭 확인하세요.
+        </p>
+        <!-- 화면: "1." "2." 로 평범하게 1부터 붙습니다 -->
+      </div>
+
+      <!-- [실수 5] 모양 때문에 ol 을 고름 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 번호가 예뻐서 ol 을 고름</span>
+        <div class="doc-code">&lt;ol&gt;
+  &lt;li&gt;아메리카노&lt;/li&gt;
+  &lt;li&gt;카페라떼&lt;/li&gt;
+&lt;/ol&gt;</div>
+        <p>
+          메뉴판에는 순서가 없습니다. 화면은 멀쩡히 나오지만 뜻이 틀립니다.
+          <strong>화면 낭독기는 "1번 항목, 2번 항목" 이라고 읽어 줍니다.</strong>
+          듣는 사람은 순위나 순서가 있는 줄 알게 됩니다.
+          모양이 마음에 든다면 <code>ul</code> 로 두고 07단원부터 CSS 로 꾸미세요.
+        </p>
+      </div>
+
+      <!-- [실수 6] 안쪽 목록의 번호가 이어질 거라고 생각함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 6 — 안쪽 목록 번호가 이어질 거라 생각함</span>
+        <ol id="nested-ol">
+          <li>준비하기
+            <ol>
+              <li>냄비 꺼내기</li>
+              <li>물 받기</li>
+            </ol>
+          </li>
+          <li>끓이기</li>
+        </ol>
+        <p>
+          안쪽 목록은 <strong>1 부터 다시 셉니다.</strong> 바깥의 1 을 이어받아 2, 3 이 되지 않습니다.
+          "1.1", "1.2" 같은 번호를 원한다면 그것은 CSS 로 만드는 것이라 지금은 할 수 없습니다.
+          바깥 목록의 다음 항목은 안쪽 목록과 상관없이 2 로 이어집니다.
+        </p>
+        <!-- 화면: "1. 준비하기" 아래에 한 칸 들어가 "1. 냄비 꺼내기" "2. 물 받기" 가 오고,
+                  그 아래 다시 왼쪽으로 나와 "2. 끓이기" 가 보입니다 -->
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. 순서가 뜻을 갖는 목록은 <code>&lt;ol&gt;</code> 로 감쌉니다. 항목은 그대로 <code>&lt;li&gt;</code> 입니다.</p>
+      <p>2. <strong>번호는 손으로 쓰지 않습니다.</strong> 브라우저가 <code>li</code> 를 세어 붙여 줍니다.</p>
+      <p>3. 고르는 기준은 "순서를 바꿔도 뜻이 같은가" 입니다. 같으면 <code>ul</code>, 아니면 <code>ol</code>.</p>
+      <p>4. <code>type</code> 은 번호 모양(<code>1 A a I i</code>), <code>start</code> 는 시작 번호입니다.</p>
+      <p>5. <code>reversed</code> 는 값 없이 이름만 씁니다. <code>"false"</code> 라고 써도 켜집니다.</p>
+      <p>6. <code>value</code> 만 <code>li</code> 에 붙고, 그 항목부터 번호를 다시 셉니다.</p>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════
+         ✏️ 직접 해보기 정답
+         ════════════════════════════════════════════════════════════
+
+         1) 섹션 1 의 ol 안 맨 위에 이렇게 넣습니다.
+
+                <li>냄비를 꺼냅니다</li>
+
+            → 새 항목이 1. 이 되고, 원래 1·2·3 이던 줄이 2·3·4 로 저절로 밀립니다.
+              여러분이 고친 번호는 하나도 없습니다. 이것이 ol 을 쓰는 이유입니다.
+
+         2) ol 을 씁니다. 등수는 순서가 곧 뜻이기 때문입니다.
+
+                <ol>
+                  <li>김민준</li>
+                  <li>이서연</li>
+                  <li>박지훈</li>
+                </ol>
+
+            → "1. 김민준" "2. 이서연" "3. 박지훈" 으로 보입니다.
+              ul 로 쓰면 점만 붙어서 누가 1등인지 화면 낭독기가 알 수 없게 됩니다.
+
+         3) 섹션 3 의 첫 목록을 이렇게 바꿉니다.
+
+                <ol id="type-upper" type="i">
+
+            → "A." "B." 였던 번호가 "i." "ii." 로 바뀝니다.
+              이어서 type="Z" 로 바꾸면 없는 값이라 무시되고 "1." "2." 로 돌아옵니다.
+              확인했으면 type="A" 로 되돌려 두세요.
+
+         4) 섹션 4 의 start 목록을 이렇게 바꿉니다.
+
+                <ol id="start-list" type="A" start="5">
+
+            → "E." "F." 로 시작합니다. 알파벳 다섯 번째가 E 이기 때문입니다.
+              start 값은 type 이 무엇이든 항상 숫자로 씁니다.
+
+         5) 섹션 5 의 가운데 항목을 이렇게 바꿉니다.
+
+                <li value="100">열</li>
+
+            → "1. 하나" "100. 열" "101. 열하나" 가 됩니다.
+              마지막 줄이 101 이 되는 이유는 value 가 그 자리부터 다시 세기 때문입니다.
+              번호가 세 자리로 길어져도 글자 시작 위치는 그대로입니다.
+              섹션 1 에서 말한 대로 번호는 오른쪽을 맞춰 놓이기 때문에,
+              길어진 번호가 왼쪽으로 더 나갈 뿐입니다.
+    ════════════════════════════════════════════════════════════ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #recipe-list | list-style-type | decimal
+      #recipe-list li | display | list-item
+      #unordered-sample | list-style-type | disc
+      #ordered-sample | list-style-type | decimal
+      #type-upper | list-style-type | upper-alpha
+      #type-lower | list-style-type | lower-alpha
+      #type-roman | list-style-type | upper-roman
+      #type-roman-lower | list-style-type | lower-roman
+      #start-list | list-style-type | decimal
+      #reversed-list li | display | list-item
+      #value-list li | display | list-item
+      #value-list | text | 하나 열 열하나
+      #double-number li | text | 1. 물을 끓입니다
+      #bad-type | list-style-type | decimal
+      #nested-ol > li > ol | list-style-type | decimal
+    -->
+  </body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>11단원 연습문제 정답 - 이벤트</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 6px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 4px;
+      }
+      input[type="text"],
+      input[type="number"],
+      select {
+        padding: 6px 8px;
+        font-size: 15px;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 6px;
+      }
+      .on {
+        background: #2d6cdf;
+        color: #fff;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+        min-height: 24px;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 4px 0;
+        display: flex;
+        justify-content: space-between;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>11단원 연습문제 정답 — 이벤트</h1>
+
+    <p class="guide">
+      먼저 스스로 풀어 본 다음에 보세요. 직접 눌러 보면서
+      <strong>F12 → Console</strong> 도 함께 확인하세요.
+    
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>문제 1~3</h3>
+      <button id="btn1">글자 바꾸기</button>
+      <button id="btn2">+1</button>
+      <button id="btn3">켜기/끄기</button>
+      <div class="output" id="out1">아직 안 눌렀습니다</div>
+      <div class="output" id="out2">0</div>
+      <div class="output" id="out3">꺼짐</div>
+
+      <h3>문제 4~5</h3>
+      <button class="menuBtn" data-price="4000">아메리카노</button>
+      <button class="menuBtn" data-price="6000">케이크</button>
+      <div class="output" id="out4">메뉴를 골라 보세요</div>
+
+      <h3>문제 6~7</h3>
+      <input type="text" id="keyInput" placeholder="Enter 를 눌러 보세요" />
+      <div class="output" id="out6">대기 중</div>
+      <a href="https://example.com" id="myLink">이동하면 안 되는 링크</a>
+      <div class="output" id="out7">링크를 눌러 보세요</div>
+      <small>(문제 7을 풀기 전에는 누르면 실제로 페이지가 이동합니다)</small>
+
+      <h3>문제 8~9</h3>
+      <input type="text" id="nameInput" placeholder="이름" />
+      <div class="output" id="out8">여기에 실시간으로</div>
+      <div class="output" id="out9">0글자</div>
+
+      <h3>문제 10~11</h3>
+      <label><input type="checkbox" id="agreeCheck" /> 동의합니다</label>
+      <select id="sizeSelect">
+        <option value="S">작은 것</option>
+        <option value="M" selected>보통</option>
+        <option value="L">큰 것</option>
+      </select>
+      <div class="output" id="out10">동의: 안 함</div>
+      <div class="output" id="out11">사이즈: M</div>
+
+      <h3>문제 12 — 간단한 폼</h3>
+      <form id="loginForm">
+        <input type="text" id="idInput" placeholder="아이디를 넣고 Enter" />
+        <button type="submit">확인</button>
+      </form>
+      <div class="output" id="out12">아직 입력 전입니다</div>
+
+      <h3>문제 13 — 목록에서 고르기</h3>
+      <ul id="colorList">
+        <li>빨강</li>
+        <li>초록</li>
+        <li>파랑</li>
+      </ul>
+      <div class="output" id="out13">색을 눌러 보세요</div>
+
+      <h3>문제 14 — 폼 (응용)</h3>
+      <form id="memoForm">
+        <input type="text" id="memoInput" placeholder="메모를 입력하고 Enter" />
+        <button type="submit">추가</button>
+        <div class="error" id="errorMsg"></div>
+      </form>
+      <ul id="memoList"></ul>
+
+      <h3>문제 15 — 위임으로 삭제</h3>
+      <ul id="itemList">
+        <li><span>항목 A</span><button class="deleteBtn">삭제</button></li>
+        <li><span>항목 B</span><button class="deleteBtn">삭제</button></li>
+      </ul>
+    </div>
+
+    <script>
+      // ============================================================
+      // 11단원 연습문제 정답 — 이벤트
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 직접 눌러 보세요. F12 → Console 도 함께
+      // ============================================================
+
+      // ───── 문제 1 ─────
+      const out1 = document.querySelector("#out1");
+
+      document.querySelector("#btn1").addEventListener("click", () => {
+        out1.textContent = "눌렀습니다!";
+      });
+      // 콜백에 괄호를 붙이면 안 됩니다. 붙이면 페이지를 열 때 한 번 실행되고 끝입니다.
+
+      // ───── 문제 2 ─────
+      const out2 = document.querySelector("#out2");
+
+      let count = 0; // ★ 콜백 '밖' 에 만들어야 값이 유지됩니다
+
+      document.querySelector("#btn2").addEventListener("click", () => {
+        count++;
+        out2.textContent = count;
+      });
+      // 콜백 안에 let count = 0 을 두면 누를 때마다 0으로 되돌아가 항상 1이 됩니다.
+
+      // ───── 문제 3 ─────
+      const out3 = document.querySelector("#out3");
+      const btn3 = document.querySelector("#btn3");
+
+      let isOn = false;
+
+      btn3.addEventListener("click", () => {
+        isOn = !isOn; // 뒤집기 (02단원)
+        out3.classList.toggle("on", isOn); // 조건에 따라 붙였다 떼기 (10단원)
+        out3.textContent = isOn ? "켜짐" : "꺼짐"; // 삼항 연산자 (03단원)
+      });
+
+      // ───── 문제 4 · 5 ─────
+      const out4 = document.querySelector("#out4");
+
+      document.querySelectorAll(".menuBtn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          const name = e.target.textContent;
+          const price = Number(e.target.dataset.price); // 문자열이므로 Number 필수
+
+          out4.textContent = `${name}를 골랐습니다`;
+          console.log(price * 3);
+          // 콘솔: 아메리카노를 누르면 12000, 케이크를 누르면 18000
+        });
+      });
+      // 버튼은 두 개인데 콜백은 하나입니다. e.target 으로 어느 것이 눌렸는지 압니다.
+      // dataset 값은 항상 문자열이라 Number 를 빼면 "4000""4000""4000" 이 됩니다.
+
+      // ───── 문제 6 ─────
+      const keyInput = document.querySelector("#keyInput");
+      const out6 = document.querySelector("#out6");
+
+      keyInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          out6.textContent = `입력한 값: ${keyInput.value}`;
+        }
+      });
+      // e.key 는 대소문자를 구분합니다. "enter" 가 아니라 "Enter" 입니다.
+
+      // ───── 문제 7 ─────
+      const out7 = document.querySelector("#out7");
+
+      document.querySelector("#myLink").addEventListener("click", (e) => {
+        e.preventDefault(); // 링크의 기본 동작(페이지 이동)을 막습니다
+        out7.textContent = "이동을 막았습니다";
+      });
+      // 매개변수 (e) 를 안 적으면 ReferenceError 가 납니다.
+      // 괄호를 빼고 e.preventDefault 라고만 쓰면 아무 일도 일어나지 않습니다.
+
+      // ───── 문제 8 · 9 ─────
+      // 두 문제 모두 같은 입력칸을 다루므로 콜백 하나에서 함께 처리했습니다.
+      // 문제 8과 9를 따로 addEventListener 로 붙여도 맞습니다. 둘 다 실행됩니다.
+      const nameInput = document.querySelector("#nameInput");
+      const out8 = document.querySelector("#out8");
+      const out9 = document.querySelector("#out9");
+
+      nameInput.addEventListener("input", (e) => {
+        const value = e.target.value;
+
+        out8.textContent = value || "여기에 실시간으로";
+        out9.textContent = `${value.length}글자`;
+      });
+      // 하나의 콜백에서 두 곳을 함께 갱신했습니다.
+      // 따로 addEventListener 를 두 번 붙여도 됩니다. 둘 다 실행됩니다.
+      // 빈 값일 때 안내 문구로 되돌리려고 || 를 썼습니다. (02단원)
+
+      // ───── 문제 10 ─────
+      const agreeCheck = document.querySelector("#agreeCheck");
+      const out10 = document.querySelector("#out10");
+
+      agreeCheck.addEventListener("change", () => {
+        out10.textContent = `동의: ${agreeCheck.checked ? "함" : "안 함"}`;
+      });
+      // 체크박스는 .value 가 아니라 .checked 입니다. value 는 항상 "on" 입니다.
+
+      // ───── 문제 11 ─────
+      const sizeSelect = document.querySelector("#sizeSelect");
+      const out11 = document.querySelector("#out11");
+
+      sizeSelect.addEventListener("change", (e) => {
+        out11.textContent = `사이즈: ${e.target.value}`;
+      });
+      // select 는 고른 option 의 value 를 줍니다. 화면 글자가 아닙니다.
+
+      // ───── 문제 12 ─────
+      const loginForm = document.querySelector("#loginForm");
+      const idInput = document.querySelector("#idInput");
+      const out12 = document.querySelector("#out12");
+
+      loginForm.addEventListener("submit", (e) => {
+        e.preventDefault(); // ★ 이 줄이 없으면 페이지가 새로고침됩니다
+        out12.textContent = `${idInput.value}님 환영합니다`;
+      });
+      // 버튼의 click 이 아니라 form 의 submit 에 붙였습니다.
+      // 그래야 버튼을 눌러도, 입력칸에서 Enter 를 쳐도 똑같이 동작합니다.
+
+      // ───── 문제 13 ─────
+      const colorList = document.querySelector("#colorList");
+      const out13 = document.querySelector("#out13");
+
+      colorList.addEventListener("click", (e) => {
+        // ul 의 빈 곳을 눌렀을 때는 무시합니다
+        if (e.target.tagName !== "LI") {
+          return;
+        }
+        out13.textContent = `고른 색: ${e.target.textContent}`;
+      });
+      // li 가 세 개인데 콜백은 하나입니다. 버블링 덕분에 ul 이 대신 받습니다.
+      // tagName 은 항상 대문자입니다. "li" 로 비교하면 영원히 false 입니다.
+
+      // ───── 문제 14 ─────
+      const memoForm = document.querySelector("#memoForm");
+      const memoInput = document.querySelector("#memoInput");
+      const memoList = document.querySelector("#memoList");
+      const errorMsg = document.querySelector("#errorMsg");
+
+      memoForm.addEventListener("submit", (e) => {
+        e.preventDefault(); // ★ 없으면 페이지가 새로고침되어 목록이 날아갑니다
+
+        const value = memoInput.value.trim(); // 공백만 친 경우도 걸러냅니다
+
+        if (!value) {
+          errorMsg.textContent = "메모를 입력해 주세요";
+          memoInput.focus();
+          return; // ★ return 이 없으면 빈 항목이 추가됩니다
+        }
+
+        errorMsg.textContent = "";
+
+        const li = document.createElement("li");
+        li.textContent = value; // 사용자 입력이므로 textContent (innerHTML 금지)
+        memoList.appendChild(li);
+
+        memoInput.value = "";
+        memoInput.focus();
+      });
+      // form 으로 묶었기 때문에 버튼 클릭과 Enter 가 둘 다 동작합니다.
+
+      // ───── 문제 15 ─────
+      const itemList = document.querySelector("#itemList");
+
+      itemList.addEventListener("click", (e) => {
+        // 삭제 버튼이 눌린 경우만 처리
+        if (!e.target.classList.contains("deleteBtn")) {
+          return;
+        }
+
+        const li = e.target.closest("li"); // 버튼이 아니라 항목 전체를 지워야 합니다
+        li.remove();
+        console.log("삭제됨. 남은 항목:", itemList.children.length);
+      });
+
+      // 부모인 ul 하나에만 붙였습니다. 버블링 덕분에 자식의 클릭이 여기로 올라옵니다.
+      // 이렇게 하면 나중에 li 를 추가해도 삭제가 그대로 동작합니다.
+      //
+      // 판별 없이 e.target.remove() 를 하면 글자를 눌렀을 때 글자만 사라집니다.
+      // closest("li") 대신 parentElement 를 쓰면 구조가 바뀔 때 깨집니다.
+
+      // ───── 문제 16 ─────
+      // document.querySelector("#btn1").addEventListener("click", console.log("눌림"));
+      //
+      // 왜 이렇게 되나:
+      //   console.log("눌림") 은 '함수' 가 아니라 '함수를 실행한 결과' 입니다.
+      //   그래서 페이지를 여는 순간 즉시 실행되어 "눌림" 이 한 번 찍히고,
+      //   그 결과인 undefined 가 이벤트에 등록됩니다.
+      //   undefined 는 함수가 아니므로 버튼을 눌러도 아무 일이 없습니다.
+      //
+      // 고치는 방법:
+      //   addEventListener("click", () => console.log("눌림"));
+      //
+      // 08단원에서 배운 "콜백에 괄호를 붙이지 않는다" 가 이벤트에서 특히 자주 나옵니다.
+      // "버튼을 눌러도 반응이 없다" 면 이 실수부터 의심하세요.
+    </script>
+  </body>
+</html>

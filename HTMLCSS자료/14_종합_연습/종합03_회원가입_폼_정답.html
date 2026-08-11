@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>14단원 종합03 정답 - 회원가입 폼</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ============================================================
+         종합 03 정답 — 회원가입 폼
+         단계 번호는 문제 파일과 똑같습니다. 나란히 열어 놓고 비교하세요.
+         ============================================================ */
+
+      /* 폼이 놓이는 무대입니다. 문제 파일에 미리 들어 있던 규칙입니다. */
+      .form-stage {
+        background-color: #eef2f7;
+        padding: 34px 0;
+      }
+
+      /* fieldset 과 legend 의 모양입니다. 문제 파일에 미리 들어 있던 규칙입니다. */
+      .form-group {
+        margin: 0 0 18px;
+        padding: 4px 14px 14px;
+        border: 1px solid #dde3ec;
+        border-radius: 8px;
+      }
+      .form-group legend {
+        padding: 0 6px;
+        color: #2d6cdf;
+        font-size: 0.9375rem;
+        font-weight: bold;
+      }
+
+      /* ───── 단계 3 ───── 폼 상자 */
+      .signup-form {
+        width: 420px;
+        margin: 0 auto;
+        padding: 24px;
+        background-color: #ffffff;
+        border: 1px solid #d8dee8;
+        border-radius: 12px;
+        position: relative; /* 단계 10 에서 한 줄 더 붙습니다 */
+      }
+      /* 화면: 회색 무대 한가운데에 흰 폼 상자가 놓입니다. 바깥 폭은 470px 입니다 */
+
+      /* ───── 단계 4 ───── label 을 한 줄 차지하게 */
+      .signup-form label {
+        display: block;
+        margin: 14px 0 4px;
+        font-size: 0.9375rem;
+        font-weight: bold;
+      }
+      /* 화면: 옆에 붙어 있던 이름표가 입력칸 위로 올라가 한 줄을 차지합니다 */
+
+      /* ───── 단계 5 ───── 필수 표시 */
+      .required {
+        color: #c0392b;
+        font-weight: bold;
+      }
+      /* 화면: 이름표 옆의 별표 네 개만 빨갛게 바뀝니다 */
+
+      /* ───── 단계 6 ───── 입력칸 */
+      .form-input {
+        width: 100%;
+        box-sizing: border-box;
+        padding: 8px 10px;
+        border: 1px solid #c7ced9;
+        border-radius: 6px;
+        font-size: 1rem;
+        font-family: inherit;
+      }
+      /* 화면: 입력칸 · 목록 상자 · 긴 글 칸이 모두 fieldset 안쪽 폭 390px 로 맞춰집니다 */
+
+      /* ───── 단계 7 ───── 도움말 */
+      .form-help {
+        margin: 4px 0 0;
+        font-size: 0.8125rem;
+        color: #6b7280;
+      }
+      /* 화면: 도움말이 13px 회색으로 작아지고 입력칸 바로 아래에 붙습니다 */
+
+      /* ───── 단계 8 ───── 지금 입력 중인 칸 */
+      .form-input:focus {
+        border-color: #2d6cdf;
+        background-color: #f2f7ff;
+        outline: 2px solid #cddffb;
+      }
+      /* 화면: 누른 칸만 테두리가 파래지고 배경이 연파랑으로 바뀌며 바깥에 연한 테가 한 겹 더 생깁니다 */
+
+      /* ───── 단계 9 ───── 제출 버튼 */
+      .form-submit {
+        width: 100%;
+        margin-top: 20px;
+        padding: 12px 0;
+        background-color: #2d6cdf;
+        color: #ffffff;
+        border: none;
+        border-radius: 8px;
+        font-family: inherit;
+        font-size: 1rem;
+        font-weight: bold;
+        letter-spacing: 2px;
+      }
+      .form-submit:hover {
+        background-color: #1b4ea8;
+      }
+      /* 화면: 회색 기본 버튼이 폼 폭을 다 채우는 파란 버튼이 됩니다 */
+
+      /* ───── 단계 10 ───── 배지 */
+      .form-badge {
+        position: absolute;
+        top: -14px;
+        right: 18px;
+        margin: 0;
+        padding: 4px 12px;
+        background-color: #f0a830;
+        color: #ffffff;
+        font-size: 0.8125rem;
+        font-weight: bold;
+        border-radius: 999px;
+      }
+      /* 화면: 주황 알약 모양 배지가 폼 상자의 오른쪽 위 모서리에 걸쳐 붙습니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         14단원 · 종합 03 정답 — 회원가입 폼
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              여러분이 만든 종합03_회원가입_폼.html 과 나란히 열어 대조하세요.
+         ============================================================
+
+         답이 글자 하나까지 같을 필요는 없습니다.
+         화면이 같고 F12 로 잰 숫자가 같으면 맞은 것입니다.
+
+         이 폼에는 flex 도 grid 도 쓰이지 않았습니다. 12·13단원의 내용이기 때문입니다.
+         이름표를 입력칸 위에 올리는 일은 display: block 한 줄로 끝났고,
+         배지를 모서리에 붙이는 일은 relative 와 absolute 한 쌍으로 끝났습니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">종합 03 정답 — 회원가입 폼</h1>
+    <p class="doc-sub">14단원 · 종합 연습 · 05단원 + 07~11단원</p>
+
+    <p class="doc-guide">
+      아래가 완성된 모습입니다. 각 단계의 <strong>답과 해설</strong>은
+      이 파일을 VS Code 로 열면 <code>&lt;style&gt;</code> 안과 각 단계 주석에 있습니다.
+      입력칸을 하나씩 눌러 보면 <strong>지금 입력 중인 칸</strong>만 파랗게 바뀝니다.
+    </p>
+
+    <div class="doc-demo">
+      <p class="doc-demo-label">완성된 폼</p>
+      <div class="form-stage">
+        <form class="signup-form" action="/join" method="post">
+          <p class="form-badge">가입 무료</p>
+
+          <fieldset class="form-group">
+            <legend>계정 정보</legend>
+
+            <label for="signupId">아이디 <span class="required">*</span></label>
+            <input class="form-input" type="text" id="signupId" name="userId"
+                   placeholder="hello2026" minlength="4" required />
+            <p class="form-help">영문 소문자와 숫자를 섞어 4자 이상으로 씁니다.</p>
+
+            <label for="signupPw">비밀번호 <span class="required">*</span></label>
+            <input class="form-input" type="password" id="signupPw" name="userPw"
+                   minlength="8" required />
+            <p class="form-help">8자 이상이어야 합니다. 친 글자는 점으로 가려집니다.</p>
+
+            <label for="signupMail">메일 주소 <span class="required">*</span></label>
+            <input class="form-input" type="email" id="signupMail" name="userMail"
+                   placeholder="hello@example.com" required />
+            <p class="form-help">가입 확인 메일을 이 주소로 보냅니다.</p>
+          </fieldset>
+
+          <fieldset class="form-group">
+            <legend>추가 정보</legend>
+
+            <label for="signupCity">사는 지역</label>
+            <select class="form-input" id="signupCity" name="city">
+              <option value="">고르지 않음</option>
+              <option value="seoul">서울</option>
+              <option value="busan">부산</option>
+              <option value="jeju">제주</option>
+            </select>
+
+            <label for="signupIntro">한 줄 소개</label>
+            <textarea class="form-input" id="signupIntro" name="intro" rows="3"
+                      placeholder="어떤 것을 배우고 싶은지 적어 주세요"></textarea>
+            <p class="form-help">나중에 언제든 고칠 수 있습니다.</p>
+
+            <label class="form-agree">
+              <input type="checkbox" name="agree" value="yes" required />
+              이용약관에 동의합니다 <span class="required">*</span>
+            </label>
+          </fieldset>
+
+          <button class="form-submit" type="submit">가입하기</button>
+        </form>
+      </div>
+      <!-- 화면: 회색 무대 한가운데에 흰 폼 상자가 놓입니다.
+                오른쪽 위 모서리에 주황 배지가 걸쳐 있고, 안쪽에는 파란 제목이 달린
+                둥근 상자 두 개가 위아래로 놓이며, 맨 아래에 파란 가입하기 버튼이 있습니다 -->
+    </div>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 단계 목록 ──</p>
+      <p>단계 1 — 폼의 뼈대를 만듭니다 (HTML)</p>
+      <p>단계 2 — 이름표와 입력칸을 연결하고 도움말을 답니다 (HTML)</p>
+      <p>단계 3 — 폼을 흰 상자로 만들고 가운데로 보냅니다</p>
+      <p>단계 4 — 이름표가 한 줄을 차지하게 만듭니다</p>
+      <p>단계 5 — 필수 표시 별표를 빨갛게 만듭니다</p>
+      <p>단계 6 — 입력칸의 폭을 가지런히 맞춥니다</p>
+      <p>단계 7 — 도움말 글자를 작고 연하게 만듭니다</p>
+      <p>단계 8 — 지금 입력 중인 칸을 강조합니다</p>
+      <p>단계 9 — [도전] 제출 버튼을 꾸밉니다</p>
+      <p>단계 10 — [도전] 폼 모서리에 배지를 붙입니다</p>
+    </div>
+
+    <!-- ───── 단계 1 ───── (05단원 개념02 섹션5 fieldset · 개념05 섹션6 action) -->
+    <!--
+      답:
+          <form class="signup-form" action="/join" method="post">
+            <fieldset class="form-group">
+              <legend>계정 정보</legend>
+            </fieldset>
+            <fieldset class="form-group">
+              <legend>추가 정보</legend>
+            </fieldset>
+            <button class="form-submit" type="submit">가입하기</button>
+          </form>
+
+      해설: fieldset 은 관련 있는 칸들을 한 묶음으로 만들고, legend 는 그 묶음의 제목입니다.
+            legend 는 fieldset 의 첫 자식이어야 테두리 위에 얹힙니다.
+            button 은 type 을 안 쓰면 기본이 submit 이지만, 무엇을 하는 버튼인지
+            코드에 남기기 위해 type="submit" 을 적어 두는 편이 좋습니다.
+            제출 버튼은 반드시 form 안에 있어야 동작합니다.
+    -->
+
+    <!-- ───── 단계 2 ───── (05단원 개념02 label · 개념03 · 개념04 · 개념06 required) -->
+    <!--
+      답: 계정 정보 묶음 안에 이런 짝을 세 벌 씁니다.
+
+          <label for="signupId">아이디 <span class="required">*</span></label>
+          <input class="form-input" type="text" id="signupId" name="userId"
+                 placeholder="hello2026" minlength="4" required />
+          <p class="form-help">영문 소문자와 숫자를 섞어 4자 이상으로 씁니다.</p>
+
+          비밀번호는 type="password" 와 minlength="8",
+          메일 주소는 type="email" 을 씁니다.
+
+          추가 정보 묶음에는 select · textarea · 체크박스를 넣습니다.
+
+          <label class="form-agree">
+            <input type="checkbox" name="agree" value="yes" required />
+            이용약관에 동의합니다 <span class="required">*</span>
+          </label>
+
+      해설: label 의 for 와 input 의 id 가 같은 값이어야 연결됩니다. name 과는 다른 일입니다.
+            id 는 label 과 짝을 짓는 이름이고, name 은 서버로 보낼 때 값에 붙는 이름표입니다.
+            체크박스는 label 로 감싸는 방법을 썼습니다. 감싸면 for 와 id 가 없어도 연결됩니다.
+            연결이 됐는지는 글자를 눌러 보면 압니다. 칸이 켜지면 연결된 것입니다.
+            required 는 화면에 아무 표시도 만들지 않습니다. 그래서 별표를 사람이 직접 씁니다.
+    -->
+
+    <!-- ───── 단계 3 ───── (10단원 개념05 width · 개념04 margin · 개념02 padding · 개념03 border) -->
+    <!--
+      답:  width: 420px;
+           margin: 0 auto;
+           padding: 24px;
+           background-color: #ffffff;
+           border: 1px solid #d8dee8;
+           border-radius: 12px;
+
+      해설: 종합01 의 카드와 똑같은 조합입니다. width 가 있어야 margin 의 auto 가 일을 합니다.
+            여기서도 width 는 콘텐츠 영역만 가리키므로 폼의 바깥 폭은
+            420 + 24 + 24 + 1 + 1 = 470px 이 됩니다.
+    -->
+
+    <!-- ───── 단계 4 ───── (11단원 개념02 display) -->
+    <!--
+      답:  display: block;
+           margin: 14px 0 4px;
+           font-size: 0.9375rem;
+           font-weight: bold;
+
+      해설: label 은 원래 인라인입니다. 인라인은 글자처럼 옆으로 이어지기 때문에
+            이름표와 입력칸이 한 줄에 나란히 붙습니다.
+            display: block 은 그 타고난 성질을 바꿔서 한 줄을 통째로 차지하게 만듭니다.
+            그러면 뒤따르는 입력칸이 다음 줄로 밀려나 이름표가 칸 위에 놓입니다.
+            인라인일 때는 위아래 margin 이 안 먹었지만, 블록이 되고 나서는 먹습니다.
+            그래서 margin 을 준 것도 이 단계입니다.
+    -->
+
+    <!-- ───── 단계 5 ───── (08단원 개념01 클래스 선택자 · 07단원 개념04 색 표기법) -->
+    <!--
+      답:  color: #c0392b;
+           font-weight: bold;
+
+      해설: 별표는 span 으로 감싸 두었습니다. span 은 아무 뜻도 없는 인라인 껍데기라서
+            "여기 한 조각만 다르게 꾸미고 싶다" 할 때 씁니다.
+            클래스는 같은 이름을 여러 곳에 붙일 수 있으므로 별표 네 개가 한꺼번에 바뀝니다.
+            색만으로 필수를 알리면 색을 구분하기 어려운 사람이 놓칩니다.
+            그래서 별표라는 모양을 함께 씁니다.
+    -->
+
+    <!-- ───── 단계 6 ───── (10단원 개념05 width 와 box-sizing) -->
+    <!--
+      답:  width: 100%;
+           box-sizing: border-box;
+           padding: 8px 10px;
+           border: 1px solid #c7ced9;
+           border-radius: 6px;
+           font-size: 1rem;
+           font-family: inherit;
+
+      해설: box-sizing: border-box 를 켜지 않으면 100% 로 잡힌 390px 에 좌우 padding 20px 과
+            테두리 2px 이 더해져 칸의 폭이 412px 이 됩니다. 22px 이 남아서
+            fieldset 의 오른쪽 테두리를 7px 뚫고 나갑니다.
+            border-box 를 켜면 width 가 테두리까지 포함한 전체 폭이 되어 390px 에 딱 맞습니다.
+            입력칸은 브라우저 기본 글꼴을 쓰기 때문에 font-family: inherit 을 주지 않으면
+            폼 안 글꼴만 다르게 보입니다. inherit 은 부모 값을 그대로 받아 오라는 뜻입니다.
+            체크박스에는 form-input 을 붙이지 않았습니다. 붙이면 네모 하나가
+            폼 폭만큼 늘어나 버립니다.
+    -->
+
+    <!-- ───── 단계 7 ───── (09단원 개념01 font-size · 10단원 개념04 margin) -->
+    <!--
+      답:  margin: 4px 0 0;
+           font-size: 0.8125rem;
+           color: #6b7280;
+
+      해설: p 에는 브라우저가 위아래로 16px 씩 여백을 넣어 둡니다. 그대로 두면 도움말이
+            자기가 설명하는 칸에서 멀어지고 오히려 다음 이름표에 가까워집니다.
+            위 여백을 4px 로 줄이고 아래를 0 으로 만들어 칸에 붙였습니다.
+            0.8125rem 은 13px 입니다. 도움말은 본문보다 작아야 곁다리로 읽힙니다.
+    -->
+
+    <!-- ───── 단계 8 ───── (08단원 개념04 상태로 고르기 :focus) -->
+    <!--
+      답:  border-color: #2d6cdf;
+           background-color: #f2f7ff;
+           outline: 2px solid #cddffb;
+
+      해설: :focus 는 그 칸이 입력을 받는 중일 때만 켜지는 상태입니다.
+            콜론 하나를 선택자 뒤에 붙여 씁니다. 띄어 쓰면 자손 선택자가 되어 아무 일도 안 됩니다.
+            outline 은 border 와 달리 상자의 크기를 바꾸지 않습니다.
+            그래서 칸이 켜질 때 옆 칸들이 밀리지 않습니다. border 로 굵기를 바꾸면
+            켤 때마다 화면이 덜컥거립니다.
+            브라우저가 원래 그려 주던 기본 테를 지우고 싶더라도 아무 표시도 없게 만들지 마세요.
+            키보드만 쓰는 사람은 지금 어느 칸에 있는지 알 방법이 사라집니다.
+    -->
+
+    <!-- ───── 단계 9 ───── [도전] (10단원 개념02·03 · 08단원 개념04 :hover) -->
+    <!--
+      답:  .form-submit { width: 100%; margin-top: 20px; padding: 12px 0;
+                          background-color: #2d6cdf; color: #ffffff; border: none;
+                          border-radius: 8px; font-family: inherit; font-size: 1rem;
+                          font-weight: bold; letter-spacing: 2px; }
+           .form-submit:hover { background-color: #1b4ea8; }
+
+      해설: button 은 브라우저가 회색 배경과 입체 테두리를 미리 그려 둡니다.
+            border: none 으로 그 테두리를 지워야 우리가 준 배경색이 제대로 보입니다.
+            button 은 인라인 블록이라 width 와 위아래 padding 이 그대로 먹습니다.
+            그래서 display 를 건드리지 않고도 폼 폭을 꽉 채울 수 있습니다.
+            버튼은 form 의 바로 아래 자식이므로 100% 는 폼의 안쪽 폭 420px 입니다.
+            fieldset 안에 있는 입력칸의 100% 와 기준이 다릅니다.
+    -->
+
+    <!-- ───── 단계 10 ───── [도전] (11단원 개념03 relative · 개념04 absolute) -->
+    <!--
+      답: HTML — form 의 첫 자식으로 넣습니다.
+              <p class="form-badge">가입 무료</p>
+
+          CSS — .signup-form 규칙에 한 줄을 더합니다.
+              position: relative;
+
+          그리고 배지 규칙을 만듭니다.
+              .form-badge { position: absolute; top: -14px; right: 18px; margin: 0;
+                            padding: 4px 12px; background-color: #f0a830; color: #ffffff;
+                            font-size: 0.8125rem; font-weight: bold; border-radius: 999px; }
+
+      해설: absolute 는 흐름에서 빠져 나와 "static 이 아닌 가장 가까운 조상" 을 기준으로 붙습니다.
+            폼에 position: relative 를 주지 않으면 기준이 폼이 아니라 페이지 전체가 되어
+            배지가 화면 맨 위 오른쪽으로 날아갑니다. 그래서 이 둘은 한 쌍입니다.
+            relative 는 자기 자리를 그대로 지키므로 폼의 모양은 하나도 안 바뀝니다.
+            기준점 표시로만 쓴 것입니다.
+            top 에 음수를 주면 기준 상자보다 위로 올라가 모서리에 걸친 모양이 됩니다.
+            border-radius 를 높이보다 크게 주면 양 끝이 반원이 되어 알약 모양이 됩니다.
+    -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      .signup-form | ~width | 470
+      .signup-form | background-color | rgb(255, 255, 255)
+      .signup-form | position | relative
+      .signup-form label | display | block
+      .signup-form label | font-weight | 700
+      .required | color | rgb(192, 57, 43)
+      .form-input | box-sizing | border-box
+      .form-input | ~width | 390
+      .form-input | border-radius | 6px
+      .form-input | font-size | 16px
+      .form-help | font-size | 13px
+      .form-help | color | rgb(107, 114, 128)
+      .form-group legend | color | rgb(45, 108, 223)
+      .form-submit | background-color | rgb(45, 108, 223)
+      .form-submit | color | rgb(255, 255, 255)
+      .form-submit | ~width | 420
+      .form-badge | position | absolute
+      .form-badge | background-color | rgb(240, 168, 48)
+      .form-badge | text | 가입 무료
+      .form-stage | background-color | rgb(238, 242, 247)
+    -->
+  </body>
+</html>

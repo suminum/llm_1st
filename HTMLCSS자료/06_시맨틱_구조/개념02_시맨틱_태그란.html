@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>06단원 개념02 - 시맨틱 태그란</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         06단원 · 개념 02 — 시맨틱 태그란
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         개념01 에서 div 는 "뜻이 없는 상자" 라고 했습니다.
+         뜻이 없다는 말은, 브라우저도 검색엔진도 그 상자를 보고
+         아무것도 짐작하지 못한다는 뜻입니다.
+
+             <div>우리 가게</div>
+             → 브라우저: "글자 한 줄이 있구나." 끝입니다.
+
+         그런데 실제 웹페이지에는 뜻이 분명한 구역들이 있습니다.
+         맨 위 이름 부분, 메뉴 줄, 본문, 맨 아래 연락처.
+         사람은 보자마자 압니다. 브라우저는 모릅니다. div 라서 그렇습니다.
+
+         그 구역에 이름을 붙여 주는 태그들이 있습니다.
+
+             <header>  이 구역은 머리말이다
+             <nav>     이 구역은 길 안내다
+             <main>    이 구역이 이 페이지의 알맹이다
+             <footer>  이 구역은 꼬리말이다
+
+         이렇게 "이름 자체에 뜻이 담긴 태그" 를 시맨틱(semantic) 태그라고 부릅니다.
+         시맨틱은 '의미의' 라는 뜻의 영어 단어입니다.
+
+         ★ 이 파일에서 가장 중요한 한 문장을 먼저 말합니다.
+
+             시맨틱 태그는 화면을 하나도 바꾸지 않습니다.
+
+         정말입니다. div 를 header 로 바꿔도 글자 크기, 색, 위치, 여백이
+         전부 그대로입니다. 이 파일에서 그걸 직접 눈으로 보고, 자로도 재 봅니다.
+
+         "화면이 안 바뀌는데 왜 굳이 바꾸느냐" 가 이 파일의 진짜 주제입니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 02 — 시맨틱 태그란</h1>
+    <p class="doc-sub">06단원 · 시맨틱 구조</p>
+
+    <p class="doc-guide">
+      이 파일에는 같은 화면을 만드는 <strong>두 벌의 코드</strong>가 나옵니다.
+      하나는 <code>div</code> 만 썼고, 하나는 시맨틱 태그를 썼습니다.
+      두 결과 상자를 번갈아 보면서 <strong>다른 곳을 찾아보세요</strong>.
+      찾을 수 없습니다. 그게 정답입니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: 같은 화면, 두 가지 코드 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 같은 화면을 만드는 두 가지 코드</h2>
+      <p class="doc-desc">
+        아래 A 와 B 는 <strong>글자도 순서도 완전히 같은 페이지 조각</strong>입니다.
+        태그 이름만 다릅니다.
+      </p>
+
+      <!--
+        A 는 이렇게 썼습니다. 전부 div 입니다.
+
+            <div>
+              <div>
+                <h3>동네 도서관 소식</h3>
+              </div>
+              <div>
+                <p>새 열람실이 열렸습니다.</p>
+                <p>토요일에도 밤 9시까지 엽니다.</p>
+              </div>
+              <div>
+                <p>글쓴이 : 편집실</p>
+              </div>
+            </div>
+
+        B 는 바깥쪽 상자 이름만 바꿨습니다. 안쪽 h3, p 는 손대지 않았습니다.
+
+            <main>
+              <header>
+                <h3>동네 도서관 소식</h3>
+              </header>
+              <section>
+                <p>새 열람실이 열렸습니다.</p>
+                <p>토요일에도 밤 9시까지 엽니다.</p>
+              </section>
+              <footer>
+                <p>글쓴이 : 편집실</p>
+              </footer>
+            </main>
+
+        바뀐 것은 딱 이것뿐입니다.
+
+            div → main       바깥 상자
+            div → header     첫째 상자
+            div → section    둘째 상자
+            div → footer     셋째 상자
+
+        header, main, section, footer 가 각각 무슨 뜻인지는
+        개념03 과 개념04 에서 하나씩 배웁니다.
+        지금은 "이름만 다른 상자" 라고 생각하고 결과만 보세요.
+      -->
+      <div class="doc-demo" id="divVerBox">
+        <p class="doc-demo-label">A · div 만 쓴 코드의 결과</p>
+        <div id="divVer">
+          <div>
+            <h3>동네 도서관 소식</h3>
+          </div>
+          <div>
+            <p>새 열람실이 열렸습니다.</p>
+            <p>토요일에도 밤 9시까지 엽니다.</p>
+          </div>
+          <div>
+            <p>글쓴이 : 편집실</p>
+          </div>
+        </div>
+        <!-- 화면: 굵고 조금 큰 글씨로 "동네 도서관 소식",
+                  그 아래 문단 두 줄, 그 아래 "글쓴이 : 편집실" 한 줄 -->
+      </div>
+      <div class="doc-demo" id="semVerBox">
+        <p class="doc-demo-label">B · 시맨틱 태그를 쓴 코드의 결과</p>
+        <main id="semVer">
+          <header>
+            <h3>동네 도서관 소식</h3>
+          </header>
+          <section>
+            <p>새 열람실이 열렸습니다.</p>
+            <p>토요일에도 밤 9시까지 엽니다.</p>
+          </section>
+          <footer>
+            <p>글쓴이 : 편집실</p>
+          </footer>
+        </main>
+        <!-- 화면: 위 A 상자와 글자, 크기, 줄 간격, 순서가 전부 똑같습니다 -->
+      </div>
+
+      <p class="doc-note">
+        두 상자를 아무리 봐도 다른 점이 없습니다.
+        "내가 뭘 잘못 넣었나" 싶겠지만 맞게 한 것입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — B 상자의 <code>&lt;header&gt;</code> 와 <code>&lt;/header&gt;</code> 를
+        <code>&lt;div&gt;</code> 와 <code>&lt;/div&gt;</code> 로 바꿔 보세요.
+        저장하고 새로고침(F5) 해도 화면이 그대로인 것을 확인한 뒤 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 화면은 정말 똑같습니다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 화면은 정말 똑같습니다</h2>
+      <p class="doc-desc">
+        눈으로만 보면 못 믿을 수 있으니 <strong>자로 재 봤습니다</strong>.
+        A 와 B 는 높이도 폭도 같은 숫자입니다.
+      </p>
+
+      <!--
+        브라우저에는 크롬 개발자 도구라는 자가 들어 있습니다.
+        그걸로 A 상자와 B 상자를 재면 이렇게 나옵니다.
+
+            A 의 바깥 상자   폭 824px   높이 164px
+            B 의 바깥 상자   폭 824px   높이 164px
+
+        글자 크기도 재 보면 이렇습니다.
+
+            A 의 h3   18.72px          B 의 h3   18.72px
+            A 의 div  display: block   B 의 section  display: block
+            A 의 div  display: block   B 의 header   display: block
+
+        display 는 11단원에서 제대로 배우는 이름인데,
+        지금은 "이 요소가 한 줄을 통째로 쓰는가(block) 아닌가(inline)" 를
+        가리키는 값이라고만 알면 됩니다.
+
+        div 도 block, header 도 block, section 도 block, footer 도 block, main 도 block.
+        전부 같습니다. 그래서 화면이 같을 수밖에 없습니다.
+
+        ★ 왜 이렇게 만들었을까요?
+
+        시맨틱 태그는 "생김새" 를 위한 것이 아니라 "뜻" 을 위한 것이기 때문입니다.
+        생김새는 07단원부터 CSS 가 맡습니다. 역할이 완전히 갈려 있습니다.
+
+            HTML → 이게 무엇인가 (뜻)
+            CSS  → 어떻게 보일까 (생김새)
+
+        시맨틱 태그가 화면까지 바꿔 버리면 이 구분이 무너집니다.
+        "제목처럼 보이게 하려고 header 를 쓴다" 같은 잘못된 습관이 생기니까요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">같은 글자를 div 와 section 에 각각 넣어 보면</p>
+        <div id="plainDiv">저는 div 안의 글자입니다.</div>
+        <section id="plainSection">저는 section 안의 글자입니다.</section>
+        <!-- 화면: 두 줄이 위아래로 바짝 붙어서 보입니다.
+                  글자 크기도 색도 여백도 두 줄이 완전히 같습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <strong>시맨틱 태그를 썼는데 화면이 안 바뀌면 잘한 것입니다.</strong>
+        바뀌었다면 그건 시맨틱 태그 때문이 아니라 다른 곳을 같이 고친 것입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위 상자의 <code>&lt;section&gt;</code> 을
+        <code>&lt;article&gt;</code> 로 바꿔 보세요. 역시 아무것도 안 바뀝니다.
+        <code>&lt;aside&gt;</code>, <code>&lt;nav&gt;</code> 로도 한 번씩 바꿔 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 이 페이지를 읽는 네 종류의 독자 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 이 페이지를 읽는 사람은 넷입니다</h2>
+      <p class="doc-desc">
+        웹페이지를 보는 것은 <strong>눈으로 보는 사람만이 아닙니다</strong>.
+        화면을 안 보고 읽는 쪽이 더 많습니다.
+      </p>
+
+      <!--
+        화면이 같은데도 태그를 나누는 이유는, 화면을 안 보고 읽는 쪽이 있기 때문입니다.
+        아래 넷을 하나씩 봅니다.
+
+        [1] 검색엔진
+            구글, 네이버의 수집 프로그램은 화면을 눈으로 보지 않습니다.
+            HTML 글자만 읽어 갑니다. div 뿐이면 "글자 뭉치" 로만 읽힙니다.
+            main 이 있으면 "이 페이지의 알맹이는 여기" 라고 알 수 있습니다.
+            메뉴에 있는 글자와 본문에 있는 글자를 구별해서 셀 수 있게 됩니다.
+
+        [2] 화면 낭독기 를 쓰는 사람
+            눈이 안 보이는 사람은 화면을 소리로 듣습니다.
+            이때 시맨틱 태그가 없으면 페이지 맨 위부터 끝까지
+            메뉴 스무 개를 다 듣고 나서야 본문에 닿습니다. 매 페이지마다요.
+            시맨틱 태그가 있으면 "본문으로 건너뛰기" 를 쓸 수 있습니다. 섹션 4 에서 봅니다.
+
+        [3] 같이 일하는 동료
+            남이 쓴 코드를 열었을 때 div 가 40개면 어디가 어디인지 모릅니다.
+            header, main, footer 가 보이면 스크롤만 내려도 지도가 그려집니다.
+
+        [4] 반년 뒤의 나
+            사실 가장 자주 겪는 쪽입니다.
+            내가 쓴 코드도 반년 지나면 남이 쓴 코드와 똑같습니다.
+            그때 <div class="a1"> 을 보면 아무 기억이 안 납니다.
+
+        정리하면 이렇습니다.
+        시맨틱 태그는 눈에 보이는 사람을 위한 것이 아니라
+        화면을 못 보거나 안 보는 쪽을 위한 것입니다.
+        그래서 화면이 안 바뀌는 게 당연합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">읽는 쪽마다 무엇이 달라지나</p>
+        <table id="readerTable">
+          <thead>
+            <tr>
+              <th>읽는 쪽</th>
+              <th>div 만 썼을 때</th>
+              <th>시맨틱 태그를 썼을 때</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>검색엔진</td>
+              <td>글자 뭉치로만 읽힘</td>
+              <td>본문이 어디인지 알아냄</td>
+            </tr>
+            <tr>
+              <td>화면 낭독기 사용자</td>
+              <td>메뉴부터 끝까지 다 들어야 함</td>
+              <td>본문으로 바로 건너뜀</td>
+            </tr>
+            <tr>
+              <td>같이 일하는 동료</td>
+              <td>코드를 한참 읽어야 구조가 보임</td>
+              <td>태그 이름만 봐도 구조가 보임</td>
+            </tr>
+            <tr>
+              <td>반년 뒤의 나</td>
+              <td>내가 쓴 코드인데 기억이 안 남</td>
+              <td>다시 읽어도 바로 이해됨</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- 화면: 3칸짜리 표가 하나 보입니다. 맨 윗줄은 굵은 글씨 제목 칸이고
+                  아래로 4줄이 이어집니다. 칸에는 선이 없습니다 -->
+      </div>
+
+      <p class="doc-note">
+        표의 칸에 선이 없는 것이 정상입니다. 표 선은 CSS 로 그립니다(10단원).
+        지금은 03단원에서 배운 <code>&lt;table&gt;</code> 을 복습하는 셈으로 보세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 표에 줄을 하나 더 넣어 보세요.
+        <code>&lt;tr&gt;</code> 안에 <code>&lt;td&gt;</code> 세 개를 넣으면 됩니다.
+        읽는 쪽은 "글자를 키워 쓰는 사람" 이라고 적어 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 본문으로 건너뛰기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — "본문으로 건너뛰기" 가 되는 이유</h2>
+      <p class="doc-desc">
+        화면 낭독기는 시맨틱 태그를 만나면 <strong>구역 목록</strong>을 만들어 줍니다.
+        사용자는 그 목록에서 원하는 구역으로 바로 뜁니다.
+      </p>
+
+      <!--
+        화면 낭독기 는 화면의 글자를 소리로 읽어 주는 프로그램입니다.
+        윈도우에는 NVDA, 맥에는 VoiceOver 가 있습니다.
+
+        이 프로그램들은 페이지를 읽기 전에 먼저 훑어서
+        header, nav, main, aside, footer 같은 태그를 찾아 목록을 만듭니다.
+        이 구역들을 랜드마크(landmark, 이정표) 라고 부릅니다.
+
+        [div 만 있는 페이지]
+            읽기 시작 → 로고 글자 → 메뉴1 → 메뉴2 → ... → 메뉴20
+                      → 광고 문구 → 그제서야 본문 첫 글자
+
+            페이지를 옮길 때마다 이 과정을 다시 겪습니다.
+            메뉴는 모든 페이지에 똑같이 있으니까요.
+            듣는 사람 입장에서는 매번 같은 소리를 20번씩 다시 듣는 셈입니다.
+
+        [시맨틱 태그가 있는 페이지]
+            읽기 시작 → 프로그램이 알려 줍니다.
+                       "이 페이지에는 구역이 5개 있습니다."
+                       사용자가 단축키를 누르면 아래처럼 목록이 뜹니다.
+                       거기서 '본문' 을 고르면 그 자리로 바로 갑니다.
+
+        여기서 main 태그가 왜 페이지에 하나뿐이어야 하는지도 나옵니다.
+        "본문으로 건너뛰기" 를 눌렀는데 본문이 세 개면 어디로 가야 할까요.
+        하나뿐이어야 건너뛸 곳이 정해집니다.
+
+        ★ "우리 사이트에는 그런 사용자가 안 올 것 같은데요?"
+          그렇지 않습니다. 그리고 그 사용자가 한 명도 없더라도
+          검색엔진과 동료와 미래의 나는 늘 있습니다.
+          셋 다 같은 태그를 보고 페이지를 이해합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">화면 낭독기가 만들어 주는 구역 목록(흉내낸 것)</p>
+        <table id="landmarkTable">
+          <thead>
+            <tr>
+              <th>번호</th>
+              <th>구역 이름</th>
+              <th>태그</th>
+              <th>거기서 들리는 첫 글자</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>배너</td><td>header</td><td>동네 도서관</td></tr>
+            <tr><td>2</td><td>내비게이션</td><td>nav</td><td>공지 · 자료 · 오시는 길</td></tr>
+            <tr><td>3</td><td>본문</td><td>main</td><td>새 열람실이 열렸습니다.</td></tr>
+            <tr><td>4</td><td>보충</td><td>aside</td><td>많이 본 글</td></tr>
+            <tr><td>5</td><td>바닥글</td><td>footer</td><td>연락처 02</td></tr>
+          </tbody>
+        </table>
+        <!-- 화면: 4칸짜리 표가 보이고 아래로 다섯 줄이 이어집니다.
+                  맨 윗줄만 굵은 글씨이고 가운데 정렬되어 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        이 표는 낭독기 화면을 흉내 낸 것이지 진짜 낭독기가 아닙니다.
+        중요한 것은 <strong>이런 목록은 시맨틱 태그가 있어야 만들어진다</strong>는 점입니다.
+        <code>&lt;div&gt;</code> 는 아무리 많아도 이 목록에 한 줄도 못 올라갑니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 표의 마지막 줄 아래에 줄을 하나 더 넣고
+        번호 6, 구역 이름 "찾기", 태그 <code>search</code>, 첫 글자 "검색어 입력" 을 적어 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 앞으로 배울 시맨틱 태그 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 앞으로 배울 시맨틱 태그 지도</h2>
+      <p class="doc-desc">
+        이 단원에서 배우는 시맨틱 태그는 <strong>일곱 개</strong>입니다.
+        여기서 한 번에 훑고, 개념03·개념04 에서 하나씩 자세히 봅니다.
+      </p>
+
+      <!--
+        사실 여러분은 시맨틱 태그를 이미 여러 개 써 봤습니다.
+        h1, p, ul, li, table, form, label 도 전부 시맨틱 태그입니다.
+        이름 자체에 뜻이 있으니까요.
+
+            <h1>  이건 제목이다
+            <ul>  이건 순서 없는 목록이다
+            <th>  이건 표의 제목 칸이다
+
+        06단원에서 새로 배우는 것은 "글" 이 아니라 "구역" 에 이름을 붙이는 태그들입니다.
+
+            페이지 뼈대  →  header  nav  main  footer      (개념03)
+            본문 구획    →  section  article  aside        (개념04)
+
+        아래 표를 지금 다 외울 필요는 없습니다.
+        개념03, 개념04 를 보고 나서 이 표로 돌아오면 정리가 됩니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">06단원에서 배우는 시맨틱 태그</p>
+        <table id="tagMapTable">
+          <thead>
+            <tr>
+              <th>태그</th>
+              <th>뜻</th>
+              <th>배우는 곳</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>header</td><td>그 구역의 머리말</td><td>개념03</td></tr>
+            <tr><td>nav</td><td>주요 길 안내 링크 묶음</td><td>개념03</td></tr>
+            <tr><td>main</td><td>이 페이지만의 알맹이 (하나만)</td><td>개념03</td></tr>
+            <tr><td>footer</td><td>그 구역의 꼬리말</td><td>개념03</td></tr>
+            <tr><td>section</td><td>주제로 묶은 덩어리</td><td>개념04</td></tr>
+            <tr><td>article</td><td>떼어 내도 말이 되는 덩어리</td><td>개념04</td></tr>
+            <tr><td>aside</td><td>곁다리 내용</td><td>개념04</td></tr>
+          </tbody>
+        </table>
+        <!-- 화면: 3칸짜리 표가 보이고 일곱 줄이 이어집니다 -->
+      </div>
+
+      <p class="doc-note">
+        일곱 개 어디에도 안 맞는 덩어리는 그냥 <code>&lt;div&gt;</code> 입니다.
+        억지로 끼워 맞추지 마세요. div 를 쓰는 것이 맞는 경우가 아주 많습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 위 표에서 "이 페이지만의 알맹이 (하나만)" 라고 적힌 줄을 찾아
+        태그 이름을 소리 내어 읽어 보세요. 그리고 그 줄의 <code>&lt;td&gt;</code> 세 칸이
+        코드에서 어디인지 VS Code 에서 짚어 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        시맨틱 태그의 실수는 대부분 <strong>"화면을 바꿔 줄 것" 이라는 기대</strong>에서 나옵니다.
+      </p>
+
+      <!-- [실수 1] 화면이 바뀔 거라고 기대함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — header 로 바꿨는데 아무 일도 안 일어남</span>
+        <div class="doc-code">&lt;header&gt;우리 가게&lt;/header&gt;</div>
+        <header id="expectHeader">우리 가게</header>
+        <p>
+          "머리말이라고 했으니 크고 굵게 나오겠지" 하고 기대하면 실망합니다.
+          <strong>보통 크기 글자 한 줄이 그대로 나옵니다.</strong>
+          이건 고장이 아닙니다. 시맨틱 태그는 원래 화면을 안 건드립니다.
+          크게 만들고 싶으면 안에 <code>&lt;h1&gt;</code> 을 넣거나 07단원부터 CSS 로 하세요.
+        </p>
+        <!-- 화면: 검은 코드 상자 아래에 보통 크기 글씨로 "우리 가게" 한 줄 -->
+      </div>
+
+      <!-- [실수 2] class 이름으로 뜻을 전하려 함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — class 이름을 시맨틱이라고 생각함</span>
+        <div class="doc-code">&lt;div class="main"&gt;본문입니다&lt;/div&gt;</div>
+        <p>
+          <code>class="main"</code> 은 <strong>사람만 읽는 글자</strong>입니다.
+          브라우저에게도 검색엔진에게도 화면 낭독기에게도 아무 뜻이 없습니다.
+          <code>class="tomato"</code> 라고 써도 결과가 똑같습니다.
+          뜻을 전하는 것은 <strong>태그 이름</strong>뿐입니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] 모든 div 를 없애려 함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — div 를 하나도 안 쓰려고 함</span>
+        <div class="doc-code">&lt;article&gt;
+  &lt;section&gt;
+    &lt;section&gt;가격 7,000원&lt;/section&gt;
+  &lt;/section&gt;
+&lt;/article&gt;</div>
+        <p>
+          "div 는 나쁜 것" 이라고 배우면 이렇게 됩니다.
+          뜻이 없는 자리에 뜻 있는 태그를 억지로 끼우면
+          <strong>거짓말을 하는 코드</strong>가 됩니다. 아무 뜻 없이 묶는 자리는 div 가 정답입니다.
+          div 는 나쁜 태그가 아니라 <strong>뜻이 없을 때 쓰는 정직한 태그</strong>입니다.
+        </p>
+      </div>
+
+      <!-- [실수 4] 구역만 나누고 제목을 안 붙임 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 구역만 나누고 제목을 안 붙임</span>
+        <div class="doc-code">&lt;section&gt;
+  &lt;p&gt;화요일은 쉽니다.&lt;/p&gt;
+&lt;/section&gt;</div>
+        <p>
+          구역을 나눴지만 <strong>그 구역이 무슨 주제인지는 아무도 모릅니다.</strong>
+          화면 낭독기가 목록을 만들어도 이름 없는 칸이 됩니다.
+          <code>&lt;section&gt;</code> 에는 <code>&lt;h2&gt;</code> 같은 제목을 같이 넣으세요.
+          자세한 것은 개념04 에서 봅니다.
+        </p>
+      </div>
+
+      <!-- [실수 5] 낭독기 쓰는 사람이 없다고 생각함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — "우리 사이트엔 그런 사용자 없어요"</span>
+        <p>
+          설령 화면 낭독기 사용자가 한 명도 없더라도
+          <strong>검색엔진은 매일 옵니다.</strong> 동료도 옵니다. 반년 뒤의 나도 옵니다.
+          시맨틱 태그를 쓰는 데 드는 시간은 <code>div</code> 를 쓰는 것과 똑같이 0초입니다.
+          안 쓸 이유가 없습니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <strong>시맨틱 태그는 화면을 바꾸지 않습니다.</strong> 안 바뀌는 게 정상입니다.</p>
+      <p>2. div 와 section 은 <code>display</code> 도 글자 크기도 여백도 전부 같습니다.</p>
+      <p>3. 그래도 나누는 이유는 <strong>검색엔진 · 화면 낭독기 · 동료 · 미래의 나</strong> 때문입니다.</p>
+      <p>4. 화면 낭독기는 시맨틱 태그로 구역 목록을 만들어 "본문으로 건너뛰기" 를 해 줍니다.</p>
+      <p>5. <code>class</code> 이름에는 뜻이 담기지 않습니다. 뜻은 <strong>태그 이름</strong>에만 담깁니다.</p>
+      <p>6. 뜻이 없는 자리에는 <code>&lt;div&gt;</code> 를 쓰는 것이 맞습니다. 억지로 바꾸지 마세요.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 섹션 1 의 B 상자를 이렇게 고칩니다.
+
+                <div>
+                  <h3>동네 도서관 소식</h3>
+                </div>
+
+            → 화면이 전혀 안 바뀝니다. 높이도 그대로 164px 입니다.
+              바뀐 것은 "이 구역이 머리말이다" 라는 정보가 사라진 것뿐인데,
+              그건 화면에 안 보입니다. 이 단원의 핵심이 이 지점입니다.
+
+         2) 섹션 2 의 상자를 이렇게 고칩니다.
+
+                <article id="plainSection">저는 section 안의 글자입니다.</article>
+
+            → 역시 아무것도 안 바뀝니다. aside, nav 로 바꿔도 같습니다.
+              일곱 개 시맨틱 태그가 전부 display: block 이라서 그렇습니다.
+
+         3) 섹션 3 표의 마지막 <tr> 아래에 넣습니다.
+
+                <tr>
+                  <td>글자를 키워 쓰는 사람</td>
+                  <td>어디가 본문인지 못 찾음</td>
+                  <td>본문만 골라 크게 볼 수 있음</td>
+                </tr>
+
+            → 표에 다섯 번째 줄이 생깁니다. 칸 수(3개) 가 맞아야 줄이 안 어긋납니다.
+
+         4) 섹션 4 표의 마지막 <tr> 아래에 넣습니다.
+
+                <tr><td>6</td><td>찾기</td><td>search</td><td>검색어 입력</td></tr>
+
+            → 표에 여섯 번째 줄이 생깁니다.
+              search 는 아주 최근에 생긴 시맨틱 태그라 이 자료에서는 다루지 않습니다.
+              이런 태그가 계속 늘어난다는 것만 알아 두세요.
+
+         5) "이 페이지만의 알맹이 (하나만)" 줄의 태그 이름은 main 입니다.
+
+                <tr><td>main</td><td>이 페이지만의 알맹이 (하나만)</td><td>개념03</td></tr>
+
+            → 화면은 아무것도 안 바뀝니다. 코드를 눈으로 짚는 연습이 목적입니다.
+              td 세 칸이 표의 세 칸과 하나씩 짝지어진다는 것을 확인하세요.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #divVer | display | block
+      #semVer | display | block
+      #divVer | ~height | 164
+      #semVer | ~height | 164
+      #divVer | ~width | 824
+      #semVer | ~width | 824
+      #plainDiv | display | block
+      #plainSection | display | block
+      #plainDiv | font-size | 16px
+      #plainSection | font-size | 16px
+      #plainDiv | margin-top | 0px
+      #plainSection | margin-top | 0px
+      #readerTable | display | table
+      #landmarkTable | display | table
+      #tagMapTable | display | table
+      #expectHeader | display | block
+      #expectHeader | font-size | 16px
+      #expectHeader | text | 우리 가게
+    -->
+  </body>
+</html>

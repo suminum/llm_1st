@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>14단원 연습문제 정답 - localStorage</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      input[type="text"] {
+        padding: 6px 8px;
+        font-size: 15px;
+        width: 200px;
+      }
+      button {
+        padding: 6px 12px;
+        font-size: 14px;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>14단원 연습문제 정답 — localStorage</h1>
+
+    <p class="guide">
+      먼저 스스로 풀어 본 다음에 보세요. <strong>F12 → Console</strong> 을 함께 보면
+      각 문제의 결과를 확인할 수 있습니다.
+
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>문제 6 — 마지막 검색어 기억하기</h3>
+      <input type="text" id="searchInput" placeholder="아무거나 입력하고 Enter" />
+      <div class="output" id="out6">아직 검색한 적이 없습니다</div>
+
+      <h3>문제 7 — 방문 횟수 세기</h3>
+      <div class="output" id="out7">-</div>
+      <button id="resetBtn">횟수 초기화</button>
+    </div>
+
+    <script>
+      // ============================================================
+      // 14단원 연습문제 정답 — localStorage
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+
+      ["nickname", "point", "user", "colors"].forEach((k) => localStorage.removeItem(k));
+
+      // ───── 문제 1 ─────
+      localStorage.setItem("nickname", "김민준");
+      console.log(localStorage.getItem("nickname"));
+      // 콘솔: 김민준
+
+      // ───── 문제 2 ─────
+      console.log(localStorage.getItem("phone"));
+      // 콘솔: null
+      // 없는 이름은 에러가 아니라 null 입니다. 그래서 쓰기 전에 확인해야 합니다.
+
+      // ───── 문제 3 ─────
+      localStorage.setItem("point", 100);
+
+      const point = localStorage.getItem("point");
+      console.log(point, typeof point);
+      // 콘솔: 100 string
+      // 숫자로 넣었는데 문자열로 나옵니다. localStorage 는 글자만 저장합니다.
+
+      console.log(Number(point) + 50);
+      // 콘솔: 150
+      // Number 를 빼면 "100" + 50 이 되어 10050 이 나옵니다. (01단원의 그 함정)
+
+      // ───── 문제 4 ─────
+      const user = { name: "이서연", age: 22, city: "부산" };
+
+      localStorage.setItem("user", JSON.stringify(user));
+
+      const savedUser = JSON.parse(localStorage.getItem("user"));
+      console.log(savedUser.city);
+      // 콘솔: 부산
+      // 넣을 때 stringify, 꺼낼 때 parse. 이 한 쌍은 항상 짝입니다.
+
+      // ───── 문제 5 ─────
+      const colors = ["빨강", "초록", "파랑"];
+
+      localStorage.setItem("colors", JSON.stringify(colors));
+
+      const savedColors = JSON.parse(localStorage.getItem("colors"));
+      console.log(Array.isArray(savedColors));
+      // 콘솔: true
+      console.log(savedColors.length);
+      // 콘솔: 3
+      // parse 를 빼먹으면 글자 그대로라 length 가 3이 아니라 글자 수가 나옵니다.
+
+      // ───── 문제 6 ─────
+      const searchInput = document.querySelector("#searchInput");
+      const out6 = document.querySelector("#out6");
+
+      // [페이지를 열 때] 저장된 게 있으면 보여 준다
+      const lastSearch = localStorage.getItem("lastSearch");
+      if (lastSearch) {
+        out6.textContent = `마지막 검색어: ${lastSearch}`;
+      }
+      // if 로 감싼 이유: 저장된 게 없으면 null 이라
+      // 그냥 넣으면 "마지막 검색어: null" 이 보입니다.
+
+      searchInput.addEventListener("keydown", (e) => {
+        if (e.key !== "Enter") {
+          return;
+        }
+
+        const value = searchInput.value.trim();
+        if (!value) {
+          return;
+        }
+
+        localStorage.setItem("lastSearch", value);
+        out6.textContent = `마지막 검색어: ${value}`;
+        console.log("저장했습니다:", value);
+      });
+
+      // ───── 문제 7 ─────
+      const out7 = document.querySelector("#out7");
+
+      function showVisit(count) {
+        out7.textContent = `${count}번째 방문입니다`;
+      }
+
+      // 저장된 게 없으면 null 이므로 0으로 시작합니다.
+      // Number(null) 은 0 이라 이렇게 한 줄로도 됩니다.
+      const before = Number(localStorage.getItem("visitCount"));
+      const visitCount = before + 1;
+
+      localStorage.setItem("visitCount", visitCount);
+      showVisit(visitCount);
+      // 화면: 열 때마다 1씩 올라갑니다. 새로고침도 '한 번 연 것' 으로 셉니다.
+
+      document.querySelector("#resetBtn").addEventListener("click", () => {
+        localStorage.setItem("visitCount", 0);
+        showVisit(0);
+        console.log("방문 횟수를 초기화했습니다");
+      });
+      // removeItem 을 써도 됩니다. 그러면 다음에 열 때 null → 0 → 1 이 됩니다.
+      // 여기서는 화면에 0을 보여 주려고 0을 저장했습니다.
+
+      // ============================================================
+      // 더 생각해 볼 것
+      // ============================================================
+      //
+      // 문제 7에서 Number(localStorage.getItem(...)) 이 한 번에 되는 이유:
+      //   Number(null) 은 0 입니다.
+      //   그래서 "저장된 게 없으면 0" 처리가 저절로 됩니다.
+      //
+      //   다만 이건 운이 좋은 경우입니다. Number("abc") 는 NaN 이라
+      //   값이 망가져 있으면 NaN + 1 = NaN 이 됩니다.
+      //   실무에서는 이렇게 한 겹 더 막습니다.
+      //
+      //     const n = Number(localStorage.getItem("visitCount"));
+      //     const safe = Number.isNaN(n) ? 0 : n;
+    </script>
+  </body>
+</html>

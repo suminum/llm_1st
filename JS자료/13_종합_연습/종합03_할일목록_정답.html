@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>13단원 종합03 정답 - 할 일 목록</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      form {
+        display: flex;
+        gap: 6px;
+        margin: 16px 0 8px;
+      }
+      #todoInput {
+        flex: 1;
+        padding: 8px;
+        font-size: 15px;
+      }
+      button {
+        padding: 8px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+        min-height: 24px;
+      }
+      .filters {
+        display: flex;
+        gap: 6px;
+        margin: 12px 0;
+      }
+      .filterBtn.active {
+        background: #2d6cdf;
+        color: #fff;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px 12px;
+        margin: 6px 0;
+      }
+      li.done .text {
+        color: #999;
+        text-decoration: line-through;
+      }
+      .text {
+        flex: 1;
+        cursor: pointer;
+      }
+      .status {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-top: 10px;
+      }
+      .empty {
+        display: block; /* li 의 flex 를 덮어써야 가운데 정렬이 먹습니다 */
+        color: #888;
+        text-align: center;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>종합 03 정답 — 할 일 목록</h1>
+
+    <p class="guide">
+      먼저 스스로 만들어 본 다음에 보세요. 추가·완료·삭제·필터가 전부 동작합니다.
+      <strong>F12 → Console</strong> 도 함께 보세요.
+    
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <form id="todoForm">
+      <input type="text" id="todoInput" placeholder="할 일을 입력하고 Enter" />
+      <button type="submit">추가</button>
+    </form>
+    <div class="error" id="errorMsg"></div>
+
+    <div class="filters">
+      <button class="filterBtn active" data-filter="all">전체</button>
+      <button class="filterBtn" data-filter="active">미완료</button>
+      <button class="filterBtn" data-filter="done">완료</button>
+      <button id="clearBtn" type="button">완료 항목 삭제</button>
+    </div>
+
+    <ul id="todoList"></ul>
+
+    <div class="status" id="status">할 일 0개</div>
+
+    <script>
+      // ============================================================
+      // 13단원 · 종합 03 정답 — 할 일 목록
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+      //
+      // 핵심 구조
+      //   todos 배열이 '진짜 데이터' 이고, 화면은 그 그림자입니다.
+      //   무슨 일이 생기면 배열만 고치고 render() 를 다시 부릅니다.
+
+      let todos = [
+        { id: 1, text: "장보기", done: false },
+        { id: 2, text: "설거지", done: true },
+      ];
+
+      let nextId = 3;
+      let currentFilter = "all";
+
+      const todoForm = document.querySelector("#todoForm");
+      const todoInput = document.querySelector("#todoInput");
+      const todoList = document.querySelector("#todoList");
+      const errorMsg = document.querySelector("#errorMsg");
+      const status = document.querySelector("#status");
+      const clearBtn = document.querySelector("#clearBtn");
+
+      // ───── 문제 1 ─────
+      function getVisibleTodos() {
+        if (currentFilter === "active") {
+          return todos.filter((todo) => !todo.done);
+        }
+        if (currentFilter === "done") {
+          return todos.filter((todo) => todo.done);
+        }
+        return todos; // "all"
+      }
+      // 조기 반환을 쓰면 else 없이 깔끔합니다.
+      // switch 로 써도 됩니다.
+
+      // ───── 문제 2 ─────
+      function render() {
+        const visible = getVisibleTodos();
+
+        todoList.innerHTML = ""; // ★ 먼저 비우지 않으면 그릴 때마다 쌓입니다
+
+        if (visible.length === 0) {
+          const empty = document.createElement("li");
+          empty.classList.add("empty");
+          empty.textContent = "항목이 없습니다";
+          todoList.appendChild(empty);
+          updateStatus();
+          return; // 조기 반환
+        }
+
+        visible.forEach(({ id, text, done }) => {
+          const li = document.createElement("li");
+          li.dataset.id = id;
+          if (done) {
+            li.classList.add("done");
+          }
+
+          const span = document.createElement("span");
+          span.classList.add("text");
+          span.textContent = text; // 사용자 입력이므로 textContent
+
+          const btn = document.createElement("button");
+          btn.classList.add("deleteBtn");
+          btn.textContent = "삭제";
+
+          li.appendChild(span);
+          li.appendChild(btn);
+          todoList.appendChild(li);
+        });
+
+        updateStatus();
+
+        // 이 줄은 문제 요구사항에는 없습니다. 화면이 몇 번 다시 그려지는지
+        // 눈으로 보려고 넣은 것이니, 없어도 정답입니다.
+        console.log("render:", visible.length, "개 표시");
+      }
+
+      // innerHTML + map + join 으로 써도 됩니다. 다만 사용자가 입력한 글을
+      // 그대로 넣게 되므로 createElement + textContent 쪽이 안전합니다.
+
+      // ───── 문제 3 ─────
+      function updateStatus() {
+        const total = todos.length;
+        const doneCount = todos.filter((todo) => todo.done).length;
+        const activeCount = total - doneCount;
+
+        status.textContent = `할 일 ${total}개 (완료 ${doneCount}개, 남은 일 ${activeCount}개)`;
+      }
+      // 필터와 상관없이 전체 todos 를 기준으로 셉니다.
+
+      // ───── 문제 4 ─────
+      todoForm.addEventListener("submit", (e) => {
+        e.preventDefault(); // ★ 없으면 새로고침되어 데이터가 날아갑니다
+
+        const text = todoInput.value.trim(); // 공백만 친 경우도 걸러냅니다
+
+        if (!text) {
+          errorMsg.textContent = "할 일을 입력해 주세요";
+          todoInput.focus();
+          return;
+        }
+
+        if (todos.some((todo) => todo.text === text)) {
+          errorMsg.textContent = "이미 있는 항목입니다";
+          return;
+        }
+
+        errorMsg.textContent = "";
+
+        // 원본을 직접 바꾸지 않고 새 배열을 만들어 넣습니다
+        todos = [...todos, { id: nextId, text, done: false }];
+        nextId++;
+
+        todoInput.value = "";
+        todoInput.focus();
+        render();
+
+        console.log("추가:", text);
+      });
+
+      // { id: nextId, text, done: false } 에서 text 는 text: text 의 줄임입니다.
+      // some 은 "하나라도 만족하는가" 라서 중복 검사에 딱 맞습니다.
+
+      // ───── 문제 5 ─────
+      todoList.addEventListener("click", (e) => {
+        const li = e.target.closest("li");
+        if (!li || !li.dataset.id) {
+          return; // 빈 곳이나 "항목이 없습니다" 를 눌렀을 때
+        }
+
+        const id = Number(li.dataset.id); // dataset 값은 문자열이므로 변환
+
+        if (e.target.classList.contains("deleteBtn")) {
+          todos = todos.filter((todo) => todo.id !== id);
+          render();
+          console.log("삭제:", id);
+          return;
+        }
+
+        if (e.target.classList.contains("text")) {
+          // 그 항목만 done 을 뒤집은 새 객체로 바꾼 새 배열
+          todos = todos.map((todo) => (todo.id === id ? { ...todo, done: !todo.done } : todo));
+          render();
+          console.log("완료 토글:", id);
+        }
+      });
+
+      // 부모인 ul 하나에만 붙였습니다. render 로 li 를 몇 번을 다시 만들어도
+      // 이벤트를 새로 붙일 필요가 없습니다. 이것이 위임을 쓰는 이유입니다.
+      //
+      // Number 로 안 바꾸면 todo.id === "1" 이 되어 항상 false 입니다.
+
+      // ───── 문제 6 ─────
+      document.querySelectorAll(".filterBtn").forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          currentFilter = e.target.dataset.filter;
+
+          // 모든 버튼에서 active 를 떼고, 눌린 것에만 붙입니다
+          document.querySelectorAll(".filterBtn").forEach((b) => b.classList.remove("active"));
+          e.target.classList.add("active");
+
+          render();
+          console.log("필터:", currentFilter);
+        });
+      });
+
+      // ───── 문제 7 ─────
+      clearBtn.addEventListener("click", () => {
+        const before = todos.length;
+        todos = todos.filter((todo) => !todo.done);
+
+        render();
+        console.log(`완료 항목 ${before - todos.length}개 삭제`);
+      });
+      // clearBtn 에 type="button" 을 준 이유: form 밖이라 상관없지만,
+      // form 안에 있었다면 type 을 안 쓸 경우 폼이 제출되어 버립니다.
+
+      // ───── 문제 8 ─────
+      render();
+      // 콘솔: render: 2 개 표시
+      // 이벤트는 '바뀔 때' 만 실행되므로 첫 화면은 직접 한 번 그려야 합니다.
+      // 이걸 빠뜨리면 "데이터는 있는데 화면이 비어 있는" 상태가 됩니다.
+
+      // ============================================================
+      // 정리 — 이 파일에서 쓴 것들
+      // ============================================================
+      //
+      //   03단원  조건문, 삼항 연산자
+      //   05단원  함수, 조기 반환
+      //   06단원  배열, 인덱스
+      //   07단원  객체, 객체 배열
+      //   08단원  콜백, map, filter, forEach, some
+      //   09단원  구조분해, 스프레드
+      //   10단원  createElement, textContent, classList, dataset
+      //   11단원  submit, preventDefault, 이벤트 위임, closest
+      //
+      // 03~11단원이 이 한 화면에 들어 있습니다.
+      // 12단원(비동기·fetch)은 종합04에서 씁니다.
+    </script>
+  </body>
+</html>

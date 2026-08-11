@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>08단원 개념06 - 명시도</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ══ 섹션 1~2 공용 예제 — 한 요소에 규칙 네 개가 동시에 맞습니다 ══ */
+      li {
+        background-color: #f2f2f2;
+      }
+      /* 0-0-1 — 이 파일의 모든 li 에 깔리는 밑바탕입니다 */
+
+      .hot {
+        background-color: #ffe9e9;
+      }
+      /* 0-1-0 */
+
+      .menu .hot {
+        background-color: #fff3a0;
+      }
+      /* 0-2-0 */
+
+      #hotItem {
+        background-color: #d7ecff;
+      }
+      /* 1-0-0 — 넷 중 이 규칙이 이깁니다 */
+      /* 화면: 첫 줄만 연한 하늘색 배경이고, 둘째 줄은 연한 회색 배경입니다 */
+
+      /* ── 섹션 2: 자릿수 비교를 증명하는 예제 ── */
+      .c1.c2.c3.c4.c5.c6.c7.c8.c9.c10.c11 {
+        background-color: #fff3a0;
+      }
+      /* 0-11-0 — 클래스를 열한 개나 붙였습니다 */
+
+      #digitP {
+        background-color: #d7ecff;
+      }
+      /* 1-0-0 — 그런데도 id 하나가 이깁니다 */
+      /* 화면: 그 줄은 연한 하늘색 배경입니다. 노란색이 아닙니다 */
+
+      /* ── 섹션 3: 세기가 같으면 나중에 쓴 것 ── */
+      .later-a {
+        background-color: #fff3a0;
+      }
+      .later-b {
+        background-color: #e2f4ea;
+      }
+      /* 둘 다 0-1-0 으로 같습니다. 나중에 쓴 .later-b 가 이깁니다 */
+      /* 화면: 두 줄 모두 연한 초록 배경입니다. HTML 의 class 순서는 상관없습니다 */
+
+      /* ── 섹션 4: 인라인 style ── */
+      #inlineP {
+        background-color: #ffe9e9;
+      }
+      /* 1-0-0 인데도 집니다. HTML 의 style 속성이 더 세기 때문입니다 */
+      /* 화면: 그 줄은 연한 하늘색 배경입니다 */
+
+      /* ── 섹션 5: !important ── */
+      #impId {
+        color: #c0392b;
+      }
+      .imp-cls {
+        color: #1a7f5a !important;
+      }
+      /* 화면: 그 줄은 초록 글자입니다. id 도 인라인 style 도 다 졌습니다 */
+
+      /* ── 섹션 6: 상속은 싸움에 끼지 않습니다 ── */
+      #inheritBox {
+        color: #c0392b;
+      }
+      .inherit-box li {
+        color: #1a7f5a;
+      }
+      /* 화면: 상자 안 문단은 빨간 글자(물려받음),
+               목록 항목은 초록 글자(자기 규칙이 있음)입니다 */
+
+      /* ── 섹션 7: 자주 하는 실수 ── */
+      .warnbox p {
+        color: #8a8a8a;
+      }
+      .hi-text {
+        color: #c0392b;
+      }
+      /* 화면: 강조하려던 글자가 흐린 회색입니다. 0-1-1 이 0-1-0 을 이겼습니다 */
+
+      .imp-bad {
+        color: #c0392b !important;
+      }
+      .imp-bad.imp-fix {
+        color: #1a7f5a;
+      }
+      /* 화면: 더 센 선택자를 썼는데도 빨간 글자 그대로입니다 */
+
+      #idLock {
+        color: #c0392b;
+      }
+      .class-try {
+        color: #1a7f5a;
+      }
+      /* 화면: 빨간 글자입니다. 클래스로는 id 를 덮을 수 없습니다 */
+
+      .inline-trap {
+        color: #1a7f5a;
+      }
+      /* 화면: 빨간 글자입니다. HTML 의 style 속성이 이겼습니다 */
+
+      .dup-rule {
+        color: #c0392b;
+      }
+      .dup-rule {
+        color: #1a7f5a;
+      }
+      /* 화면: 초록 글자입니다. 같은 선택자를 두 번 쓰면 나중 것이 이깁니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         08단원 · 개념 06 — 명시도
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         08단원의 마지막이자 정점입니다.
+
+         지금까지 고르는 법을 여덟 가지쯤 배웠습니다.
+         그런데 실제로 CSS 를 쓰다 보면 이런 일이 반드시 생깁니다.
+
+             한 요소에 규칙이 두 개, 세 개, 네 개가 동시에 맞습니다.
+             게다가 서로 다른 색을 시킵니다.
+
+         브라우저는 그중 하나를 골라야 합니다. 어떻게 고를까요?
+         마음대로 고르지 않습니다. 정해진 순서가 있습니다.
+
+             1) 먼저 !important 가 붙었는지 봅니다.
+             2) 그다음 HTML 의 style 속성인지 봅니다.
+             3) 그다음 선택자의 세기를 잽니다.  ← 이것이 명시도입니다
+             4) 세기까지 같으면 나중에 쓴 것을 씁니다.
+
+         명시도(specificity) 는 "이 선택자가 얼마나 콕 집어 말했는가" 입니다.
+
+             li          "목록 항목 전부"        두루뭉술합니다
+             .hot        "hot 이라고 붙인 것"     조금 콕 집었습니다
+             #hotItem    "그 한 개"              완전히 콕 집었습니다
+
+         콕 집어 말한 쪽이 이깁니다. 상식적입니다.
+         "우리 반 전부 파란 옷" 과 "김민준은 빨간 옷" 이 같이 있으면
+         김민준은 빨간 옷입니다. 더 구체적인 지시가 이기는 것입니다.
+
+         이 파일이 왜 중요할까요?
+         CSS 를 배운 사람이 가장 많이 겪는 좌절이 이것이기 때문입니다.
+
+             "규칙을 분명히 썼는데 색이 안 바뀌어요."
+
+         이때 사람들은 색 이름을 고치고, 속성 이름을 고치고,
+         브라우저를 껐다 켭니다. 전부 소용없습니다.
+         진짜 이유는 다른 규칙이 이기고 있어서입니다.
+         명시도를 셀 줄 알면 이 좌절이 통째로 사라집니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 06 — 명시도</h1>
+    <p class="doc-sub">08단원 · 선택자</p>
+
+    <p class="doc-guide">
+      한 요소에 규칙이 여럿 맞을 때 <strong>누가 이기는지</strong>를 다룹니다.
+      "규칙을 썼는데 왜 안 바뀌지?" 의 답이 전부 여기 있습니다.
+      상자마다 <strong>어느 규칙이 이겼는지</strong>를 맞혀 보면서 읽으세요.
+    </p>
+
+    <!-- ══════════ 섹션 1: 규칙이 겹치면 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 규칙 네 개가 한 줄에 맞을 때</h2>
+      <p class="doc-desc">
+        아래 첫 줄에는 <strong>배경색을 시키는 규칙이 네 개</strong> 걸려 있습니다.
+        전부 다른 색입니다.
+      </p>
+
+      <!--
+        아래 상자의 HTML 은 이렇습니다.
+
+            <ul class="menu" id="menuBox">
+              <li class="hot" id="hotItem">아메리카노 (오늘의 추천)</li>
+              <li>카페라떼</li>
+            </ul>
+
+        첫 줄(hotItem)에 맞는 규칙을 세어 봅니다.
+
+            li            { background-color: #f2f2f2; }   li 니까 맞습니다
+            .hot          { background-color: #ffe9e9; }   hot 이니까 맞습니다
+            .menu .hot    { background-color: #fff3a0; }   menu 안의 hot 이니까 맞습니다
+            #hotItem      { background-color: #d7ecff; }   id 가 hotItem 이니까 맞습니다
+
+        네 개 전부 맞습니다. 그런데 배경색은 하나만 보입니다.
+        실제 화면을 보면 첫 줄은 연한 하늘색입니다. #d7ecff 입니다.
+        즉 #hotItem 이 이겼습니다.
+
+        둘째 줄에는 li 규칙 하나만 맞습니다. 그래서 연한 회색입니다.
+
+        왜 #hotItem 이 이겼을까요? 그것이 섹션 2 의 계산법입니다.
+        지금은 "규칙이 여러 개 맞을 수 있다" 와
+        "그중 하나만 화면에 나타난다" 두 가지만 확인하면 됩니다.
+
+        한 가지 더 중요한 사실이 있습니다.
+        진 규칙이 통째로 버려지는 것이 아닙니다. 속성 하나하나마다 따로 싸웁니다.
+        만약 .hot 이 색깔 대신 글자색을 시켰다면 그건 그대로 적용됩니다.
+        같은 속성을 두고 부딪힐 때만 승부가 납니다.
+      -->
+      <div class="doc-demo" id="menuDemo">
+        <p class="doc-demo-label">실제 결과 — 첫 줄에 규칙 네 개가 맞습니다</p>
+        <ul class="menu" id="menuBox">
+          <li class="hot" id="hotItem">아메리카노 (오늘의 추천)</li>
+          <li>카페라떼</li>
+        </ul>
+        <!-- 화면: 첫 줄은 연한 하늘색 배경, 둘째 줄은 연한 회색 배경입니다 -->
+      </div>
+
+      <p class="doc-note">
+        진 규칙은 사라지지 않고 그대로 파일에 남아 있습니다.
+        <strong>같은 속성을 두고 부딪힐 때만</strong> 승부가 납니다.
+        서로 다른 속성이면 둘 다 적용됩니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — <code>&lt;style&gt;</code> 에서 <code>#hotItem</code> 규칙을
+        통째로 주석 처리해 보세요. (<code>/*</code> 와 <code>*/</code> 로 감쌉니다)
+        첫 줄이 무슨 색이 되는지 확인한 뒤 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 세는 법 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 명시도를 세는 법</h2>
+      <p class="doc-desc">
+        선택자에 들어 있는 것을 <strong>세 칸에 나눠 셉니다.</strong>
+        왼쪽 칸부터 비교합니다.
+      </p>
+
+      <!--
+        세는 방법은 아주 단순합니다. 선택자를 보고 개수를 셉니다.
+
+            첫째 칸  id 선택자 (#로 시작)                 의 개수
+            둘째 칸  클래스 · 속성 선택자 · 가상 클래스     의 개수
+            셋째 칸  태그 선택자 · 가상 요소               의 개수
+
+        예를 들어 봅니다.
+
+            li                    0-0-1
+            .hot                  0-1-0
+            li.hot                0-1-1
+            .menu .hot            0-2-0
+            .menu li:hover        0-2-1     :hover 는 둘째 칸입니다
+            #hotItem              1-0-0
+            #menuBox li.hot       1-1-1
+            *                     0-0-0     전체 선택자는 아무것도 안 셉니다
+
+        비교는 왼쪽 칸부터 합니다. 왼쪽에서 승부가 나면 오른쪽은 안 봅니다.
+
+            1-0-0  vs  0-2-0   →  왼쪽 칸에서 1 대 0. 앞이 이깁니다.
+            0-2-0  vs  0-1-1   →  첫 칸 동점, 둘째 칸 2 대 1. 앞이 이깁니다.
+            0-1-1  vs  0-1-0   →  두 칸 동점, 셋째 칸 1 대 0. 앞이 이깁니다.
+
+        많은 책이 "id 는 100점, 클래스는 10점, 태그는 1점" 이라고 설명합니다.
+        더하기 쉬워서 편하지만, 사실 정확한 설명은 아닙니다.
+        점수를 더하는 게 아니라 자릿수를 따로따로 비교하기 때문입니다.
+
+        차이가 나는 경우를 보여 드립니다.
+
+            클래스 11개  →  점수로 세면 110점, 자릿수로 세면 0-11-0
+            id 1개       →  점수로 세면 100점, 자릿수로 세면 1-0-0
+
+        점수 방식이 맞다면 클래스 11개(110점)가 id(100점)를 이겨야 합니다.
+        아래 두 번째 상자에서 실제로 재 보면 id 가 이깁니다.
+        첫째 칸에서 1 대 0 으로 이미 끝나 버리기 때문입니다.
+
+        그래서 이렇게 외우세요.
+        "클래스를 아무리 많이 붙여도 id 하나를 못 이깁니다."
+
+        실제로 이런 극단적인 선택자를 쓸 일은 없습니다.
+        다만 "왜 id 를 함부로 쓰면 안 되는가" 의 이유가 여기 있습니다.
+        id 로 색을 정해 두면 나중에 클래스로는 절대 못 바꿉니다.
+      -->
+      <p class="doc-desc">세는 법을 표로 보면 이렇습니다.</p>
+      <div class="doc-code">선택자                  id   클래스   태그    읽는 값
+li                       0      0       1     0-0-1
+.hot                     0      1       0     0-1-0
+li.hot                   0      1       1     0-1-1
+.menu .hot               0      2       0     0-2-0
+.menu li:hover           0      2       1     0-2-1
+input[type="text"]       0      1       1     0-1-1
+#hotItem                 1      0       0     1-0-0
+#menuBox li.hot          1      1       1     1-1-1
+*                        0      0       0     0-0-0</div>
+
+      <div class="doc-demo" id="digitDemo">
+        <p class="doc-demo-label">클래스 11개 vs id 1개 — 누가 이길까요</p>
+        <p id="digitP" class="c1 c2 c3 c4 c5 c6 c7 c8 c9 c10 c11">
+          클래스를 열한 개 붙였는데도 id 하나에 졌습니다.
+        </p>
+        <!-- 화면: 이 줄은 연한 하늘색 배경입니다. 노란색이 아닙니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>:not()</code> 은 그 자체로는 세지 않고
+        <strong>괄호 안의 선택자</strong>를 셉니다.
+        <code>li:not(.sold)</code> 는 <code>li.sold</code> 와 같은 0-1-1 입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 아래 선택자들의 명시도를 종이에 적어 보세요.
+        <code>p</code> / <code>.card p</code> / <code>#box .card</code> /
+        <code>a:hover</code> / <code>ul li.hot</code> — 답은 파일 맨 아래에 있습니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 같으면 나중 것 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 세기가 같으면 나중에 쓴 것이 이깁니다</h2>
+      <p class="doc-desc">
+        명시도가 완전히 같으면 <strong>CSS 파일에서 아래쪽에 쓴 규칙</strong>이 이깁니다.
+      </p>
+
+      <!--
+            .later-a { background-color: #fff3a0; }   노랑
+            .later-b { background-color: #e2f4ea; }   연한 초록
+
+        둘 다 0-1-0 입니다. 완전히 같습니다.
+        이럴 때는 나중에 쓴 .later-b 가 이깁니다. 그래서 초록이 보입니다.
+
+        여기서 반드시 짚고 갈 것이 있습니다.
+        많은 사람이 "HTML 의 class 순서" 가 영향을 준다고 생각합니다.
+
+            <p class="later-a later-b">...</p>
+            <p class="later-b later-a">...</p>
+
+        이 둘의 결과가 다를 것 같지요? 같습니다. 둘 다 초록입니다.
+        아래 상자에서 직접 확인하세요.
+
+        HTML 의 class 값은 "가진 이름표 목록" 일 뿐 순서에 뜻이 없습니다.
+        승부는 오로지 CSS 파일 안의 순서로 납니다.
+
+        이 규칙이 실무에서 어떻게 쓰일까요?
+        남이 만든 CSS 를 덮어써야 할 때, 굳이 선택자를 세게 만들지 않고
+        같은 세기로 그냥 아래쪽에 쓰면 됩니다.
+        그래서 CSS 파일을 연결하는 순서가 중요합니다(07단원).
+        공통 스타일을 먼저, 개별 스타일을 나중에 연결합니다.
+      -->
+      <div class="doc-demo" id="laterDemo">
+        <p class="doc-demo-label">HTML 의 class 순서를 바꿔 보아도</p>
+        <p class="later-a later-b" id="laterAB">class="later-a later-b" 라고 썼습니다.</p>
+        <p class="later-b later-a" id="laterBA">class="later-b later-a" 라고 썼습니다.</p>
+        <!-- 화면: 두 줄 모두 연한 초록 배경입니다. 색이 서로 다르지 않습니다 -->
+      </div>
+
+      <p class="doc-note">
+        이 성질 때문에 <strong>CSS 는 위에서 아래로 읽으며 쌓아 가는 것</strong>이 됩니다.
+        위쪽에 넓은 규칙(태그·기본값)을, 아래쪽에 좁은 규칙(예외·변형)을 쓰세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>&lt;style&gt;</code> 에서 <code>.later-a</code> 규칙과
+        <code>.later-b</code> 규칙의 <strong>순서를 바꿔</strong> 보세요.
+        두 줄이 무슨 색이 되는지 확인한 뒤 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 인라인 style ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — HTML 의 style 속성은 더 셉니다</h2>
+      <p class="doc-desc">
+        07단원에서 배운 <strong>인라인 방식</strong>은 명시도 계산 자체를 건너뜁니다.
+        어떤 선택자보다 셉니다.
+      </p>
+
+      <!--
+        07단원에서 CSS 를 붙이는 방법 세 가지를 배웠습니다.
+        그중 하나가 HTML 태그에 직접 쓰는 방법이었습니다.
+
+            <p style="background-color: #d7ecff;">...</p>
+
+        이것을 인라인 스타일이라고 부릅니다.
+        인라인 스타일에는 선택자가 없습니다. 이미 그 요소를 손으로 짚었으니까요.
+        그래서 명시도를 잴 것이 없고, 아예 한 단계 위에서 이깁니다.
+
+        아래 상자의 줄에는 이런 두 가지가 걸려 있습니다.
+
+            #inlineP { background-color: #ffe9e9; }        1-0-0, 아주 셉니다
+            style="background-color: #d7ecff;"            인라인, 더 셉니다
+
+        결과는 연한 하늘색입니다. 인라인이 이겼습니다.
+        id 선택자로도 인라인 스타일을 덮을 수 없습니다.
+
+        그래서 인라인 스타일은 되도록 쓰지 마세요. 이유가 셋 있습니다.
+
+            1) 나중에 CSS 로 못 바꿉니다. 이 파일에서 방금 본 그대로입니다.
+            2) 같은 모양을 다른 곳에 다시 쓸 수 없습니다. 그 요소에만 붙어 있습니다.
+            3) HTML 과 CSS 가 섞여서 둘 다 읽기 어려워집니다.
+
+        "그럼 언제 쓰나요?" 자바스크립트로 그때그때 값을 바꿀 때 정도입니다.
+        수업에서 손으로 쓸 일은 거의 없습니다.
+      -->
+      <div class="doc-demo" id="inlineDemo">
+        <p class="doc-demo-label">id 선택자 vs 인라인 style</p>
+        <p id="inlineP" style="background-color: #d7ecff;">
+          style 속성으로 하늘색을, CSS 의 id 규칙으로 분홍색을 시켰습니다.
+        </p>
+        <!-- 화면: 이 줄은 연한 하늘색 배경입니다. 분홍이 아닙니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 줄의 <code>style="background-color: #d7ecff;"</code> 를
+        통째로 지워 보세요. 무슨 색이 나타나는지 확인한 뒤 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: !important ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — !important (최후의 수단)</h2>
+      <p class="doc-desc">
+        값 뒤에 <code>!important</code> 를 붙이면 <strong>모든 것을 이깁니다.</strong>
+        그래서 <strong>쓰면 안 됩니다.</strong>
+      </p>
+
+      <!--
+            .imp-cls {
+              color: #1a7f5a !important;
+                             └ 값과 세미콜론 사이에 붙입니다
+            }
+
+        아래 상자의 줄에는 세 가지가 걸려 있습니다.
+
+            style="color: #2d6cdf;"          인라인 (파랑)
+            #impId  { color: #c0392b; }      id 선택자 (빨강)
+            .imp-cls{ color: #1a7f5a !important; }   클래스 + important (초록)
+
+        결과는 초록입니다. 가장 약한 클래스 선택자가 인라인까지 이겼습니다.
+        !important 는 명시도 계산 바깥에 있기 때문입니다.
+
+        여기까지 보면 "그럼 이걸 쓰면 편하겠네" 싶습니다. 정반대입니다.
+        !important 는 CSS 에서 가장 큰 골칫거리로 꼽힙니다. 왜일까요?
+
+            안 되면 !important 를 붙입니다. 잘 됩니다.
+            다음에 그걸 바꾸려니 안 바뀝니다. 그래서 또 !important 를 붙입니다.
+            이제 두 개가 됐습니다. 어느 쪽이 이기는지 알 수 없습니다.
+            결국 파일 전체가 !important 로 덮이고, 아무것도 못 고치게 됩니다.
+
+        !important 를 쓴다는 것은 "명시도 규칙을 포기한다" 는 뜻입니다.
+        규칙이 있으니까 예측이 되는 것인데, 그 규칙을 스스로 버리는 셈입니다.
+
+        안 되는 진짜 이유는 거의 항상 명시도입니다.
+        !important 를 붙이기 전에 이렇게 해 보세요.
+
+            1) 브라우저에서 F12 를 눌러 그 요소를 봅니다.
+               이긴 규칙과 진 규칙(줄이 그어져 있습니다)이 다 보입니다.
+            2) 진 규칙의 선택자를 한 단계만 더 구체적으로 만듭니다.
+               .hi-text 가 졌다면 .warnbox .hi-text 로 바꿉니다.
+            3) 또는 같은 세기로 만들고 아래쪽으로 옮깁니다.
+
+        그럼 !important 를 언제 쓸까요?
+        고칠 수 없는 남의 CSS 를 덮어써야 할 때 정도입니다.
+        내가 쓴 CSS 를 내가 덮으려고 쓰는 것은 거의 항상 잘못된 신호입니다.
+      -->
+      <div class="doc-demo" id="impDemo">
+        <p class="doc-demo-label">인라인 · id · 클래스+important 가 모두 걸린 줄</p>
+        <p id="impId" class="imp-cls" style="color: #2d6cdf;">
+          가장 약한 클래스 규칙이 이겼습니다.
+        </p>
+        <!-- 화면: 이 줄은 초록 글자입니다. 파랑도 빨강도 아닙니다 -->
+      </div>
+
+      <p class="doc-note">
+        이기는 순서를 한 줄로 줄이면 이렇습니다.
+        <strong>!important &gt; 인라인 style &gt; 명시도 &gt; 나중에 쓴 것</strong>.
+        위에서 승부가 나면 아래는 보지 않습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>.imp-cls</code> 규칙에서 <code>!important</code> 를
+        지워 보세요. 이번에는 어느 색이 이기는지 확인한 뒤 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 상속은 싸움에 끼지 않습니다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 물려받은 값은 언제나 가장 약합니다</h2>
+      <p class="doc-desc">
+        07단원의 <strong>상속</strong>과 명시도는 다른 이야기입니다.
+        <strong>직접 지정한 값이 항상 이깁니다.</strong>
+      </p>
+
+      <!--
+        07단원에서 색은 자식에게 물려 내려간다고 배웠습니다.
+        그럼 이런 질문이 생깁니다.
+
+            "부모에 1-0-0 짜리 id 규칙으로 색을 줬으면
+             자식은 0-1-1 규칙보다 그 색을 더 세게 물려받나요?"
+
+        아닙니다. 물려받은 값은 명시도 싸움에 아예 참가하지 못합니다.
+        상속은 "아무도 안 정해 줬을 때 부모 것을 쓴다" 는 뜻일 뿐입니다.
+        자기한테 직접 걸린 규칙이 하나라도 있으면 그것이 이깁니다.
+
+        아래 상자에는 이런 두 규칙이 있습니다.
+
+            #inheritBox      { color: #c0392b; }   1-0-0
+            .inherit-box li  { color: #1a7f5a; }   0-1-1
+
+        상자 안 문단에는 자기 규칙이 없으니 상자 색인 빨강을 물려받습니다.
+        상자 안 목록 항목에는 자기 규칙이 있으니 초록입니다.
+        1-0-0 이 0-1-1 보다 세지만, 물려받은 값이라 아예 상대가 되지 않습니다.
+
+        이 사실을 알아 두면 자주 겪는 사고 하나가 풀립니다.
+
+            "부모에 색을 줬는데 링크만 색이 안 바뀝니다"
+
+        브라우저가 a 요소에 기본 파란색을 직접 지정해 두었기 때문입니다.
+        물려받은 색은 그 기본값을 못 이깁니다.
+        그럴 때는 a 를 직접 골라야 합니다.
+        07단원 개념05 섹션6 에서 본 "링크와 버튼은 왜 색이 안 바뀔까" 의 답이
+        바로 이것입니다.
+      -->
+      <div class="doc-demo" id="inheritDemo">
+        <p class="doc-demo-label">물려받은 색 vs 직접 지정한 색</p>
+        <div class="inherit-box" id="inheritBox">
+          <p id="inheritText">이 문단은 자기 규칙이 없어서 상자 색을 물려받았습니다.</p>
+          <ul>
+            <li id="inheritLi">이 항목은 자기 규칙이 있어서 물려받지 않습니다.</li>
+          </ul>
+        </div>
+        <!-- 화면: 문단은 빨간 글자, 목록 항목은 초록 글자입니다.
+                  목록 항목의 배경이 연한 회색인 것은 섹션 1 의 li 규칙 때문입니다 -->
+      </div>
+
+      <p class="doc-note">
+        정리하면 이렇습니다. <strong>직접 걸린 규칙이 하나라도 있으면</strong>
+        그것들끼리 명시도로 싸웁니다. <strong>하나도 없을 때만</strong> 부모 값을 물려받습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — <code>&lt;style&gt;</code> 에서
+        <code>.inherit-box li</code> 규칙을 주석 처리해 보세요.
+        목록 항목이 무슨 색이 되는지 확인한 뒤 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        명시도 사고의 겉모습은 언제나 똑같습니다.
+        <strong>"규칙을 썼는데 화면이 안 바뀐다"</strong> 입니다.
+      </p>
+
+      <!-- [실수 1] 자손 선택자가 클래스를 이겨 버림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 자손 선택자가 강조 클래스를 이겨 버림</span>
+        <div class="doc-code">.warnbox p { color: #8a8a8a; }   /* 0-1-1 */
+.hi-text   { color: #c0392b; }   /* 0-1-0 */</div>
+        <p>
+          가장 흔한 명시도 사고입니다. 상자 안 글자를 회색으로 깔아 둔 상태에서
+          한 줄만 빨갛게 강조하려고 클래스를 붙였는데
+          <strong>0-1-1 이 0-1-0 을 이겨서</strong> 회색 그대로입니다.
+          아래 줄은 <code>class="hi-text"</code> 를 제대로 붙였는데도 흐린 회색입니다.
+        </p>
+        <div class="warnbox">
+          <p class="hi-text" id="mistake1P">강조하려고 했는데 회색입니다.</p>
+        </div>
+        <!-- 화면: 흐린 회색 글자입니다. 빨간색이 아닙니다 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 고칩니다</span>
+        <div class="doc-code">.warnbox p.hi-text { color: #c0392b; }   /* 0-2-1 로 만들어 이깁니다 */</div>
+      </div>
+
+      <!-- [실수 2] !important 를 붙였다가 자기 발등을 찍음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — !important 를 붙여 두고 나중에 못 고침</span>
+        <div class="doc-code">.imp-bad          { color: #c0392b !important; }   /* 0-1-0 */
+.imp-bad.imp-fix  { color: #1a7f5a; }               /* 0-2-0 인데도 집니다 */</div>
+        <p>
+          예전에 안 바뀌길래 <code>!important</code> 를 붙여 뒀습니다.
+          오늘 그걸 고치려고 <strong>더 센 선택자</strong>를 만들었는데도 안 바뀝니다.
+          <code>!important</code> 는 명시도 바깥에 있어서
+          아무리 세게 만들어도 소용이 없습니다.
+        </p>
+        <p class="imp-bad imp-fix" id="mistake2P">더 센 규칙을 썼는데도 빨간 글자입니다.</p>
+        <!-- 화면: 빨간 글자입니다. 초록이 아닙니다 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 고칩니다</span>
+        <div class="doc-code">.imp-bad { color: #c0392b; }   /* 먼저 !important 를 떼어 냅니다 */</div>
+      </div>
+
+      <!-- [실수 3] id 로 정해 놓고 클래스로 덮으려 함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — id 로 정해 둔 것을 클래스로 덮으려 함</span>
+        <div class="doc-code">#idLock    { color: #c0392b; }   /* 1-0-0 */
+.class-try { color: #1a7f5a; }   /* 0-1-0 */</div>
+        <p>
+          클래스를 몇 개를 붙여도 id 하나를 못 이깁니다(섹션 2).
+          그래서 <strong>id 로 색을 정하는 습관이 위험</strong>합니다.
+          개념01 에서 "웬만하면 클래스를 쓰라" 고 한 이유가 이것입니다.
+        </p>
+        <p id="idLock" class="class-try">클래스를 붙였는데도 빨간 글자입니다.</p>
+        <!-- 화면: 빨간 글자입니다 -->
+      </div>
+
+      <!-- [실수 4] 인라인 style 을 잊고 CSS 만 고침 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — HTML 의 style 속성을 잊고 CSS 만 고침</span>
+        <div class="doc-code">&lt;p class="inline-trap" style="color: #c0392b;"&gt;...&lt;/p&gt;
+.inline-trap { color: #1a7f5a; }</div>
+        <p>
+          CSS 파일만 열심히 고치는데 화면이 꿈쩍도 안 합니다.
+          범인은 <strong>HTML 에 남아 있는 style 속성</strong>입니다.
+          CSS 를 고쳐도 안 바뀌면 <strong>HTML 쪽을 먼저 보세요.</strong>
+        </p>
+        <p class="inline-trap" id="mistake4P" style="color: #c0392b;">
+          CSS 에서 초록을 시켰는데 빨간 글자입니다.
+        </p>
+        <!-- 화면: 빨간 글자입니다 -->
+      </div>
+
+      <!-- [실수 5] 같은 선택자를 두 번 쓰고 위쪽을 고침 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 같은 선택자를 두 번 쓰고 위쪽을 고침</span>
+        <div class="doc-code">.dup-rule { color: #c0392b; }   /* 위쪽 — 아무리 고쳐도 안 보입니다 */
+.dup-rule { color: #1a7f5a; }   /* 아래쪽 — 이쪽이 이깁니다 */</div>
+        <p>
+          파일이 길어지면 같은 선택자를 두 번 쓰고도 모릅니다.
+          위쪽 규칙을 아무리 고쳐도 화면은 그대로입니다.
+          <strong>세기가 같으면 나중 것이 이기기 때문</strong>입니다.
+          <code>Ctrl+F</code> 로 선택자를 검색해서 몇 개나 있는지 세어 보세요.
+        </p>
+        <p class="dup-rule" id="mistake5P">위쪽 규칙은 빨강인데 초록 글자입니다.</p>
+        <!-- 화면: 초록 글자입니다 -->
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>
+        1. 한 요소에 규칙이 여럿 맞으면
+        <strong>!important &gt; 인라인 style &gt; 명시도 &gt; 나중에 쓴 것</strong>
+        순서로 정해집니다.
+      </p>
+      <p>
+        2. 명시도는 <strong>id 개수 · 클래스와 가상 클래스 개수 · 태그 개수</strong>를
+        세 칸에 세고, <strong>왼쪽 칸부터</strong> 비교합니다.
+      </p>
+      <p>
+        3. 점수를 더하는 것이 아닙니다.
+        <strong>클래스 11개도 id 1개를 못 이깁니다.</strong>
+      </p>
+      <p>
+        4. 세기가 같으면 <strong>CSS 에서 아래쪽에 쓴 것</strong>이 이깁니다.
+        HTML 의 class 순서는 상관없습니다.
+      </p>
+      <p>
+        5. <strong>물려받은 값은 가장 약합니다.</strong>
+        자기한테 직접 걸린 규칙이 하나라도 있으면 그것이 이깁니다.
+      </p>
+      <p>
+        6. <code>!important</code> 는 <strong>최후의 수단</strong>입니다.
+        붙이는 순간 그 줄은 아무도 못 고치게 됩니다.
+      </p>
+      <p>
+        7. "안 바뀐다" 면 <strong>F12 로 진 규칙을 확인</strong>하고,
+        선택자를 한 단계만 더 구체적으로 만드세요.
+      </p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) style 의 #hotItem 규칙을 이렇게 감쌉니다.
+
+                /* #hotItem {
+                  background-color: #d7ecff;
+                } */
+
+            → 첫 줄이 하늘색에서 노란색(#fff3a0)으로 바뀝니다.
+              남은 규칙 셋 중에서 .menu .hot 이 0-2-0 으로 가장 세기 때문입니다.
+              .hot(0-1-0)도 li(0-0-1)도 여기에 밀립니다.
+              확인했으면 주석을 풀어 되돌리세요.
+
+         2) 명시도는 이렇습니다.
+
+                p              0-0-1    태그 1개
+                .card p        0-1-1    클래스 1개 + 태그 1개
+                #box .card     1-1-0    id 1개 + 클래스 1개
+                a:hover        0-1-1    태그 1개 + 가상 클래스 1개
+                ul li.hot      0-1-2    클래스 1개 + 태그 2개
+
+            → 센 순서로 늘어놓으면
+              #box .card  →  ul li.hot  →  .card p 와 a:hover (동점)  →  p 입니다.
+              .card p 와 a:hover 가 같은 0-1-1 이라는 점을 확인하세요.
+              가상 클래스는 클래스와 같은 칸에서 셉니다.
+
+         3) style 에서 두 규칙의 순서를 이렇게 바꿉니다.
+
+                .later-b { background-color: #e2f4ea; }
+                .later-a { background-color: #fff3a0; }
+
+            → 두 줄이 모두 노란색(#fff3a0)으로 바뀝니다.
+              이번에는 .later-a 가 아래쪽에 있으니 이깁니다.
+              HTML 은 한 글자도 안 고쳤는데 결과가 바뀌었다는 점이 중요합니다.
+              확인했으면 순서를 되돌리세요.
+
+         4) 섹션 4 의 문단을 이렇게 고칩니다.
+
+                <p id="inlineP">
+
+            → 줄의 배경이 연한 하늘색에서 연한 분홍색(#ffe9e9)으로 바뀝니다.
+              인라인 style 이 사라지자 그제야 #inlineP 규칙이 보이게 된 것입니다.
+              규칙은 처음부터 그 자리에 있었습니다. 가려져 있었을 뿐입니다.
+
+         5) style 의 규칙을 이렇게 고칩니다.
+
+                .imp-cls {
+                  color: #1a7f5a;
+                }
+
+            → 글자가 초록에서 파랑(#2d6cdf)으로 바뀝니다.
+              !important 가 사라지자 인라인 style 이 이깁니다.
+              빨강(#c0392b)이 아니라는 점을 확인하세요.
+              id 규칙도 인라인에는 못 이깁니다.
+
+         6) style 의 규칙을 이렇게 감쌉니다.
+
+                /* .inherit-box li {
+                  color: #1a7f5a;
+                } */
+
+            → 목록 항목이 초록에서 빨강으로 바뀝니다. 위 문단과 같은 색이 됩니다.
+              자기한테 걸린 규칙이 없어지자 그제야 상자 색을 물려받은 것입니다.
+              확인했으면 주석을 풀어 되돌리세요.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #hotItem | background-color | rgb(215, 236, 255)
+      #menuBox li:nth-child(2) | background-color | rgb(242, 242, 242)
+      #digitP | background-color | rgb(215, 236, 255)
+      #laterAB | background-color | rgb(226, 244, 234)
+      #laterBA | background-color | rgb(226, 244, 234)
+      #inlineP | background-color | rgb(215, 236, 255)
+      #impId | color | rgb(26, 127, 90)
+      #inheritBox | color | rgb(192, 57, 43)
+      #inheritText | color | rgb(192, 57, 43)
+      #inheritLi | color | rgb(26, 127, 90)
+      #mistake1P | color | rgb(138, 138, 138)
+      #mistake2P | color | rgb(192, 57, 43)
+      #idLock | color | rgb(192, 57, 43)
+      #mistake4P | color | rgb(192, 57, 43)
+      #mistake5P | color | rgb(26, 127, 90)
+    -->
+  </body>
+</html>

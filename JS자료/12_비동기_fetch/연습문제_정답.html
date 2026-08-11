@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>12단원 연습문제 정답 - 비동기와 fetch</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 8px 16px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 6px;
+      }
+      input[type="number"] {
+        padding: 6px 8px;
+        font-size: 15px;
+        width: 90px;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+        min-height: 24px;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+      }
+      ul {
+        padding-left: 22px;
+        margin: 0;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>12단원 연습문제 정답 — 비동기와 fetch</h1>
+
+    <p class="guide">
+      먼저 스스로 풀어 본 다음에 보세요. <strong>인터넷 연결</strong>과
+      <strong>F12 → Console</strong> 이 필요합니다.
+    
+      <br /><br />
+      <strong>인터넷이 막혀 있어 안 된다면</strong> 이 파일 아래쪽
+      <code>&lt;script&gt;</code> 바로 위에 있는 <code>오프라인_대체.js</code> 줄에서
+      주석 기호를 지우세요. 인터넷 없이도 똑같이 동작합니다.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>문제 1~3</h3>
+      <button id="timerBtn">2초 뒤 알림</button>
+      <button id="countBtn">3초 카운트다운</button>
+      <div class="output" id="out1">대기 중</div>
+      <div class="output" id="out3">대기 중</div>
+
+      <h3>문제 4~5</h3>
+      <button id="promiseBtn">성공하는 작업</button>
+      <button id="rejectBtn">실패하는 작업</button>
+      <div class="output" id="out4">대기 중</div>
+
+      <h3>문제 6~7</h3>
+      <button id="oneBtn">글 1개</button>
+      <button id="listBtn">글 목록 5개</button>
+      <div class="output" id="out6">대기 중</div>
+      <div class="output"><ul id="postList"></ul></div>
+
+      <h3>문제 8~10</h3>
+      <button id="awaitBtn">await 로 가져오기</button>
+      <button id="seqBtn">글 → 작성자</button>
+      <button id="allBtn">동시에 3개</button>
+      <div class="output" id="out8">대기 중</div>
+      <div class="output" id="out9">대기 중</div>
+      <div class="output"><ul id="allList"></ul></div>
+
+      <h3>문제 11~13</h3>
+      <button id="tryBtn">실패하는 주소 (try/catch)</button>
+      <button id="okBtn">404 확인</button>
+      <button id="goodBtn">완성형</button>
+      <div class="output" id="out11">대기 중</div>
+      <div class="output" id="out13">대기 중</div>
+
+      <h3>문제 14 — 도전</h3>
+      <input type="number" id="idInput" value="1" min="1" />
+      <button id="searchBtn">검색</button>
+      <div class="output" id="out14">번호를 넣고 검색을 눌러 보세요</div>
+    </div>
+
+    <!-- 인터넷이 막혀 이 파일이 동작하지 않으면, 바로 아래 줄을 감싼 주석 기호를 지워서 켜세요. 설명은 오프라인_대체.js 맨 위에 있습니다. -->
+    <!-- <script src="오프라인_대체.js"></script> -->
+    <script>
+      // ============================================================
+      // 12단원 연습문제 정답 — 비동기와 fetch
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열기. 인터넷 연결 필요. F12 → Console 필수
+      // ============================================================
+
+      const BASE_URL = "https://jsonplaceholder.typicode.com";
+
+      const out1 = document.querySelector("#out1");
+      const out3 = document.querySelector("#out3");
+      const out4 = document.querySelector("#out4");
+      const out6 = document.querySelector("#out6");
+      const out8 = document.querySelector("#out8");
+      const out9 = document.querySelector("#out9");
+      const out11 = document.querySelector("#out11");
+      const out13 = document.querySelector("#out13");
+      const out14 = document.querySelector("#out14");
+
+      // ───── 문제 1 ─────
+      document.querySelector("#timerBtn").addEventListener("click", () => {
+        out1.textContent = "기다리는 중...";
+
+        setTimeout(() => {
+          out1.textContent = "2초가 지났습니다";
+        }, 2000);
+      });
+      // 1000 = 1초입니다. 2초는 2000 입니다.
+      // setTimeout(fn(), 2000) 처럼 괄호를 붙이면 즉시 실행되어 버립니다.
+
+      // ───── 문제 2 ─────
+      console.log("A");
+      setTimeout(() => console.log("B"), 0);
+      console.log("C");
+      // 콘솔: A
+      // 콘솔: C
+      // 콘솔: B
+      //
+      // 0초인데도 B 가 마지막입니다.
+      // setTimeout 은 "지금 하던 일을 다 끝낸 다음에" 실행하겠다는 예약입니다.
+      // 시간이 0이어도 '나중' 입니다.
+
+      // ───── 문제 3 ─────
+      let countTimerId = null;
+
+      document.querySelector("#countBtn").addEventListener("click", () => {
+        if (countTimerId !== null) return; // 두 번 눌러도 두 개가 돌지 않게
+
+        let count = 3;
+        out3.textContent = count;
+
+        countTimerId = setInterval(() => {
+          count--;
+
+          if (count <= 0) {
+            out3.textContent = "끝!";
+            clearInterval(countTimerId); // ★ 없으면 영원히 돕니다
+            countTimerId = null;
+            return;
+          }
+
+          out3.textContent = count;
+        }, 1000);
+      });
+
+      // ───── 문제 4 ─────
+      function delay(ms, shouldFail = false) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (shouldFail) {
+              reject(new Error("일부러 실패했습니다"));
+            } else {
+              resolve("작업 완료");
+            }
+          }, ms);
+        });
+      }
+
+      document.querySelector("#promiseBtn").addEventListener("click", () => {
+        out4.className = "output";
+        out4.textContent = "진행 중...";
+
+        delay(1000).then(() => {
+          out4.textContent = "1초 뒤 완료";
+        });
+      });
+
+      // ───── 문제 5 ─────
+      document.querySelector("#rejectBtn").addEventListener("click", () => {
+        out4.className = "output";
+        out4.textContent = "진행 중...";
+
+        delay(1000, true)
+          .then(() => {
+            out4.textContent = "여기는 실행되지 않습니다";
+          })
+          .catch((error) => {
+            out4.textContent = `오류: ${error.message}`;
+            out4.className = "output error";
+          });
+      });
+      // reject 로 넘긴 Error 객체가 catch 의 매개변수로 들어옵니다.
+      // error.message 로 메시지를 꺼냅니다.
+
+      // ───── 문제 6 ─────
+      document.querySelector("#oneBtn").addEventListener("click", () => {
+        out6.textContent = "불러오는 중...";
+
+        fetch(`${BASE_URL}/posts/1`)
+          .then((res) => res.json()) // ★ return 을 빠뜨리지 않도록 한 줄로 씁니다
+          .then((data) => {
+            out6.textContent = data.title;
+          })
+          .catch(() => {
+            out6.textContent = "가져오지 못했습니다";
+          });
+      });
+      // then 이 두 번인 이유: 응답 받기 → 내용 읽기. 둘 다 시간이 걸립니다.
+
+      // ───── 문제 7 ─────
+      const postList = document.querySelector("#postList");
+
+      document.querySelector("#listBtn").addEventListener("click", () => {
+        postList.innerHTML = "<li>불러오는 중...</li>";
+
+        fetch(`${BASE_URL}/posts?_limit=5`)
+          .then((res) => res.json())
+          .then((posts) => {
+            postList.innerHTML = posts
+              .map((post) => `<li>${post.id}. ${post.title}</li>`)
+              .join("");
+          })
+          .catch(() => {
+            postList.innerHTML = "<li>불러오지 못했습니다</li>";
+          });
+      });
+      // 배열 → map → join("") → innerHTML 이 목록 그리기의 기본 패턴입니다.
+      // join 을 빠뜨리면 항목 사이에 쉼표가 보입니다.
+
+      // ───── 문제 8 ─────
+      document.querySelector("#awaitBtn").addEventListener("click", async () => {
+        out8.textContent = "불러오는 중...";
+
+        const res = await fetch(`${BASE_URL}/posts/1`);
+        const data = await res.json();
+
+        out8.textContent = data.title;
+      });
+      // 콜백에 async 를 붙이면 그 안에서 await 를 쓸 수 있습니다.
+      // await 를 두 번 쓰는 것이 then 두 번과 짝입니다.
+
+      // ───── 문제 9 ─────
+      document.querySelector("#seqBtn").addEventListener("click", async () => {
+        out9.textContent = "불러오는 중...";
+
+        const postRes = await fetch(`${BASE_URL}/posts/1`);
+        const post = await postRes.json();
+
+        // 앞의 결과(post.userId)가 있어야 다음 요청을 할 수 있습니다
+        const userRes = await fetch(`${BASE_URL}/users/${post.userId}`);
+        const user = await userRes.json();
+
+        out9.textContent = `${post.title} — ${user.name}`;
+        console.log("작성자:", user.name);
+      });
+      // 앞 결과가 필요하므로 Promise.all 을 쓸 수 없습니다. 순서대로 await 합니다.
+      // then 으로 쓰면 마지막 단계에서 post 를 쓸 수 없어 불편합니다.
+
+      // ───── 문제 10 ─────
+      const allList = document.querySelector("#allList");
+
+      document.querySelector("#allBtn").addEventListener("click", async () => {
+        allList.innerHTML = "<li>불러오는 중...</li>";
+
+        const posts = await Promise.all([
+          fetch(`${BASE_URL}/posts/1`).then((r) => r.json()),
+          fetch(`${BASE_URL}/posts/2`).then((r) => r.json()),
+          fetch(`${BASE_URL}/posts/3`).then((r) => r.json()),
+        ]);
+
+        allList.innerHTML = "";
+        posts.forEach((post) => {
+          const li = document.createElement("li");
+          li.textContent = `${post.id}. ${post.title}`;
+          allList.appendChild(li);
+        });
+      });
+      // 서로 상관없는 요청이므로 동시에 보냅니다.
+      // 하나씩 await 하면 3배 오래 걸립니다.
+
+      // ───── 문제 11 ─────
+      document.querySelector("#tryBtn").addEventListener("click", async () => {
+        out11.className = "output";
+        out11.textContent = "불러오는 중...";
+
+        try {
+          const res = await fetch("https://없는주소-abcxyz.example/data");
+          const data = await res.json();
+          out11.textContent = JSON.stringify(data);
+        } catch (error) {
+          out11.textContent = "요청에 실패했습니다";
+          out11.className = "output error";
+          console.log("에러:", error.message);
+        }
+      });
+      // 서버에 연결 자체가 안 되면 fetch 가 실패하고 catch 로 갑니다.
+      // await 를 try '안' 에 둬야 잡힙니다. 밖에 두면 안 잡힙니다.
+
+      // ───── 문제 12 ─────
+      document.querySelector("#okBtn").addEventListener("click", async () => {
+        const res = await fetch(`${BASE_URL}/posts/9999`);
+        console.log(res.ok, res.status);
+        // 콘솔: false 404
+      });
+      // 404 는 '서버가 대답을 한 것' 이라 fetch 입장에서는 성공입니다.
+      // catch 로 가지 않으므로 res.ok 를 직접 확인해야 합니다.
+
+      // ───── 문제 13 ─────
+      const goodBtn = document.querySelector("#goodBtn");
+
+      goodBtn.addEventListener("click", async () => {
+        goodBtn.disabled = true; // 1) 버튼 잠금
+        out13.className = "output";
+        out13.textContent = "불러오는 중...";
+
+        try {
+          const res = await fetch(`${BASE_URL}/posts/1`);
+
+          if (!res.ok) {
+            throw new Error(`서버 오류 ${res.status}`); // 3) 직접 에러 던지기
+          }
+
+          const data = await res.json();
+          out13.textContent = data.title; // 4) 성공
+        } catch (error) {
+          out13.textContent = "불러오지 못했습니다"; // 5) 실패
+          out13.className = "output error";
+          console.log("에러 내용:", error.message);
+        } finally {
+          goodBtn.disabled = false; // 6) 무조건 잠금 해제
+        }
+      });
+      // finally 가 없으면 실패했을 때 버튼이 영원히 잠긴 채로 남습니다.
+      // 사용자에게는 쉬운 말로, 자세한 내용은 콘솔에 남기는 것이 요령입니다.
+
+      // ───── 문제 14 ─────
+      const idInput = document.querySelector("#idInput");
+      const searchBtn = document.querySelector("#searchBtn");
+
+      searchBtn.addEventListener("click", async () => {
+        const id = Number(idInput.value); // 입력값은 문자열이므로 변환
+
+        if (!id || id < 1) {
+          out14.textContent = "1 이상의 번호를 넣어 주세요";
+          out14.className = "output error";
+          return; // 조기 반환
+        }
+
+        searchBtn.disabled = true;
+        out14.className = "output";
+        out14.textContent = "검색 중...";
+
+        try {
+          const res = await fetch(`${BASE_URL}/posts/${id}`);
+
+          if (res.status === 404) {
+            throw new Error("NOT_FOUND");
+          }
+          if (!res.ok) {
+            throw new Error(`서버 오류 ${res.status}`);
+          }
+
+          const post = await res.json();
+          out14.textContent = `${post.id}. ${post.title}`;
+        } catch (error) {
+          // 404 와 그 밖의 오류를 구분해서 다른 말을 보여 줍니다
+          out14.textContent =
+            error.message === "NOT_FOUND" ? "그런 글이 없습니다" : "검색에 실패했습니다";
+          out14.className = "output error";
+          console.log("에러:", error.message);
+        } finally {
+          searchBtn.disabled = false;
+        }
+      });
+      // 이 파일에서 배운 것이 전부 들어 있습니다.
+      //   입력값 읽기(10단원) → Number 변환(01단원) → 조기 반환(05단원)
+      //   → 버튼 잠금(11단원) → fetch + res.ok + try/catch/finally(12단원)
+
+      // ───── 문제 15 ─────
+      // async function getTitle() {
+      //   const res = await fetch(`${BASE_URL}/posts/1`);
+      //   const data = res.json();      ← 여기가 잘못됐습니다
+      //   return data.title;
+      // }
+      //
+      // 왜:
+      //   res.json() 도 Promise 를 돌려줍니다. await 를 빠뜨리면
+      //   data 에는 값이 아니라 Promise 객체가 담깁니다.
+      //   Promise 객체에는 title 속성이 없으므로 undefined 가 나옵니다.
+      //
+      // 고치는 방법:
+      //   const data = await res.json();
+      //
+      // 확인하는 요령:
+      //   결과가 undefined 이거나 Promise { <pending> } 으로 나오면
+      //   await 를 빠뜨린 곳부터 찾으세요. 가장 흔한 실수입니다.
+    </script>
+  </body>
+</html>

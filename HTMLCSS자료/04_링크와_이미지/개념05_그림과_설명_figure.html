@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>04단원 개념05 - 그림과 설명 figure</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         04단원 · 개념 05 — 그림과 설명 figure
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         앞 파일에서 그림을 거는 방법을 배웠습니다.
+         그런데 실제 문서에서 그림은 혼자 있는 일이 드뭅니다.
+         그림 아래에 이런 글이 붙어 있는 것을 많이 보셨을 것입니다.
+
+             (그림 3) 2024년 월별 판매량
+             ▲ 지난 봄 학교 앞 벚꽃
+
+         이렇게 그림에 붙는 설명글을 캡션(caption) 이라고 부릅니다.
+         캡션을 그냥 p 로 써도 화면에는 비슷하게 보입니다. 그런데 문제가 있습니다.
+
+             <img src="이미지/풍경.svg" alt="산과 들 풍경 그림" />
+             <p>우리 동네 뒷산입니다</p>
+
+         이렇게 쓰면 브라우저에게는 "그림 하나" 와 "문단 하나" 가 따로 있는 것으로 보입니다.
+         둘이 한 짝이라는 사실이 코드 어디에도 적혀 있지 않습니다.
+
+         그래서 HTML 은 이 두 가지를 준비해 두었습니다.
+
+             figure      그림과 그 설명을 한 덩어리로 묶는 상자
+             figcaption  그 덩어리의 설명글 (figure caption 의 줄임말)
+
+             <figure>
+               <img src="이미지/풍경.svg" alt="산과 들 풍경 그림" />
+               <figcaption>우리 동네 뒷산입니다</figcaption>
+             </figure>
+             └───┬───┘
+                 └ 이 안의 그림과 글이 한 짝이라는 뜻입니다
+
+         이렇게 "이게 무엇인지" 를 태그 이름으로 알려 주는 것을
+         의미를 담은 태그라고 부릅니다. 06단원에서 본격적으로 배웁니다.
+         지금은 "묶어 주면 좋은 점이 있다" 정도로 충분합니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 05 — 그림과 설명 figure</h1>
+    <p class="doc-sub">04단원 · 링크와 이미지</p>
+
+    <p class="doc-guide">
+      이 파일에서는 <strong>그림과 설명을 한 짝으로 묶는 방법</strong>을 배웁니다.
+      뒤쪽에서는 소리와 영상, 다른 페이지 끼워 넣기를 <strong>생김새만</strong> 구경합니다.
+      실제 소리·영상 파일은 이 폴더에 없으므로 코드만 읽어 보세요.
+    </p>
+
+    <!-- ══════════ 섹션 1: figure 와 figcaption ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — figure 와 figcaption</h2>
+      <p class="doc-desc">
+        <code>figure</code> 로 묶고, 설명은 <code>figcaption</code> 에 씁니다.
+      </p>
+
+      <!--
+        아래 상자 안에는 이렇게 썼습니다.
+
+            <figure>
+              <img src="이미지/풍경.svg" alt="산 두 개와 해가 있는 풍경 그림" />
+              <figcaption>우리 동네 뒷산입니다</figcaption>
+            </figure>
+
+        화면을 보면 두 가지 변화가 눈에 띕니다.
+
+            1) 그림과 글이 통째로 오른쪽으로 조금 들어갔습니다
+            2) 위아래로 여백이 생겼습니다
+
+        브라우저가 figure 에 좌우 40 픽셀씩 여백을 미리 넣어 두었기 때문입니다.
+        본문에서 살짝 떼어 놓아 "여기는 곁들인 자료" 라는 느낌을 줍니다.
+        마음에 안 들면 10단원에서 CSS 로 없앨 수 있습니다.
+        지금은 브라우저가 알아서 넣은 것이라는 사실만 알아 두세요.
+
+        figcaption 은 figure 안에서만 쓸 수 있습니다.
+        바깥에 혼자 쓰면 아무 뜻도 없는 글자 덩어리가 됩니다.
+
+        그리고 figure 는 그림 전용이 아닙니다.
+        표, 코드 조각, 인용문처럼 "본문에서 잠깐 떼어 놓고 보는 것" 이면 무엇이든 담습니다.
+        03단원에서 배운 table 을 figure 로 감싸고 figcaption 에 표 제목을 다는 식입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <figure id="figOne">
+          <img id="figImgOne" src="이미지/풍경.svg" alt="산 두 개와 해가 있는 풍경 그림" />
+          <figcaption id="capOne">우리 동네 뒷산입니다</figcaption>
+        </figure>
+        <!-- 화면: 하늘색 배경에 산이 그려진 그림이 있고, 바로 아래에 검은 글씨로
+                  "우리 동네 뒷산입니다" 가 보입니다. 둘 다 왼쪽에서 조금 안으로 들어가 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>figure</code> 를 쓴다고 글씨가 작아지거나 가운데로 모이지는 않습니다.
+        브라우저가 넣어 주는 것은 <strong>좌우 여백</strong>뿐입니다. 나머지 꾸밈은 CSS 의 몫입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 <code>figcaption</code> 의 글을
+        <code>2026년 봄에 찍은 사진입니다</code> 로 바꿔 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: figure 안에 여러 개 넣기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — figure 안에 여러 개 넣기</h2>
+      <p class="doc-desc">
+        그림 여러 장을 한 짝으로 묶고 <strong>설명은 하나만</strong> 달 수도 있습니다.
+      </p>
+
+      <!--
+        아래 상자 안에는 이렇게 썼습니다.
+
+            <figure>
+              <img src="이미지/고양이.svg" alt="주황색 고양이 얼굴 그림" width="140" />
+              <img src="이미지/사과.svg" alt="빨간 사과 그림" width="140" />
+              <figcaption>왼쪽은 고양이, 오른쪽은 사과입니다</figcaption>
+            </figure>
+
+        규칙은 두 가지뿐입니다.
+
+            1) figcaption 은 figure 하나에 최대 한 개입니다
+            2) figcaption 은 figure 안에서 맨 앞이나 맨 뒤에 놓습니다
+
+        맨 앞에 놓으면 그림 위에, 맨 뒤에 놓으면 그림 아래에 설명이 보입니다.
+        가운데에 끼워 넣으면 안 됩니다. 브라우저가 그리기는 하지만 규칙에 어긋납니다.
+
+            <figure>
+              <figcaption>설명이 위에 옵니다</figcaption>   ← 맨 앞
+              <img ... />
+            </figure>
+
+        그림이 여러 장일 때 alt 는 어떻게 쓸까요?
+        alt 는 그림 하나하나에 붙는 것이라 각각 따로 씁니다.
+        figcaption 은 묶음 전체에 하나만 붙습니다. 헷갈리지 마세요.
+
+            alt        : 그림 한 장마다 하나씩
+            figcaption : figure 한 덩어리에 하나만
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <figure id="figTwo">
+          <img id="figCat" src="이미지/고양이.svg" alt="주황색 고양이 얼굴 그림" width="140" />
+          <img id="figApple" src="이미지/사과.svg" alt="빨간 사과 그림" width="140" />
+          <figcaption id="capTwo">왼쪽은 고양이, 오른쪽은 사과입니다</figcaption>
+        </figure>
+        <!-- 화면: 고양이 얼굴과 사과가 나란히 있고, 그 아래에
+                  "왼쪽은 고양이, 오른쪽은 사과입니다" 가 한 줄 보입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위 <code>figcaption</code> 을 두 그림보다 <strong>위쪽</strong>으로
+        옮겨 보세요. 코드에서 줄 순서만 바꾸면 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: alt 와 figcaption 은 다릅니다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — alt 와 figcaption 은 다릅니다</h2>
+      <p class="doc-desc">
+        <strong>둘 다 설명이지만 읽는 사람이 다릅니다.</strong> 같은 말을 두 번 쓰지 마세요.
+      </p>
+
+      <!--
+        아주 많이 헷갈리는 부분이라 표로 정리합니다.
+
+            alt          화면에 보이지 않습니다.
+                         그림을 볼 수 없을 때만 대신 쓰입니다.
+                         "무엇이 그려져 있는가" 를 씁니다.
+
+            figcaption   화면에 보입니다. 모두가 읽습니다.
+                         "이 그림이 왜 여기 있는가" 를 씁니다.
+
+        예를 들어 벚꽃 사진 한 장이 있다고 합시다.
+
+            alt="분홍 벚꽃이 가득 핀 가로수길"          ← 눈에 보이는 것을 그대로
+            figcaption="2026년 4월, 학교 앞 벚꽃길"      ← 언제 어디인지, 왜 실었는지
+
+        둘을 똑같이 쓰면 어떻게 될까요?
+        화면 낭독기로 듣는 사람은 같은 문장을 연달아 두 번 듣게 됩니다.
+        틀린 것은 아니지만 듣기에 답답합니다.
+
+        그렇다면 figcaption 이 이미 충분히 설명하고 있을 때는 alt 를 어떻게 할까요?
+        그럴 때는 alt="" 로 비워 둡니다. 개념04 에서 배운 그 방법입니다.
+        "설명은 아래 글로 충분하니 이 그림은 건너뛰어도 된다" 는 뜻이 됩니다.
+
+        아래 상자에서 두 글이 어떻게 다른지 보세요.
+        화면에 보이는 것은 figcaption 뿐입니다. alt 는 코드 안에만 있습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">화면에 보이는 것은 figcaption 뿐입니다</p>
+        <figure id="figThree">
+          <img id="figStar" src="이미지/아이콘/별.svg" alt="노란 별 다섯 꼭짓점 아이콘" width="80" />
+          <figcaption id="capThree">즐겨찾기를 뜻하는 표시로 씁니다</figcaption>
+        </figure>
+        <!-- 화면: 노란 별 아이콘 아래에 "즐겨찾기를 뜻하는 표시로 씁니다" 가 보입니다.
+                  alt 에 쓴 "노란 별 다섯 꼭짓점 아이콘" 은 어디에도 보이지 않습니다 -->
+      </div>
+
+      <p class="doc-note">
+        확인하는 방법이 있습니다. 브라우저에서 그림 위에 마우스를 놓고
+        오른쪽 버튼 → [검사] 를 누르면 코드가 보입니다. 거기에 <code>alt</code> 값이 적혀 있습니다.
+        화면에는 없지만 문서에는 분명히 들어 있습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 <code>figure</code> 를 통째로 복사해 하나 더 만들고,
+        그림은 <code>이미지/로고.svg</code>, <code>alt</code> 는
+        <code>파란 바탕에 HTML 이라고 적힌 로고</code>,
+        <code>figcaption</code> 은 <code>우리 웹사이트 로고입니다</code> 로 바꿔 보세요.
+        (복사한 쪽의 <code>id</code> 는 지워 주세요. 같은 id 가 두 개면 안 됩니다)
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 소리와 영상 (생김새만) ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 소리와 영상: audio, video (생김새만)</h2>
+      <p class="doc-desc">
+        소리와 영상도 <code>img</code> 처럼 <strong>파일 경로를 적어</strong> 겁니다.
+        <strong>이 폴더에는 소리·영상 파일이 없으므로 코드만 봅니다.</strong>
+      </p>
+
+      <!--
+        먼저 왜 실제 파일을 안 넣었는지 밝혀 둡니다.
+        mp3 나 mp4 는 크기가 커서 수업 자료에 넣으면 내려받기가 힘들어집니다.
+        문법이 img 와 거의 같기 때문에 코드만 봐도 충분히 익힐 수 있습니다.
+
+        [소리]
+
+            <audio src="소리/새소리.mp3" controls></audio>
+
+            controls 를 붙이면 재생 단추와 시간 막대가 보입니다.
+            안 붙이면 아무것도 안 보이고 소리도 안 납니다. 거의 항상 붙입니다.
+            controls 는 개념01 의 download 처럼 값이 없는 불리언 속성입니다.
+
+        [영상]
+
+            <video src="영상/소개.mp4" controls width="480"></video>
+
+            width 로 크기를 정하는 것도 img 와 같습니다.
+            poster="이미지/풍경.svg" 를 붙이면 재생 전에 보여 줄 그림을 정할 수 있습니다.
+
+        [주의] audio 와 video 는 빈 태그가 아닙니다. 반드시 닫아야 합니다.
+
+            <img ... />                   ← img 는 빈 태그, 닫지 않습니다
+            <video ...></video>           ← video 는 닫습니다
+            <audio ...></audio>           ← audio 도 닫습니다
+
+            왜 다를까요? 그 안에 넣을 것이 있기 때문입니다.
+            영상을 못 트는 브라우저를 위한 안내글이나, 자막 파일을 안에 넣습니다.
+
+        [자주 붙이는 속성]
+
+            controls   재생 단추를 보여 줍니다
+            autoplay   페이지가 열리자마자 재생합니다 (요즘 브라우저는 대개 막습니다)
+            loop       끝나면 처음부터 다시 재생합니다
+            muted      소리를 끈 채로 시작합니다
+
+        autoplay 는 쓰지 않는 것이 좋습니다.
+        갑자기 소리가 나면 놀라고, 회사나 도서관에서는 곤란해집니다.
+        브라우저들도 그래서 소리 있는 자동 재생을 대부분 막아 두었습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">소리를 거는 코드</p>
+        <div class="doc-code">&lt;audio src="소리/새소리.mp3" controls&gt;&lt;/audio&gt;</div>
+        <!-- 화면: 검은 상자 안에 흰 글씨로 코드 한 줄이 보입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">영상을 거는 코드</p>
+        <div class="doc-code">&lt;video src="영상/소개.mp4" controls width="480"&gt;&lt;/video&gt;</div>
+        <!-- 화면: 검은 상자 안에 흰 글씨로 코드 한 줄이 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        영상은 <code>figure</code> 안에도 넣을 수 있습니다. 그림과 똑같이
+        <code>figcaption</code> 으로 설명을 붙이면 됩니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 이 폴더에 <code>소개.mp4</code> 라는 영상이 있다고 가정하고,
+        <strong>재생 단추가 보이고 가로가 600</strong> 인 <code>video</code> 코드를
+        종이에 한 줄로 적어 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 다른 페이지 끼워 넣기 (생김새만) ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 다른 페이지 끼워 넣기: iframe (생김새만)</h2>
+      <p class="doc-desc">
+        <code>iframe</code> 은 <strong>페이지 안에 뚫어 놓은 창문</strong>입니다.
+        그 창문으로 다른 페이지가 보입니다.
+      </p>
+
+      <!--
+        지도나 유튜브 영상을 남의 블로그에서 본 적이 있을 것입니다.
+        그것이 iframe 입니다. inline frame(안에 끼운 틀) 의 줄임말입니다.
+
+            <iframe src="개념01_링크_a태그.html" width="600" height="240"></iframe>
+
+        src 에 경로나 주소를 적는 것은 img 와 똑같습니다.
+        width, height 로 창문 크기를 정하는 것도 같습니다.
+        iframe 도 빈 태그가 아니라서 반드시 닫아야 합니다.
+
+        img 와 결정적으로 다른 점이 하나 있습니다.
+
+            img    → 그림 한 장이 들어옵니다
+            iframe → 웹페이지 한 장이 통째로 들어옵니다
+
+        그래서 iframe 안에서 스크롤도 되고 링크도 눌립니다. 진짜 페이지이기 때문입니다.
+
+        [주의할 점]
+
+            1) 아무 사이트나 끼워 넣을 수 있는 것은 아닙니다.
+               많은 사이트가 "우리 페이지는 남의 창문 안에 넣지 마시오" 라고 막아 두었습니다.
+               그런 주소를 넣으면 빈 상자만 보입니다.
+            2) 지도나 영상처럼 그 사이트가 "이 코드를 복사해 가세요" 하고
+               알려 준 경우에만 쓰는 것이 안전합니다.
+            3) 페이지 전체를 iframe 으로 짜는 것은 하지 마세요.
+               검색이 안 되고, 뒤로 가기가 이상해지고, 주소를 공유할 수 없게 됩니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">페이지를 끼워 넣는 코드</p>
+        <div class="doc-code">&lt;iframe src="개념01_링크_a태그.html" width="600" height="240"&gt;&lt;/iframe&gt;</div>
+        <!-- 화면: 검은 상자 안에 흰 글씨로 코드 한 줄이 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>iframe</code> 은 06단원과 14단원에서 다시 나옵니다.
+        지금은 <strong>"페이지 안에 페이지를 넣는 태그가 있다"</strong> 는 것만 기억하세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 위 코드 상자 아래에 <strong>진짜</strong>
+        <code>iframe</code> 을 하나 넣어 보세요. 위 검은 상자에 적힌 코드를 그대로
+        (<code>&amp;lt;</code> 같은 것 없이) 옮겨 적으면 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        여기서도 마찬가지입니다. <strong>틀려도 에러가 안 납니다.</strong>
+        의미만 조용히 사라집니다.
+      </p>
+
+      <!-- [실수 1] figure 없이 figcaption 만 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — figure 없이 figcaption 만 씀</span>
+        <div class="doc-code">&lt;img src="이미지/사과.svg" alt="빨간 사과 그림" /&gt;
+&lt;figcaption&gt;맛있는 사과입니다&lt;/figcaption&gt;</div>
+        <p>
+          <strong>글자는 그대로 잘 보입니다.</strong> 그래서 잘못된 줄 모릅니다.
+          하지만 <code>figure</code> 가 없으니 이 글이 어느 그림의 설명인지 아무도 모릅니다.
+          <code>figcaption</code> 은 반드시 <code>figure</code> 안에 넣으세요.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">&lt;figure&gt;
+  &lt;img src="이미지/사과.svg" alt="빨간 사과 그림" /&gt;
+  &lt;figcaption&gt;맛있는 사과입니다&lt;/figcaption&gt;
+&lt;/figure&gt;</div>
+      </div>
+
+      <!-- [실수 2] figcaption 을 두 개 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — figcaption 을 두 개 씀</span>
+        <div class="doc-code">&lt;figure&gt;
+  &lt;figcaption&gt;위 설명&lt;/figcaption&gt;
+  &lt;img src="이미지/사과.svg" alt="빨간 사과 그림" /&gt;
+  &lt;figcaption&gt;아래 설명&lt;/figcaption&gt;
+&lt;/figure&gt;</div>
+        <p>
+          <strong>두 줄 다 화면에 보입니다.</strong> 겉보기에는 아무 문제가 없습니다.
+          그래서 이 실수는 끝까지 발견되지 않는 편입니다.
+          <code>figcaption</code> 은 <code>figure</code> 하나에 <strong>한 개</strong>입니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] alt 와 figcaption 에 같은 말을 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — alt 와 figcaption 에 똑같은 말을 씀</span>
+        <div class="doc-code">&lt;img src="이미지/풍경.svg" alt="우리 동네 뒷산입니다" /&gt;
+&lt;figcaption&gt;우리 동네 뒷산입니다&lt;/figcaption&gt;</div>
+        <p>
+          <strong>눈으로 보는 사람에게는 아무 차이가 없습니다.</strong>
+          소리로 듣는 사람은 같은 문장을 연달아 두 번 듣게 됩니다.
+          <code>alt</code> 에는 <strong>보이는 것</strong>을, <code>figcaption</code> 에는
+          <strong>왜 실었는지</strong>를 쓰세요. 설명이 겹칠 때는 <code>alt=""</code> 로 비웁니다.
+        </p>
+      </div>
+
+      <!-- [실수 4] video 를 닫지 않음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — video 나 audio 를 안 닫음</span>
+        <div class="doc-code">&lt;video src="영상/소개.mp4" controls width="480" /&gt;</div>
+        <p>
+          <code>img</code> 처럼 생겨서 빈 태그인 줄 알고 닫지 않는 실수입니다.
+          <strong>브라우저는 닫는 태그가 나올 때까지 뒤에 오는 내용을 전부 영상 안으로 집어넣습니다.</strong>
+          그래서 <strong>영상 아래에 있어야 할 글이 통째로 사라집니다.</strong>
+          "왜 여기부터 아래가 안 보이지?" 하면 닫는 태그를 찾아보세요.
+        </p>
+      </div>
+
+      <!-- [실수 5] figure 를 아무 데나 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 여백을 만들려고 figure 를 씀</span>
+        <div class="doc-code">&lt;figure&gt;&lt;p&gt;그냥 본문입니다&lt;/p&gt;&lt;/figure&gt;</div>
+        <p>
+          <code>figure</code> 를 쓰면 좌우 여백이 생기니까 <strong>여백 만드는 도구</strong>로
+          쓰는 경우가 있습니다. 화면상으로는 원하는 대로 되지만,
+          "이건 본문에서 떼어 낸 자료다" 라는 <strong>거짓말을 문서에 적어 넣는 셈</strong>입니다.
+          여백은 10단원에서 배울 CSS 로 만드세요.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>figure</code> 는 그림과 설명을 <strong>한 짝으로 묶는 상자</strong>입니다.</p>
+      <p>2. <code>figcaption</code> 은 그 설명글이고, <code>figure</code> 안에 <strong>하나만</strong> 넣습니다.</p>
+      <p>3. <code>figcaption</code> 은 <code>figure</code> 안의 <strong>맨 앞이나 맨 뒤</strong>에 놓습니다.</p>
+      <p>4. <code>alt</code> 는 안 보이고 <code>figcaption</code> 은 보입니다.
+      <strong>같은 말을 두 번 쓰지 않습니다.</strong></p>
+      <p>5. 브라우저는 <code>figure</code> 에 좌우 여백을 미리 넣어 둡니다.</p>
+      <p>6. <code>audio</code>, <code>video</code>, <code>iframe</code> 은
+      <strong>빈 태그가 아니라 닫아야 합니다.</strong></p>
+      <p>7. 소리·영상에는 <code>controls</code> 를 붙여야 재생 단추가 보입니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 섹션 1 의 figcaption 을 이렇게 바꿉니다.
+
+                <figcaption id="capOne">2026년 봄에 찍은 사진입니다</figcaption>
+
+            → 그림 아래 글자만 바뀝니다. 그림과 여백은 그대로입니다.
+
+         2) 섹션 2 의 figure 안에서 figcaption 을 맨 위로 올립니다.
+
+                <figure id="figTwo">
+                  <figcaption id="capTwo">왼쪽은 고양이, 오른쪽은 사과입니다</figcaption>
+                  <img id="figCat" src="이미지/고양이.svg" alt="주황색 고양이 얼굴 그림" width="140" />
+                  <img id="figApple" src="이미지/사과.svg" alt="빨간 사과 그림" width="140" />
+                </figure>
+
+            → 설명 글이 두 그림 위로 올라갑니다. 그림 크기와 여백은 그대로입니다.
+
+         3) 섹션 3 의 figure 아래에 이렇게 하나 더 넣습니다.
+
+                <figure>
+                  <img src="이미지/로고.svg" alt="파란 바탕에 HTML 이라고 적힌 로고" width="80" />
+                  <figcaption>우리 웹사이트 로고입니다</figcaption>
+                </figure>
+
+            → 별 그림 아래에 작은 파란 로고와 그 설명이 한 짝 더 생깁니다.
+              두 덩어리 모두 왼쪽에서 40 픽셀씩 들어가 있습니다.
+
+         4) 이렇게 적으면 됩니다.
+
+                <video src="소개.mp4" controls width="600"></video>
+
+            → 같은 폴더에 있으므로 폴더 이름 없이 파일 이름만 적었습니다.
+              controls 가 있어야 재생 단추가 보이고, video 는 닫아야 합니다.
+
+         5) 섹션 5 의 검은 코드 상자 아래에 이렇게 넣습니다.
+
+                <iframe src="개념01_링크_a태그.html" width="600" height="240"></iframe>
+
+            → 회색 테두리를 두른 네모 상자가 생기고, 그 안에 개념01 파일의 맨 위쪽
+              (제목 "개념 01 — 링크와 a 태그" 와 노란 안내 상자) 이 들어가 보입니다.
+              상자 안을 따로 스크롤할 수 있습니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #figOne | display | block
+      #figOne | margin-left | 40px
+      #figImgOne | ~width | 320
+      #figImgOne | ~height | 180
+      #capOne | display | block
+      #capOne | text | 우리 동네 뒷산입니다
+      #figCat | ~width | 140
+      #figApple | ~width | 140
+      #capTwo | text | 왼쪽은 고양이, 오른쪽은 사과입니다
+      #figStar | ~width | 80
+      #capThree | color | rgb(34, 34, 34)
+      .doc-code | white-space | pre
+    -->
+  </body>
+</html>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 손으로 그린 SVG 그림입니다. 도형만 들어 있습니다. 인터넷이 없어도 보입니다. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 160 160">
+  <rect x="0" y="0" width="160" height="160" fill="#dbe7fb" />
+  <circle cx="80" cy="130" r="46" fill="#4a6fa5" />
+  <circle cx="80" cy="68" r="28" fill="#f6cda6" />
+  <ellipse cx="80" cy="52" rx="28" ry="15" fill="#5a4632" />
+  <circle cx="70" cy="70" r="3.2" fill="#3a3a3a" />
+  <circle cx="90" cy="70" r="3.2" fill="#3a3a3a" />
+  <path d="M72 82 Q80 88 88 82" stroke="#cf8f6d" stroke-width="2.5"
+        fill="none" stroke-linecap="round" />
+</svg>

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>10단원 개념01 - 모든 것은 상자다</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ── 섹션 1: 상자를 눈으로 보려고 배경색을 깝니다 ── */
+      .tint-blue {
+        background-color: #dbe7fb;
+      }
+      /* 화면: 이 클래스가 붙은 요소가 연한 파란색 바탕이 됩니다 */
+      .tint-pink {
+        background-color: #fbe0e0;
+      }
+      .tint-yellow {
+        background-color: #ffe9a8;
+      }
+
+      /* ── 섹션 3: 네 겹을 눈으로 보기 ── */
+      .layer-stage {
+        background-color: #efe6ff;
+        border: 2px dashed #9b7fd4;
+      }
+      /* 화면: 연보라 바탕에 보라 점선 테두리인 바깥 상자입니다 */
+      .layer-box {
+        margin: 20px;
+        border: 6px solid #6b3fc0;
+        padding: 24px;
+        background-color: #ffffff;
+      }
+      /* 화면: 바깥 상자 안에 흰 상자가 놓이고,
+               둘 사이에 연보라 띠(margin) 가 20px 씩 보입니다 */
+
+      /* ── 섹션 4: 배경색이 칠해지는 범위 ── */
+      .bg-stage {
+        background-color: #ffe9a8;
+        border: 2px dashed #d9a13a;
+      }
+      .bg-box {
+        margin: 24px;
+        border: 10px dashed #2d6cdf;
+        padding: 20px;
+        background-color: #cfe3ff;
+      }
+      /* 화면: 파란 점선 테두리의 '틈' 사이로 연파랑 배경이 비쳐 보입니다.
+               반대로 상자 바깥 24px 은 노란색(바깥 상자 색) 그대로입니다 */
+
+      /* ── 섹션 5: 개발자도구로 조사할 상자 ── */
+      .inspect-box {
+        margin: 16px;
+        border: 4px solid #27853f;
+        padding: 12px;
+        background-color: #eaf7ee;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         10단원 · 개념 01 — 모든 것은 상자다
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         09단원까지는 '글자'를 꾸몄습니다. 색, 크기, 굵기, 줄 간격 같은 것들입니다.
+         이제부터는 '자리'를 다룹니다. 무엇이 어디에 놓이고, 얼마나 넓고,
+         옆것과 얼마나 떨어져 있는지를 정하는 일입니다.
+
+         그 일을 하려면 먼저 하나를 받아들여야 합니다.
+
+             웹페이지에 있는 모든 요소는 사각형 상자입니다.
+
+         제목도 상자, 문단도 상자, 그림도 상자, 버튼도 상자입니다.
+         동그란 프로필 사진도 사실은 네모난 상자를 둥글게 깎은 것입니다.
+         상자가 눈에 안 보이는 이유는 단지 배경색도 테두리도 없기 때문입니다.
+
+         그리고 그 상자는 한 겹이 아니라 네 겹입니다.
+
+             콘텐츠  →  padding  →  border  →  margin
+             (내용)     (안쪽 여백)  (테두리)   (바깥 여백)
+
+         이 네 겹을 통틀어 박스 모델(box model) 이라고 부릅니다.
+         CSS 로 화면을 배치한다는 것은 결국 이 네 겹의 두께를 정하는 일입니다.
+
+         이 파일에서는 상자를 '보이게' 만드는 것까지만 합니다.
+         네 겹을 각각 어떻게 조절하는지는 개념02 부터 하나씩 배웁니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 01 — 모든 것은 상자다</h1>
+    <p class="doc-sub">10단원 · 박스 모델</p>
+
+    <p class="doc-guide">
+      이 파일은 <strong>보이지 않는 상자를 눈에 보이게 만드는 것</strong> 하나만 다룹니다.
+      배경색을 깔아서 상자의 경계를 드러내고, 그 상자가 네 겹으로 되어 있다는 것을 확인합니다.
+      마지막 섹션에서 <strong>F12 개발자도구</strong> 로 상자를 직접 재는 법을 익힙니다.
+      이 단원은 개발자도구 없이는 배우기 어렵습니다. 섹션 5 를 꼭 따라 해 보세요.
+    </p>
+
+    <!-- ══════════ 섹션 1: 눈에 안 보여도 전부 상자다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 눈에 안 보여도 전부 상자입니다</h2>
+      <p class="doc-desc">
+        <strong>배경색을 깔면</strong> 그 요소가 차지한 자리가 그대로 드러납니다.
+        상자를 보는 가장 쉬운 방법입니다.
+      </p>
+
+      <!--
+        아래 상자 안에 이렇게 썼습니다.
+
+            <p class="tint-blue">저는 p 요소입니다. ...</p>
+            <p class="tint-pink">저도 p 요소입니다.</p>
+
+        그리고 CSS 에 이렇게 적어 두었습니다(파일 위쪽 style 안에 있습니다).
+
+            .tint-blue { background-color: #dbe7fb; }
+            .tint-pink { background-color: #fbe0e0; }
+
+        결과를 보면 색칠된 부분이 글자 길이와 상관없이 '한 줄 전체'입니다.
+        글자가 짧아도 오른쪽 끝까지 색이 칠해집니다.
+
+        p 나 div 같은 태그는 한 줄을 통째로 차지하기 때문입니다.
+        (02단원 개념04 에서 본 '블록' 이야기입니다. 왜 그런지는 11단원에서 배웁니다.
+         지금은 "p, div 같은 태그는 한 줄을 통째로 차지한다" 만 기억하세요)
+
+        반대로 span 은 글자를 감싼 만큼만 차지합니다.
+        세 번째 줄에서 "이 부분" 네 글자에만 노란색이 칠해진 것을 보세요.
+        span 도 상자입니다. 다만 한 줄을 다 먹지 않는 상자입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p id="boxP1" class="tint-blue">저는 p 요소입니다. 한 줄을 통째로 차지합니다.</p>
+        <p id="boxP2" class="tint-pink">짧습니다.</p>
+        <p id="boxP3" class="tint-blue">
+          이 줄에서 <span id="boxSpan" class="tint-yellow">이 부분</span> 만 노랗습니다.
+        </p>
+        <!-- 화면: 파란 줄, 분홍 줄, 파란 줄이 차례로 보입니다.
+                  분홍 줄은 글자가 짧은데도 오른쪽 끝까지 분홍색입니다.
+                  세 번째 줄에서는 "이 부분" 글자 자리에만 노란색이 칠해집니다 -->
+      </div>
+
+      <p class="doc-note">
+        여기서 <strong>배경색은 진짜 색을 칠하려고 쓴 것이 아닙니다.</strong>
+        상자의 경계를 눈으로 확인하려고 잠깐 깔아 둔 것입니다.
+        배치가 뜻대로 안 될 때 <code>background-color</code> 를 임시로 깔아 보는 것은
+        실무에서도 쓰는 방법입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 상자 안의 <code>&lt;p id="boxP2" class="tint-pink"&gt;</code> 에서
+        <code>class="tint-pink"</code> 를 지우고 새로고침(F5) 해 보세요.
+        상자가 사라지는 것이 아니라 <strong>색만 사라진다</strong>는 것을 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 상자는 네 겹이다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 상자는 네 겹입니다</h2>
+      <p class="doc-desc">
+        안쪽부터 <strong>콘텐츠 → padding → border → margin</strong> 순서입니다.
+        이 순서는 이 단원 내내 쓰입니다.
+      </p>
+
+      <!--
+        상자를 옆에서 잘라 보면 이렇게 생겼습니다.
+
+          ┌───────────────────────────────────────────────────┐
+          │  margin  (바깥 여백 · 항상 투명)                  │
+          │    ┌───────────────────────────────────────┐      │
+          │    │  border  (테두리 · 선이 그려집니다)   │      │
+          │    │    ┌───────────────────────────┐      │      │
+          │    │    │  padding  (안쪽 여백)     │      │      │
+          │    │    │    ┌───────────────┐      │      │      │
+          │    │    │    │   콘텐츠      │      │      │      │
+          │    │    │    │   (글자·그림) │      │      │      │
+          │    │    │    └───────────────┘      │      │      │
+          │    │    └───────────────────────────┘      │      │
+          │    └───────────────────────────────────────┘      │
+          └───────────────────────────────────────────────────┘
+
+        네 겹의 뜻을 한 줄씩 정리합니다. 용어는 지금 확실히 익혀 두세요.
+
+            콘텐츠 영역  글자나 그림이 실제로 그려지는 자리입니다.
+                         width, height 로 크기를 정합니다 (개념05).
+
+            padding      콘텐츠와 테두리 사이의 빈 자리입니다 (개념02).
+                         상자 '안쪽' 여백이라서 배경색이 여기까지 칠해집니다.
+
+            border       상자의 테두리 선입니다 (개념03).
+                         두께가 있으므로 상자 크기에 포함됩니다.
+
+            margin       테두리 바깥, 옆 상자와의 거리입니다 (개념04).
+                         항상 투명합니다. 배경색을 줘도 여기는 안 칠해집니다.
+
+        비유하자면 액자에 넣은 사진입니다.
+
+            사진      = 콘텐츠
+            여백지    = padding   (사진과 액자 사이의 흰 종이)
+            액자틀    = border
+            벽과의 거리 = margin   (옆 액자와 얼마나 떨어뜨려 걸 것인가)
+
+        비유는 비유일 뿐이니, 다음 섹션에서 진짜로 눈으로 확인합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">네 겹의 이름과 순서</p>
+        <table id="layerTable">
+          <thead>
+            <tr>
+              <th>순서</th>
+              <th>이름</th>
+              <th>무엇인가</th>
+              <th>배우는 곳</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1 (가장 안)</td>
+              <td>콘텐츠</td>
+              <td>글자와 그림이 그려지는 자리</td>
+              <td>개념05</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>padding</td>
+              <td>콘텐츠와 테두리 사이 안쪽 여백</td>
+              <td>개념02</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>border</td>
+              <td>상자의 테두리 선</td>
+              <td>개념03</td>
+            </tr>
+            <tr>
+              <td>4 (가장 밖)</td>
+              <td>margin</td>
+              <td>옆 상자와 떨어지는 바깥 여백</td>
+              <td>개념04</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- 화면: 네 줄짜리 표가 보입니다. 테두리는 없고 칸만 나뉘어 있습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 지금 보고 있는 브라우저 화면에서
+        <strong>노란 안내 상자</strong>(맨 위 "이 파일은 ..." 부분)를 손가락으로 짚고,
+        그 상자의 네 겹이 각각 어디쯤인지 말로 설명해 보세요. 코드는 고치지 않습니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 네 겹을 눈으로 보기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 네 겹을 눈으로 보기</h2>
+      <p class="doc-desc">
+        바깥 상자에 색을 깔면, 안쪽 상자의 <strong>margin 자리에 바깥 색이 비쳐</strong> 보입니다.
+      </p>
+
+      <!--
+        아래 상자에는 이렇게 썼습니다.
+
+            <div class="layer-stage">
+              <div class="layer-box">콘텐츠 영역입니다</div>
+            </div>
+
+        CSS 는 이렇습니다.
+
+            .layer-stage {
+              background-color: #efe6ff;      연보라
+              border: 2px dashed #9b7fd4;
+            }
+            .layer-box {
+              margin: 20px;                   바깥 여백
+              border: 6px solid #6b3fc0;      테두리
+              padding: 24px;                  안쪽 여백
+              background-color: #ffffff;      흰색
+            }
+
+        이제 색으로 네 겹을 구분할 수 있습니다.
+
+            연보라 띠 20px  → margin   (안쪽 상자의 배경이 아니라 바깥 상자의 배경입니다)
+            진보라 선 6px   → border
+            흰색 24px       → padding  (흰색인 이유는 안쪽 상자의 배경색이 흰색이라서입니다)
+            글자 자리       → 콘텐츠
+
+        여기서 중요한 사실이 하나 나옵니다.
+        margin 자리에는 연보라가 보입니다. 그런데 layer-box 의 배경색은 흰색입니다.
+        즉 margin 에는 자기 배경색이 칠해지지 않습니다.
+        margin 은 언제나 투명하고, 뒤에 있는 것이 그대로 비칩니다.
+        이 이야기는 다음 섹션에서 한 번 더 확인합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <div id="layerStage" class="layer-stage">
+          <div id="layerBox" class="layer-box">콘텐츠 영역입니다</div>
+        </div>
+        <!-- 화면: 연보라 점선 상자 안에, 진한 보라 테두리를 두른 흰 상자가 들어 있습니다.
+                  두 상자 사이에 연보라 띠가 사방으로 20px 씩 둘러져 있고,
+                  흰 상자 안에서는 글자가 테두리에서 24px 씩 떨어져 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        바깥 상자(<code>layer-stage</code>)의 가로 길이는 824px,
+        안쪽 상자(<code>layer-box</code>)의 가로 길이는 780px 입니다.
+        차이인 44px 은 왼쪽 margin 20px + 오른쪽 margin 20px + 바깥 상자 테두리 2px + 2px 입니다.
+        숫자를 손으로 세어 볼 필요는 없습니다. 섹션 5 에서 개발자도구로 읽는 법을 배웁니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 파일 위쪽 <code>&lt;style&gt;</code> 에서
+        <code>.layer-box</code> 의 <code>margin: 20px;</code> 을 <code>margin: 60px;</code> 로
+        바꾸고 새로고침해 보세요. 어떤 색 띠가 두꺼워지는지 확인하고 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 배경색은 어디까지 칠해지나 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 배경색은 어디까지 칠해지나</h2>
+      <p class="doc-desc">
+        배경색은 <strong>콘텐츠 + padding + 테두리 아래</strong>까지 칠해집니다.
+        <strong>margin 에는 칠해지지 않습니다.</strong>
+      </p>
+
+      <!--
+        이것을 확인하려면 테두리를 점선(dashed) 으로 그으면 됩니다.
+        점선은 중간중간 끊겨 있으므로, 그 틈으로 배경이 보이는지 안 보이는지를
+        눈으로 확인할 수 있습니다.
+
+            .bg-box {
+              margin: 24px;
+              border: 10px dashed #2d6cdf;   굵은 파란 점선
+              padding: 20px;
+              background-color: #cfe3ff;     연파랑
+            }
+
+        결과를 보면 파란 점선의 '끊긴 틈'이 노란색이 아니라 연파랑입니다.
+        배경이 테두리 아래까지 깔려 있다는 뜻입니다.
+
+        반대로 상자 바깥 24px(margin) 은 노란색 그대로입니다.
+        연파랑이 거기까지는 안 갔습니다.
+
+        정리하면 배경이 칠해지는 범위는 이렇습니다.
+
+            콘텐츠  칠해짐
+            padding 칠해짐        ← 그래서 padding 을 주면 색칠된 면적이 넓어집니다
+            border  칠해짐(테두리 선 아래에 깔립니다)
+            margin  안 칠해짐     ← 언제나 투명합니다
+
+        "여백을 줬는데 색이 안 칠해졌어요" 라는 질문의 답이 여기에 있습니다.
+        색을 같이 넓히고 싶으면 margin 이 아니라 padding 을 써야 합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <div id="bgStage" class="bg-stage">
+          <div id="bgBox" class="bg-box">배경은 padding 과 테두리 아래까지 칠해집니다</div>
+        </div>
+        <!-- 화면: 노란 상자 안에 연파랑 상자가 들어 있습니다.
+                  굵은 파란 점선의 끊긴 틈으로 연파랑이 비쳐 보입니다.
+                  두 상자 사이 24px 띠는 노란색 그대로입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>.bg-box</code> 의 <code>padding: 20px;</code> 을
+        <code>padding: 0;</code> 으로 바꿔 보세요. 연파랑 면적이 어떻게 줄어드는지 보고
+        되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: F12 개발자도구로 박스 모델 보기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — F12 개발자도구로 박스 모델 보기</h2>
+      <p class="doc-desc">
+        브라우저에는 <strong>상자를 대신 재 주는 자</strong>가 들어 있습니다.
+        이 단원에서는 이것을 쓸 줄 알아야 합니다.
+      </p>
+
+      <!--
+        지금까지는 색을 깔아서 상자를 봤습니다.
+        하지만 실제 작업에서는 색을 깔 수 없는 경우가 훨씬 많습니다.
+        그래서 브라우저가 상자를 직접 그려 주고 숫자로 알려 주는 도구를 씁니다.
+        그것이 개발자도구(DevTools) 입니다.
+
+        아래 순서대로 딱 한 번만 해 보세요. 이 단원의 나머지가 훨씬 쉬워집니다.
+
+          1) 이 파일을 크롬으로 열어 둔 채 F12 를 누릅니다.
+             (F12 가 안 먹으면 Ctrl + Shift + I 를 누르거나,
+              화면에서 오른쪽 클릭 → 메뉴에서 '검사' 를 고릅니다)
+
+          2) 창 오른쪽이나 아래에 새 패널이 열립니다.
+             위쪽 탭 줄에서 Elements 를 고릅니다.
+             왼쪽에는 HTML 코드가, 오른쪽에는 CSS 가 보입니다.
+
+          3) 개발자도구 왼쪽 위의 '화살표가 든 네모' 아이콘을 누릅니다.
+             그 상태로 아래 초록 상자 위에 마우스를 올리면
+             화면에 색색의 테두리가 겹쳐 보입니다. 그대로 클릭합니다.
+
+          4) 오른쪽 패널에서 Styles 탭을 맨 아래까지 스크롤합니다.
+             (또는 Computed 탭을 고르면 맨 위에 있습니다)
+             네모가 네 겹으로 겹쳐진 그림이 나옵니다. 이것이 박스 모델 그림입니다.
+
+          5) 그림은 안에서 밖으로 이렇게 읽습니다.
+
+                 가장 안쪽 칸   콘텐츠   가로 x 세로 가 적혀 있습니다
+                 그 바깥 칸     padding
+                 그 바깥 칸     border
+                 가장 바깥 칸   margin
+
+             칸마다 위·오른쪽·아래·왼쪽 네 개의 숫자가 적혀 있습니다.
+             값이 0 인 자리에는 숫자 대신 짧은 줄표가 보입니다.
+             (칸 색은 크롬 버전에 따라 조금씩 다릅니다. 보통 콘텐츠가 파랑,
+              padding 이 초록, margin 이 주황 계열입니다)
+
+          6) 숫자 위에 마우스를 올리면 화면의 그 부분이 색으로 반짝입니다.
+             숫자를 더블클릭하면 그 자리에서 값을 바꿔 볼 수도 있습니다.
+             여기서 바꾼 값은 새로고침하면 사라집니다. 파일은 안 망가집니다.
+             마음껏 만져 보세요.
+
+        아래 초록 상자를 조사하면 이런 숫자가 나옵니다.
+
+            margin   16
+            border   4
+            padding  12
+            콘텐츠   760 x 27       ← 세로는 글꼴에 따라 조금 다를 수 있습니다
+
+        16 + 4 + 12 + 760 + 12 + 4 + 16 = 824
+        이 824 가 초록 상자가 실제로 차지하는 가로 자리입니다.
+        상자 자체(테두리까지)의 가로 길이는 margin 을 뺀 792 입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">이 상자를 조사해 보세요</p>
+        <div id="inspectMe" class="inspect-box">
+          저를 오른쪽 클릭하고 '검사' 를 눌러 보세요
+        </div>
+        <!-- 화면: 연초록 바탕에 진초록 테두리를 두른 상자가 하나 보입니다.
+                  위아래 좌우로 16px 씩 떨어져 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        개발자도구는 <strong>고장 난 곳을 찾을 때</strong> 씁니다.
+        "여백이 왜 이렇게 넓지?" 싶으면 그 상자를 찍어서 margin 칸을 보면 됩니다.
+        숫자가 눈에 보이면 추측할 일이 없어집니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 위 순서대로 초록 상자를 조사해서 padding 값을 찾아보세요.
+        그다음 그 숫자를 더블클릭해 <code>40</code> 으로 바꿔 보고, 새로고침해서
+        원래대로 돌아오는 것까지 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        CSS 도 HTML 처럼 <strong>틀려도 에러가 나지 않습니다.</strong>
+        브라우저는 못 알아듣는 줄을 조용히 버리고 나머지만 적용합니다.
+      </p>
+
+      <!-- [실수 1] 상자가 없는 줄 알고 헤맴 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 상자가 있다는 것을 잊음</span>
+        <p>
+          "글자만 오른쪽으로 옮기고 싶은데 왜 안 되지?" 하고 한참 헤맵니다.
+          <strong>움직이는 것은 글자가 아니라 상자입니다.</strong>
+          배치가 뜻대로 안 되면 먼저 그 요소에 배경색을 깔아 상자를 눈으로 확인하세요.
+        </p>
+      </div>
+
+      <!-- [실수 2] margin 에 배경색이 칠해질 거라고 생각함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — margin 에도 색이 칠해질 거라고 생각함</span>
+        <div class="doc-code">margin: 20px;   /* 여기는 색이 안 칠해집니다 */</div>
+        <p>
+          색칠된 면적을 넓히려고 <code>margin</code> 을 줬는데 색은 그대로입니다.
+          아무 일도 안 일어난 것처럼 보이지만, 사실 여백은 제대로 들어갔습니다.
+          <strong>margin 은 언제나 투명</strong>하기 때문입니다.
+          색까지 같이 넓히려면 <code>padding</code> 을 쓰세요.
+        </p>
+      </div>
+
+      <!-- [실수 3] 세미콜론 빠뜨림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 세미콜론을 빠뜨림</span>
+        <div class="doc-code">.box {
+  background-color: #dbe7fb
+  padding: 20px;
+}</div>
+        <p>
+          첫 줄 끝에 세미콜론이 없습니다. 브라우저는 두 줄을 한 줄로 붙여 읽고
+          <strong>둘 다 버립니다.</strong> 배경색도 안 나오고 padding 도 안 먹습니다.
+          "한 줄만 틀렸는데 두 줄이 사라진다" 는 것이 이 실수의 무서운 점입니다.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">.box {
+  background-color: #dbe7fb;
+  padding: 20px;
+}</div>
+      </div>
+
+      <!-- [실수 4] 단위 빠뜨림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 단위를 빠뜨림</span>
+        <div class="doc-code">padding: 20;</div>
+        <p>
+          <code>20</code> 은 CSS 가 아는 값이 아닙니다. 이 줄만 버려집니다.
+          <strong>아무 일도 안 일어납니다.</strong> 에러 표시도 없습니다.
+          숫자에는 반드시 <code>px</code> 같은 단위를 붙이세요.
+          단 <code>0</code> 만은 단위 없이 써도 됩니다.
+        </p>
+      </div>
+
+      <!-- [실수 5] 개발자도구에서 고친 것이 저장될 거라고 생각함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 개발자도구에서 고친 것이 저장될 거라고 생각함</span>
+        <p>
+          개발자도구에서 숫자를 바꾸면 화면이 즉시 바뀝니다. 그래서 다 됐다고 생각하고
+          새로고침하면 <strong>원래대로 돌아옵니다.</strong> 개발자도구는 시험해 보는 곳이고,
+          진짜 저장은 VS Code 에서 파일을 고쳐야 합니다.
+          개발자도구에서 값을 찾은 다음, 그 값을 파일에 옮겨 적는 순서로 쓰세요.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. 웹페이지의 <strong>모든 요소는 사각형 상자</strong>입니다. 안 보일 뿐입니다.</p>
+      <p>2. 상자는 안쪽부터 <strong>콘텐츠 → padding → border → margin</strong> 네 겹입니다.</p>
+      <p>3. <code>background-color</code> 를 임시로 깔면 상자의 자리가 눈에 보입니다.</p>
+      <p>4. 배경색은 <strong>padding 과 테두리 아래까지</strong> 칠해지고, margin 은 투명합니다.</p>
+      <p>5. <code>p</code>, <code>div</code> 는 한 줄을 통째로 차지하고 <code>span</code> 은 글자만큼만 차지합니다.</p>
+      <p>6. <strong>F12 → Elements → Styles 맨 아래</strong> 에서 박스 모델 그림을 봅니다.</p>
+      <p>7. 개발자도구에서 바꾼 값은 새로고침하면 사라집니다. 파일은 따로 고쳐야 합니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 이렇게 바꿉니다.
+
+                <p id="boxP2">짧습니다.</p>
+
+            → 분홍색이 사라지고 글자만 남습니다.
+              하지만 그 줄이 차지하는 자리는 그대로 한 줄 전체입니다.
+              색이 없어졌을 뿐 상자는 그대로 있습니다.
+              확인했으면 class="tint-pink" 를 다시 붙여 두세요.
+
+         2) 노란 안내 상자의 네 겹은 이렇습니다.
+
+                콘텐츠   "이 파일은 ..." 글자가 그려진 자리
+                padding  글자와 노란 배경의 끝 사이 빈 자리
+                border   왼쪽의 굵은 노란 세로 선
+                margin   노란 상자와 위쪽 제목·아래쪽 섹션 사이의 흰 공간
+
+            → 왼쪽 노란 세로 선이 border 라는 점이 핵심입니다.
+              네 방향 중 왼쪽에만 테두리를 준 것입니다(개념03 섹션4 에서 배웁니다).
+
+         3) style 안의 .layer-box 를 이렇게 바꿉니다.
+
+                .layer-box {
+                  margin: 60px;
+                  ...
+                }
+
+            → 연보라 띠가 20px 에서 60px 로 두꺼워집니다.
+              흰 상자는 그만큼 작아지고, 안쪽 흰 여백(padding 24px) 은 그대로입니다.
+              연보라가 두꺼워지는 것으로 "margin 자리에는 바깥 상자 색이 보인다" 를
+              한 번 더 확인할 수 있습니다. 확인했으면 20px 로 되돌리세요.
+
+         4) style 안의 .bg-box 를 이렇게 바꿉니다.
+
+                .bg-box {
+                  margin: 24px;
+                  border: 10px dashed #2d6cdf;
+                  padding: 0;
+                  background-color: #cfe3ff;
+                }
+
+            → 글자와 파란 점선 사이의 연파랑 여백 20px 이 사라져서
+              글자가 테두리에 딱 붙습니다. 상자의 세로 길이도 40px 만큼 줄어듭니다.
+              배경이 padding 까지 칠해진다는 것을 반대로 확인한 셈입니다.
+              확인했으면 20px 로 되돌리세요.
+
+         5) 개발자도구 Styles 탭 맨 아래 박스 모델 그림에서
+            padding 칸의 네 숫자가 모두 12 로 적혀 있습니다.
+
+            → 그 12 를 더블클릭해 40 으로 고치면 초록 상자가 즉시 세로로 길어지고
+              글자가 테두리에서 더 멀어집니다.
+              F5 로 새로고침하면 다시 12 로 돌아옵니다.
+              개발자도구는 파일을 고치지 않는다는 것을 확인하는 것이 목적입니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #boxP1 | ~width | 824
+      #boxP1 | background-color | rgb(219, 231, 251)
+      #boxP2 | ~width | 824
+      #boxSpan | background-color | rgb(255, 233, 168)
+      #layerStage | ~width | 824
+      #layerBox | ~width | 780
+      #layerBox | margin-top | 20px
+      #layerBox | border-top-width | 6px
+      #layerBox | padding-top | 24px
+      #bgBox | background-color | rgb(207, 227, 255)
+      #bgBox | border-top-style | dashed
+      #inspectMe | ~width | 792
+      #inspectMe | margin-top | 16px
+      #layerTable | ?visible | yes
+    -->
+  </body>
+</html>

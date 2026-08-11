@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>10단원 개념03 - 스타일과 클래스</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .item {
+        background: #fff;
+        padding: 10px;
+        margin: 6px 0;
+        border: 1px solid #ccc;
+      }
+
+      /* 자바스크립트로 붙였다 뗐다 할 클래스들 */
+      .highlight {
+        background: #fff3a0;
+        font-weight: bold;
+      }
+      .done {
+        color: #999;
+        text-decoration: line-through;
+      }
+      .hidden {
+        display: none;
+      }
+      .danger {
+        color: #c00;
+        border-color: #c00;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 03 — 스타일과 클래스</h1>
+
+    <p class="guide">
+      브라우저로 열고 <strong>F12 → Console</strong> 을 함께 보세요. 아래 상자들의
+      색과 모양이 자바스크립트로 이미 바뀌어 있습니다.
+    
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <p class="item" id="box1">상자 1 — style 로 직접 바꿈</p>
+      <p class="item" id="box2">상자 2 — 클래스를 붙임</p>
+      <p class="item" id="box3">상자 3 — 완료 표시</p>
+      <p class="item" id="box4">상자 4 — 숨겨집니다</p>
+      <p class="item" id="box5">상자 5 — 조건에 따라</p>
+    </div>
+
+    <script>
+      // ============================================================
+      // 10단원 · 개념 03 — 스타일과 클래스
+      // ------------------------------------------------------------
+      // 실행: 이 파일을 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+      //
+      // 화면의 '모양'을 바꾸는 방법은 두 가지입니다.
+      //
+      //     요소.style.속성 = "값"        직접 바꾸기
+      //     요소.classList.add("클래스")   미리 만든 클래스 붙이기  ← 이쪽을 권장
+
+      // ── 섹션 1: style — 직접 바꾸기 ──
+
+      const box1 = document.querySelector("#box1");
+
+      box1.style.color = "white";
+      box1.style.backgroundColor = "#2d6cdf";
+      // 화면: 상자 1 이 파란 배경에 흰 글자가 됩니다
+
+      console.log(box1.style.color);
+      // 콘솔: white
+
+      // CSS 속성 이름이 조금 달라집니다.
+      //     CSS          자바스크립트
+      //     color        color
+      //     background-color  backgroundColor
+      //     font-size    fontSize
+      //     text-align   textAlign
+      //
+      // 규칙: 하이픈(-)을 빼고 뒷 단어의 첫 글자를 대문자로. 카멜 표기법입니다.
+      // 변수 이름 규칙(01단원 개념02)과 같습니다.
+
+      box1.style.fontSize = "20px";
+      box1.style.textAlign = "center";
+      // 화면: 글자가 커지고 가운데로 정렬됩니다
+
+      // 단위를 빠뜨리면 아무 일도 일어나지 않습니다.
+      box1.style.padding = 30;
+      console.log(box1.style.padding);
+      // 콘솔:
+      // 빈 값입니다. 숫자만 주면 무시됩니다.
+
+      box1.style.padding = "30px";
+      console.log(box1.style.padding);
+      // 콘솔: 30px
+      // 반드시 단위를 붙인 '문자열' 로 줘야 합니다.
+
+      // ✏️ 직접 해보기 1 — box1 의 글자색을 "yellow" 로 바꿔 보세요.
+
+      // ── 섹션 2: classList — 클래스 붙이고 떼기 ──
+
+      // style 로 하나하나 바꾸는 것보다, CSS 에 미리 만들어 둔 클래스를
+      // 붙였다 떼는 편이 훨씬 좋습니다.
+      //
+      // 이 파일 위쪽 style 태그에 .highlight .done .hidden .danger 를 미리 만들어 뒀습니다.
+
+      const box2 = document.querySelector("#box2");
+
+      // add — 클래스 붙이기
+      box2.classList.add("highlight");
+      // 화면: 상자 2 가 노란 배경에 굵은 글자가 됩니다
+
+      console.log(box2.className);
+      // 콘솔: item highlight
+      // 원래 있던 item 클래스는 그대로 있고 highlight 가 더해졌습니다.
+
+      // remove — 떼기 (실제 사용 예는 섹션 7 [실수 3] 에 있습니다)
+      const box3 = document.querySelector("#box3");
+      box3.classList.add("done");
+      // 화면: 상자 3 에 취소선이 그어지고 회색이 됩니다
+
+      // contains — 붙어 있는지 확인
+      console.log(box3.classList.contains("done"));
+      // 콘솔: true
+      console.log(box3.classList.contains("highlight"));
+      // 콘솔: false
+
+      // toggle — 있으면 떼고 없으면 붙이기
+      const box4 = document.querySelector("#box4");
+      box4.classList.toggle("hidden");
+      // 화면: 상자 4 가 사라집니다 (display: none)
+
+      console.log(box4.classList.contains("hidden"));
+      // 콘솔: true
+
+      // 한 번 더 부르면 다시 나타납니다. 11단원에서 버튼과 연결해 써 봅니다.
+
+      // ✏️ 직접 해보기 2 — box2 에서 highlight 클래스를 떼어 보세요.
+
+      // ── 섹션 3: 왜 classList 가 더 좋은가 ──
+
+      // [style 로 하면] 바꿀 게 늘어날수록 줄이 늘어납니다
+      //     el.style.color = "#999";
+      //     el.style.textDecoration = "line-through";
+      //     el.style.opacity = "0.6";
+      //
+      // [classList 로 하면] 한 줄입니다
+      //     el.classList.add("done");
+      //
+      // 게다가
+      //   - 모양은 CSS 파일에, 동작은 JS 파일에 — 역할이 나뉩니다
+      //   - 디자인을 바꿀 때 CSS 만 고치면 됩니다
+      //   - 이름(done, danger)이 뜻을 설명해 줍니다
+      //
+      // 규칙: 모양을 바꿀 일이 있으면 먼저 CSS 에 클래스를 만들고,
+      //       자바스크립트는 그 클래스를 붙였다 떼기만 합니다.
+
+      // ✏️ 직접 해보기 3 — 위 [style 로 하면] 세 줄과 같은 일을
+      //                   box1 에 classList 한 줄로 해 보세요. (클래스 이름은 done)
+
+      // ── 섹션 4: 조건에 따라 클래스 정하기 ──
+
+      const box5 = document.querySelector("#box5");
+      const stock = 0;
+
+      if (stock === 0) {
+        box5.classList.add("danger");
+        box5.textContent = "상자 5 — 품절입니다";
+      } else {
+        box5.textContent = `상자 5 — 재고 ${stock}개`;
+      }
+      // 화면: 상자 5 가 빨간 글자·빨간 테두리로 "품절입니다" 라고 바뀝니다
+
+      // toggle 에 두 번째 인자로 true/false 를 주면 조건에 따라 붙이고 뗍니다.
+      const isSoldOut = stock === 0;
+      box5.classList.toggle("highlight", isSoldOut);
+      console.log(box5.classList.contains("highlight"));
+      // 콘솔: true
+      // isSoldOut 이 false 였다면 떼어졌을 겁니다.
+
+      // ✏️ 직접 해보기 4 — 점수가 60 미만이면 danger 클래스를 붙이는 코드를 써 보세요.
+
+      // ── 섹션 5: 여러 요소에 한꺼번에 ──
+
+      const items = document.querySelectorAll(".item");
+      console.log(items.length);
+      // 콘솔: 5
+
+      // forEach 로 하나씩 처리합니다. (개념01 섹션 4)
+      items.forEach((item, index) => {
+        if (index % 2 === 1) {
+          item.style.borderLeftWidth = "6px";
+        }
+      });
+      // 화면: 인덱스가 홀수인 상자, 즉 상자 2와 상자 4의 왼쪽 테두리가 굵어집니다.
+      //       다만 상자 4는 섹션 2에서 hidden 을 붙여 숨겼기 때문에
+      //       눈에는 상자 2만 굵어진 것으로 보입니다.
+
+      // 전부 같은 클래스를 붙이려면
+      // items.forEach((item) => item.classList.add("highlight"));
+
+      // ✏️ 직접 해보기 5 — 바로 위 주석을 참고해 모든 .item 에 highlight 를 붙이고,
+      //                   highlight 가 붙은 요소가 몇 개인지 콘솔에 찍어 보세요.
+
+      // ── 섹션 6: 현재 적용된 스타일 읽기 ──
+
+      // 주의: element.style 은 '자바스크립트로 직접 넣은 것' 만 읽습니다.
+      // box5 에는 위에서 highlight 클래스를 붙였지만 style 로 직접 넣은 적은 없습니다.
+      console.log(box5.style.backgroundColor);
+      // 콘솔:
+      // 빈 값입니다. box5 의 노란 배경은 CSS 클래스에서 온 것이니까요.
+
+      // CSS 에 적힌 것까지 포함해 실제로 적용된 값을 읽으려면 getComputedStyle 을 씁니다.
+      const realStyle = getComputedStyle(box5);
+      console.log(realStyle.backgroundColor);
+      // 콘솔: rgb(255, 243, 160)
+      // #fff3a0 이 rgb 형태로 나옵니다.
+
+      // 반대로 box2 는 섹션 5에서 style 로 직접 테두리 굵기를 넣었기 때문에 값이 있습니다.
+      console.log(box2.style.borderLeftWidth);
+      // 콘솔: 6px
+      // 참고로 style 로 직접 넣은 값은 CSS 클래스보다 우선합니다.
+      // 그래서 같은 속성을 양쪽에서 건드리면 style 쪽이 이깁니다.
+
+      // 읽을 일은 드뭅니다. "왜 style 로 읽으면 비어 있지?" 할 때만 기억하세요.
+
+      // ✏️ 직접 해보기 6 — box1 과 box2 의 style.backgroundColor 를 각각 찍어 보세요.
+      //                   한쪽만 값이 나옵니다. 왜 그런지 말로 설명해 보세요.
+
+      // ── 섹션 7: 자주 하는 실수 ──
+
+      // ★ 아래에서 SyntaxError 라고 적힌 것은 눈으로만 보세요. 주석을 풀지 마세요.
+      //   다른 에러(ReferenceError, TypeError)는 주석을 풀어도
+      //   그 줄에서만 나고 그 앞의 출력은 그대로 다 나옵니다.
+      //   그런데 SyntaxError 는 다릅니다. 자바스크립트가 파일을 아예 못 읽어서
+      //   출력이 한 줄도 안 나옵니다. 여러분이 망가뜨린 것이 아닙니다.
+      //   실수로 풀었다면 다시 // 를 붙이면 그대로 돌아옵니다.
+
+      // [실수 1] CSS 이름을 그대로 씀
+      // box1.style.background-color = "red";
+      // 실수: SyntaxError. 하이픈은 빼기 기호로 해석됩니다. backgroundColor 입니다.
+
+      // [실수 2] 단위를 빠뜨림 (섹션 1에서 봤습니다)
+
+      // [실수 3] classList.add 에 점을 붙임
+      box3.classList.add(".highlight");
+      console.log(box3.className);
+      // 콘솔: item done .highlight
+      // 실수: 클래스 이름만 씁니다. 점은 CSS 선택자에서만 붙입니다.
+      //       에러가 안 나고 이상한 이름의 클래스가 붙습니다.
+      box3.classList.remove(".highlight");
+
+      // [실수 4] className 에 = 로 덮어쓰기
+      // box3.className = "done";
+      // 실수: 원래 있던 item 클래스까지 날아갑니다.
+      //       더할 때는 classList.add 를 쓰세요.
+
+      // [실수 5] 여러 개를 고르고 하나처럼 다루기
+      // document.querySelectorAll(".item").classList.add("x");
+      // 실수: TypeError. NodeList 에는 classList 가 없습니다. forEach 로 도세요.
+
+      // ── 정리 ──
+
+      // 1. 요소.style.속성 = "값"  — CSS 이름을 카멜 표기법으로. 단위 필수.
+      // 2. classList.add / remove / toggle / contains
+      // 3. 모양은 CSS 클래스로 만들고 JS 는 붙였다 떼기만 하는 게 좋다.
+      // 4. toggle(클래스, 조건) 으로 조건에 따라 붙이고 뗄 수 있다.
+      // 5. element.style 은 JS 로 넣은 것만 읽는다. CSS 값은 getComputedStyle.
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) box1.style.color = "yellow";
+      //
+      // 2) box2.classList.remove("highlight");
+      //
+      // 3) box1.classList.add("done");
+      //    console.log(box1.className);
+      //    // 콘솔: item done
+      //    → 세 줄이 한 줄이 됩니다. 회색과 취소선은 CSS 의 .done 이 이미 갖고 있습니다.
+      //      다만 이 파일의 .done 에는 opacity 가 없어서 흐려지지는 않습니다.
+      //      위 [style 로 하면] 세 줄과 똑같이 만들고 싶다면 .done 에
+      //      opacity: 0.6 을 한 줄 더 넣으면 됩니다 — 그게 바로 "모양은 CSS 에서
+      //      고친다" 는 이 섹션의 요지입니다. 자바스크립트는 그대로 둡니다.
+      //
+      // 4) const score = 55;
+      //    const el = document.querySelector("#box5");
+      //    if (score < 60) {
+      //      el.classList.add("danger");
+      //    }
+      //    또는 한 줄로: el.classList.toggle("danger", score < 60);
+      //
+      // 5) items.forEach((item) => item.classList.add("highlight"));
+      //    console.log(document.querySelectorAll(".highlight").length);
+      //    // 콘솔: 5
+      //    → box2 와 box5 에는 이미 highlight 가 붙어 있었지만 중복으로 붙지 않습니다.
+      //      classList.add 는 없을 때만 붙입니다.
+      //
+      // 6) console.log(box1.style.backgroundColor);
+      //    // 콘솔: rgb(45, 108, 223)
+      //    console.log(box2.style.backgroundColor);
+      //    // 콘솔:
+      //    → box1 은 섹션 1에서 자바스크립트로 직접 넣었으니 값이 있습니다.
+      //      box2 의 노란 배경은 CSS 클래스에서 온 것이라 element.style 로는 안 보입니다.
+      //      넣을 때 쓴 #2d6cdf 가 rgb 형태로 바뀌어 나오는 것도 함께 확인하세요.
+    </script>
+  </body>
+</html>

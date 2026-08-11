@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>12단원 개념03 - 주축 정렬</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ── 개념02 와 같은 '무대'. 안쪽 폭이 정확히 600px 입니다 ── */
+      .stage {
+        width: 600px;
+        padding: 10px;
+        background: #eef2f7;
+        display: flex;
+      }
+      /* 화면: 옅은 파란 칸이 생기고 그 안의 상자들이 가로로 나란히 놓입니다 */
+
+      .tile {
+        background: #2d6cdf;
+        color: #fff;
+        padding: 10px 0;
+        width: 100px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+      /* 화면: 폭 100px 짜리 진한 파란 상자가 됩니다 */
+
+      .stage-label {
+        font-size: 13px;
+        color: #555;
+        margin: 14px 0 4px;
+      }
+      /* 화면: 각 무대 위에 작은 회색 글씨로 어떤 값인지 적힙니다 */
+
+      /* ── 섹션 2 : 여섯 가지 값 ── */
+      .jc-start {
+        justify-content: flex-start;
+      }
+      /* 화면: 상자 셋이 왼쪽에 붙고 오른쪽에 300px 이 남습니다 */
+      .jc-center {
+        justify-content: center;
+      }
+      /* 화면: 상자 셋이 가운데로 모이고 좌우에 150px 씩 남습니다 */
+      .jc-end {
+        justify-content: flex-end;
+      }
+      /* 화면: 상자 셋이 오른쪽에 붙고 왼쪽에 300px 이 남습니다 */
+      .jc-between {
+        justify-content: space-between;
+      }
+      /* 화면: 양 끝에 딱 붙고 상자 사이만 150px 씩 벌어집니다 */
+      .jc-around {
+        justify-content: space-around;
+      }
+      /* 화면: 가장자리 50px, 상자 사이 100px 로 벌어집니다 */
+      .jc-evenly {
+        justify-content: space-evenly;
+      }
+      /* 화면: 가장자리와 상자 사이가 모두 75px 로 똑같이 벌어집니다 */
+
+      /* ── 섹션 4 : gap ── */
+      .gap-stage {
+        gap: 30px;
+      }
+      /* 화면: 상자 사이가 30px 씩 벌어지고 전체가 왼쪽에 붙어 있습니다 */
+
+      .gap-between-stage {
+        gap: 30px;
+        justify-content: space-between;
+      }
+      /* 화면: 양 끝에 붙고 사이가 150px 로 벌어집니다. gap 30 은 최소 간격 역할만 합니다 */
+
+      .gap-many-stage {
+        gap: 20px;
+        flex-wrap: wrap;
+      }
+      /* 화면: 한 줄에 네 개가 들어가고 줄과 줄 사이도 20px 벌어집니다 */
+      .gap-many-stage .tile {
+        width: 135px;
+      }
+
+      /* ── 섹션 5 : gap 과 margin 비교 ── */
+      .margin-stage {
+        justify-content: center;
+      }
+      /* 화면: 상자 뭉치가 가운데보다 15px 왼쪽으로 치우칩니다 */
+      .margin-stage .tile {
+        margin-right: 30px;
+      }
+
+      .margin-fix-stage {
+        justify-content: center;
+      }
+      /* 화면: 세 번째 상자의 오른쪽 여백만 지워서 겨우 가운데가 맞습니다 */
+      .margin-fix-stage .tile {
+        margin-right: 30px;
+      }
+      .margin-fix-stage .tile:nth-child(3) {
+        margin-right: 0;
+      }
+
+      .gap-center-stage {
+        gap: 30px;
+        justify-content: center;
+      }
+      /* 화면: 손댈 것 없이 정확히 가운데에 옵니다 */
+
+      /* ── 섹션 6 : 자주 하는 실수 ── */
+      .jc-item-stage {
+        background: #f7eeee;
+      }
+      /* 화면: 아이템에 justify-content 를 써도 상자는 왼쪽에 그대로 있습니다 */
+      .jc-item-stage .tile {
+        background: #b9432f;
+        justify-content: center;
+      }
+
+      .jc-text-stage {
+        background: #f7eeee;
+        justify-content: center;
+      }
+      /* 화면: 상자는 가운데로 모이지만 상자 안 글자는 왼쪽에 붙어 있습니다 */
+      .jc-text-stage .tile {
+        background: #b9432f;
+        width: 200px;
+        text-align: left;
+        padding: 10px 8px;
+      }
+
+      .jc-typo-stage {
+        background: #f7eeee;
+        justify-content: right-end;
+      }
+      /* 화면: 그런 값이 없어서 통째로 무시되고 상자가 왼쪽에 붙습니다 */
+      .jc-typo-stage .tile {
+        background: #b9432f;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ════════════════════════════════════════════════════════════
+         12단원 · 개념 03 — 주축 정렬
+         ────────────────────────────────────────────────────────────
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ════════════════════════════════════════════════════════════
+
+         개념02 에서 아이템이 줄 서는 방향을 정했습니다.
+         그런데 줄을 세우고 나면 거의 항상 공간이 남습니다.
+
+             무대 안쪽 폭 600px, 상자 100px 짜리 세 개 → 300px 이 남습니다
+
+         이 남는 300px 을 어디에 둘 것인가를 정하는 속성이 justify-content 입니다.
+         왼쪽에 몰아 둘 수도, 오른쪽에 둘 수도, 상자 사이에 나눠 끼울 수도 있습니다.
+
+         이름이 어렵게 느껴지지만 뜻은 단순합니다.
+
+             justify   줄을 맞춘다
+             content   내용물(아이템들)을
+
+         한 가지만 기억하세요.
+
+             justify-content 는 언제나 '주축' 을 다룹니다.
+
+         지금은 기본값이 row 라서 주축이 가로입니다. 그래서 좌우로 움직입니다.
+         개념02 에서 본 것처럼 flex-direction 을 column 으로 바꾸면
+         같은 속성이 위아래를 움직입니다. 속성이 바뀐 것이 아니라 축이 돌아간 것입니다.
+
+         이 파일 뒤쪽에서는 gap 도 배웁니다.
+         상자 사이만 딱 띄우고 싶을 때 쓰는, 요즘 방식의 간단한 속성입니다.
+    ════════════════════════════════════════════════════════════ -->
+
+    <h1 class="doc-head">개념 03 — 주축 정렬 (justify-content 와 gap)</h1>
+    <p class="doc-sub">12단원 · Flexbox</p>
+
+    <p class="doc-guide">
+      이 파일의 무대(옅은 파란 칸)는 모두 <strong>안쪽 폭 600px</strong>,
+      상자는 모두 <strong>폭 100px</strong> 입니다. 그래서 남는 공간은 항상 300px 입니다.
+      이 300px 이 어디로 가는지만 보면 여섯 가지 값이 한눈에 구분됩니다.
+    </p>
+
+    <p class="doc-note">
+      이 파일에 나오는 <strong>"왼쪽 좌표"</strong> 는 브라우저 창을 1280px 로 놓고 잰 값입니다.
+      본문이 가운데 정렬이라 <strong>창 폭이 다르면 숫자가 통째로 좌우로 밀립니다.</strong>
+      숫자 자체를 외우지 말고, 상자들 사이의 <strong>차이</strong>(간격·나뉜 몫)를 보세요.
+      그 차이는 창 폭과 상관없이 늘 같습니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: 남는 공간이라는 개념 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — justify-content 는 '남는 공간'을 배분합니다</h2>
+      <p class="doc-desc">
+        정렬을 "상자를 옮기는 일"로 생각하면 값 여섯 개가 잘 외워지지 않습니다.
+        <strong>남는 공간을 어디에 끼우는가</strong>로 생각하면 전부 한 줄로 설명됩니다.
+      </p>
+
+      <!--
+        무대와 상자의 관계를 그림으로 보면 이렇습니다.
+
+            무대 안쪽 폭 600
+            ┌──────────────────────────────────────────────────┐
+            │ ┌────┐┌────┐┌────┐                               │
+            │ │ 1  ││ 2  ││ 3  │        남는 공간 300           │
+            │ └────┘└────┘└────┘                               │
+            └──────────────────────────────────────────────────┘
+              └─ 아이템이 쓴 공간 300 ─┘
+
+        기본값은 flex-start 입니다. 남는 공간을 전부 오른쪽 끝에 몰아 두는 값입니다.
+        그래서 상자가 왼쪽에 붙어 보입니다.
+
+        재어 보면 상자의 왼쪽 좌표는 238, 338, 438 입니다.
+        238 은 무대 안쪽이 시작되는 자리이고, 이후 100px 씩 더해집니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">아무것도 안 쓴 상태 (기본값 flex-start)</p>
+        <div class="stage" id="baseStage">
+          <div class="tile" id="baseTile1">1</div>
+          <div class="tile" id="baseTile2">2</div>
+          <div class="tile" id="baseTile3">3</div>
+        </div>
+        <!-- 화면: 상자 셋이 왼쪽에 딱 붙고 오른쪽에 300px 이 빈 칸으로 남습니다 -->
+      </div>
+
+      <p class="doc-note">
+        남는 공간이 없으면 <code>justify-content</code> 는 아무 일도 하지 않습니다.
+        상자가 무대를 꽉 채우고 있을 때 값을 바꿔도 화면이 안 변하는 이유가 이것입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — <code>.stage</code> 의 <code>width</code> 를 잠깐
+        <code>300px</code> 으로 바꿔 보세요. 남는 공간이 0 이 되어
+        상자 셋이 무대를 정확히 꽉 채웁니다. 확인했으면 600px 으로 되돌리세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 여섯 가지 값 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 여섯 가지 값을 한 화면에서 비교</h2>
+      <p class="doc-desc">
+        아래 여섯 줄은 <strong>HTML 이 완전히 같고 값 하나만 다릅니다.</strong>
+        위에서 아래로 훑으면서 남는 300px 이 어디로 갔는지 찾아보세요.
+      </p>
+
+      <!--
+        여섯 가지 값을 한 문장씩으로 정리하면 이렇습니다.
+
+            flex-start      남는 공간을 전부 뒤(오른쪽)에      → 상자가 앞에 붙습니다
+            center          남는 공간을 앞뒤로 절반씩          → 상자가 가운데에 옵니다
+            flex-end        남는 공간을 전부 앞(왼쪽)에        → 상자가 뒤에 붙습니다
+            space-between   남는 공간을 상자 '사이'에만 나눔    → 양 끝에 딱 붙습니다
+            space-around    상자마다 좌우로 같은 여백을 줌      → 가장자리가 사이의 절반
+            space-evenly    모든 틈을 똑같이 나눔              → 가장자리도 사이도 같음
+
+        실제 좌표는 이렇습니다. 무대 안쪽은 238 에서 시작해 838 에서 끝납니다.
+
+            flex-start     238 / 338 / 438
+            center         388 / 488 / 588
+            flex-end       538 / 638 / 738
+            space-between  238 / 488 / 738
+            space-around   288 / 488 / 688
+            space-evenly   313 / 488 / 663
+
+        가운데 상자는 네 값에서 모두 488 입니다. 좌우 대칭이니 당연한 결과입니다.
+        차이는 첫 상자와 마지막 상자에서만 납니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">여섯 가지 값 비교 (무대·상자 크기는 전부 같습니다)</p>
+
+        <p class="stage-label">justify-content: flex-start (기본값)</p>
+        <div class="stage jc-start" id="startStage">
+          <div class="tile" id="startTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile">3</div>
+        </div>
+
+        <p class="stage-label">justify-content: center</p>
+        <div class="stage jc-center" id="centerStage">
+          <div class="tile" id="centerTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile">3</div>
+        </div>
+
+        <p class="stage-label">justify-content: flex-end</p>
+        <div class="stage jc-end" id="endStage">
+          <div class="tile" id="endTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile">3</div>
+        </div>
+
+        <p class="stage-label">justify-content: space-between</p>
+        <div class="stage jc-between" id="betweenStage">
+          <div class="tile" id="betweenTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile">3</div>
+        </div>
+
+        <p class="stage-label">justify-content: space-around</p>
+        <div class="stage jc-around" id="aroundStage">
+          <div class="tile" id="aroundTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile">3</div>
+        </div>
+
+        <p class="stage-label">justify-content: space-evenly</p>
+        <div class="stage jc-evenly" id="evenlyStage">
+          <div class="tile" id="evenlyTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile">3</div>
+        </div>
+        <!-- 화면: 여섯 줄의 상자 위치가 모두 다릅니다.
+                  위에서부터 왼쪽 · 가운데 · 오른쪽 · 양끝 · 조금씩 · 고르게 입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>flex-start</code>, <code>flex-end</code> 는 "왼쪽·오른쪽"이 아니라
+        <strong>주축의 시작·끝</strong>이라는 뜻입니다. 그래서
+        <code>flex-direction: row-reverse</code> 이면 <code>flex-start</code> 가 오른쪽이 됩니다.
+        이름에 left, right 가 들어 있지 않은 이유가 이것입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — <code>.jc-end</code> 의 값을
+        <code>justify-content: flex-start</code> 로 바꿔 보세요.
+        세 번째 줄이 첫 번째 줄과 똑같아집니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: space 세 가지를 숫자로 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — between · around · evenly 를 숫자로 구분하기</h2>
+      <p class="doc-desc">
+        눈으로는 셋이 비슷해 보입니다. <strong>가장자리 여백</strong>을 재면 확실히 갈립니다.
+      </p>
+
+      <!--
+        남는 공간은 300px 입니다. 상자가 셋이면 틈은 네 군데입니다.
+
+            [틈1] 상자1 [틈2] 상자2 [틈3] 상자3 [틈4]
+             왼쪽 끝                             오른쪽 끝
+
+        세 값이 이 네 군데를 어떻게 채우는지가 전부입니다.
+
+            space-between   틈1 = 0,   틈2 = 150, 틈3 = 150, 틈4 = 0
+                            → 사이에만 300 을 2 등분
+
+            space-around    틈1 = 50,  틈2 = 100, 틈3 = 100, 틈4 = 50
+                            → 상자마다 좌우 50 씩 배정. 상자 사이에서 50 + 50 이 겹쳐 100
+
+            space-evenly    틈1 = 75,  틈2 = 75,  틈3 = 75,  틈4 = 75
+                            → 네 군데를 그냥 4 등분
+
+        around 의 가장자리가 사이의 절반인 이유는 "상자마다 좌우로" 나눠 주기 때문입니다.
+        가운데 틈에서는 왼쪽 상자의 오른쪽 몫과 오른쪽 상자의 왼쪽 몫이 더해집니다.
+
+        실제로 재어 보면 첫 상자 왼쪽 좌표가 이렇게 나옵니다.
+
+            space-between  238   (238 + 0)
+            space-around   288   (238 + 50)
+            space-evenly   313   (238 + 75)
+
+        "고르게 띄우고 싶다" 면 대개 space-evenly 가 원하던 그림입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">가장자리 여백만 다릅니다 (섹션 2 의 네·다섯·여섯 번째 줄)</p>
+        <p class="stage-label">space-between → 가장자리 0 / 사이 150</p>
+        <div class="stage jc-between" id="cmpBetween">
+          <div class="tile" id="cmpBetweenTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile">3</div>
+        </div>
+        <p class="stage-label">space-around → 가장자리 50 / 사이 100</p>
+        <div class="stage jc-around" id="cmpAround">
+          <div class="tile" id="cmpAroundTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile">3</div>
+        </div>
+        <p class="stage-label">space-evenly → 가장자리 75 / 사이 75</p>
+        <div class="stage jc-evenly" id="cmpEvenly">
+          <div class="tile" id="cmpEvenlyTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile">3</div>
+        </div>
+        <!-- 화면: 아래로 갈수록 첫 상자가 오른쪽으로 조금씩 밀려납니다 (238 → 288 → 313) -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 세 무대에서 상자를 하나씩 지워 두 개만 남겨 보세요.
+        남는 공간이 400px 이 되면서 세 값의 간격이 전부 달라집니다.
+        (between 은 400, around 은 가장자리 100·사이 200, evenly 는 전부 133.3 이 됩니다)
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: gap ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — gap 으로 아이템 사이를 띄웁니다</h2>
+      <p class="doc-desc">
+        <code>justify-content</code> 는 남는 공간을 나눠 주는 속성이라
+        <strong>"정확히 30px 만 띄우기"</strong> 같은 일은 하지 못합니다. 그건 gap 의 일입니다.
+      </p>
+
+      <!--
+            .gap-stage {
+              display: flex;
+              gap: 30px;      ← 아이템 사이를 30px 씩 띄웁니다
+            }
+
+        gap 도 컨테이너에 쓰는 속성입니다.
+        상자 사이에만 들어가고 무대의 가장자리에는 붙지 않는다는 점이 핵심입니다.
+
+            총 폭 = 100 × 3 + 30 × 2 = 360     →  남는 공간 240 은 오른쪽에 그대로
+
+        재어 보면 상자 왼쪽 좌표는 238, 368, 498 입니다. 130px 씩 늘어납니다.
+        (상자 폭 100 + 간격 30)
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">gap: 30px</p>
+        <div class="stage gap-stage" id="gapStage">
+          <div class="tile" id="gapTile1">1</div>
+          <div class="tile" id="gapTile2">2</div>
+          <div class="tile">3</div>
+        </div>
+        <!-- 화면: 상자 사이가 30px 씩 벌어지고 전체는 왼쪽에 붙어 있습니다 -->
+      </div>
+
+      <!--
+        gap 과 justify-content 는 같이 쓸 수 있습니다. 싸우지 않습니다.
+        gap 은 "적어도 이만큼은 띄워라" 이고, justify-content 는 "그러고도 남으면 어떻게 할래" 입니다.
+
+        아래는 gap: 30px 과 space-between 을 같이 쓴 것입니다.
+        남는 공간이 240px 이나 되니 사이가 150px 까지 벌어져서
+        gap 30px 은 결과에 아무 영향을 주지 못했습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">gap: 30px + justify-content: space-between</p>
+        <div class="stage gap-between-stage" id="gapBetweenStage">
+          <div class="tile" id="gapBetweenTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile">3</div>
+        </div>
+        <!-- 화면: 상자가 양 끝에 붙고 사이가 150px 로 벌어집니다 -->
+      </div>
+
+      <!--
+        줄이 여러 개일 때도 gap 하나면 됩니다.
+        가로 간격과 세로 간격에 같이 적용되기 때문입니다.
+
+            .gap-many-stage { gap: 20px; flex-wrap: wrap; }
+            .gap-many-stage .tile { width: 135px; }
+
+            한 줄 = 135 × 4 + 20 × 3 = 600      →  딱 네 개가 들어갑니다
+            다섯 번째부터는 아랫줄로 내려가고, 줄 사이도 20px 벌어집니다
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">gap: 20px + flex-wrap: wrap</p>
+        <div class="stage gap-many-stage" id="gapManyStage">
+          <div class="tile" id="gapManyTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile">3</div>
+          <div class="tile" id="gapManyTile4">4</div>
+          <div class="tile" id="gapManyTile5">5</div>
+          <div class="tile">6</div>
+        </div>
+        <!-- 화면: 윗줄에 네 개, 아랫줄에 두 개가 놓이고 모든 틈이 20px 입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>.gap-stage</code> 의 <code>gap</code> 을
+        <code>60px</code> 으로 바꿔 보세요. 총 폭이 420px 이 되고
+        세 번째 상자의 왼쪽 좌표가 558 로 옮겨 갑니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: gap 이 margin 보다 편한 이유 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 왜 margin 대신 gap 을 쓰나</h2>
+      <p class="doc-desc">
+        gap 이 생기기 전에는 아이템에 <code>margin</code> 을 줘서 간격을 만들었습니다.
+        <strong>지금도 되기는 하는데, 끝에 쓸데없는 여백이 하나 더 붙습니다.</strong>
+      </p>
+
+      <!--
+        아이템마다 margin-right: 30px 을 주면 상자 사이는 30px 로 잘 벌어집니다.
+        그런데 마지막 상자의 오른쪽에도 30px 이 붙습니다. 아무도 원하지 않은 여백입니다.
+
+        평소에는 눈에 안 띄다가, 가운데 정렬을 하는 순간 드러납니다.
+
+            상자가 차지한 폭 = (100 + 30) × 3 = 390
+            무대 안쪽 폭 600 이므로 남는 공간 = 210, 좌우로 105 씩
+
+            첫 상자 왼쪽 = 238 + 105 = 343
+            마지막 상자 오른쪽 = 343 + 390 − 30 = 703
+            눈에 보이는 뭉치의 가운데 = (343 + 703) ÷ 2 = 523
+            무대의 진짜 가운데 = 238 + 300 = 538
+
+        15px 왼쪽으로 치우칩니다. 마지막 여백 30px 의 절반입니다.
+        "가운데 정렬했는데 미묘하게 왼쪽인데?" 하는 문제의 정체가 이것입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">margin-right 로 간격을 만든 경우 (가운데가 안 맞습니다)</p>
+        <div class="stage margin-stage" id="marginStage">
+          <div class="tile" id="marginTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile" id="marginTile3">3</div>
+        </div>
+        <!-- 화면: 상자 뭉치가 무대 가운데보다 15px 왼쪽으로 치우쳐 있습니다 -->
+      </div>
+
+      <!--
+        고치려면 마지막 상자의 오른쪽 여백만 지워야 합니다.
+        08단원에서 배운 :nth-child 를 쓰면 이렇게 됩니다.
+
+            .margin-fix-stage .tile:nth-child(3) { margin-right: 0; }
+
+        이제 가운데가 맞습니다. 그런데 문제가 있습니다.
+        상자를 네 개로 늘리면 nth-child(3) 이 아니라 nth-child(4) 를 지워야 합니다.
+        상자 개수가 바뀔 때마다 CSS 를 따라 고쳐야 하는 것입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">마지막 여백을 따로 지운 경우 (겨우 맞았습니다)</p>
+        <div class="stage margin-fix-stage" id="marginFixStage">
+          <div class="tile" id="marginFixTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile">3</div>
+        </div>
+        <!-- 화면: 상자 뭉치가 무대 가운데에 정확히 옵니다 -->
+      </div>
+
+      <!--
+        gap 은 애초에 "사이"에만 들어가므로 마지막에 여백이 붙지 않습니다.
+        그래서 예외 처리가 필요 없습니다.
+
+            .gap-center-stage { gap: 30px; justify-content: center; }
+
+            상자가 차지한 폭 = 100 × 3 + 30 × 2 = 360
+            남는 공간 240 을 좌우 120 씩 → 첫 상자 왼쪽 = 358
+            뭉치의 가운데 = 358 + 180 = 538 = 무대의 진짜 가운데
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">gap 으로 만든 경우 (예외 처리 없이 맞습니다)</p>
+        <div class="stage gap-center-stage" id="gapCenterStage">
+          <div class="tile" id="gapCenterTile1">1</div>
+          <div class="tile">2</div>
+          <div class="tile">3</div>
+        </div>
+        <!-- 화면: 상자 뭉치가 무대 가운데에 정확히 오고, 상자 사이는 30px 입니다 -->
+      </div>
+
+      <p class="doc-note">
+        정리하면 <strong>간격은 gap, 위치는 justify-content</strong> 입니다.
+        margin 은 "이 상자 하나만 유독 떨어뜨리고 싶다" 처럼 예외를 만들 때만 쓰세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>.margin-fix-stage</code> 안에 상자를 하나 더 넣어
+        네 개로 만들어 보세요. <code>:nth-child(3)</code> 규칙이 엉뚱한 상자를 가리키게 되어
+        가운데가 다시 어긋납니다. gap 쪽 무대는 상자를 늘려도 멀쩡합니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        전부 <strong>에러 없이 조용히 넘어가는</strong> 실수들입니다.
+      </p>
+
+      <!-- [실수 1] 아이템에 justify-content -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 상자 자신에게 justify-content 를 씀</span>
+        <div class="doc-code">.tile { justify-content: center; }   /* 아이템에 썼습니다 */</div>
+        <p>
+          상자는 꼼짝도 하지 않습니다. <code>justify-content</code> 는
+          <strong>컨테이너가 자기 아이템들을 어디에 모을지</strong> 정하는 속성입니다.
+          "가운데로 가고 싶다" 는 상자의 소원은 CSS 에서 표현할 수 없습니다.
+        </p>
+        <div class="stage jc-item-stage" id="jcItemStage">
+          <div class="tile" id="jcItemTile1">1</div>
+          <div class="tile">2</div>
+        </div>
+        <!-- 화면: 빨간 상자 두 개가 왼쪽에 그대로 붙어 있습니다 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">.jc-item-stage { justify-content: center; }  /* 컨테이너에 */</div>
+      </div>
+
+      <!-- [실수 2] 글자 정렬과 헷갈림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 상자 안의 글자까지 가운데로 갈 거라고 생각함</span>
+        <div class="doc-code">.jc-text-stage { justify-content: center; }</div>
+        <p>
+          상자는 가운데로 모이지만 <strong>상자 안 글자는 왼쪽에 그대로</strong> 있습니다.
+          <code>justify-content</code> 가 옮기는 것은 아이템이지 글자가 아닙니다.
+          글자를 가운데로 보내려면 09단원에서 배운
+          <code>text-align: center</code> 를 상자에 써야 합니다.
+        </p>
+        <div class="stage jc-text-stage" id="jcTextStage">
+          <div class="tile" id="jcTextTile1">글자 위치</div>
+          <div class="tile">글자 위치</div>
+        </div>
+        <!-- 화면: 상자 두 개는 가운데로 모였지만 글자는 각 상자의 왼쪽에 붙어 있습니다 -->
+      </div>
+
+      <!-- [실수 3] 값 이름을 지어냄 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 값 이름을 left, right 로 지어냄</span>
+        <div class="doc-code">.jc-typo-stage { justify-content: right-end; }</div>
+        <p>
+          그런 값은 없어서 <strong>그 한 줄이 통째로 버려집니다.</strong>
+          기본값 <code>flex-start</code> 로 남아 상자가 왼쪽에 붙습니다.
+          오른쪽으로 보내는 값의 이름은 <code>flex-end</code> 입니다.
+        </p>
+        <div class="stage jc-typo-stage" id="jcTypoStage">
+          <div class="tile" id="jcTypoTile1">1</div>
+          <div class="tile">2</div>
+        </div>
+        <!-- 화면: 상자 두 개가 오른쪽이 아니라 왼쪽에 붙어 있습니다 -->
+      </div>
+
+      <!-- [실수 4] 남는 공간이 없는데 정렬을 기대 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 남는 공간이 없는데 값만 계속 바꿔 봄</span>
+        <div class="doc-code">/* 아이템이 무대를 꽉 채운 상태에서 값만 바꾸는 경우 */</div>
+        <p>
+          여섯 가지 값을 다 넣어 봐도 화면이 하나도 안 바뀝니다.
+          <strong>나눠 줄 공간이 0 이기 때문</strong>입니다.
+          이럴 때는 정렬 값이 아니라 아이템 폭이나 무대 폭을 봐야 합니다.
+          개념05 에서 배울 <code>flex: 1</code> 이 붙어 있어도 같은 일이 벌어집니다.
+        </p>
+      </div>
+
+      <!-- [실수 5] margin 으로 간격을 만들고 가운데가 안 맞는다고 함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — margin 으로 간격을 만들고 가운데가 안 맞는다고 함</span>
+        <div class="doc-code">.tile { margin-right: 30px; }   /* 마지막 상자에도 붙습니다 */</div>
+        <p>
+          섹션 5 의 첫 무대가 이것입니다. 15px 이 어긋납니다.
+          정렬은 분명히 <code>center</code> 인데 눈으로는 왼쪽으로 치우쳐 보이니
+          <strong>정렬 값을 계속 바꿔 보면서 시간을 씁니다.</strong>
+          범인은 마지막 상자 오른쪽의 30px 입니다. <code>gap</code> 으로 바꾸면 사라집니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>justify-content</code> 는 <strong>주축</strong>에서 남는 공간을 어떻게 쓸지 정합니다.</p>
+      <p>2. 값 여섯 개: <code>flex-start</code> · <code>center</code> · <code>flex-end</code> ·
+        <code>space-between</code> · <code>space-around</code> · <code>space-evenly</code>.</p>
+      <p>3. <code>between</code> 은 가장자리 0, <code>around</code> 는 가장자리가 사이의 절반,
+        <code>evenly</code> 는 전부 같습니다.</p>
+      <p>4. <code>gap</code> 은 아이템 <strong>사이</strong>에만 간격을 넣습니다. 가장자리에는 안 붙습니다.</p>
+      <p>5. <code>gap</code> 은 가로·세로 모두에 적용되고, 마지막 여백 예외 처리가 필요 없습니다.</p>
+      <p>6. 둘 다 <strong>컨테이너에 쓰는 속성</strong>입니다. 아이템에 쓰면 조용히 무시됩니다.</p>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════
+         ✏️ 직접 해보기 정답
+         ════════════════════════════════════════════════════════════
+
+         1) .stage 의 폭을 바꿉니다.
+
+                .stage { width: 300px; padding: 10px; background: #eef2f7; display: flex; }
+
+            → 100 × 3 = 300 이라 남는 공간이 0 이 됩니다.
+              이 파일의 모든 무대가 좁아지고, 여섯 가지 값이 전부 같은 모양이 됩니다.
+              "남는 공간이 없으면 justify-content 는 할 일이 없다" 를 눈으로 보는 문제입니다.
+              확인했으면 width: 600px 으로 되돌리세요.
+
+         2) .jc-end 를 이렇게 고칩니다.
+
+                .jc-end { justify-content: flex-start; }
+
+            → 세 번째 줄의 상자가 오른쪽에서 왼쪽으로 옮겨 가
+              첫 번째 줄과 완전히 같은 모양이 됩니다. 첫 상자 좌표가 538 에서 238 로 바뀝니다.
+
+         3) 세 무대에서 마지막 상자를 지웁니다.
+
+                <div class="stage jc-between">
+                  <div class="tile">1</div>
+                  <div class="tile">2</div>
+                </div>
+
+            → 상자가 쓰는 폭이 200 이 되어 남는 공간이 400 으로 늘어납니다.
+              between 은 사이 하나에 400 을 몰아 주고,
+              around 은 가장자리 100 · 사이 200,
+              evenly 는 틈 세 군데를 133.3 씩 나눕니다.
+              같은 값이라도 아이템 개수가 바뀌면 결과가 달라진다는 점을 확인하세요.
+
+         4) .gap-stage 의 gap 을 바꿉니다.
+
+                .gap-stage { gap: 60px; }
+
+            → 총 폭이 100 × 3 + 60 × 2 = 420 이 됩니다.
+              상자 왼쪽 좌표가 238 / 398 / 558 로 벌어집니다.
+
+         5) .margin-fix-stage 안에 상자를 하나 더 넣습니다.
+
+                <div class="stage margin-fix-stage">
+                  <div class="tile">1</div>
+                  <div class="tile">2</div>
+                  <div class="tile">3</div>
+                  <div class="tile">4</div>
+                </div>
+
+            → :nth-child(3) 은 이제 마지막이 아닌 세 번째 상자를 가리킵니다.
+              세 번째와 네 번째 사이만 붙어 버리고, 마지막 상자 오른쪽에는 여백이 남아
+              가운데가 다시 15px 어긋납니다.
+              같은 일을 gap 쪽 무대에서 해 보면 상자를 몇 개로 늘려도 가운데가 맞습니다.
+    ════════════════════════════════════════════════════════════ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #baseStage | justify-content | normal
+      #baseTile1 | ~x | 238
+      #baseTile2 | ~x | 338
+      #startTile1 | ~x | 238
+      #centerStage | justify-content | center
+      #centerTile1 | ~x | 388
+      #endTile1 | ~x | 538
+      #betweenTile1 | ~x | 238
+      #betweenStage | ~gap-x | 150
+      #aroundTile1 | ~x | 288
+      #aroundStage | ~gap-x | 100
+      #evenlyTile1 | ~x | 313
+      #evenlyStage | ~gap-x | 75
+      #cmpEvenlyTile1 | ~x | 313
+      #gapStage | ~gap-x | 30
+      #gapTile2 | ~x | 368
+      #gapBetweenStage | ~gap-x | 150
+      #gapManyTile5 | ~x | 238
+      #marginTile1 | ~x | 343
+      #marginFixTile1 | ~x | 358
+      #gapCenterTile1 | ~x | 358
+      #jcItemTile1 | ~x | 238
+      #jcTypoTile1 | ~x | 238
+    -->
+  </body>
+</html>

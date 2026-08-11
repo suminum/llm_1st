@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 손으로 그린 SVG 그림입니다. 도형만 들어 있습니다. 인터넷이 없어도 보입니다. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="480" height="300" viewBox="0 0 480 300">
+  <rect x="0" y="0" width="480" height="300" fill="#dfe9fa" />
+  <rect x="46" y="40" width="388" height="220" rx="14" fill="#ffffff"
+        stroke="#b9cbe8" stroke-width="3" />
+  <rect x="46" y="40" width="388" height="38" rx="14" fill="#2d6cdf" />
+  <rect x="46" y="64" width="388" height="14" fill="#2d6cdf" />
+  <circle cx="70" cy="59" r="6" fill="#ffd166" />
+  <circle cx="90" cy="59" r="6" fill="#8ed6a0" />
+  <circle cx="110" cy="59" r="6" fill="#ff9b8a" />
+  <rect x="70" y="98" width="180" height="16" rx="8" fill="#3a4a63" />
+  <rect x="70" y="126" width="240" height="10" rx="5" fill="#c4cede" />
+  <rect x="70" y="146" width="200" height="10" rx="5" fill="#c4cede" />
+  <rect x="70" y="180" width="104" height="56" rx="10" fill="#eaf0fb"
+        stroke="#b9cbe8" stroke-width="2" />
+  <rect x="188" y="180" width="104" height="56" rx="10" fill="#eaf0fb"
+        stroke="#b9cbe8" stroke-width="2" />
+  <rect x="306" y="180" width="104" height="56" rx="10" fill="#eaf0fb"
+        stroke="#b9cbe8" stroke-width="2" />
+  <rect x="336" y="98" width="74" height="46" rx="8" fill="#2d6cdf" />
+  <path d="M356 121 L368 133 L392 109" stroke="#ffffff" stroke-width="6"
+        fill="none" stroke-linecap="round" stroke-linejoin="round" />
+</svg>

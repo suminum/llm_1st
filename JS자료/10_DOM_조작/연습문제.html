@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>10단원 연습문제 - DOM 조작</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo p,
+      .demo li {
+        background: #fff;
+        padding: 6px 10px;
+        margin: 4px 0;
+      }
+      label {
+        display: block;
+        margin: 10px 0 4px;
+        font-weight: bold;
+      }
+      input,
+      select {
+        padding: 6px 8px;
+        font-size: 15px;
+      }
+
+      /* 문제에서 붙였다 뗄 클래스
+         .demo 를 앞에 붙인 이유: 위의 `.demo p` 보다 우선순위가 높아야
+         배경색이 실제로 바뀝니다. (CSS 명시도 — 이 자료의 범위 밖입니다) */
+      .demo .highlight {
+        background: #fff3a0;
+        font-weight: bold;
+      }
+      .demo .done {
+        color: #999;
+        text-decoration: line-through;
+      }
+      .hidden {
+        display: none;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 6px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>10단원 연습문제 — DOM 조작</h1>
+
+    <p class="guide">
+      script 안의 TODO 자리에 코드를 쓰고 저장한 뒤, 브라우저를 <strong>새로고침</strong>
+      하세요. <strong>F12 → Console</strong> 도 함께 보세요.<br />
+      1~12는 기본, 13은 응용, 14는 [도전], 15는 에러 확인입니다.
+    
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h2 id="mainTitle">원래 제목</h2>
+      <p id="target1">문제 2에서 바뀝니다</p>
+      <p id="target2">문제 3에서 태그가 들어갑니다</p>
+      <p class="item">항목 A</p>
+      <p class="item">항목 B</p>
+      <p class="item">항목 C</p>
+      <p id="styleTarget">문제 6에서 색이 바뀝니다</p>
+      <p id="classTarget">문제 7에서 클래스가 붙습니다</p>
+      <p id="toggleTarget">문제 8에서 사라집니다</p>
+      <ul id="fruitList"></ul>
+      <div id="cardArea"></div>
+      <ul id="removeList">
+        <li id="removeMe">문제 11에서 사라집니다</li>
+        <li>남아 있는 항목</li>
+      </ul>
+
+      <label for="nameInput">이름</label>
+      <input type="text" id="nameInput" value="이서연" />
+
+      <label for="priceInput">가격</label>
+      <input type="number" id="priceInput" value="4500" />
+
+      <label for="countInput">개수</label>
+      <input type="number" id="countInput" value="4" />
+
+      <label for="sizeSelect">사이즈</label>
+      <select id="sizeSelect">
+        <option value="S">작은 것</option>
+        <option value="L" selected>큰 것</option>
+      </select>
+
+      <label><input type="checkbox" id="iceCheck" checked /> 얼음 추가</label>
+
+      <p id="result">문제 13의 결과가 여기에 나옵니다</p>
+      <ul id="challengeList"></ul>
+    </div>
+
+    <script>
+      // ============================================================
+      // 10단원 연습문제 — DOM 조작
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+
+      // ───── 문제 1 ───── (개념01 선택)
+      // id 가 mainTitle 인 요소를 골라 콘솔에 찍으세요.
+      //
+      // 기대 결과 (콘솔):
+      // <h2 id="mainTitle">원래 제목</h2>
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 2 ───── (개념02 textContent)
+      // id 가 target1 인 요소의 글자를 "바꿨습니다!" 로 바꾸세요.
+      //
+      // 기대 결과 (화면): 해당 줄이 "바꿨습니다!" 로 보입니다
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 3 ───── (개념02 innerHTML)
+      // id 가 target2 인 요소에 <strong>굵은 글자</strong> 를 넣어
+      // 실제로 굵게 보이도록 하세요.
+
+      // 기대 결과 (화면): 그 줄이 "굵은 글자" 로 굵게 보입니다.
+      //   <strong>굵은 글자</strong> 라는 글자가 그대로 보이면 textContent 를 쓴 것입니다.
+      //
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 4 ───── (개념01 querySelectorAll)
+      // 클래스가 item 인 요소를 모두 골라 items 라는 변수에 담고,
+      // 그 개수를 콘솔에 찍으세요.
+      // (다음 문제에서 이 items 를 그대로 다시 씁니다. 변수에 꼭 담아 두세요)
+      //
+      // 기대 결과 (콘솔): 3
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 5 ───── (개념01 forEach)
+      // 클래스가 item 인 요소들의 글자를 한 줄씩 콘솔에 찍으세요.
+      // 문제 4에서 만든 items 를 그대로 쓰세요.
+      // 같은 이름으로 다시 const 를 선언하면 SyntaxError 가 납니다.
+      //
+      // 기대 결과 (콘솔):
+      // 항목 A
+      // 항목 B
+      // 항목 C
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 6 ───── (개념03 style)
+      // id 가 styleTarget 인 요소의 글자색을 흰색, 배경색을 "#2d6cdf" 로 바꾸세요.
+      // CSS 이름을 그대로 쓰면 안 됩니다.
+
+      // 기대 결과 (화면): 그 줄이 파란 배경(#2d6cdf)에 흰 글자로 바뀝니다.
+      //   아무 변화가 없으면 background-color 처럼 CSS 이름을 그대로 쓴 것입니다.
+      //
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 7 ───── (개념03 classList)
+      // id 가 classTarget 인 요소에 highlight 클래스를 붙이세요.
+      // (CSS 에 이미 만들어져 있습니다)
+
+      // 기대 결과 (화면): 그 줄이 노란 배경 + 굵은 글씨가 됩니다.
+      //
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 8 ───── (개념03 toggle)
+      // id 가 toggleTarget 인 요소에 hidden 클래스를 toggle 로 붙여 숨기세요.
+      // 그다음 hidden 이 붙었는지 콘솔에 찍으세요.
+      //
+      // 기대 결과 (콘솔): true
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 9 ───── (개념04 createElement)
+      // 아래 배열을 이용해 id 가 fruitList 인 ul 안에 li 를 만들어 붙이세요.
+      // 각 항목은 "1. 사과" 처럼 번호가 붙어야 합니다.
+
+      const fruits = ["사과", "바나나", "포도"];
+
+      // 기대 결과 (화면):
+      // 1. 사과
+      // 2. 바나나
+      // 3. 포도
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 10 ───── (개념04 클래스와 함께)
+      // 아래 상품 배열로 id 가 cardArea 인 div 안에 카드를 만들어 붙이세요.
+      // 각 카드는 div 이고 card 클래스를 가져야 하며,
+      // 내용은 "아메리카노 4000원" 형태입니다.
+
+      const products = [
+        { name: "아메리카노", price: 4000 },
+        { name: "케이크", price: 6000 },
+      ];
+
+      // 기대 결과 (화면): 테두리가 있는 카드 두 개
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 11 ───── (개념04 remove)
+      // id 가 removeMe 인 요소를 화면에서 지우세요.
+
+      // 기대 결과 (화면): "문제 11에서 사라집니다" 줄이 없어지고
+      //   "남아 있는 항목" 하나만 남습니다.
+      //
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 12 ───── (개념05 value)
+      // id 가 nameInput 인 입력칸의 값을 콘솔에 찍으세요.
+      //
+      // 기대 결과 (콘솔): 이서연
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 13 ───── [응용]
+      // 이름칸·가격칸·개수칸·사이즈선택·얼음체크 다섯 곳의 값을 모두 읽어
+      // 총액을 구하고, id 가 result 인 요소에 아래 형태로 넣으세요.
+      //   - 가격 × 개수 = 총액
+      //   - 입력칸의 값은 문자열이라는 점에 주의하세요
+      //   - 체크박스는 .value 가 아니라 .checked 입니다
+      //   - 이름칸은 문제 12에서 이미 골라 뒀다면 그 변수를 다시 써도 됩니다
+      //
+      // 힌트: 쓸 id 는 이것들입니다 (이 파일 위쪽 body 에 있습니다).
+      //       nameInput / priceInput / countInput / sizeSelect / iceCheck / result
+      //       값은 .value 로 읽고, 체크박스만 .checked 입니다.
+      //       Number 로 바꾸지 않으면 4500 × 4 가 아니라 글자가 이어 붙습니다.
+      //
+      // 기대 결과 (화면): 이서연님 / L 사이즈 / 18000원 / 얼음 추가
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 14 ───── [도전]
+      // 아래 배열에서 재고가 1개 이상인 상품만 골라
+      // id 가 challengeList 인 ul 에 li 로 붙이세요.
+      // 내용은 "라떼 (재고 5개)" 형태이고, 품절 상품은 아예 만들지 않습니다.
+      // 08단원의 filter 와 09단원의 구조분해를 함께 써 보세요.
+
+      const stockList = [
+        { name: "아메리카노", stock: 0 },
+        { name: "라떼", stock: 5 },
+        { name: "케이크", stock: 2 },
+        { name: "쿠키", stock: 0 },
+      ];
+
+      // 기대 결과 (화면):
+      // 라떼 (재고 5개)
+      // 케이크 (재고 2개)
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 15 ───── (에러 확인 — 맨 마지막)
+      // 아래 두 줄의 주석을 풀고 새로고침해서 콘솔에 어떤 에러가 나는지 확인하세요.
+      // 확인했으면 반드시 다시 주석 처리하세요.
+
+      // const nothing = document.querySelector("#존재하지않는아이디");
+      // nothing.textContent = "안녕";
+
+      // 무슨 에러가 났나요? 이 에러가 나는 이유 두 가지는 무엇일까요?
+      // 답: __________________________________________
+    </script>
+  </body>
+</html>

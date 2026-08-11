@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>13단원 종합03 - 할 일 목록</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 600px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      form {
+        display: flex;
+        gap: 6px;
+        margin: 16px 0 8px;
+      }
+      #todoInput {
+        flex: 1;
+        padding: 8px;
+        font-size: 15px;
+      }
+      button {
+        padding: 8px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+        min-height: 24px;
+      }
+      .filters {
+        display: flex;
+        gap: 6px;
+        margin: 12px 0;
+      }
+      .filterBtn.active {
+        background: #2d6cdf;
+        color: #fff;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px 12px;
+        margin: 6px 0;
+      }
+      li.done .text {
+        color: #999;
+        text-decoration: line-through;
+      }
+      .text {
+        flex: 1;
+        cursor: pointer;
+      }
+      .status {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-top: 10px;
+      }
+      .empty {
+        display: block; /* li 의 flex 를 덮어써야 가운데 정렬이 먹습니다 */
+        color: #888;
+        text-align: center;
+        padding: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>종합 03 — 할 일 목록</h1>
+
+    <p class="guide">
+      10~11단원(DOM·이벤트)과 03·05~09단원(조건문·함수·배열·객체·콜백·구조분해)을
+      한 번에 쓰는 실습입니다.<br />
+      script 의 TODO 를 채우고 새로고침하세요. <strong>F12 → Console</strong> 도 함께
+      보세요. 막히면 <strong>종합03_할일목록_정답.html</strong> 을 보세요.
+    
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <form id="todoForm">
+      <input type="text" id="todoInput" placeholder="할 일을 입력하고 Enter" />
+      <button type="submit">추가</button>
+    </form>
+    <div class="error" id="errorMsg"></div>
+
+    <div class="filters">
+      <button class="filterBtn active" data-filter="all">전체</button>
+      <button class="filterBtn" data-filter="active">미완료</button>
+      <button class="filterBtn" data-filter="done">완료</button>
+      <button id="clearBtn" type="button">완료 항목 삭제</button>
+    </div>
+
+    <ul id="todoList"></ul>
+
+    <div class="status" id="status">할 일 0개</div>
+
+    <script>
+      // ============================================================
+      // 13단원 · 종합 03 — 할 일 목록
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+      //
+      // 설계 방침 (실무에서 쓰는 방식입니다)
+      //   1) 데이터는 배열 하나(todos)에만 담는다
+      //   2) 화면은 그 배열을 보고 '전부 다시 그린다' (render 함수)
+      //   3) 무슨 일이 생기면 배열만 고치고 render 를 다시 부른다
+      //
+      // 화면을 직접 조금씩 고치는 것보다 이 방식이 훨씬 관리하기 쉽습니다.
+      // React 도 이 생각을 자동화한 도구입니다.
+
+      // 할 일 하나의 모양: { id: 1, text: "장보기", done: false }
+      let todos = [
+        { id: 1, text: "장보기", done: false },
+        { id: 2, text: "설거지", done: true },
+      ];
+
+      let nextId = 3;
+      let currentFilter = "all"; // "all" | "active" | "done"
+
+      const todoForm = document.querySelector("#todoForm");
+      const todoInput = document.querySelector("#todoInput");
+      const todoList = document.querySelector("#todoList");
+      const errorMsg = document.querySelector("#errorMsg");
+      const status = document.querySelector("#status");
+      const clearBtn = document.querySelector("#clearBtn");
+
+      // ───── 문제 1 ───── 걸러내기
+      // currentFilter 값에 따라 보여 줄 목록을 돌려주는 getVisibleTodos 함수를
+      // 만드세요.
+      //   "all"    → 전부
+      //   "active" → done 이 false 인 것만
+      //   "done"   → done 이 true 인 것만
+
+      // 기대 결과: 이 함수만으로는 화면이 바뀌지 않습니다. 문제 2·8 까지 해야 눈에 보입니다.
+      //   지금 확인하려면 F12 콘솔에 getVisibleTodos() 를 직접 쳐 보세요.
+      //   currentFilter 가 "all" 이므로 항목 2개짜리 배열이 나와야 합니다.
+      //
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 2 ───── 화면 그리기
+      // getVisibleTodos 로 얻은 목록을 todoList 안에 li 로 그리는
+      // render 함수를 만드세요.
+      //
+      // li 하나의 구조 (정답 파일과 같은 모양이어야 아래 문제들이 동작합니다):
+      //   <li class="done" data-id="1">
+      //     <span class="text">장보기</span>
+      //     <button class="deleteBtn">삭제</button>
+      //   </li>
+      //
+      //   - done 이 true 면 li 에 done 클래스를 붙입니다
+      //   - 사용자가 입력한 글이므로 textContent 로 넣습니다
+      //   - 그리기 전에 todoList 를 반드시 비우세요
+      //   - 보여 줄 항목이 하나도 없으면
+      //     <li class="empty">항목이 없습니다</li> 를 넣으세요
+      //   - 마지막에 updateStatus() 를 부르세요
+
+      // 기대 결과 (화면): 문제 8까지 해야 실제로 보입니다. 다 되면 목록에 두 줄이 나옵니다.
+      //   장보기   [삭제]
+      //   설거지   [삭제]   ← 회색 + 취소선 (done 클래스가 붙어서)
+      //
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 3 ───── 상태 표시
+      // 아래 형태로 status 에 글자를 넣는 updateStatus 함수를 만드세요.
+      //   "할 일 3개 (완료 1개, 남은 일 2개)"
+      // 전체 todos 기준입니다. 필터와 상관없습니다.
+
+      // 기대 결과 (화면): 상태줄 → 할 일 2개 (완료 1개, 남은 일 1개)
+      //
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 4 ───── 추가
+      // todoForm 을 제출하면
+      //   - 새로고침을 막고
+      //   - 빈 값(공백만 포함)이면 errorMsg 에 "할 일을 입력해 주세요"
+      //   - 이미 있는 내용이면 "이미 있는 항목입니다"
+      //   - 통과하면 todos 에 새 항목을 추가하고 화면을 다시 그립니다
+      //     (원본을 직접 바꾸지 말고 새 배열을 만들어 todos 에 넣으세요)
+      //   - 입력칸을 비우고 focus 를 줍니다
+
+      // 기대 결과 (화면):
+      //   공백만 넣고 Enter    → 할 일을 입력해 주세요        (목록 그대로 2개)
+      //   "장보기" 넣고 Enter  → 이미 있는 항목입니다          (목록 그대로 2개)
+      //   "운동하기" 넣고 Enter → 목록 3개, 입력칸이 비워지고 오류 글자도 사라집니다
+      //                         상태줄 → 할 일 3개 (완료 1개, 남은 일 2개)
+      //   Enter 를 쳤는데 화면이 깜빡이며 목록이 사라지면 preventDefault 를 빠뜨린 것입니다.
+      //
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 5 ───── 완료 토글 / 삭제 (이벤트 위임)
+      // todoList 하나에만 click 이벤트를 붙여서
+      //   - .text 를 누르면 그 항목의 done 을 뒤집고
+      //   - .deleteBtn 을 누르면 그 항목을 지우세요
+      // 어느 항목인지는 li 의 data-id 로 알아냅니다.
+      // dataset 값은 문자열이라는 점에 주의하세요.
+
+      // 기대 결과 (화면): 위 상태(장보기 / 설거지 / 운동하기)에서
+      //   "장보기" 글자를 누르면  → 취소선이 생기고 상태줄 → 할 일 3개 (완료 2개, 남은 일 1개)
+      //   "장보기" 의 삭제를 누르면 → 목록 2개, 상태줄 → 할 일 2개 (완료 1개, 남은 일 1개)
+      //   글자를 눌렀는데 아무 일도 없으면 dataset 값을 Number 로 안 바꾼 것입니다.
+      //
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 6 ───── 필터 버튼
+      // .filterBtn 을 누르면
+      //   - currentFilter 를 그 버튼의 data-filter 값으로 바꾸고
+      //   - 눌린 버튼에만 active 클래스가 붙게 하고
+      //   - 화면을 다시 그리세요
+
+      // 기대 결과 (화면): 설거지(완료) / 운동하기(미완료) 두 개가 있을 때
+      //   [미완료] → 운동하기만 보임      [완료] → 설거지만 보임      [전체] → 둘 다
+      //   누른 버튼만 파란색이 되어야 합니다.
+      //   상태줄은 필터와 상관없이 전체 기준이라 계속 "할 일 2개 (완료 1개, 남은 일 1개)" 입니다.
+      //
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 7 ───── 완료 항목 삭제
+      // clearBtn 을 누르면 done 이 true 인 항목을 전부 지우세요.
+
+      // 기대 결과 (화면): 위 상태에서 [완료 항목 삭제] → 목록에 운동하기만 남습니다.
+      //   상태줄 → 할 일 1개 (완료 0개, 남은 일 1개)
+      //
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 8 ───── ★ 필수 (이걸 빼면 화면에 아무것도 안 나옵니다)
+      // 페이지를 열자마자 위 데이터가 화면에 보이도록 render 를 한 번 부르세요.
+      // (이벤트는 '바뀔 때' 만 실행되므로 처음 한 번은 직접 불러야 합니다)
+      //
+      // 딱 한 줄입니다. 어렵지는 않지만 이게 없으면 앱이 통째로 비어 보입니다.
+      // 참고로 이 실습에서 가장 어려운 것은 문제 5(위임 + dataset 문자열 변환)입니다.
+
+      // 기대 결과 (화면): 새로고침하자마자 목록에 장보기 / 설거지 두 줄이 보여야 합니다.
+      //   이걸 빼면 앞의 문제를 다 맞게 풀어도 화면이 텅 빈 채로 있습니다.
+      //
+      // TODO: 여기에 코드를 쓰세요
+    </script>
+  </body>
+</html>

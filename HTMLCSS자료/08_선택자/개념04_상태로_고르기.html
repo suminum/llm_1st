@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>08단원 개념04 - 상태로 고르기</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ── 섹션 1: :hover ── */
+      .hover-card {
+        background-color: #eef2f7;
+      }
+      .hover-card:hover {
+        background-color: #2d6cdf;
+        color: white;
+      }
+      /* 화면: 평소에는 연한 회청색 상자입니다.
+               마우스를 올린 동안만 진한 파란 배경에 흰 글자로 바뀌고,
+               치우면 곧바로 원래대로 돌아옵니다 */
+
+      /* ── 섹션 2: :active ── */
+      .press-btn {
+        background-color: #eef2f7;
+        color: #222;
+      }
+      .press-btn:hover {
+        background-color: #dbe6f7;
+      }
+      .press-btn:active {
+        background-color: #c0392b;
+        color: white;
+      }
+      /* 화면: 평소에는 연한 회청색 버튼입니다.
+               마우스를 올리면 조금 진해지고,
+               누르고 있는 동안만 빨간 배경에 흰 글자가 됩니다.
+               손을 떼면 다시 마우스 올린 색으로 돌아옵니다 */
+
+      /* ── 섹션 3: :focus 와 :focus-visible ── */
+      .focus-input {
+        background-color: #f7f7f7;
+      }
+      .focus-input:focus {
+        background-color: #fff3a0;
+      }
+      .focus-btn {
+        background-color: #eef2f7;
+        color: #222;
+      }
+      .focus-btn:focus-visible {
+        background-color: #fff3a0;
+      }
+      /* 화면: Tab 키를 눌러 입력칸으로 옮겨 가면 그 칸만 노란 배경이 됩니다.
+               버튼은 Tab 으로 갔을 때만 노래지고, 마우스로 클릭했을 때는 노래지지 않습니다 */
+
+      /* ── 섹션 4: 링크의 상태 ── */
+      .link-list a:link {
+        color: #2d6cdf;
+      }
+      .link-list a:visited {
+        color: #7b3fa0;
+      }
+      .link-list a:hover {
+        background-color: #fff3a0;
+      }
+      /* 화면: 아직 안 가 본 링크는 파란 글자입니다.
+               한 번 다녀오면 보라색 글자로 바뀝니다.
+               마우스를 올리면 노란 형광펜이 칠해집니다 */
+
+      /* ── 섹션 5: :checked ── */
+      .opt:checked + label {
+        background-color: #fff3a0;
+        color: #7a4b00;
+      }
+      .opt:checked ~ .gift-note {
+        background-color: #e2f4ea;
+      }
+      /* 화면: 체크된 칸의 글자만 노란 배경이 됩니다.
+               체크를 풀면 그 자리에서 노란 배경이 사라집니다 */
+
+      /* ── 섹션 6: :disabled 와 속성 선택자 ── */
+      .form-box input:disabled,
+      .form-box button:disabled {
+        background-color: #e6e6e6;
+        color: #8a8a8a;
+      }
+      /* 화면: 쓸 수 없게 막아 둔 입력칸과 버튼만 회색 배경에 흐린 글자가 됩니다 */
+
+      .attr-box input[type="text"] {
+        background-color: #eef7ff;
+      }
+      /* 화면: 글자 입력칸만 연한 하늘색 배경이 되고, 체크박스는 그대로입니다 */
+
+      /* ── 섹션 7: 자주 하는 실수 (일부러 틀리게 쓴 규칙들) ── */
+      .no-colon hover {
+        background-color: #fff3a0;
+      }
+      /* 화면: 아무 일도 일어나지 않습니다.
+               콜론이 없어서 "no-colon 안의 hover 라는 태그" 를 찾고 있습니다 */
+
+      .space-colon :checked + label {
+        background-color: #fff3a0;
+      }
+      /* 화면: 아무 일도 일어나지 않습니다.
+               콜론 앞의 공백 때문에 "space-colon 안에 있는 체크된 것" 이 되었습니다 */
+
+      .double-colon::checked + label {
+        background-color: #fff3a0;
+      }
+      /* 화면: 아무 일도 일어나지 않습니다.
+               콜론을 두 개 쓰면 다른 문법이 되어 규칙이 통째로 버려집니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         08단원 · 개념 04 — 상태로 고르기
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              이 파일은 읽기만 해서는 절반도 못 봅니다.
+              마우스를 올리고, Tab 키를 누르고, 체크박스를 눌러 보세요.
+         ============================================================
+
+         지금까지 배운 선택자는 전부 HTML 에 적혀 있는 것을 봤습니다.
+         태그 이름, 클래스, id, 부모 자식 관계. 전부 파일에 고정되어 있습니다.
+
+         그런데 화면에는 파일에 안 적혀 있는 정보가 또 있습니다.
+
+             지금 마우스가 이 버튼 위에 있는가
+             지금 이 입력칸에 글자를 쓰고 있는가
+             이 체크박스가 지금 체크되어 있는가
+             이 링크에 전에 가 본 적이 있는가
+
+         전부 "지금 어떤 상태인가" 입니다. 시시각각 바뀝니다.
+         이런 상태로 요소를 고르는 것이 가상 클래스입니다.
+
+             .btn:hover { background-color: #2d6cdf; }
+                 └ 콜론 하나 뒤에 상태 이름을 씁니다
+
+         가상(假想) 클래스라고 부르는 이유는 이렇습니다.
+         마치 마우스를 올린 순간에만 class="hover" 가 붙었다가
+         치우면 떨어지는 것처럼 동작하기 때문입니다.
+         실제로 HTML 에 클래스가 붙는 것은 아니라서 '가상' 입니다.
+
+         이 파일에서 배울 상태는 일곱 가지입니다.
+
+             :hover          마우스가 위에 올라와 있는 동안
+             :active         마우스로 누르고 있는 동안
+             :focus          지금 키보드 입력을 받고 있는 칸
+             :focus-visible  키보드로 이동해서 focus 가 된 경우만
+             :visited        전에 가 본 적이 있는 링크
+             :checked        체크되어 있는 체크박스
+             :disabled       쓸 수 없게 막아 둔 입력칸이나 버튼
+
+         자바스크립트 없이 화면이 반응하게 만드는 방법이 바로 이것입니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 04 — 상태로 고르기</h1>
+    <p class="doc-sub">08단원 · 선택자</p>
+
+    <p class="doc-guide">
+      <strong>이 파일은 눈으로 읽기만 하면 절반도 못 봅니다.</strong><br />
+      아래 상자들 위에 <strong>마우스를 올려 보세요.</strong>
+      입력칸은 <strong>Tab 키</strong>로 옮겨 다녀 보세요.
+      체크박스는 <strong>직접 눌러 보세요.</strong><br />
+      손을 움직여야 보이는 색이 이 파일의 내용 전부입니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: :hover ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — :hover (마우스를 올린 동안)</h2>
+      <p class="doc-desc">
+        <strong>아래 상자 위에 마우스를 올려 보세요.</strong>
+        올린 동안만 색이 바뀌고, 치우면 돌아옵니다.
+      </p>
+
+      <!--
+        가장 많이 쓰는 가상 클래스입니다. 규칙은 두 개를 짝으로 씁니다.
+
+            .hover-card {
+              background-color: #eef2f7;      평소 모습
+            }
+            .hover-card:hover {
+              background-color: #2d6cdf;      마우스가 올라와 있는 동안
+              color: white;
+            }
+
+        읽는 법: "hover-card 인데, 마우스가 올라와 있는 상태인 것"
+
+        콜론 앞뒤에 공백을 넣으면 안 됩니다. 반드시 붙여 씁니다.
+
+            .hover-card:hover     맞음
+            .hover-card :hover    틀림 (뜻이 완전히 달라집니다. 섹션 7 참고)
+
+        왜 :hover 를 쓸까요?
+        "이건 눌러도 되는 것이다" 를 알려 주기 위해서입니다.
+        마우스를 올렸을 때 아무 반응이 없으면 사람은 그것을 그냥 글자로 봅니다.
+        색이 살짝 바뀌면 "아, 여기를 누를 수 있구나" 하고 알아챕니다.
+
+        주의할 점이 하나 있습니다.
+        휴대폰과 태블릿에는 마우스가 없습니다. 손가락은 '올려 두는' 동작이 없습니다.
+        그래서 :hover 에만 중요한 정보를 담으면 안 됩니다.
+        :hover 는 거들 뿐이고, 없어도 쓸 수 있어야 합니다.
+      -->
+      <div class="doc-demo" id="hoverDemo">
+        <p class="doc-demo-label">마우스를 올려 보세요</p>
+        <p class="hover-card" id="hoverCard">아메리카노 3000원 — 여기에 마우스를 올려 보세요</p>
+        <p class="hover-card">카페라떼 4000원 — 여기에도 올려 보세요</p>
+        <!-- 화면: 평소에는 두 줄 다 연한 회청색 배경입니다.
+                  마우스를 올린 줄만 진한 파란 배경에 흰 글자가 되고,
+                  마우스를 치우면 즉시 연한 회청색으로 돌아옵니다 -->
+      </div>
+
+      <p class="doc-note">
+        마우스를 올리는 순간과 치우는 순간에 색이 <strong>딱딱 끊어져서</strong> 바뀝니다.
+        부드럽게 넘어가게 하려면 <code>transition</code> 이 필요한데, 이 자료의 범위 밖입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — <code>&lt;style&gt;</code> 의
+        <code>.hover-card:hover</code> 규칙에서 <code>color: white;</code> 줄을 지우고
+        마우스를 올려 보세요. 글자가 잘 보이는지 확인한 뒤 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: :active ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — :active (누르고 있는 동안)</h2>
+      <p class="doc-desc">
+        <strong>아래 버튼을 누른 채로 잠깐 있어 보세요.</strong>
+        마우스 왼쪽 버튼을 떼면 색이 돌아옵니다.
+      </p>
+
+      <!--
+        :active 는 "지금 누르고 있는 중" 입니다.
+        마우스 버튼을 누른 순간부터 뗄 때까지의 짧은 시간입니다.
+
+            .press-btn:active {
+              background-color: #c0392b;
+              color: white;
+            }
+
+        아래 버튼에는 규칙이 세 개 걸려 있습니다.
+
+            .press-btn          평소            연한 회청색
+            .press-btn:hover    올린 동안        조금 진한 회청색
+            .press-btn:active   누르고 있는 동안  빨강 + 흰 글자
+
+        순서가 중요합니다. :active 를 :hover 보다 먼저 쓰면
+        누르고 있어도 빨간색이 안 보입니다.
+        누르고 있는 동안에는 마우스가 위에 올라와 있기도 해서
+        두 규칙이 동시에 맞기 때문입니다.
+        같은 세기의 규칙이 동시에 맞으면 나중에 쓴 것이 이깁니다.
+        이 이야기가 개념06 의 명시도입니다.
+
+        그래서 :hover 를 먼저 쓰고 :active 를 나중에 씁니다.
+      -->
+      <div class="doc-demo" id="activeDemo">
+        <p class="doc-demo-label">눌러 보세요 (누른 채로 있어야 보입니다)</p>
+        <button type="button" class="press-btn" id="pressBtn">주문하기</button>
+        <!-- 화면: 평소에는 연한 회청색 버튼입니다.
+                  마우스를 올리면 살짝 진해지고, 누르고 있는 동안만
+                  빨간 배경에 흰 글자가 됩니다. 떼면 곧바로 돌아옵니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>:active</code> 는 보이는 시간이 아주 짧습니다.
+        그래서 "눌렸다" 는 느낌을 주는 용도로만 씁니다.
+        여기에 중요한 정보를 담으면 아무도 못 읽습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — <code>&lt;style&gt;</code> 에서
+        <code>.press-btn:active</code> 규칙을 <code>.press-btn:hover</code> 규칙보다
+        <strong>위로</strong> 옮겨 보세요. 눌러도 빨개지지 않습니다. 확인한 뒤 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: :focus 와 :focus-visible ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — :focus (지금 입력을 받는 칸)</h2>
+      <p class="doc-desc">
+        <strong>아래 입력칸을 클릭하거나 Tab 키를 눌러 보세요.</strong>
+        지금 글자가 들어갈 칸 하나만 색이 바뀝니다.
+      </p>
+
+      <!--
+        키보드로 글자를 치면 그 글자는 어디로 갈까요?
+        지금 '초점' 이 맞춰진 곳으로 갑니다. 그것이 focus 입니다.
+
+            .focus-input:focus {
+              background-color: #fff3a0;
+            }
+
+        한 화면에 focus 를 가진 요소는 많아야 하나입니다.
+        입력칸을 클릭하면 그리로 옮겨 가고, Tab 키를 누르면 다음 칸으로 넘어갑니다.
+
+        이것이 왜 중요할까요?
+        마우스를 못 쓰는 사람은 Tab 키만으로 화면 전체를 돌아다닙니다.
+        지금 어디에 있는지 안 보이면 길을 잃습니다.
+        그래서 브라우저는 기본으로 focus 된 곳에 테두리를 그려 줍니다.
+        그 테두리를 지우고 아무 표시도 안 남기는 것은 아주 나쁜 습관입니다.
+
+        :focus 와 :focus-visible 의 차이는 이렇습니다.
+
+            :focus          어떤 방법으로든 초점이 온 경우 (클릭 포함)
+            :focus-visible  브라우저가 "이건 표시해 줘야 한다" 고 판단한 경우
+                            대체로 키보드로 옮겨 왔을 때만 켜집니다
+
+        버튼을 마우스로 클릭하면 focus 는 오지만, 사용자는 자기가 어디를 눌렀는지
+        이미 압니다. 이때 굵은 테두리가 남으면 지저분해 보입니다.
+        그래서 요즘은 버튼에 :focus-visible 을 씁니다.
+
+        아래에서 직접 비교해 보세요.
+            입력칸 : 클릭해도 노랗고 Tab 으로 가도 노랗습니다 (:focus)
+            버튼   : Tab 으로 가야만 노랗습니다. 클릭해서는 안 노랗습니다 (:focus-visible)
+      -->
+      <div class="doc-demo" id="focusDemo">
+        <p class="doc-demo-label">Tab 키를 눌러 칸을 옮겨 보세요</p>
+        <label for="nameField">이름</label>
+        <input type="text" class="focus-input" id="nameField" value="김민준" />
+        <label for="phoneField">연락처</label>
+        <input type="text" class="focus-input" id="phoneField" value="010" />
+        <button type="button" class="focus-btn" id="focusBtn">확인</button>
+        <!-- 화면: 평소에는 입력칸 두 개가 아주 연한 회색 배경입니다.
+                  클릭하거나 Tab 으로 옮겨 간 칸 하나만 노란 배경이 됩니다.
+                  버튼은 Tab 으로 도착했을 때만 노래지고, 마우스로 클릭했을 때는
+                  노래지지 않습니다 -->
+      </div>
+
+      <p class="doc-note">
+        입력칸을 클릭한 다음 Tab 을 계속 눌러 보세요.
+        노란 칸이 오른쪽으로 한 칸씩 옮겨 갑니다.
+        <code>Shift + Tab</code> 을 누르면 거꾸로 갑니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>.focus-btn:focus-visible</code> 을
+        <code>.focus-btn:focus</code> 로 바꾼 뒤, 버튼을 <strong>마우스로 클릭</strong>해 보세요.
+        아까와 무엇이 달라지는지 확인하고 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 링크의 상태 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — :visited (가 본 링크)</h2>
+      <p class="doc-desc">
+        링크는 <strong>가 봤는지 안 가 봤는지</strong>로도 고를 수 있습니다.
+        아래 링크를 눌러 보고 뒤로 가기로 돌아와 보세요.
+      </p>
+
+      <!--
+        04단원에서 만든 a 요소에는 상태가 두 가지 더 있습니다.
+
+            a:link      아직 가 본 적 없는 링크
+            a:visited   전에 가 본 적이 있는 링크
+
+        브라우저가 기억하는 방문 기록을 보고 정합니다.
+        가 본 링크가 보라색으로 변하는 그 동작이 바로 :visited 입니다.
+        기본값이 그렇게 정해져 있을 뿐, 우리가 바꿀 수 있습니다.
+
+            .link-list a:link    { color: #2d6cdf; }
+            .link-list a:visited { color: #7b3fa0; }
+            .link-list a:hover   { background-color: #fff3a0; }
+
+        아래 링크 두 개는 같은 폴더의 다른 수업 파일로 갑니다.
+        눌러서 다녀온 다음 브라우저의 뒤로 가기(Alt + ←)로 돌아오면
+        그 링크만 보라색으로 바뀌어 있습니다.
+
+        :visited 에는 큰 제약이 하나 있습니다.
+        바꿀 수 있는 것이 색 계열뿐입니다. 배경색이나 크기는 못 바꿉니다.
+        방문 기록은 사생활이기 때문입니다.
+        만약 크기를 바꿀 수 있다면, 웹사이트가 그 크기를 재서
+        "이 사람이 어느 사이트에 가 봤는지" 를 알아낼 수 있게 됩니다.
+        그래서 브라우저가 일부러 막아 두었습니다.
+
+        규칙을 쓰는 순서도 정해져 있습니다.
+
+            a:link → a:visited → a:hover → a:active
+
+        이 순서를 지키지 않으면 뒤에 쓴 규칙에 가려집니다.
+        전부 세기가 같아서 나중에 쓴 것이 이기기 때문입니다(개념06).
+      -->
+      <div class="doc-demo" id="linkDemo">
+        <p class="doc-demo-label">눌러 보고 뒤로 가기로 돌아와 보세요</p>
+        <ul class="link-list">
+          <li><a href="개념01_기본_선택자.html" id="linkOne">개념01 — 기본 선택자</a></li>
+          <li><a href="개념03_관계로_고르기.html">개념03 — 관계로 고르기</a></li>
+        </ul>
+        <!-- 화면: 처음 열면 두 링크가 모두 파란 글자에 밑줄입니다.
+                  마우스를 올리면 노란 형광펜이 칠해집니다.
+                  다녀온 링크는 보라색 글자로 바뀝니다 -->
+      </div>
+
+      <p class="doc-note">
+        밑줄은 우리가 그린 것이 아니라 브라우저가 원래 링크에 그려 두는 것입니다.
+        밑줄을 없애는 <code>text-decoration</code> 은 09단원에서 배웁니다.
+        <strong>함부로 없애지 마세요.</strong> 색만으로는 링크인 줄 모르는 사람이 있습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>.link-list a:visited</code> 의 색을
+        <code>#c0392b</code>(빨강) 으로 바꾸고, 링크를 다녀와 보세요.
+        가 본 링크가 빨갛게 바뀝니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: :checked ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — :checked (체크된 것)</h2>
+      <p class="doc-desc">
+        <strong>아래 체크박스를 눌러 보세요.</strong> 자바스크립트 없이 화면이 바뀝니다.
+      </p>
+
+      <!--
+        05단원에서 만든 체크박스입니다. 체크된 상태를 :checked 로 고릅니다.
+
+            .opt:checked + label {
+              background-color: #fff3a0;
+              color: #7a4b00;
+            }
+
+        여기서 개념03 의 형제 선택자가 등장합니다.
+        읽는 법: "체크된 opt 바로 다음에 오는 형제 label"
+
+        왜 label 을 고를까요?
+        체크박스 자체는 색을 칠해도 거의 안 보입니다.
+        브라우저가 그리는 작은 네모라서 배경색이 먹지 않습니다.
+        그래서 체크박스 옆의 글자(label)를 대신 꾸밉니다.
+        이 방법이 실무에서 쓰는 정석입니다.
+
+        아래 첫 상자에는 체크박스가 두 개 있습니다.
+        하나는 처음부터 체크되어 있고(checked 를 써 두었습니다) 하나는 아닙니다.
+        직접 눌러서 켜고 끄면 노란 배경이 따라옵니다.
+
+        label 의 for 값과 input 의 id 값이 같아야 한다는 것도 기억하세요(05단원).
+        그래야 글자를 눌러도 체크가 됩니다.
+
+        두 번째 상자에서는 물결 선택자를 씁니다.
+
+            .opt:checked ~ .gift-note { background-color: #e2f4ea; }
+
+        "체크된 opt 뒤에 오는 형제 중 gift-note" 라는 뜻입니다.
+        체크를 풀면 아래 안내문의 초록 배경이 사라집니다.
+        자바스크립트를 한 줄도 안 쓰고 화면이 반응합니다.
+      -->
+      <div class="doc-demo" id="checkDemo">
+        <p class="doc-demo-label">눌러서 켜고 꺼 보세요</p>
+        <input type="checkbox" class="opt" id="iceCheck" checked />
+        <label for="iceCheck" id="iceLabel">얼음을 추가합니다</label>
+        <br />
+        <input type="checkbox" class="opt" id="syrupCheck" />
+        <label for="syrupCheck" id="syrupLabel">시럽을 추가합니다</label>
+        <!-- 화면: 처음 열면 위 칸만 체크되어 있고 "얼음을 추가합니다" 글자에
+                  노란 배경과 갈색 글자가 칠해져 있습니다.
+                  아래 칸을 누르면 "시럽을 추가합니다" 에도 노란 배경이 생깁니다 -->
+      </div>
+
+      <div class="doc-demo" id="giftDemo">
+        <p class="doc-demo-label">체크를 풀면 아래 안내가 바뀝니다</p>
+        <input type="checkbox" class="opt" id="giftCheck" checked />
+        <label for="giftCheck" id="giftLabel">선물 포장을 원합니다</label>
+        <p class="gift-note" id="giftNote">포장지 색은 계산대에서 골라 주세요.</p>
+        <!-- 화면: 처음 열면 체크가 되어 있어서 아래 안내문이 연한 초록 배경입니다.
+                  체크를 풀면 초록 배경이 사라집니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>:checked</code> 는 <code>type="radio"</code> 에도 똑같이 씁니다.
+        고른 항목 하나만 표시하고 싶을 때 쓰면 됩니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 두 번째 상자의 <code>&lt;input&gt;</code> 에서
+        <code>checked</code> 를 지우고 새로고침해 보세요.
+        안내문의 초록 배경이 처음부터 없는 상태로 열립니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: :disabled 와 속성으로 고르기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — :disabled 그리고 속성으로 고르기</h2>
+      <p class="doc-desc">
+        쓸 수 없게 막아 둔 칸은 <code>:disabled</code> 로 고릅니다.
+        <strong>속성 값</strong>으로 고르는 방법도 함께 봅니다.
+      </p>
+
+      <!--
+        05단원에서 input 과 button 에 disabled 를 붙이면 눌리지 않게 된다고 배웠습니다.
+        그 상태를 :disabled 로 고릅니다.
+
+            .form-box input:disabled,
+            .form-box button:disabled {
+              background-color: #e6e6e6;
+              color: #8a8a8a;
+            }
+
+        아래 상자에서 두 번째 입력칸과 두 번째 버튼을 눌러 보세요.
+        아무 반응이 없습니다. 글자도 못 씁니다.
+        회색으로 칠한 것은 "이건 지금 못 씁니다" 를 눈으로 알려 주기 위해서입니다.
+        반대말인 :enabled 도 있지만 거의 안 씁니다. 기본 상태니까요.
+
+        여기서 곁다리로 하나 더 배웁니다. 속성 선택자입니다.
+
+            .attr-box input[type="text"] {
+              background-color: #eef7ff;
+            }
+
+        대괄호 안에 "속성 이름=값" 을 씁니다.
+        읽는 법: "attr-box 안의 input 중에서 type 이 text 인 것"
+
+        input 은 태그 이름이 전부 input 이라서 태그 선택자로는 구분이 안 됩니다.
+        글자 칸도 input, 체크박스도 input, 버튼도 input 입니다.
+        그래서 type 속성 값으로 갈라 줘야 합니다. 속성 선택자가 꼭 필요한 자리입니다.
+
+        값을 안 쓰고 속성이 있는지만 볼 수도 있습니다.
+
+            [disabled]        disabled 라고 적혀 있기만 하면
+            input[type]       type 속성이 있기만 하면
+
+        [disabled] 와 :disabled 는 결과가 거의 같습니다.
+        다만 [disabled] 는 "HTML 에 그렇게 적혀 있는가" 를 보고,
+        :disabled 는 "지금 실제로 못 쓰는 상태인가" 를 봅니다.
+        상태를 볼 때는 :disabled 쪽이 정확합니다.
+      -->
+      <div class="doc-demo form-box" id="formDemo">
+        <p class="doc-demo-label">두 번째 칸과 두 번째 버튼은 눌리지 않습니다</p>
+        <label for="orderName">주문자</label>
+        <input type="text" id="orderName" value="김민준" />
+        <label for="memberNo">회원번호</label>
+        <input type="text" id="memberNo" value="발급 전" disabled />
+        <br />
+        <button type="button" id="okBtn">주문하기</button>
+        <button type="button" id="soldBtn" disabled>품절</button>
+        <!-- 화면: 첫 번째 입력칸과 첫 번째 버튼은 평범합니다.
+                  회원번호 칸과 품절 버튼만 회색 배경에 흐린 회색 글자이고,
+                  눌러도 아무 반응이 없습니다 -->
+      </div>
+
+      <div class="doc-demo attr-box" id="attrDemo">
+        <p class="doc-demo-label">속성으로 고르기</p>
+        <label for="couponCode">쿠폰 번호</label>
+        <input type="text" id="couponCode" value="SPRING" />
+        <input type="checkbox" id="agreeChk" />
+        <label for="agreeChk">약관에 동의합니다</label>
+        <!-- 화면: 글자 입력칸만 연한 하늘색 배경이고, 체크박스는 원래 모습 그대로입니다 -->
+      </div>
+
+      <p class="doc-note">
+        속성 선택자는 <code>[href]</code>, <code>[required]</code> 처럼 어디에나 쓸 수 있습니다.
+        값에는 따옴표를 붙이는 것이 안전합니다.
+        <code>[type=text]</code> 도 동작하지만 값에 특수문자가 들어가면 깨집니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — 아래 상자의 체크박스에도 <code>disabled</code> 를 붙여 보세요.
+        (<code>&lt;input type="checkbox" id="agreeChk" disabled /&gt;</code>)
+        눌러도 체크가 안 되는 것을 확인한 뒤 지우세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        가상 클래스의 실수는 <strong>콜론 한 글자</strong>에서 거의 다 나옵니다.
+        역시 에러는 나지 않습니다.
+      </p>
+
+      <!-- [실수 1] 콜론을 빠뜨림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 콜론을 빠뜨림</span>
+        <div class="doc-code">.no-colon hover { background-color: #fff3a0; }</div>
+        <p>
+          콜론이 없으면 <code>hover</code> 가 <strong>태그 이름</strong>으로 읽힙니다.
+          "no-colon 안에 있는 hover 태그" 를 찾는데 그런 태그는 없습니다.
+          마우스를 아무리 올려도 아무 일이 없습니다.
+        </p>
+        <p class="no-colon" id="noColon">마우스를 올려도 아무 일이 없습니다.</p>
+        <!-- 화면: 마우스를 올려도 배경색이 생기지 않습니다 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">.no-colon:hover { background-color: #fff3a0; }</div>
+      </div>
+
+      <!-- [실수 2] 콜론 앞에 공백을 넣음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 콜론 앞에 공백을 넣음</span>
+        <div class="doc-code">.space-colon :checked + label { background-color: #fff3a0; }</div>
+        <p>
+          공백은 개념03 에서 배운 <strong>자손 결합자</strong>입니다.
+          그래서 이 규칙은 "space-colon 안에 있는 체크된 요소" 를 찾습니다.
+          그런데 <code>space-colon</code> 은 체크박스 자신입니다.
+          체크박스 안에는 아무것도 없으니 한 개도 못 찾습니다.
+          아래 칸은 분명히 체크되어 있는데도 글자에 배경이 없습니다.
+        </p>
+        <input type="checkbox" class="space-colon" id="spaceChk" checked />
+        <label for="spaceChk" id="spaceLabel">체크되어 있는데 배경이 없습니다.</label>
+        <!-- 화면: 체크는 되어 있지만 글자에 노란 배경이 없습니다 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">.space-colon:checked + label { background-color: #fff3a0; }</div>
+      </div>
+
+      <!-- [실수 3] 콜론을 두 개 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 콜론을 두 개 씀</span>
+        <div class="doc-code">.double-colon::checked + label { background-color: #fff3a0; }</div>
+        <p>
+          콜론 두 개는 <strong>가상 요소</strong>라는 다른 문법입니다.
+          <code>::checked</code> 같은 가상 요소는 없으므로 이 선택자는 잘못된 것이 되고,
+          <strong>규칙이 통째로 버려집니다.</strong> 아래 칸도 체크되어 있지만 그대로입니다.
+        </p>
+        <input type="checkbox" class="double-colon" id="dblChk" checked />
+        <label for="dblChk" id="dblLabel">여기도 배경이 없습니다.</label>
+        <!-- 화면: 체크는 되어 있지만 글자에 노란 배경이 없습니다 -->
+      </div>
+
+      <!-- [실수 4] 링크 규칙의 순서를 어김 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 링크 규칙을 순서 없이 씀</span>
+        <div class="doc-code">a:hover   { color: crimson; }
+a:link    { color: #2d6cdf; }
+a:visited { color: #7b3fa0; }</div>
+        <p>
+          링크의 상태 규칙은 <code>a:link</code> 부터 <code>a:active</code> 까지
+          네 개가 모두 세기가 같습니다. 그래서 <strong>나중에 쓴 것이 이깁니다.</strong>
+          위처럼 쓰면 마우스를 올려도 <code>a:link</code> 의 파란색에 가려집니다.
+          "hover 가 안 먹어요" 의 절반은 이 순서 문제입니다.
+          <strong>link · visited · hover · active</strong> 순서로 쓰세요.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">a:link    { color: #2d6cdf; }
+a:visited { color: #7b3fa0; }
+a:hover   { color: crimson; }
+a:active  { color: #c0392b; }</div>
+      </div>
+
+      <!-- [실수 5] :visited 로 배경색을 바꾸려 함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — :visited 로 배경색이나 크기를 바꾸려 함</span>
+        <div class="doc-code">a:visited { background-color: #fff3a0; }</div>
+        <p>
+          이 규칙은 문법이 맞는데도 <strong>브라우저가 일부러 무시합니다.</strong>
+          <code>:visited</code> 로 바꿀 수 있는 것은 글자색 계열뿐입니다.
+          방문 기록이 새어 나가는 것을 막기 위한 조치입니다.
+          "왜 이것만 안 되지?" 하고 오래 헤매기 딱 좋은 자리입니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>
+        1. 가상 클래스는 <strong>콜론 하나</strong> 뒤에 상태 이름을 씁니다.
+        <code>.btn:hover</code> 처럼 <strong>붙여</strong> 씁니다.
+      </p>
+      <p>
+        2. <code>:hover</code> 올린 동안 · <code>:active</code> 누르는 동안 ·
+        <code>:focus</code> 입력을 받는 중.
+      </p>
+      <p>
+        3. <code>:focus-visible</code> 은 <strong>키보드로 이동했을 때만</strong> 켜집니다.
+        버튼에 어울립니다.
+      </p>
+      <p>
+        4. <code>:visited</code> 는 가 본 링크입니다. <strong>색만</strong> 바꿀 수 있습니다.
+        규칙은 link · visited · hover · active 순서로 씁니다.
+      </p>
+      <p>
+        5. <code>:checked</code> 와 형제 선택자를 함께 쓰면
+        <strong>자바스크립트 없이</strong> 반응하는 화면을 만들 수 있습니다.
+      </p>
+      <p>
+        6. <code>:disabled</code> 는 못 쓰게 막아 둔 칸입니다.
+        <code>input[type="text"]</code> 처럼 <strong>속성 값</strong>으로도 고를 수 있습니다.
+      </p>
+      <p>
+        7. 콜론 앞에 공백을 넣거나 콜론을 두 개 쓰면
+        <strong>아무 일도 일어나지 않습니다.</strong>
+      </p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) style 의 규칙을 이렇게 고칩니다.
+
+                .hover-card:hover {
+                  background-color: #2d6cdf;
+                }
+
+            → 마우스를 올리면 배경은 진한 파랑이 되는데 글자는 검은색 그대로라
+              잘 안 읽힙니다. 배경을 진하게 바꿀 때는 글자색도 같이 바꿔야 한다는
+              것을 눈으로 확인하는 문제입니다. 확인했으면 color: white; 를 되살리세요.
+
+         2) style 에서 두 규칙의 순서를 이렇게 바꿉니다.
+
+                .press-btn:active { background-color: #c0392b; color: white; }
+                .press-btn:hover  { background-color: #dbe6f7; }
+
+            → 버튼을 눌러도 빨개지지 않습니다.
+              누르고 있는 동안에는 마우스가 위에 있기도 해서 :hover 규칙도 함께 맞는데,
+              세기가 같으면 나중에 쓴 것이 이기기 때문입니다.
+
+              한 가지 더 보입니다. 누르는 동안 글자가 안 보이게 됩니다.
+              배경색은 :hover 의 연한 파랑이 이겼는데, :hover 에는 color 가 없어서
+              :active 의 흰 글자만 그대로 살아남기 때문입니다.
+              연한 파랑 위의 흰 글자라 거의 안 읽힙니다.
+              승부는 규칙 통째로가 아니라 속성 하나하나마다 따로 난다는 뜻입니다.
+              확인했으면 :hover 를 위로, :active 를 아래로 되돌리세요.
+
+         3) style 의 규칙을 이렇게 고칩니다.
+
+                .focus-btn:focus {
+                  background-color: #fff3a0;
+                }
+
+            → 이번에는 버튼을 마우스로 클릭해도 노란 배경이 남습니다.
+              다른 곳을 클릭해야 사라집니다.
+              :focus 는 클릭이든 키보드든 가리지 않고 켜지기 때문입니다.
+              버튼에는 대체로 :focus-visible 이 더 깔끔합니다.
+
+         4) style 의 규칙을 이렇게 고칩니다.
+
+                .link-list a:visited {
+                  color: #c0392b;
+                }
+
+            → 링크를 눌러 다녀온 뒤 뒤로 가기로 돌아오면 그 링크만 빨간 글자입니다.
+              아직 안 가 본 링크는 파란색 그대로입니다.
+              같은 a 요소인데 상태에 따라 다른 규칙이 걸린다는 것을 확인하는 문제입니다.
+
+         5) 두 번째 상자의 input 을 이렇게 고칩니다.
+
+                <input type="checkbox" class="opt" id="giftCheck" />
+
+            → 새로고침하면 체크가 풀린 상태로 열리고,
+              아래 안내문 "포장지 색은 계산대에서 골라 주세요." 에
+              연한 초록 배경이 없습니다.
+              체크박스를 직접 누르면 그 자리에서 초록 배경이 생깁니다.
+
+         6) 마지막 상자의 체크박스를 이렇게 고칩니다.
+
+                <input type="checkbox" id="agreeChk" disabled />
+
+            → 체크박스가 흐릿해지고, 눌러도 체크가 되지 않습니다.
+              옆의 "약관에 동의합니다" 글자를 눌러도 마찬가지입니다.
+              다만 이 체크박스는 type 이 text 가 아니라서
+              하늘색 배경 규칙에는 걸리지 않습니다. 확인했으면 disabled 를 지우세요.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #hoverCard | background-color | rgb(238, 242, 247)
+      #hoverCard | color | rgb(34, 34, 34)
+      #pressBtn | background-color | rgb(238, 242, 247)
+      #pressBtn | color | rgb(34, 34, 34)
+      #nameField | background-color | rgb(247, 247, 247)
+      #focusBtn | background-color | rgb(238, 242, 247)
+      #linkOne | color | rgb(45, 108, 223)
+      #iceLabel | background-color | rgb(255, 243, 160)
+      #iceLabel | color | rgb(122, 75, 0)
+      #syrupLabel | background-color | rgba(0, 0, 0, 0)
+      #giftNote | background-color | rgb(226, 244, 234)
+      #memberNo | background-color | rgb(230, 230, 230)
+      #memberNo | color | rgb(138, 138, 138)
+      #orderName | background-color | rgb(255, 255, 255)
+      #soldBtn | background-color | rgb(230, 230, 230)
+      #couponCode | background-color | rgb(238, 247, 255)
+      #agreeChk | background-color | rgba(0, 0, 0, 0)
+      #noColon | background-color | rgba(0, 0, 0, 0)
+      #spaceLabel | background-color | rgba(0, 0, 0, 0)
+      #dblLabel | background-color | rgba(0, 0, 0, 0)
+    -->
+  </body>
+</html>

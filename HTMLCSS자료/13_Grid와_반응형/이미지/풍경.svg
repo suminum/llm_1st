@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 손으로 그린 SVG 그림입니다. 도형과 글자만 들어 있습니다. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200"
+     preserveAspectRatio="none">
+  <rect x="0" y="0" width="400" height="200" fill="#bfe3ff" />
+  <circle cx="330" cy="48" r="26" fill="#ffd45e" />
+  <polygon points="20,152 110,52 200,152" fill="#7f8f9e" />
+  <polygon points="82,152 110,52 138,152" fill="#e8eef4" />
+  <polygon points="160,152 250,68 340,152" fill="#94a4b3" />
+  <rect x="0" y="150" width="400" height="50" fill="#7cc47f" />
+  <ellipse cx="70" cy="172" rx="40" ry="11" fill="#69b46d" />
+  <ellipse cx="300" cy="180" rx="52" ry="13" fill="#69b46d" />
+  <text x="200" y="194" text-anchor="middle" font-size="14"
+        font-family="Malgun Gothic, sans-serif" fill="#2f5f36">가로 400 세로 200</text>
+</svg>

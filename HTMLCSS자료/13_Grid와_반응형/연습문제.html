@@ -1,0 +1,648 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>13단원 연습문제 - Grid 와 반응형</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ============================================================
+         13단원 연습문제 — Grid 와 반응형
+         ------------------------------------------------------------
+         푸는 방법
+           1) 이 파일을 VS Code 로 열고, 동시에 브라우저로도 엽니다
+           2) 아래 TODO 자리에 CSS 를 씁니다
+           3) 저장(Ctrl+S) 하고 브라우저에서 새로고침(F5) 합니다
+           4) 상자 모양이 '기대 화면' 과 같은지 봅니다
+
+         폭을 바꿔 봐야 하는 문제가 많습니다.
+         F12 → Ctrl+Shift+M 으로 기기 툴바를 켜 두세요(개념03 섹션 3).
+
+         ★ 적혀 있는 px 값은 모두 '브라우저 창을 넓게(950px 이상) 열었을 때' 의 값입니다.
+           이 페이지의 본문은 최대 900px 까지만 넓어지므로, 그보다 넓은 창에서는
+           아무리 더 넓혀도 숫자가 안 변합니다.
+           반대로 창을 좁히면 본문이 같이 줄어들어 숫자가 전부 달라집니다.
+           1~8 번은 기기 툴바를 끄고 넓은 창에서 푸세요.
+           9 번부터는 문제마다 어느 폭에서 보라고 따로 적어 두었습니다.
+
+         1~12 는 기본, 13~14 는 응용, 15 는 도전, 16 은 확인 문제입니다.
+         ============================================================ */
+
+      /* ── 아래 여섯 개는 이미 되어 있습니다. 고치지 마세요 ──
+         .q-scroll 은 아직 안 푼 문제(8번, 11번) 때문에 상자가 옆으로 삐져나가더라도
+         자료 페이지 전체가 밀리지 않게 막아 주는 껍데기입니다(10단원 overflow). */
+      .q-scroll {
+        overflow-x: auto;
+      }
+      .q-cell {
+        background: #dbe7fb;
+        border: 1px solid #9ab8e8;
+        padding: 10px;
+        text-align: center;
+      }
+      .q-hi {
+        background: #ffe0b3;
+        border-color: #e8a33d;
+      }
+      .q-frame {
+        max-width: 300px;
+        border: 2px solid #bbbbbb;
+        padding: 6px;
+      }
+      .q-band {
+        background: #f4f4f4;
+        border: 1px solid #cccccc;
+        padding: 10px;
+        text-align: center;
+      }
+      .q-dark {
+        background: #333333;
+        color: #ffffff;
+        padding: 8px;
+        text-align: center;
+      }
+
+      /* ───── 문제 1 ───── (개념01 섹션 1·2)
+         .q1 을 격자로 만들고 칸을 세 개로 나누세요.
+         칸 크기는 셋 다 같아야 하고, 칸 사이는 10px 입니다.
+         세 줄이 필요합니다.
+
+         기대 화면: 파란 상자 세 개가 가로로 나란히 놓이고 폭이 각각 268px 입니다.
+         이렇게 되면 틀린 것: 상자가 세로로 쌓이면 display: grid 가 빠진 것입니다. */
+      .q1 {
+        /* TODO: 여기에 코드를 쓰세요 */
+      }
+
+      /* ───── 문제 2 ───── (개념01 섹션 3)
+         .q2 의 왼쪽 칸은 200px 로 고정하고, 오른쪽 칸은 남는 자리를 전부 쓰게 하세요.
+         display 와 gap 은 이미 되어 있습니다. 한 줄만 쓰면 됩니다.
+
+         기대 화면: 왼쪽 칸이 200px, 오른쪽 칸이 614px 입니다.
+         이렇게 되면 틀린 것: 두 칸이 똑같은 폭이면 오른쪽에 1fr 대신 200px 을 쓴 것입니다. */
+      .q2 {
+        display: grid;
+        gap: 10px;
+        /* TODO: 여기에 코드를 쓰세요 */
+      }
+
+      /* ───── 문제 3 ───── (개념01 섹션 4)
+         .q3 의 위아래 줄 사이는 24px, 좌우 칸 사이는 10px 로 띄우세요.
+         값 두 개를 한 줄로 씁니다.
+
+         기대 화면: 좌우보다 위아래가 눈에 띄게 넓게 벌어집니다. 칸 폭은 268px 입니다.
+         이렇게 되면 틀린 것: 좌우가 더 넓게 벌어졌다면 두 값의 순서가 바뀐 것입니다. */
+      .q3 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        /* TODO: 여기에 코드를 쓰세요 */
+      }
+
+      /* ───── 문제 4 ───── (개념01 섹션 5)
+         .q4 의 첫째 줄 높이를 50px, 둘째 줄 높이를 90px 로 정하세요.
+         한 줄만 쓰면 됩니다.
+
+         기대 화면: 윗줄 두 칸이 얇고 아랫줄 두 칸이 두껍습니다. 칸 폭은 407px 입니다.
+         이렇게 되면 틀린 것: 네 칸의 높이가 다 같으면 grid-template-rows 가 아니라
+                              grid-template-columns 를 고친 것입니다. */
+      .q4 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+        /* TODO: 여기에 코드를 쓰세요 */
+      }
+
+      /* ───── 문제 5 ───── (개념02 섹션 2)
+         .q5-wide 가 1번 선에서 3번 선까지, 즉 두 칸을 차지하게 하세요.
+         부모(.q5) 는 이미 3칸으로 나뉘어 있습니다.
+
+         기대 화면: 주황 칸이 546px 로 넓어져 두 칸을 차지합니다.
+         이렇게 되면 틀린 것: 주황 칸이 268px 그대로면 선 번호를 하나 적게 센 것입니다. */
+      .q5 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+      }
+      .q5-wide {
+        /* TODO: 여기에 코드를 쓰세요 */
+      }
+
+      /* ───── 문제 6 ───── (개념02 섹션 3)
+         .q6-wide 가 세 칸을 통째로 차지하게 하세요.
+         이번에는 선 번호 대신 span 을 쓰세요.
+
+         기대 화면: 주황 칸이 824px 로 상자 전체를 가로지르고, 나머지 칸은 아랫줄로 갑니다.
+         이렇게 되면 틀린 것: 주황 칸이 268px 이고 자리만 옮겨졌다면
+                              span 없이 숫자만 쓴 것입니다. */
+      .q6 {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+      }
+      .q6-wide {
+        /* TODO: 여기에 코드를 쓰세요 */
+      }
+
+      /* ───── 문제 7 ───── (개념02 섹션 4)
+         .q7 을 네 칸으로 나누세요. 네 칸의 크기는 모두 같습니다.
+         1fr 을 네 번 쓰지 말고 repeat() 를 쓰세요.
+
+         기대 화면: 칸 네 개가 200px 씩 한 줄에 놓입니다.
+         이렇게 되면 틀린 것: 칸이 하나도 안 나뉘면 repeat() 괄호 안 쉼표를 빠뜨린 것입니다. */
+      .q7 {
+        display: grid;
+        gap: 8px;
+        /* TODO: 여기에 코드를 쓰세요 */
+      }
+
+      /* ───── 문제 8 ───── (개념02 섹션 5)
+         .q8 을 이렇게 배치하세요.
+             윗줄  : top 이 두 칸을 통째로 차지
+             아랫줄: 왼쪽이 left, 오른쪽이 right
+         자식의 grid-area 이름은 이미 붙어 있습니다. 이름을 늘어놓는 줄만 쓰면 됩니다.
+
+         기대 화면: 위에 파란 띠가 824px 로 놓이고, 그 아래 왼쪽 200px · 오른쪽 614px 입니다.
+         이렇게 되면 틀린 것: 세 덩어리가 세로로 쌓이면 줄마다 이름 개수가 안 맞는 것입니다. */
+      .q8 {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 10px;
+        /* TODO: 여기에 코드를 쓰세요 */
+      }
+      .q8-top {
+        grid-area: top;
+      }
+      .q8-left {
+        grid-area: left;
+      }
+      .q8-right {
+        grid-area: right;
+      }
+
+      /* ───── 문제 9 ───── (개념02 섹션 6)
+         .q9 를 미디어쿼리 없이 반응형으로 만드세요.
+         칸 하나는 최소 250px 이고, 자리가 남으면 남는 만큼 늘어나야 합니다.
+         빈 자리는 접혀야 합니다.
+
+         기대 화면: 폭 1280 에서 268px 짜리 3칸, 폭 768 에서 341px 2칸,
+                    폭 480 에서 404px 1칸이 됩니다.
+         이렇게 되면 틀린 것: 칸이 하나도 안 나뉘면 minmax 의 순서가 반대인 것입니다. */
+      .q9 {
+        display: grid;
+        gap: 10px;
+        /* TODO: 여기에 코드를 쓰세요 */
+      }
+
+      /* ───── 문제 10 ───── (개념03 섹션 4·6)
+         .q10 은 기본이 1칸입니다. 폭이 700px 이상일 때만 2칸이 되게 하세요.
+         아래에 @media 블록을 통째로 쓰세요. 중괄호가 두 겹이라는 것을 기억하세요.
+
+         기대 화면: 폭 1280 에서 407px 짜리 2칸, 폭 480 에서 404px 짜리 1칸입니다.
+         이렇게 되면 틀린 것: 좁을 때 2칸이 되면 min-width 와 max-width 를 바꿔 쓴 것입니다. */
+      .q10 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      /* TODO: 여기에 @media 블록을 쓰세요 */
+
+      /* ───── 문제 11 ───── (개념04 섹션 3)
+         .q11-photo 가 액자 밖으로 나가지 않게 하세요.
+         그림의 가로세로 비율은 그대로 유지되어야 합니다. 한 줄이면 됩니다.
+
+         기대 화면: 그림이 300 × 150 으로 줄어들어 회색 액자 안에 들어갑니다.
+         이렇게 되면 틀린 것: 그림이 세로로 눌려 보이면 height 를 같이 정한 것입니다. */
+      .q11-photo {
+        /* TODO: 여기에 코드를 쓰세요 */
+      }
+
+      /* ───── 문제 12 ───── (개념04 섹션 5)
+         .q12-thumb 는 180 × 180 짜리 액자입니다. 지금은 그림이 찌그러져 있습니다.
+         비율을 지킨 채 액자를 꽉 채우고, 넘치는 부분은 잘리게 하세요. 한 줄이면 됩니다.
+
+         기대 화면: 산이 찌그러지지 않고 원래 비율로 보입니다. 액자 크기는 그대로 180 × 180 이고,
+                    그림 좌우가 잘려서 오른쪽에 있던 해는 아예 안 보이게 됩니다.
+         이렇게 되면 틀린 것: 위아래에 흰 여백이 생기면 cover 가 아니라 contain 을 쓴 것입니다.
+                              해가 세로로 긴 타원으로 보이면 아직 기본값 fill 인 것입니다. */
+      .q12-thumb {
+        width: 180px;
+        height: 180px;
+        border: 1px solid #bbbbbb;
+        box-sizing: border-box;
+        /* TODO: 여기에 코드를 쓰세요 */
+      }
+
+      /* ───── 문제 13 [응용] ───── (개념04 섹션 4)
+         .q13-title 의 글자 크기를 화면 폭에 따라 부드럽게 바꾸세요.
+         기준은 화면 폭의 2.5%, 최소 16px, 최대 28px 입니다.
+         미디어쿼리를 쓰지 말고 한 줄로 하세요.
+
+         기대 화면: 폭 1280 에서 28px, 폭 768 에서 19.2px, 폭 480 에서 16px 입니다.
+         이렇게 되면 틀린 것: 폭을 바꿔도 글자 크기가 그대로면 vw 대신 px 을 쓴 것입니다. */
+      .q13-title {
+        font-weight: bold;
+        margin: 0;
+        /* TODO: 여기에 코드를 쓰세요 */
+      }
+
+      /* ───── 문제 14 [응용] ───── (개념05 섹션 3·4·5)
+         .q14 를 모바일 우선으로 만드세요.
+             기본        1칸
+             600px 이상  2칸
+             900px 이상  3칸
+         기본 규칙은 이미 되어 있습니다. @media 블록 두 개를 아래에 쓰세요.
+         순서에 주의하세요.
+
+         기대 화면: 폭 1280 에서 268px 3칸, 폭 768 에서 341px 2칸, 폭 480 에서 404px 1칸.
+         이렇게 되면 틀린 것: 폭 1280 에서 3칸이 아니라 2칸이면 두 블록의 순서가 뒤바뀐 것입니다. */
+      .q14 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      /* TODO: 여기에 @media 블록 두 개를 쓰세요 */
+
+      /* ───── 문제 15 [도전] ───── (개념02 섹션 5 + 개념05 섹션 7)
+         .q15 를 반응형 페이지 뼈대로 만드세요.
+             기본(좁은 화면)  head, main, side, foot 이 위에서 아래로 한 줄씩
+             800px 이상       head 가 위, 그 아래 왼쪽 main · 오른쪽 side, 맨 아래 foot
+                              오른쪽 side 의 폭은 200px 로 고정
+         자식의 grid-area 이름은 이미 붙어 있습니다.
+         기본 규칙과 @media 블록을 모두 직접 쓰세요.
+
+         기대 화면: 폭 1280 에서 main 이 614px, side 가 200px 로 나란히 놓입니다.
+                    폭 480 에서는 네 덩어리가 404px 폭으로 세로로 쌓입니다.
+         이렇게 되면 틀린 것: 폭 480 에서도 두 칸으로 나뉘면 기본에 열을 두 개 쓴 것입니다. */
+      .q15 {
+        display: grid;
+        gap: 10px;
+        /* TODO: 여기에 기본 규칙(열과 areas)을 쓰세요 */
+      }
+      .q15-head {
+        grid-area: head;
+      }
+      .q15-main {
+        grid-area: main;
+      }
+      .q15-side {
+        grid-area: side;
+      }
+      .q15-foot {
+        grid-area: foot;
+      }
+      /* TODO: 여기에 800px 이상일 때의 @media 블록을 쓰세요 */
+
+      /* ───── 문제 16 [확인] ───── (개념03 섹션 5·7 + 개념05 섹션 8)
+         아래 .q16 코드는 "넓은 화면에서 3칸, 좁은 화면에서 1칸" 을 만들려고 쓴 것입니다.
+         그런데 정확히 반대로 동작합니다. 에러 메시지는 어디에도 안 뜹니다.
+
+         지금 실제로 벌어지는 일
+           폭 1280 에서 칸이 안 나뉘고 카드가 세로로 한 줄씩 쌓입니다
+           폭  480 으로 좁히면 오히려 3칸이 되어 카드가 128px 로 좁아집니다
+
+         잘못된 곳은 한 군데입니다. 값도 선택자도 아니고, 단어 하나입니다.
+         무엇이 잘못됐는지 말로 설명해 본 뒤에 고치세요.
+
+         기대 화면: 폭 1280 에서 268px 짜리 3칸, 폭 480 에서 404px 짜리 1칸입니다.
+         이렇게 되면 틀린 것: 폭 1280 에서 여전히 한 줄에 하나씩 쌓이면
+                              아직 안 고쳤거나 값을 잘못 건드린 것입니다. */
+      .q16 {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      @media (max-width: 700px) {
+        .q16 {
+          grid-template-columns: 1fr 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         13단원 연습문제 — Grid 와 반응형
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 열고,
+              VS Code 로도 열어 위쪽 style 안의 TODO 자리를 채우세요.
+         ============================================================ -->
+
+    <h1 class="doc-head">13단원 연습문제 — Grid 와 반응형</h1>
+    <p class="doc-sub">13단원 · Grid 와 반응형</p>
+
+    <p class="doc-guide">
+      이 파일 위쪽 <code>&lt;style&gt;</code> 안에 <strong>빈 자리</strong>가 준비되어 있습니다.
+      각 문제 설명도 그 자리 바로 위에 적혀 있으니 <strong>VS Code 로 함께 열어</strong> 보세요.
+      코드를 쓰고 저장(Ctrl+S) 한 뒤 브라우저에서 새로고침(F5) 하면 아래 상자가 바뀝니다.<br />
+      폭을 바꿔 봐야 하는 문제가 많습니다.
+      <strong>F12 → Ctrl+Shift+M</strong> 으로 기기 툴바를 켜 두세요.<br />
+      1~12 는 기본, 13~14 는 응용, 15 는 도전, 16 은 고장 난 코드를 고치는 문제입니다.
+    </p>
+
+    <!-- ══════════ 문제 1 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 1 — 격자를 만들고 세 칸으로 나누기</h2>
+      <p class="doc-desc">
+        (개념01 섹션 1·2) <code>.q1</code> 을 격자로 만들고 칸을 세 개로 나누세요.
+        칸 크기는 셋 다 같게, 칸 사이는 10px 입니다.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 1</p>
+        <div class="q1" id="q1Grid">
+          <div class="q-cell">칸 1</div>
+          <div class="q-cell">칸 2</div>
+          <div class="q-cell">칸 3</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 2 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 2 — 고정 칸과 남는 칸</h2>
+      <p class="doc-desc">
+        (개념01 섹션 3) <code>.q2</code> 의 왼쪽 칸은 200px 로 고정하고,
+        오른쪽 칸은 남는 자리를 전부 쓰게 하세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 2</p>
+        <div class="q2" id="q2Grid">
+          <div class="q-cell" id="q2Left">200px 고정</div>
+          <div class="q-cell" id="q2Right">남는 만큼</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 3 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 3 — 행 간격과 열 간격을 다르게</h2>
+      <p class="doc-desc">
+        (개념01 섹션 4) <code>.q3</code> 의 위아래 줄 사이는 24px,
+        좌우 칸 사이는 10px 로 띄우세요. 값 두 개를 한 줄로 씁니다.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 3</p>
+        <div class="q3" id="q3Grid">
+          <div class="q-cell">1</div>
+          <div class="q-cell">2</div>
+          <div class="q-cell">3</div>
+          <div class="q-cell">4</div>
+          <div class="q-cell">5</div>
+          <div class="q-cell">6</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 4 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 4 — 줄 높이 정하기</h2>
+      <p class="doc-desc">
+        (개념01 섹션 5) <code>.q4</code> 의 첫째 줄 높이를 50px,
+        둘째 줄 높이를 90px 로 정하세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 4</p>
+        <div class="q4" id="q4Grid">
+          <div class="q-cell" id="q4Cell1">1</div>
+          <div class="q-cell">2</div>
+          <div class="q-cell" id="q4Cell3">3</div>
+          <div class="q-cell">4</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 5 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 5 — 선 번호로 두 칸 합치기</h2>
+      <p class="doc-desc">
+        (개념02 섹션 2) <code>.q5-wide</code> 가 1번 선에서 3번 선까지,
+        즉 두 칸을 차지하게 하세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 5</p>
+        <div class="q5">
+          <div class="q-cell q-hi q5-wide" id="q5Wide">두 칸</div>
+          <div class="q-cell">C</div>
+          <div class="q-cell">D</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 6 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 6 — span 으로 세 칸 차지하기</h2>
+      <p class="doc-desc">
+        (개념02 섹션 3) <code>.q6-wide</code> 가 세 칸을 통째로 차지하게 하세요.
+        이번에는 선 번호 대신 <code>span</code> 을 쓰세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 6</p>
+        <div class="q6">
+          <div class="q-cell q-hi q6-wide" id="q6Wide">세 칸을 통째로</div>
+          <div class="q-cell">B</div>
+          <div class="q-cell">C</div>
+          <div class="q-cell">D</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 7 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 7 — repeat() 으로 네 칸 만들기</h2>
+      <p class="doc-desc">
+        (개념02 섹션 4) <code>.q7</code> 을 네 칸으로 나누세요. 크기는 모두 같습니다.
+        <code>1fr</code> 을 네 번 쓰지 말고 <code>repeat()</code> 를 쓰세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 7</p>
+        <div class="q7" id="q7Grid">
+          <div class="q-cell">1</div>
+          <div class="q-cell">2</div>
+          <div class="q-cell">3</div>
+          <div class="q-cell">4</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 8 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 8 — 이름으로 배치하기</h2>
+      <p class="doc-desc">
+        (개념02 섹션 5) <code>.q8</code> 에서 <code>top</code> 이 윗줄 두 칸을 차지하고,
+        아랫줄은 왼쪽이 <code>left</code>, 오른쪽이 <code>right</code> 가 되게 하세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 8</p>
+        <div class="q-scroll">
+          <div class="q8">
+            <div class="q-cell q8-top" id="q8Top">top</div>
+            <div class="q-cell q-hi q8-left" id="q8Left">left</div>
+            <div class="q-cell q8-right" id="q8Right">right</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 9 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 9 — 미디어쿼리 없이 반응형 격자</h2>
+      <p class="doc-desc">
+        (개념02 섹션 6) <code>.q9</code> 의 칸 하나는 최소 250px 이고,
+        자리가 남으면 남는 만큼 늘어나야 합니다. 빈 자리는 접혀야 합니다.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 9</p>
+        <div class="q9" id="q9Grid">
+          <div class="q-cell">카드 1</div>
+          <div class="q-cell">카드 2</div>
+          <div class="q-cell">카드 3</div>
+          <div class="q-cell">카드 4</div>
+          <div class="q-cell">카드 5</div>
+          <div class="q-cell">카드 6</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 10 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 10 — 미디어쿼리로 2칸 만들기</h2>
+      <p class="doc-desc">
+        (개념03 섹션 4·6) <code>.q10</code> 은 기본이 1칸입니다.
+        폭이 <strong>700px 이상</strong>일 때만 2칸이 되게 하세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 10</p>
+        <div class="q10" id="q10Grid">
+          <div class="q-cell">카드 1</div>
+          <div class="q-cell">카드 2</div>
+          <div class="q-cell">카드 3</div>
+          <div class="q-cell">카드 4</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 11 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 11 — 사진이 액자 밖으로 안 나가게</h2>
+      <p class="doc-desc">
+        (개념04 섹션 3) <code>.q11-photo</code> 가 액자 밖으로 나가지 않게 하세요.
+        가로세로 비율은 그대로 유지되어야 합니다.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 11</p>
+        <div class="q-scroll">
+          <div class="q-frame">
+            <img class="q11-photo" id="q11Photo" src="이미지/풍경.svg" alt="산이 있는 풍경 그림" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 12 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 12 — 썸네일을 꽉 채우기</h2>
+      <p class="doc-desc">
+        (개념04 섹션 5) <code>.q12-thumb</code> 는 180 × 180 짜리 액자입니다.
+        지금은 그림이 찌그러져 있습니다(해가 세로로 긴 타원입니다).
+        비율을 지킨 채 액자를 꽉 채우고, 넘치는 부분은 잘리게 하세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 12</p>
+        <img class="q12-thumb" id="q12Thumb" src="이미지/풍경.svg" alt="산이 있는 풍경 그림" />
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 13 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 13 [응용] — 글자 크기를 부드럽게</h2>
+      <p class="doc-desc">
+        (개념04 섹션 4) <code>.q13-title</code> 의 글자 크기를 화면 폭의 2.5% 로 하되,
+        <strong>최소 16px, 최대 28px</strong> 을 벗어나지 않게 하세요.
+        미디어쿼리를 쓰지 말고 한 줄로 하세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 13</p>
+        <p class="q13-title" id="q13Title">우리 동네 도서관</p>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 14 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 14 [응용] — 모바일 우선 1단 → 2단 → 3단</h2>
+      <p class="doc-desc">
+        (개념05 섹션 3·4·5) <code>.q14</code> 를 기본 1칸,
+        <strong>600px 이상 2칸</strong>, <strong>900px 이상 3칸</strong> 으로 만드세요.
+        기본 규칙은 이미 되어 있습니다. 순서에 주의하세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 14</p>
+        <div class="q14" id="q14Grid">
+          <div class="q-cell">카드 1</div>
+          <div class="q-cell">카드 2</div>
+          <div class="q-cell">카드 3</div>
+          <div class="q-cell">카드 4</div>
+          <div class="q-cell">카드 5</div>
+          <div class="q-cell">카드 6</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 15 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 15 [도전] — 반응형 페이지 뼈대</h2>
+      <p class="doc-desc">
+        (개념02 섹션 5 + 개념05 섹션 7) <code>.q15</code> 를 좁은 화면에서는
+        네 덩어리가 세로로 쌓이게, <strong>800px 이상</strong>에서는
+        <code>head</code> 아래에 왼쪽 <code>main</code> · 오른쪽 <code>side</code>(200px),
+        맨 아래 <code>foot</code> 이 오게 만드세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 15</p>
+        <div class="q15" id="q15Grid">
+          <div class="q-band q15-head" id="q15Head">head</div>
+          <div class="q-cell q15-main" id="q15Main">main</div>
+          <div class="q-cell q-hi q15-side" id="q15Side">side</div>
+          <div class="q-dark q15-foot" id="q15Foot">foot</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ 문제 16 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 16 [확인] — 왜 반대로 동작할까요</h2>
+      <p class="doc-desc">
+        아래 <code>.q16</code> 은 "넓은 화면에서 3칸, 좁은 화면에서 1칸" 을 만들려고 쓴 것인데
+        <strong>정확히 반대로 동작합니다.</strong> 에러 메시지는 어디에도 안 뜹니다.
+        <code>&lt;style&gt;</code> 맨 아래에서 잘못된 <strong>단어 한 개</strong>를 찾아 고치세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 16</p>
+        <div class="q16" id="q16Grid">
+          <div class="q-cell">카드 1</div>
+          <div class="q-cell">카드 2</div>
+          <div class="q-cell">카드 3</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 다 풀었으면 ──</p>
+      <p>1. 기기 툴바로 폭을 360, 480, 768, 1280 으로 바꿔 가며 전부 다시 보세요.</p>
+      <p>2. 페이지 맨 아래에 <strong>가로 스크롤 막대</strong>가 생기지 않는지 확인하세요.</p>
+      <p>3. <code>연습문제_정답.html</code> 과 나란히 열어 놓고 비교하세요.</p>
+    </div>
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #q1Grid | display | block
+      #q2Grid | grid-template-columns | 824px
+      #q7Grid | grid-template-columns | 824px
+      #q9Grid | grid-template-columns | 824px
+      #q10Grid | grid-template-columns | 824px
+      #q11Photo | ~width | 400
+      #q12Thumb | object-fit | fill
+      #q13Title | font-size | 16px
+      #q16Grid | grid-template-columns | 824px
+      @폭 480
+      #q10Grid | grid-template-columns | 404px
+      #q16Grid | grid-template-columns | 128px 128px 128px
+    -->
+  </body>
+</html>

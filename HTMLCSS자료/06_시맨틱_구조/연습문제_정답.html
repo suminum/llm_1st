@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>06단원 연습문제 정답 - 시맨틱 구조</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         06단원 연습문제 정답 — 시맨틱 구조
+         ------------------------------------------------------------
+         보는 법
+           1) 먼저 연습문제.html 을 끝까지 풀어 보세요.
+           2) 그 다음에 이 파일을 열어 코드를 나란히 대조하세요.
+         ============================================================
+
+         ★ 이 단원의 정답 확인법은 다른 단원과 다릅니다.
+
+         06단원 태그는 화면을 바꾸지 않습니다.
+         그래서 "화면이 같으니 맞았다" 라고 볼 수 없습니다.
+         div 로 써도 화면은 똑같이 나오니까요.
+
+         반드시 코드를 대조하세요. 볼 곳은 두 군데입니다.
+
+             1) 태그 이름을 알맞게 골랐는가
+             2) 어느 태그가 어느 태그 안에 들어 있는가 (중첩 관계)
+
+         ★ 이 파일에도 main 은 하나뿐입니다.
+
+         문제 14 의 답에만 살아 있는 main 이 들어 있습니다.
+         문제 15 의 답은 코드 글자로만 적었습니다.
+         정답 파일이 스스로 규칙을 어기면 안 되기 때문입니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">06단원 연습문제 정답 — 시맨틱 구조</h1>
+    <p class="doc-sub">06단원 · div, span, header, nav, main, section, article, aside, footer</p>
+
+    <p class="doc-guide">
+      각 문제의 답과 <strong>왜 그 태그를 골랐는지</strong>가 함께 적혀 있습니다.
+      화면 결과는 대부분 밋밋합니다. <strong>코드를 대조하는 것이 채점</strong>입니다.
+      태그 이름이 달라도 화면은 같게 나온다는 점을 계속 떠올리세요.
+    </p>
+
+    <!-- ───── 문제 1 ───── (개념01 섹션1)
+      제목 한 줄과 문단 두 줄을 div 하나로 묶으세요.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 1 — 세 줄을 div 로 묶기</h2>
+      <p class="doc-desc">제목 한 줄과 문단 두 줄을 <code>&lt;div&gt;</code> 하나로 묶으세요.</p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 1 · 정답</p>
+        <div id="a1Box">
+          <h3>동네 축구 모임</h3>
+          <p>매주 토요일 아침 8시에 모입니다.</p>
+          <p>초보자도 환영합니다.</p>
+        </div>
+        <!-- 화면: 굵고 조금 큰 글씨 "동네 축구 모임" 아래에
+                  문단 두 줄이 차례로 보입니다. 모두 세 줄입니다 -->
+      </div>
+      <p class="doc-note">
+        <code>&lt;div&gt;</code> 를 씌워도 세 줄은 그대로입니다.
+        div 는 묶기만 할 뿐 화면을 안 바꿉니다.
+        제목이 굵고 큰 것은 <code>&lt;h3&gt;</code> 덕분이지 div 덕분이 아닙니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 2 ───── (개념01 섹션3)
+      문장에서 가격 부분만 span 으로 묶고 class 이름을 price 로 붙이세요.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 2 — 문장 속 값을 span 으로 묶기</h2>
+      <p class="doc-desc">가격 부분만 <code>&lt;span class="price"&gt;</code> 로 묶으세요.</p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 2 · 정답</p>
+        <p id="a2Line">오늘의 국수는 <span class="price" id="a2Price">7,000원</span>입니다.</p>
+        <!-- 화면: "오늘의 국수는 7,000원입니다." 가 한 줄로 보입니다.
+                  7,000원 도 나머지와 똑같은 보통 글씨입니다 -->
+      </div>
+      <p class="doc-note">
+        <code>&lt;span&gt;</code> 은 인라인이라 줄이 안 나뉩니다.
+        여기에 <code>&lt;div&gt;</code> 를 썼다면 줄이 세 줄로 쪼개졌을 것입니다.
+        <code>class="price"</code> 는 08단원에서 이 숫자만 골라 꾸밀 때 쓸 손잡이입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 3 ───── (개념02 섹션2)
+      같은 내용을 div 판과 section 판으로 두 번 쓰세요.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 3 — div 판과 section 판을 같이 써 보기</h2>
+      <p class="doc-desc">
+        같은 내용을 <code>&lt;div&gt;</code> 와 <code>&lt;section&gt;</code> 으로 각각 감싸고
+        결과가 같은지 확인하세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 3 · 정답</p>
+        <div id="a3Div">
+          <h4>여는 시간</h4>
+          <p>평일은 9시부터 18시까지입니다.</p>
+        </div>
+        <section id="a3Sec">
+          <h4>여는 시간</h4>
+          <p>평일은 9시부터 18시까지입니다.</p>
+        </section>
+        <!-- 화면: 굵은 소제목과 문단으로 된 덩어리가 두 벌 이어서 보입니다.
+                  두 덩어리는 글자 크기도 줄 간격도 완전히 같습니다 -->
+      </div>
+      <p class="doc-note">
+        두 덩어리의 높이가 <strong>정확히 같습니다</strong>.
+        여기서는 "여는 시간" 이라는 제목이 있으니 <code>&lt;section&gt;</code> 쪽이 더 정확한 답입니다.
+        제목을 붙일 수 없는 묶음이었다면 <code>&lt;div&gt;</code> 가 맞습니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 4 ───── (개념03 섹션2)
+      가게 사이트의 머리말을 header 로 만드세요.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 4 — header 만들기</h2>
+      <p class="doc-desc">가게 이름과 한 줄 소개를 <code>&lt;header&gt;</code> 로 묶으세요.</p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 4 · 정답</p>
+        <header id="a4Header">
+          <h3>골목 분식</h3>
+          <p>1998년부터 한자리에서</p>
+        </header>
+        <!-- 화면: 굵고 조금 큰 글씨 "골목 분식" 아래에
+                  보통 글씨로 "1998년부터 한자리에서" 한 줄이 보입니다 -->
+      </div>
+      <p class="doc-note">
+        <code>&lt;header&gt;</code> 는 글자를 하나도 안 키웁니다.
+        큰 글씨는 <code>&lt;h3&gt;</code> 가 만든 것입니다.
+        header 가 한 일은 "여기부터 여기까지가 이 사이트의 머리말" 이라고 적어 둔 것뿐입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 5 ───── (개념03 섹션3)
+      nav 안에 ul, li, a 로 메뉴 세 개를 만드세요.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 5 — nav 로 메뉴 만들기</h2>
+      <p class="doc-desc">
+        <code>&lt;nav&gt;</code> 안에 <code>&lt;ul&gt;</code>,
+        <code>&lt;li&gt;</code>, <code>&lt;a&gt;</code> 로 메뉴 세 개를 만드세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 5 · 정답</p>
+        <nav id="a5Nav">
+          <ul id="a5List">
+            <li><a href="개념03_페이지_뼈대_태그.html">메뉴판</a></li>
+            <li><a href="개념03_페이지_뼈대_태그.html">오시는 길</a></li>
+            <li><a href="개념03_페이지_뼈대_태그.html">사진</a></li>
+          </ul>
+        </nav>
+        <!-- 화면: 점(•) 이 붙은 세 줄이 보이고 글자는 파란색 밑줄 링크입니다 -->
+      </div>
+      <p class="doc-note">
+        메뉴는 실제로 <strong>항목이 여러 개인 목록</strong>이라 <code>&lt;ul&gt;</code> 을 씁니다.
+        그래야 화면 낭독기가 "목록, 항목 3개" 라고 미리 알려 줍니다.
+        메뉴가 세로로 쌓여 있는 것이 정상입니다. 가로로 눕히는 것은 12단원에서 합니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 6 ───── (개념03 섹션5)
+      주소와 저작권 표시를 footer 로 묶으세요.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 6 — footer 만들기</h2>
+      <p class="doc-desc">주소와 저작권 표시를 <code>&lt;footer&gt;</code> 로 묶으세요.</p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 6 · 정답</p>
+        <footer id="a6Footer">
+          <p>골목 분식 · 서울시 어딘가 5길 12</p>
+          <p id="a6Copy">&copy; 2026 골목 분식</p>
+        </footer>
+        <!-- 화면: 보통 글씨 두 줄이 보이고, 둘째 줄은 동그라미 안에 c 가 든
+                  기호로 시작해서 "2026 골목 분식" 으로 이어집니다 -->
+      </div>
+      <p class="doc-note">
+        저작권 기호는 02단원에서 배운 특수문자 표기로 씁니다.
+        이름을 잘못 적으면 브라우저가 고쳐 주지 않고 <strong>글자를 그대로 그립니다</strong>.
+        <code>&lt;footer&gt;</code> 는 화면 맨 아래로 내려가지 않고 적힌 자리에 놓입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 7 ───── (개념04 섹션3)
+      제목이 있는 section 을 만드세요.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 7 — 제목이 있는 section 만들기</h2>
+      <p class="doc-desc">
+        <code>&lt;section&gt;</code> 을 쓰고 <strong>제목을 반드시 같이</strong> 넣으세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 7 · 정답</p>
+        <section id="a7Section">
+          <h3>주차 안내</h3>
+          <p>가게 뒤편에 세 자리가 있습니다.</p>
+        </section>
+        <!-- 화면: 굵고 조금 큰 글씨 "주차 안내" 아래에 문단 한 줄이 보입니다 -->
+      </div>
+      <p class="doc-note">
+        <code>&lt;section&gt;</code> 은 <strong>주제로 묶은 덩어리</strong>이므로
+        그 주제를 적은 제목이 함께 있어야 합니다.
+        제목이 떠오르지 않는 묶음이라면 그건 section 이 아니라 <code>&lt;div&gt;</code> 입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 8 ───── (개념04 섹션2)
+      후기 하나를 article 로 감싸세요.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 8 — article 로 후기 하나 만들기</h2>
+      <p class="doc-desc">후기 하나를 <code>&lt;article&gt;</code> 로 감싸세요.</p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 8 · 정답</p>
+        <article id="a8Article">
+          <h3>김밥이 맛있어요</h3>
+          <p>2026년 8월 5일</p>
+          <p>재료가 아주 신선했습니다.</p>
+        </article>
+        <!-- 화면: 굵고 조금 큰 글씨 "김밥이 맛있어요" 아래에
+                  날짜 한 줄과 본문 한 줄이 보입니다. 모두 세 줄입니다 -->
+      </div>
+      <p class="doc-note">
+        후기 하나는 <strong>떼어 내도 그 자체로 말이 되는 덩어리</strong>라서 article 입니다.
+        개념04 섹션5 흐름도의 1번 질문에서 바로 멈춥니다.
+        article 을 신문 기사에만 쓴다고 오해하면 이런 자리를 놓칩니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 9 ───── (개념04 섹션4)
+      추천 목록을 aside 로 감싸세요.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 9 — aside 로 곁다리 만들기</h2>
+      <p class="doc-desc">추천 목록을 <code>&lt;aside&gt;</code> 로 감싸세요.</p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 9 · 정답</p>
+        <aside id="a9Aside">
+          <h4>오늘의 추천</h4>
+          <ul>
+            <li>라면</li>
+            <li>김밥</li>
+            <li>떡볶이</li>
+          </ul>
+        </aside>
+        <!-- 화면: 굵은 소제목 "오늘의 추천" 아래에 점(•) 이 붙은 세 줄이
+                  왼쪽에 그대로 쌓여서 보입니다 -->
+      </div>
+      <p class="doc-note">
+        추천 목록은 <strong>지워도 본문을 읽는 데 지장이 없는 곁다리</strong>라서 aside 입니다.
+        <code>&lt;aside&gt;</code> 를 썼는데 오른쪽으로 안 갔다고 놀라지 마세요.
+        aside 는 위치가 아니라 관계를 적는 태그입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 10 ───── [응용] (개념02 섹션1)
+      div 만 있는 코드를 시맨틱 태그로 바꿔 쓰세요.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 10 [응용] — div 만 있는 코드를 시맨틱으로</h2>
+      <p class="doc-desc">
+        <code>&lt;div&gt;</code> 만 쓴 코드를 알맞은 시맨틱 태그로 바꿔 쓰세요.
+        화면은 하나도 안 바뀌어야 합니다.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 10 · 정답</p>
+        <div id="a10Wrap">
+          <header>
+            <h4>골목 분식</h4>
+          </header>
+          <section>
+            <h4>오늘의 국수</h4>
+            <p>멸치 육수로 끓였습니다.</p>
+          </section>
+          <footer>
+            <p>문의 02-000-0000</p>
+          </footer>
+        </div>
+        <!-- 화면: 굵은 소제목 두 개와 문단 두 줄이 위에서 아래로 이어져
+                  모두 네 줄로 보입니다 -->
+      </div>
+      <p class="doc-note">
+        바깥 <code>&lt;div&gt;</code> 는 <strong>그대로 두는 것이 맞습니다</strong>.
+        아무 뜻 없이 세 덩어리를 한 번 묶은 껍데기니까요.
+        안쪽 셋은 각각 머리말 · 주제 묶음 · 꼬리말이라 header · section · footer 가 됩니다.
+        바꾸기 전과 화면이 똑같은 것이 정답의 증거입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 11 ───── [응용] (개념04 섹션5)
+      네 상황에 무엇을 쓸지 고르는 판단 문제입니다.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 11 [응용] — 어떤 태그를 쓸지 고르기</h2>
+      <p class="doc-desc">
+        네 가지 상황에 <code>article</code> · <code>section</code> ·
+        <code>aside</code> · <code>div</code> 중 무엇을 쓸지 고르세요.
+      </p>
+      <div class="doc-good">
+        <span class="doc-good-tag">정답</span>
+        <p id="a11a">
+          <strong>(가) 상품 카드 하나 → <code>article</code></strong><br />
+          상품 하나만 떼어 내 다른 페이지에 붙여도 상품 정보로 말이 됩니다.
+          흐름도 1번 질문에서 바로 멈춥니다.
+        </p>
+        <p id="a11b">
+          <strong>(나) 찾아오시는 길 → <code>section</code></strong><br />
+          떼어 내면 어느 회사인지 모르고(1번 아니오), 지우면 소개가 허전합니다(2번 아니오).
+          "찾아오시는 길" 이라는 제목을 붙일 수 있으니 3번에서 멈춥니다.
+        </p>
+        <p id="a11c">
+          <strong>(다) 글쓴이 소개 상자 → <code>aside</code></strong><br />
+          지워도 글을 읽는 데 아무 지장이 없습니다. 2번에서 멈춥니다.
+          그 글의 꼬리말로 보아 <code>footer</code> 를 쓰는 것도 좋은 답입니다.
+        </p>
+        <p id="a11d">
+          <strong>(라) 그냥 감싼 껍데기 → <code>div</code></strong><br />
+          붙일 제목이 없습니다. 네 번째 질문까지 내려옵니다.
+          div 로 끝나는 것은 실패가 아니라 정확한 판단입니다.
+        </p>
+      </div>
+      <p class="doc-note">
+        네 개를 전부 <code>section</code> 으로 골랐다면 흐름도의 1번과 2번을 건너뛴 것입니다.
+        <strong>순서대로</strong> 물어야 갈립니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 12 ───── [응용] (개념03 섹션6)
+      article 안에 header 와 footer 를 각각 넣으세요.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 12 [응용] — 글 한 편에 머리말과 꼬리말 붙이기</h2>
+      <p class="doc-desc">
+        <code>&lt;article&gt;</code> <strong>안에</strong>
+        <code>&lt;header&gt;</code> 와 <code>&lt;footer&gt;</code> 를 넣으세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 12 · 정답</p>
+        <article id="a12Article">
+          <header id="a12Header">
+            <h3>떡볶이 국물 남기지 않는 법</h3>
+            <p>2026년 8월 8일</p>
+          </header>
+          <p>마지막에 밥을 볶으면 됩니다.</p>
+          <footer id="a12Footer">
+            <p>글쓴이 : 최은지</p>
+          </footer>
+        </article>
+        <!-- 화면: 굵고 조금 큰 글씨 제목 아래에 날짜 한 줄, 본문 한 줄,
+                  "글쓴이 : 최은지" 한 줄이 차례로 보입니다. 모두 네 줄입니다 -->
+      </div>
+      <p class="doc-note">
+        여기의 <code>&lt;header&gt;</code> 는 <strong>글 한 편의 머리말</strong>입니다.
+        문제 4 의 header 는 사이트 전체의 머리말이었습니다. 태그는 같아도 뜻이 다릅니다.
+        header 를 article 밖에 두면 화면은 같지만 "이 글의 머리말" 이라는 정보가 사라집니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 13 ───── [도전] (개념04 섹션2)
+      article 두 개와 aside 하나로 글 목록을 만드세요.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 13 [도전] — 글 목록 만들기</h2>
+      <p class="doc-desc">
+        <code>&lt;article&gt;</code> 두 개와 <code>&lt;aside&gt;</code> 하나로
+        글 목록을 만드세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 13 · 정답</p>
+        <article id="a13PostA">
+          <header>
+            <h3>여름 김치 담그기</h3>
+            <p>2026년 7월 30일</p>
+          </header>
+          <p>소금 양을 줄이는 것이 요령입니다.</p>
+          <footer>
+            <p>글쓴이 : 김민준</p>
+          </footer>
+        </article>
+        <article id="a13PostB">
+          <header>
+            <h3>냉면 육수 내기</h3>
+            <p>2026년 8월 2일</p>
+          </header>
+          <p>동치미 국물을 반 섞으면 시원합니다.</p>
+          <footer>
+            <p>글쓴이 : 이서연</p>
+          </footer>
+        </article>
+        <aside id="a13Aside">
+          <h4>많이 본 글</h4>
+          <ul>
+            <li>김밥 싸기</li>
+            <li>된장 끓이기</li>
+          </ul>
+        </aside>
+        <!-- 화면: 제목 · 날짜 · 본문 · 글쓴이 순서의 덩어리가 두 벌 이어지고,
+                  그 아래에 굵은 소제목 "많이 본 글" 과 점(•) 목록 두 줄이 보입니다.
+                  두 글 사이에 구분선은 없습니다 -->
+      </div>
+      <p class="doc-note">
+        글이 여러 편이면 <code>&lt;article&gt;</code> 을 여러 개 씁니다.
+        글 하나하나가 각각 완결된 덩어리이기 때문입니다.
+        두 글 사이에 선이 없어 경계가 안 보이는 것이 정상입니다.
+        선을 그으려고 <code>&lt;hr /&gt;</code> 를 넣으면 "주제가 바뀐다" 는 다른 뜻이 붙습니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 14 ───── [도전] (개념05 섹션5)
+      페이지 한 장을 통째로 조립하세요. 이 파일의 유일한 main 입니다.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 14 [도전] — 페이지 한 장 통째로 조립하기</h2>
+      <p class="doc-desc">
+        <code>header</code> · <code>nav</code> · <code>main</code> ·
+        <code>article</code> · <code>section</code> · <code>aside</code> ·
+        <code>footer</code> 를 모두 써서 페이지 한 장을 만드세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 14 · 정답</p>
+        <header id="a14SiteHeader">
+          <h3>골목 분식</h3>
+          <p>1998년부터 한자리에서</p>
+        </header>
+
+        <nav id="a14Nav">
+          <ul>
+            <li><a href="개념05_전체_구조_만들기.html">메뉴판</a></li>
+            <li><a href="개념05_전체_구조_만들기.html">오시는 길</a></li>
+            <li><a href="개념05_전체_구조_만들기.html">사진</a></li>
+          </ul>
+        </nav>
+
+        <main id="a14Main">
+          <article id="a14Article">
+            <header id="a14PostHeader">
+              <h3>오늘의 국수</h3>
+              <p>2026년 8월 11일</p>
+            </header>
+
+            <section id="a14Ingredient">
+              <h4>재료</h4>
+              <ul>
+                <li>멸치</li>
+                <li>다시마</li>
+                <li>소면</li>
+              </ul>
+            </section>
+
+            <section id="a14Order">
+              <h4>끓이는 순서</h4>
+              <ol>
+                <li>육수를 20분 끓입니다.</li>
+                <li>면을 3분 삶습니다.</li>
+              </ol>
+            </section>
+
+            <footer id="a14PostFooter">
+              <p>글쓴이 : 사장님</p>
+            </footer>
+          </article>
+
+          <aside id="a14Aside">
+            <h4>곁들이면 좋아요</h4>
+            <ul>
+              <li>김밥</li>
+              <li>단무지</li>
+            </ul>
+          </aside>
+        </main>
+
+        <footer id="a14SiteFooter">
+          <p>골목 분식 · 서울시 어딘가 5길 12</p>
+          <p>&copy; 2026 골목 분식</p>
+        </footer>
+        <!-- 화면: 가게 이름과 소개, 점(•) 메뉴 세 줄, 글 제목과 날짜,
+                  "재료" 와 점 목록 세 줄, "끓이는 순서" 와 1. 2. 번호 목록 두 줄,
+                  글쓴이 한 줄, "곁들이면 좋아요" 와 점 목록 두 줄,
+                  마지막에 주소와 저작권 두 줄이 위에서 아래로 이어집니다 -->
+      </div>
+      <p class="doc-note">
+        확인할 것은 넷입니다.
+        <strong>main 은 하나</strong>, <strong>header 와 footer 는 각각 두 개</strong>
+        (가게 것 하나, 글 한 편의 것 하나), <strong>nav 는 위쪽 메뉴에만</strong>,
+        <strong>재료와 순서는 제목이 붙는 주제 묶음이라 section</strong>.
+        재료는 순서가 없으니 <code>&lt;ul&gt;</code>, 끓이는 순서는 순서가 있으니
+        <code>&lt;ol&gt;</code> 입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 15 ───── [확인] (개념03 섹션7, 개념04 섹션7)
+      잘못된 곳 네 군데를 찾아 고치는 문제입니다.
+      살아 있는 코드로 쓰면 이 파일에 main 이 두 개가 되므로 글자로만 적었습니다.
+    -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 15 [확인] — 잘못된 곳 네 군데 찾아 고치기</h2>
+      <p class="doc-desc">
+        에러도 안 나고 화면도 멀쩡한데 <strong>잘못된 코드</strong>입니다.
+        네 군데를 찾아 고친 코드를 적으세요.
+      </p>
+
+      <div class="doc-bad">
+        <span class="doc-bad-tag">잘못된 코드</span>
+        <div class="doc-code">&lt;main&gt;
+  &lt;header&gt;골목 분식&lt;/header&gt;
+  &lt;span&gt;
+    &lt;div&gt;오늘의 국수&lt;/div&gt;
+  &lt;/span&gt;
+&lt;/main&gt;
+&lt;section&gt;
+  &lt;p&gt;멸치 육수로 끓였습니다.&lt;/p&gt;
+&lt;/section&gt;
+&lt;main&gt;
+  &lt;p&gt;문의 02-000-0000&lt;/p&gt;
+&lt;/main&gt;</div>
+      </div>
+
+      <div class="doc-good">
+        <span class="doc-good-tag">고친 코드</span>
+        <div class="doc-code" id="a15Code">&lt;header&gt;골목 분식&lt;/header&gt;
+
+&lt;main&gt;
+  &lt;section&gt;
+    &lt;h3&gt;오늘의 국수&lt;/h3&gt;
+    &lt;p&gt;멸치 육수로 끓였습니다.&lt;/p&gt;
+  &lt;/section&gt;
+&lt;/main&gt;
+
+&lt;footer&gt;
+  &lt;p&gt;문의 02-000-0000&lt;/p&gt;
+&lt;/footer&gt;</div>
+        <!-- 화면: 검은 상자 안에 흰 글씨로 고친 코드가 그대로 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <strong>(1) main 이 두 개였습니다.</strong>
+        아래쪽 main 은 사실 연락처라서 꼬리말입니다. <code>&lt;footer&gt;</code> 로 바꿉니다.
+      </p>
+      <p class="doc-note">
+        <strong>(2) header 가 main 안에 있었습니다.</strong>
+        가게 이름은 모든 페이지에 똑같이 나오므로 이 페이지만의 알맹이가 아닙니다.
+        main 밖으로 빼야 "본문으로 건너뛰기" 가 제 자리로 갑니다.
+      </p>
+      <p class="doc-note">
+        <strong>(3) span 안에 div 가 들어 있었습니다.</strong>
+        인라인 안에 블록이 들어가 줄이 쪼개집니다. 게다가 "오늘의 국수" 는 제목이므로
+        <code>&lt;h3&gt;</code> 가 맞습니다. span 과 div 를 둘 다 없앴습니다.
+      </p>
+      <p class="doc-note">
+        <strong>(4) section 에 제목이 없었습니다.</strong>
+        무슨 주제의 구역인지 아무 데도 안 적혀 있었습니다.
+        위에서 꺼낸 <code>&lt;h3&gt;오늘의 국수&lt;/h3&gt;</code> 를 section 안으로 넣으면
+        (3) 과 (4) 가 한 번에 풀립니다.
+      </p>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 06단원을 마치며 ──</p>
+      <p>1. 여기까지가 <strong>HTML 파트</strong>입니다. 태그로 "무엇인가" 를 적는 일을 다 배웠습니다.</p>
+      <p>2. 06단원 결과물은 전부 밋밋합니다. <strong>HTML 은 원래 그렇습니다.</strong></p>
+      <p>3. 07단원부터 CSS 로 색과 크기와 배치를 입힙니다. 이 뼈대를 그대로 다시 씁니다.</p>
+      <p>4. 뼈대가 엉성하면 CSS 로 잡을 손잡이가 없습니다. 지금 잘 나눠 둔 것이 나중에 돌아옵니다.</p>
+    </div>
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #a1Box | display | block
+      #a2Price | display | inline
+      #a2Line | text | 오늘의 국수는 7,000원입니다.
+      #a3Div | ~height | 74
+      #a3Sec | ~height | 74
+      #a4Header | display | block
+      #a5Nav | display | block
+      #a6Copy | text | © 2026 골목 분식
+      #a7Section | display | block
+      #a8Article | display | block
+      #a9Aside | display | block
+      #a10Wrap | display | block
+      #a12Article | display | block
+      #a12Footer | text | 글쓴이 : 최은지
+      #a13PostA | display | block
+      #a13Aside | display | block
+      #a14Main | display | block
+      #a14Article | display | block
+      #a14SiteFooter | display | block
+      #a15Code | white-space | pre
+    -->
+  </body>
+</html>

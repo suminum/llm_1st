@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>11단원 개념03 - input 과 change</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      label {
+        display: block;
+        margin: 8px 0 4px;
+        font-weight: bold;
+      }
+      input[type="text"],
+      input[type="number"],
+      select,
+      textarea {
+        padding: 6px 8px;
+        font-size: 15px;
+        font-family: inherit;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+      }
+      .over {
+        color: #c00;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 03 — input 과 change</h1>
+
+    <p class="guide">
+      브라우저로 열고 <strong>직접 타이핑</strong>해 보세요. 글자를 칠 때마다 결과가
+      바로바로 바뀝니다. <strong>F12 → Console</strong> 도 함께 보세요.
+    
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>① input — 글자가 바뀔 때마다</h3>
+      <label for="nameInput">이름</label>
+      <input type="text" id="nameInput" placeholder="이름을 입력하세요" />
+      <div class="output" id="out1">여기에 실시간으로 나옵니다</div>
+
+      <h3>② change — 다 입력하고 벗어났을 때</h3>
+      <label for="changeInput">이름 (input 과 비교)</label>
+      <input type="text" id="changeInput" placeholder="치고 나서 Tab 을 눌러 보세요" />
+      <div class="output" id="out2">여기는 벗어날 때만 바뀝니다</div>
+
+      <h3>③ 글자 수 세기</h3>
+      <label for="memoArea">메모 (20자 이내)</label>
+      <textarea id="memoArea" rows="2" cols="40" placeholder="입력해 보세요"></textarea>
+      <div class="output" id="out3">0 / 20</div>
+
+      <h3>④ 실시간 계산</h3>
+      <label for="priceInput">가격</label>
+      <input type="number" id="priceInput" value="4500" />
+      <label for="countInput">개수</label>
+      <input type="number" id="countInput" value="2" />
+      <div class="output" id="out4">합계: 9000원</div>
+
+      <h3>⑤ 체크박스와 선택 상자</h3>
+      <label><input type="checkbox" id="agreeCheck" /> 약관에 동의합니다</label>
+      <label for="sizeSelect">사이즈</label>
+      <select id="sizeSelect">
+        <option value="S">작은 것</option>
+        <option value="M" selected>보통</option>
+        <option value="L">큰 것</option>
+      </select>
+      <div class="output" id="out5">동의: 안 함 / 사이즈: M</div>
+    </div>
+
+    <script>
+      // ============================================================
+      // 11단원 · 개념 03 — input 과 change
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 직접 타이핑해 보세요.
+      // ============================================================
+      //
+      // 10단원 개념05 에서 "값을 한 번만 읽어서 고쳐도 안 바뀐다" 고 했습니다.
+      // 그 문제를 해결하는 이벤트가 이것입니다.
+      //
+      //     input   글자가 바뀔 때마다 (한 글자씩)
+      //     change  다 입력하고 벗어났을 때 / 체크·선택이 바뀔 때
+
+      // ── 섹션 1: input — 실시간 ──
+
+      const nameInput = document.querySelector("#nameInput");
+      const out1 = document.querySelector("#out1");
+
+      nameInput.addEventListener("input", (e) => {
+        // e.target 이 곧 nameInput 입니다 (개념02)
+        const value = e.target.value;
+
+        out1.textContent = value ? `${value}님, 안녕하세요` : "여기에 실시간으로 나옵니다";
+        console.log("input:", value);
+      });
+
+      // 한 글자 칠 때마다 콜백이 실행됩니다.
+      // "김" → "김민" → "김민준" 이렇게 세 번 실행됩니다.
+      //
+      // 빈 값일 때 안내 문구로 되돌리려고 삼항 연산자를 썼습니다. (03단원)
+
+      // ✏️ 직접 해보기 1 — 입력한 글자를 대문자로 바꿔 보여 주세요. (toUpperCase)
+
+      // ── 섹션 2: change — 벗어날 때 ──
+
+      const changeInput = document.querySelector("#changeInput");
+      const out2 = document.querySelector("#out2");
+
+      changeInput.addEventListener("change", (e) => {
+        out2.textContent = `확정된 값: ${e.target.value}`;
+        console.log("change:", e.target.value);
+      });
+
+      // 직접 비교해 보세요.
+      //   ① 칸에 타이핑 → 글자마다 바로 바뀜
+      //   ② 칸에 타이핑 → 아무 반응 없음 → Tab 을 누르거나 다른 곳을 클릭 → 그때 바뀜
+      //
+      // 언제 무엇을 쓰나?
+      //   실시간 검색, 글자 수 세기, 즉시 계산  → input
+      //   최종 값만 필요, 무거운 처리(서버 요청) → change
+      //
+      // 글자 입력칸에서는 input 을 훨씬 많이 씁니다.
+
+      // ✏️ 직접 해보기 2 — ② 칸에 "커피" 를 치고 Tab 을 눌러 벗어나 보세요.
+      //                    콘솔에 무엇이 언제 찍히나요? ① 칸과 비교해 보세요.
+
+      // ── 섹션 3: 글자 수 세기 ──
+
+      const memoArea = document.querySelector("#memoArea");
+      const out3 = document.querySelector("#out3");
+      const maxLength = 20;
+
+      memoArea.addEventListener("input", (e) => {
+        const length = e.target.value.length; // 01단원의 .length
+
+        out3.textContent = `${length} / ${maxLength}`;
+
+        // 넘치면 빨갛게 (10단원 개념03)
+        out3.classList.toggle("over", length > maxLength);
+      });
+
+      // toggle 의 두 번째 인자로 조건을 주면 붙였다 떼는 걸 한 줄로 씁니다.
+
+      // ✏️ 직접 해보기 3 — 20자를 넘으면 "글자 수 초과" 라고 함께보여 주세요.
+
+      // ── 섹션 4: 실시간 계산 ──
+
+      const priceInput = document.querySelector("#priceInput");
+      const countInput = document.querySelector("#countInput");
+      const out4 = document.querySelector("#out4");
+
+      // 계산하는 일을 함수로 빼 둡니다. 두 곳에서 똑같이 부를 수 있으니까요. (05단원)
+      function updateTotal() {
+        const price = Number(priceInput.value); // 반드시 Number! (10단원 개념05)
+        const count = Number(countInput.value);
+        const total = price * count;
+
+        out4.textContent = `합계: ${total}원`;
+        console.log("합계 갱신:", total);
+      }
+
+      priceInput.addEventListener("input", updateTotal);
+      countInput.addEventListener("input", updateTotal);
+
+      // 같은 함수를 두 입력칸에 붙였습니다.
+      // 어느 쪽을 고치든 합계가 다시 계산됩니다.
+      //
+      // 여기서도 괄호를 붙이면 안 됩니다.
+      //   addEventListener("input", updateTotal)    ← 맞음
+      //   addEventListener("input", updateTotal())  ← 틀림
+
+      // 처음 한 번 실행해서 화면을 맞춰 둡니다.
+      updateTotal();
+      // 콘솔: 합계 갱신: 9000
+
+      // ✏️ 직접 해보기 4 — 개수를 비우면 합계가 0원이 됩니다. 왜그럴까요?
+      //                    (힌트: Number("") 은 얼마일까요?)
+
+      // ── 섹션 5: 체크박스와 select ──
+
+      const agreeCheck = document.querySelector("#agreeCheck");
+      const sizeSelect = document.querySelector("#sizeSelect");
+      const out5 = document.querySelector("#out5");
+
+      function updateOptions() {
+        const agreeText = agreeCheck.checked ? "함" : "안 함";
+        const size = sizeSelect.value;
+
+        out5.textContent = `동의: ${agreeText} / 사이즈: ${size}`;
+        console.log("옵션 갱신:", agreeText, size);
+      }
+
+      // 체크박스와 select 는 change 를 씁니다. input 도 동작하지만 change 가 관례입니다.
+      agreeCheck.addEventListener("change", updateOptions);
+      sizeSelect.addEventListener("change", updateOptions);
+
+      // 여기서도 처음 한 번은 직접 불러서 화면을 맞춰 둡니다. 섹션 4와 같은 이유입니다.
+      updateOptions();
+      // 콘솔: 옵션 갱신: 안 함 M
+
+      // 체크박스는 .checked (true/false), select 는 .value 입니다. (10단원 개념05)
+
+      // ✏️ 직접 해보기 5 — 동의하지 않으면 결과 글자를 빨갛게 만들어 보세요.
+
+      // ── 섹션 6: 자주 하는 실수 ──
+
+      // [실수 1] 입력값을 Number 로 안 바꿈
+      // const total = priceInput.value * countInput.value;   ← 우연히 됨
+      // const total = priceInput.value + countInput.value;   ← "45002" 가 됨
+      // 습관적으로 Number( ) 를 붙이세요.
+
+      // [실수 2] 이벤트 이름을 "onchange" 로 씀
+      // addEventListener("onchange", ...)  ← 아무 일도 안 일어남
+
+      // [실수 3] 처음 화면을 안 맞춰 둠
+      // 이벤트는 '바뀔 때' 만 실행됩니다. 페이지를 열자마자의 화면은
+      // 직접 한 번 함수를 불러서 맞춰야 합니다. (섹션 4의 updateTotal( ) 호출)
+
+      // [실수 4] 체크박스에 value 를 씀
+      // agreeCheck.value  → 항상 "on" 입니다. .checked 를 쓰세요.
+
+      // [실수 5] input 이벤트가 select 에서도 될 거라 생각
+      // 됩니다만, 체크·선택은 change 를 쓰는 것이 관례입니다.
+
+      // ── 정리 ──
+
+      // 1. input  — 글자가 바뀔 때마다. 실시간 처리에 쓴다.
+      // 2. change — 다 입력하고 벗어났을 때 / 체크·선택이 바뀔 때.
+      // 3. e.target.value 로 값을 읽는다. 계산 전에는 Number( ).
+      // 4. 처리 내용을 함수로 빼면 여러 입력칸에 같은 함수를 붙일 수 있다.
+      // 5. 페이지를 열자마자의 화면은 함수를 한 번 직접 불러서 맞춘다.
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) out1.textContent = value.toUpperCase();
+      //
+      // 2) 타이핑하는 동안에는 아무것도 안 찍히다가, Tab 을 눌러 칸을 벗어나는
+      //    순간 딱 한 번 찍힙니다.
+      //    // 콘솔: change: 커피
+      //    // 화면: 확정된 값: 커피
+      //    → ① 칸은 "커" 에서 한 번, "커피" 에서 또 한 번 — 글자마다 찍혔습니다.
+      //      두 글자를 치면 input 은 2번, change 는 1번 실행됩니다.
+      //      서버에 요청을 보내는 무거운 일이라면 이 차이가 아주 커집니다.
+      //
+      // 3) out3.textContent = `${length} / ${maxLength}` + (length > maxLength ? " 글자 수 초과" : "");
+      //
+      // 4) Number("") 은 0 입니다. 그래서 가격 × 0 = 0 이 됩니다.
+      //    막으려면 빈 값을 먼저 검사하세요.
+      //    const count = Number(countInput.value) || 1;
+      //
+      // 5) out5.classList.toggle("over", !agreeCheck.checked);
+    </script>
+  </body>
+</html>

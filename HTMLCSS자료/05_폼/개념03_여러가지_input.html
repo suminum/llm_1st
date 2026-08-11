@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>05단원 개념03 - 여러가지 input</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         05단원 · 개념 03 — type 을 바꾸면 칸이 달라집니다
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              칸이 나올 때마다 실제로 눌러 보고 글자를 쳐 보세요.
+         ============================================================
+
+         개념01 에서 input 의 type 이 "칸의 종류를 정한다" 고 했습니다.
+         이 파일에서 그 종류를 전부 봅니다. 열네 가지입니다.
+
+             글자를 받는 칸    text  password  email  search  tel  url
+             숫자·날짜         number  date
+             고르는 칸         checkbox  radio
+             특별한 칸         file  range  color
+             안 보이는 칸      hidden
+
+         겁먹을 필요 없습니다. 태그는 여전히 input 하나뿐이고,
+         바뀌는 것은 type 값 한 글자뿐입니다.
+
+             <input type="text" />        글자 칸
+             <input type="password" />    글자가 점으로 가려지는 칸
+             <input type="date" />        날짜 고르는 칸
+
+         type 을 바꾸면 세 가지가 한꺼번에 바뀝니다.
+
+             1) 생김새      점으로 가려지거나, 달력이 뜨거나, 동그라미가 되거나
+             2) 넣는 방법   자판으로 치거나, 마우스로 고르거나, 끌어서 옮기거나
+             3) 뜻          이 값이 이메일인지 전화번호인지를 브라우저가 알게 됩니다
+
+         3) 이 왜 중요한지는 개념06 에서 확실해집니다.
+         브라우저가 값의 뜻을 알면 "이건 이메일 모양이 아닌데요" 하고 대신 검사해 줍니다.
+
+         ★ 이 파일에서 가장 중요한 한 줄을 미리 말해 둡니다.
+           라디오 버튼은 name 이 같아야 한 무리가 됩니다.
+           초보자가 폼에서 가장 많이 걸려 넘어지는 곳이 여기입니다. 섹션 4 를 꼭 보세요.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 03 — type 을 바꾸면 칸이 달라집니다</h1>
+    <p class="doc-sub">05단원 · 폼</p>
+
+    <p class="doc-guide">
+      이 파일에는 그중 <strong>열세 가지</strong>가 살아 있는 채로 들어 있습니다.
+      (<code>text</code> 는 개념01 에서 이미 써 봤으니 여기서는 뺐습니다)
+      <strong>하나하나 직접 눌러 보고 값을 넣어 보세요.</strong>
+      칸이 작고 밋밋한 것은 정상입니다. 꾸미는 것은 09~10단원입니다.
+      섹션 4 의 라디오 버튼은 특히 천천히 보세요.
+    </p>
+
+    <!-- ══════════ 섹션 1: 글자를 받는 칸들 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 글자를 받는 칸들: password, email, search, tel, url</h2>
+      <p class="doc-desc">
+        이 다섯은 <strong>겉모습이 text 와 거의 같습니다.</strong>
+        다른 것은 "가려 주느냐" 와 "이 값이 무슨 뜻이냐" 입니다.
+      </p>
+
+      <!--
+        하나씩 봅시다.
+
+            password   친 글자가 점(●) 으로 가려집니다.
+                       옆 사람이 못 보게 가려 주는 것뿐입니다.
+                       값 자체는 그대로 있고, 보낼 때도 글자 그대로 갑니다.
+                       "가려지니까 안전하다" 는 뜻이 절대 아닙니다.
+                       진짜로 안전하게 보내는 일은 서버 쪽 이야기입니다.
+
+            email      겉보기는 text 와 똑같습니다.
+                       휴대폰에서 열면 자판에 @ 가 미리 나와 있습니다.
+                       그리고 개념06 에서 배울 검사에서 "골뱅이가 없다" 를 잡아 줍니다.
+
+            search     검색창용입니다. 글자를 치면 오른쪽 끝에 지우는 x 표시가 생깁니다.
+
+            tel        전화번호용입니다. 휴대폰에서 숫자 자판이 뜹니다.
+                       컴퓨터에서는 text 와 완전히 같아 보입니다.
+
+            url        주소용입니다. 역시 겉보기는 같습니다.
+
+        정리하면 이렇습니다.
+
+            보기에는 거의 같지만 뜻이 다릅니다.
+            뜻을 제대로 적어 두면 휴대폰 자판과 브라우저 검사가 저절로 따라옵니다.
+            그러니 "전부 text 로 쓰면 되지" 하지 마세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 다섯 칸에 모두 글자를 쳐 보세요</p>
+        <p><label for="pwField">비밀번호</label>
+          <input id="pwField" type="password" name="pw" /></p>
+        <p><label for="mailField">이메일</label>
+          <input id="mailField" type="email" name="mail" /></p>
+        <p><label for="searchField">검색어</label>
+          <input id="searchField" type="search" name="q" /></p>
+        <p><label for="telField">전화번호</label>
+          <input id="telField" type="tel" name="tel" /></p>
+        <p><label for="urlField">홈페이지</label>
+          <input id="urlField" type="url" name="site" /></p>
+        <!-- 화면: 다섯 칸이 모두 똑같은 크기의 네모로 보입니다.
+                  비밀번호 칸에만 글자 대신 까만 점이 하나씩 찍힙니다.
+                  검색어 칸에 글자를 치면 오른쪽 끝에 작은 x 표시가 생기고,
+                  그 x 를 누르면 글자가 한 번에 지워집니다.
+                  나머지 세 칸은 친 글자가 그대로 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>type="password"</code> 는 <strong>어깨 너머로 훔쳐보는 것</strong>만 막습니다.
+        네트워크로 오갈 때 안전하게 만드는 것은 완전히 다른 이야기이고,
+        HTML 이 하는 일이 아닙니다. 이 자료의 범위 밖이니 지금은 그런 게 있다는 것만 아세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 비밀번호 칸의 <code>type="password"</code> 를
+        <code>type="text"</code> 로 바꿔 보세요. 새로고침한 뒤 글자를 치면
+        점 대신 글자가 그대로 보입니다. 확인했으면 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 숫자·날짜·범위·색 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 자판 말고 다른 방법으로 넣는 칸: number, date, range, color</h2>
+      <p class="doc-desc">
+        여기서부터는 <strong>생김새가 확실히 달라집니다.</strong>
+        화살표, 달력, 미끄럼 막대, 색 상자가 나옵니다.
+      </p>
+
+      <!--
+        number     숫자만 받는 칸입니다.
+                   칸 위에 마우스를 올리면 오른쪽 끝에 작은 위아래 화살표가 나타납니다.
+                   그 화살표로 1씩 올리고 내릴 수 있습니다.
+                   글자를 쳐 넣으려고 하면 잘 안 들어갑니다.
+                   얼마부터 얼마까지 받을지는 개념06 의 min, max 로 정합니다.
+
+        date       날짜 칸입니다. 처음에는 "연도-월-일" 이라는 회색 안내가 보입니다.
+                   오른쪽 끝의 작은 달력 그림을 누르면 달력이 펼쳐집니다.
+                   숫자를 직접 쳐 넣을 수도 있습니다.
+                   value 로 미리 넣을 때는 반드시 2026-03-15 모양으로 씁니다.
+                   2026/03/15 나 3월 15일 이라고 쓰면 조용히 무시되고 빈 칸이 됩니다.
+
+        range      미끄럼 막대입니다. 손잡이를 좌우로 끌어서 값을 정합니다.
+                   따로 정하지 않으면 0 부터 100 까지이고 처음 값은 50 입니다.
+                   그래서 손잡이가 정확히 가운데에 있습니다.
+                   단점이 하나 있습니다. 지금 값이 얼마인지 화면에 안 보입니다.
+                   숫자를 같이 보여 주려면 자바스크립트가 필요해서 이 자료에서는 안 합니다.
+
+        color      색을 고르는 칸입니다. 색이 칠해진 작은 네모로 보입니다.
+                   누르면 운영체제의 색 고르기 창이 열립니다.
+                   따로 정하지 않으면 검정(#000000) 입니다.
+                   value 는 반드시 #ff0000 처럼 우물 정 자와 여섯 자리로 씁니다.
+                   red 라고 쓰면 조용히 무시되고 검정이 됩니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 화살표를 누르고, 막대를 끌어 보세요</p>
+        <p><label for="numField">인원수</label>
+          <input id="numField" type="number" name="people" /></p>
+        <p><label for="dateField">방문 날짜</label>
+          <input id="dateField" type="date" name="visit" /></p>
+        <p><label for="rangeField">만족도</label>
+          <input id="rangeField" type="range" name="score" /></p>
+        <p><label for="colorField">좋아하는 색</label>
+          <input id="colorField" type="color" name="favColor" /></p>
+        <!-- 화면: 인원수 칸은 평범한 네모로 보이다가, 마우스를 올리면 오른쪽 끝에
+                  위아래 화살표가 나타납니다.
+                  방문 날짜 칸에는 "연도-월-일" 이 회색으로 있고 오른쪽에 달력 그림이 있습니다.
+                  만족도는 회색 막대에 파란 부분과 동그란 손잡이가 있고 손잡이가 가운데입니다.
+                  좋아하는 색은 까맣게 칠해진 작은 네모 버튼으로 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>type="number"</code> 는 <strong>숫자처럼 생긴 것</strong>을 받는 칸입니다.
+        전화번호나 우편번호에 쓰면 안 됩니다. 앞자리 0 이 사라지고,
+        화살표로 전화번호를 1씩 올리는 이상한 일이 생깁니다. 그런 값은
+        <code>type="tel"</code> 이나 <code>type="text"</code> 를 쓰세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 좋아하는 색 칸에
+        <code>value="#ff0000"</code> 을 넣어 보세요. 새로고침하면 까맣던 네모가 빨갛게 바뀝니다.
+        그다음 <code>value="red"</code> 로 바꿔 보면 다시 까맣게 돌아갑니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 체크박스 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — checkbox: 여러 개를 골라도 되는 칸</h2>
+      <p class="doc-desc">
+        네모를 눌러 켜고 끕니다. <strong>몇 개를 켜든 상관없습니다.</strong>
+        각각이 따로 노는 스위치입니다.
+      </p>
+
+      <!--
+        체크박스는 "예 / 아니오" 스위치 하나입니다. 개수 제한이 없습니다.
+        약관 동의, 관심 분야 고르기, 옵션 추가에 씁니다.
+
+            <input type="checkbox" name="topping" value="cheese" /> 치즈 추가
+
+        여기서 value 가 지금까지와 다르게 쓰입니다.
+
+            글자 칸의 value  → 칸에 미리 들어가는 값 (사용자가 고칠 수 있음)
+            체크박스의 value → 켜졌을 때 보내지는 값 (사용자가 못 고침)
+
+        그러니까 위 코드는 이런 뜻입니다.
+        "이 네모가 켜져 있으면 topping=cheese 를 보내라."
+        꺼져 있으면 아무것도 안 보냅니다. topping= 이라는 빈 값도 안 갑니다.
+
+        value 를 안 쓰면 어떻게 될까요? 켜졌을 때 on 이라는 값이 갑니다.
+
+            topping=on
+
+        무엇을 골랐다는 것인지 알 수 없습니다.
+        그래서 체크박스에는 value 를 꼭 적으세요.
+
+        checked 는 "처음부터 켜 둔다" 는 뜻입니다.
+        값이 필요 없는 속성이라 이름만 씁니다.
+
+            <input type="checkbox" name="agree" value="yes" checked /> 동의합니다
+
+        checked="true" 라고 쓸 필요가 없습니다. checked="false" 라고 써도 켜집니다.
+        이름이 적혀 있다는 사실 자체가 "켬" 이라서 그렇습니다.
+        끄고 싶으면 checked 를 통째로 지우세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 원하는 만큼 켜 보세요</p>
+        <fieldset id="toppingSet">
+          <legend id="toppingLegend">추가 재료 (여러 개 고를 수 있습니다)</legend>
+          <p><label><input id="checkCheese" type="checkbox" name="topping"
+            value="cheese" checked /> 치즈</label></p>
+          <p><label><input id="checkBacon" type="checkbox" name="topping"
+            value="bacon" /> 베이컨</label></p>
+          <p><label><input id="checkOlive" type="checkbox" name="topping"
+            value="olive" /> 올리브</label></p>
+        </fieldset>
+        <!-- 화면: 회색 테두리 상자의 왼쪽 위에 "추가 재료 (여러 개 고를 수 있습니다)" 가 걸쳐 있고,
+                  안에 작은 네모 세 개가 세로로 있습니다.
+                  맨 위 치즈만 처음부터 파란 바탕에 흰 체크 표시로 켜져 있습니다.
+                  글자를 눌러 세 개를 전부 켤 수도 있고 전부 끌 수도 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        위에서 세 칸의 <code>name</code> 이 모두 <code>topping</code> 으로 같습니다.
+        체크박스는 <strong>이름이 같아도 서로 간섭하지 않습니다.</strong>
+        켜진 것들의 값이 각각 따로 보내질 뿐입니다.
+        (라디오 버튼은 정반대입니다. 바로 다음 섹션입니다)
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 베이컨 칸에 <code>checked</code> 를 붙여 보세요.
+        새로고침하면 치즈와 베이컨 두 개가 켜진 채로 화면이 열립니다.
+        두 개가 동시에 켜지는 것이 체크박스의 성질입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 라디오 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — radio: 하나만 고르는 칸 (가장 중요한 섹션)</h2>
+      <p class="doc-desc">
+        라디오 버튼은 <strong><code>name</code> 이 같은 것끼리 한 무리</strong>가 됩니다.
+        한 무리 안에서는 하나만 켜집니다.
+      </p>
+
+      <!--
+        옛날 라디오의 채널 버튼에서 온 이름입니다.
+        하나를 누르면 눌려 있던 다른 버튼이 툭 하고 올라오는 그 버튼입니다.
+
+        성별, 결제 수단, 배송 방법처럼 "여러 개 중 딱 하나" 를 고를 때 씁니다.
+
+        여기서 초보자가 반드시 걸려 넘어지는 지점이 나옵니다.
+
+            브라우저는 무엇을 보고 "이 버튼들이 한 무리" 라고 판단할까요?
+
+        옆에 붙어 있어서? 아닙니다.
+        같은 fieldset 안에 있어서? 아닙니다.
+        같은 p 안에 있어서? 아닙니다.
+
+            오직 name 값이 같은지만 봅니다.
+
+        그래서 name 을 하나씩 다르게 지어 주면
+        버튼들이 서로 남남이 되어 전부 따로 켜집니다.
+        동그라미가 세 개 다 채워지는 이상한 화면이 나옵니다.
+
+        모양은 라디오인데 동작은 체크박스가 되어 버리는 것입니다.
+        에러는 당연히 안 납니다.
+
+        아래에서 잘못된 예와 올바른 예를 직접 눌러서 비교하세요.
+        반드시 세 개를 차례로 눌러 보세요. 눌러 봐야만 차이가 보입니다.
+
+        참고로 value 와 checked 는 체크박스와 똑같이 씁니다.
+
+            <input type="radio" name="pay" value="card" checked /> 카드
+            <input type="radio" name="pay" value="cash" /> 현금
+
+        한 무리에 checked 를 두 개 이상 붙이면 마지막 하나만 켜집니다.
+      -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">잘못된 예 — name 을 하나씩 다르게 지음</span>
+        <div class="doc-code">&lt;input type="radio" name="size1" value="s" /&gt; 작은 것
+&lt;input type="radio" name="size2" value="m" /&gt; 중간 것
+&lt;input type="radio" name="size3" value="l" /&gt; 큰 것</div>
+        <p>
+          이름이 셋 다 다르니 <strong>서로 남남</strong>입니다.
+          세 개를 차례로 눌러 보세요. 셋 다 켜지고 한 번 켜지면 꺼지지도 않습니다.
+          "하나만 고르게 하려고 라디오를 썼는데 다 골라진다" 가 바로 이 상황입니다.
+        </p>
+        <fieldset id="badRadioSet">
+          <legend id="badRadioLegend">크기를 골라 주세요</legend>
+          <p><label><input id="badRadioS" type="radio" name="size1" value="s" /> 작은 것</label></p>
+          <p><label><input id="badRadioM" type="radio" name="size2" value="m" /> 중간 것</label></p>
+          <p><label><input id="badRadioL" type="radio" name="size3" value="l" /> 큰 것</label></p>
+        </fieldset>
+        <!-- 화면: 동그라미 세 개가 세로로 있습니다.
+                  차례로 누르면 세 개 모두 가운데에 파란 점이 찍힌 채로 남습니다.
+                  이미 켜진 것을 다시 눌러도 꺼지지 않습니다 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">올바른 예 — name 을 전부 같게</span>
+        <div class="doc-code">&lt;input type="radio" name="size" value="s" /&gt; 작은 것
+&lt;input type="radio" name="size" value="m" /&gt; 중간 것
+&lt;input type="radio" name="size" value="l" /&gt; 큰 것</div>
+        <p>
+          이름이 <code>size</code> 로 같으니 <strong>한 무리</strong>입니다.
+          하나를 누르면 먼저 켜져 있던 것이 저절로 꺼집니다.
+          보내지는 값은 켜진 하나뿐입니다. 예를 들어 <code>size=m</code> 하나만 갑니다.
+        </p>
+        <fieldset id="goodRadioSet">
+          <legend id="goodRadioLegend">크기를 골라 주세요</legend>
+          <p><label><input id="goodRadioS" type="radio" name="size" value="s" /> 작은 것</label></p>
+          <p><label><input id="goodRadioM" type="radio" name="size" value="m"
+            checked /> 중간 것</label></p>
+          <p><label><input id="goodRadioL" type="radio" name="size" value="l" /> 큰 것</label></p>
+        </fieldset>
+        <!-- 화면: 동그라미 세 개가 세로로 있고, 처음에는 가운데 "중간 것" 에만
+                  파란 점이 찍혀 있습니다.
+                  "큰 것" 을 누르면 "중간 것" 의 점이 사라지고 "큰 것" 으로 옮겨 갑니다.
+                  항상 하나만 켜져 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>name</code> 이 같은 라디오는 <strong>화면에서 멀리 떨어져 있어도 한 무리</strong>입니다.
+        반대로 나란히 붙어 있어도 <code>name</code> 이 다르면 남남입니다.
+        판단 기준은 위치가 아니라 <code>name</code> 하나뿐이라는 것을 기억하세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 잘못된 예의 <code>name="size1"</code>,
+        <code>name="size2"</code>, <code>name="size3"</code> 을 전부
+        <code>name="sizeFix"</code> 로 고쳐 보세요. 새로고침한 뒤 눌러 보면
+        이제 하나만 켜집니다. 고치기 전과 후를 꼭 둘 다 눌러 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: file 과 hidden ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — file 과 hidden</h2>
+      <p class="doc-desc">
+        <code>file</code> 은 컴퓨터의 파일을 고르는 칸이고,
+        <code>hidden</code> 은 <strong>화면에 아예 안 보이는 칸</strong>입니다.
+      </p>
+
+      <!--
+        file
+            <input type="file" name="photo" />
+
+            버튼 하나와 "선택된 파일 없음" 이라는 글자로 보입니다.
+            버튼을 누르면 컴퓨터의 파일 고르기 창이 열립니다.
+            파일을 고르면 그 자리에 파일 이름이 나옵니다.
+
+            이 칸에는 value 를 쓸 수 없습니다.
+            "이 파일을 미리 골라 둬라" 를 코드로 시키면 큰일 나기 때문입니다.
+            남의 컴퓨터 파일을 마음대로 가져가는 셈이 되니까요.
+
+            여러 개를 고르게 하려면 multiple 을 붙입니다.
+
+        hidden
+            <input type="hidden" name="pageId" value="notice-12" />
+
+            화면에 아무것도 안 그려집니다. 자리도 차지하지 않습니다.
+            그런데 값은 다른 칸들과 똑같이 보내집니다.
+
+            무엇에 쓸까요? 사용자가 건드릴 필요는 없지만
+            받는 쪽이 알아야 하는 값을 슬쩍 같이 보낼 때 씁니다.
+            예를 들어 "지금 몇 번 게시글에서 온 댓글인지" 같은 값입니다.
+
+            ★ 안 보인다고 비밀이 아닙니다.
+              브라우저의 소스 보기로 누구나 볼 수 있습니다.
+              비밀번호처럼 남이 보면 안 되는 값을 hidden 에 넣으면 안 됩니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 아래에 칸이 두 개 있습니다</p>
+        <p><label for="fileField">사진 올리기</label>
+          <input id="fileField" type="file" name="photo" /></p>
+        <p>바로 위 줄과 아래 줄 사이에 hidden 칸이 하나 들어 있습니다.</p>
+        <input id="hiddenField" type="hidden" name="pageId" value="notice-12" />
+        <p>보이십니까? 안 보입니다. 자리도 전혀 차지하지 않습니다.</p>
+        <!-- 화면: "사진 올리기" 글자 오른쪽에 [파일 선택] 이라는 회색 버튼이 있고
+                  그 옆에 "선택된 파일 없음" 이라는 글자가 있습니다.
+                  그 아래 두 문장은 보통 문단 두 개가 이어진 것과 똑같은 간격으로 놓입니다.
+                  사이에 hidden 칸이 끼어 있는데도 간격이 조금도 벌어지지 않았습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>id="hiddenField"</code> 칸의
+        <code>type="hidden"</code> 을 <code>type="text"</code> 로 바꿔 보세요.
+        새로고침하면 숨어 있던 칸이 나타나고 안에 <code>notice-12</code> 가 들어 있습니다.
+        <strong>값은 원래부터 거기 있었다</strong>는 것을 확인하는 것이 목적입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        여기 있는 다섯 가지는 <strong>전부 화면이 멀쩡하게 나옵니다.</strong>
+        눌러 보거나 값을 보내 봐야 알 수 있습니다.
+      </p>
+
+      <!-- [실수 1] 라디오의 name 을 다르게 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 라디오 버튼의 name 을 하나씩 다르게 지음</span>
+        <div class="doc-code">&lt;input type="radio" name="pay1" value="card" /&gt; 카드
+&lt;input type="radio" name="pay2" value="cash" /&gt; 현금</div>
+        <p>
+          이 단원 최고의 함정입니다. 동그라미 두 개가 <strong>동시에 켜집니다.</strong>
+          한 번 켜지면 꺼지지도 않아서 사용자가 고칠 방법이 없습니다.
+          라디오를 쓸 때는 <strong>name 을 먼저 정하고</strong> 그 이름을 복사해 붙이세요.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">&lt;input type="radio" name="pay" value="card" /&gt; 카드
+&lt;input type="radio" name="pay" value="cash" /&gt; 현금</div>
+      </div>
+
+      <!-- [실수 2] 체크박스에 value 를 안 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 체크박스에 value 를 안 씀</span>
+        <div class="doc-code">&lt;input type="checkbox" name="topping" /&gt; 치즈
+&lt;input type="checkbox" name="topping" /&gt; 베이컨</div>
+        <p>
+          화면은 완벽합니다. 켜고 끄기도 잘 됩니다. 그런데 켜서 보내면 받는 쪽에
+          <strong><code>topping=on</code> 만 두 번 도착합니다.</strong>
+          치즈인지 베이컨인지 알 수 없습니다. 옆의 글자는 값이 아닙니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] checked 를 값으로 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — checked="false" 로 끄려고 함</span>
+        <div class="doc-code">&lt;input type="checkbox" name="agree" checked="false" /&gt; 동의</div>
+        <p>
+          <strong>켜집니다.</strong> checked 는 값이 무엇이든 상관없이
+          "적혀 있으면 켬" 이기 때문입니다. 끄고 싶으면 <code>checked</code> 를 통째로 지우세요.
+          아래에서 직접 확인하세요. 왼쪽 네모가 처음부터 켜져 있습니다.
+        </p>
+        <p id="checkedFalseRow">
+          <label><input id="checkedFalse" type="checkbox" name="agree" checked="false" /> 동의</label>
+        </p>
+        <!-- 화면: 파란 바탕에 흰 체크 표시가 이미 들어간 네모와 "동의" 글자가 보입니다 -->
+      </div>
+
+      <!-- [실수 4] date 의 value 모양이 틀림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 날짜 칸의 value 를 우리 식으로 씀</span>
+        <div class="doc-code">&lt;input type="date" value="2026/03/15" /&gt;</div>
+        <p>
+          <strong>빈 칸이 됩니다.</strong> 날짜 칸이 알아듣는 모양은
+          <code>2026-03-15</code> 하나뿐입니다. 빗금이나 한글이 섞이면 조용히 버려집니다.
+          아래 두 칸을 비교해 보세요. 왼쪽은 비어 있고 오른쪽에는 날짜가 들어 있습니다.
+        </p>
+        <p id="dateBadRow">
+          잘못된 값 <input id="dateBad" type="date" value="2026/03/15" />
+          올바른 값 <input id="dateGood" type="date" value="2026-03-15" />
+        </p>
+        <!-- 화면: 왼쪽 칸에는 회색으로 "연도-월-일" 이 그대로 있고,
+                  오른쪽 칸에는 검은 글씨로 "2026-03-15" 가 들어 있습니다 -->
+      </div>
+
+      <!-- [실수 5] type 오타 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — type 이름에 오타를 냄</span>
+        <div class="doc-code">&lt;input type="chekbox" name="agree" /&gt; 동의</div>
+        <p>
+          모르는 type 은 전부 <code>text</code> 로 그려집니다.
+          네모 체크박스가 나와야 할 자리에 <strong>글자 칸이 덩그러니 나옵니다.</strong>
+          "왜 체크박스가 안 나오지?" 싶으면 type 철자부터 확인하세요.
+        </p>
+        <p id="typoRow"><input id="typoBox" type="chekbox" name="agree" /> 동의</p>
+        <!-- 화면: 작은 네모 대신 글자를 칠 수 있는 긴 칸이 나오고 그 옆에 "동의" 가 있습니다 -->
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. 태그는 <code>input</code> 하나이고 <code>type</code> 값만 바꾸면 칸의 종류가 바뀝니다.</p>
+      <p>2. <code>password</code> 는 가려 줄 뿐 안전하게 만들어 주지는 않습니다.</p>
+      <p>3. <code>checkbox</code> 는 여러 개, <code>radio</code> 는 하나만 고릅니다.</p>
+      <p>4. <strong>라디오는 <code>name</code> 이 같아야 한 무리가 됩니다.</strong> 다르면 다 켜집니다.</p>
+      <p>5. <code>checkbox</code> 와 <code>radio</code> 의 <code>value</code> 는 켜졌을 때 보낼 값입니다.</p>
+      <p>6. <code>checked</code> 는 적혀 있기만 하면 켜집니다. 끄려면 통째로 지웁니다.</p>
+      <p>7. <code>hidden</code> 은 안 보이지만 값은 갑니다. 비밀 값을 넣으면 안 됩니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 섹션 1 의 첫 칸을 이렇게 바꿉니다.
+
+                <input id="pwField" type="text" name="pw" />
+
+            → 글자를 치면 점 대신 친 글자가 그대로 보입니다.
+              칸의 크기와 위치는 하나도 안 바뀝니다.
+              확인했으면 type="password" 로 되돌리세요.
+
+         2) 섹션 2 의 색 칸을 이렇게 바꿉니다.
+
+                <input id="colorField" type="color" name="favColor" value="#ff0000" />
+
+            → 까맣던 네모가 빨갛게 칠해집니다.
+              value="red" 로 바꾸면 다시 까맣게 돌아갑니다.
+              색 이름은 못 알아듣고 조용히 무시하기 때문입니다.
+
+         3) 섹션 3 의 베이컨 줄에 checked 를 붙입니다.
+
+                <input id="checkBacon" type="checkbox" name="topping"
+                  value="bacon" checked /> 베이컨
+
+            → 페이지를 열자마자 치즈와 베이컨 두 개가 켜져 있습니다.
+              체크박스는 이름이 같아도 서로 끄지 않기 때문입니다.
+
+         4) 섹션 4 잘못된 예의 세 줄에서 name 을 전부 sizeFix 로 바꿉니다.
+
+                <input id="badRadioS" type="radio" name="sizeFix" value="s" />
+                <input id="badRadioM" type="radio" name="sizeFix" value="m" />
+                <input id="badRadioL" type="radio" name="sizeFix" value="l" />
+
+            → 이제 하나를 누르면 다른 것이 저절로 꺼집니다.
+              동그라미 세 개 중 항상 하나만 채워집니다.
+
+         5) 섹션 5 의 hidden 칸을 이렇게 바꿉니다.
+
+                <input id="hiddenField" type="text" name="pageId" value="notice-12" />
+
+            → 두 문장 사이에 칸이 하나 나타나고 안에 notice-12 가 들어 있습니다.
+              문장 사이 간격도 그만큼 벌어집니다.
+              값은 숨어 있을 때도 그대로 있었다는 뜻입니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #pwField | ~width | 177
+      #searchField | ~width | 177
+      #numField | ~width | 177
+      #dateField | ~width | 112
+      #rangeField | ~width | 129
+      #colorField | ~width | 50
+      #checkCheese | ~width | 13
+      #toppingLegend | text | 추가 재료 (여러 개 고를 수 있습니다)
+      #goodRadioM | ~width | 13
+      #goodRadioSet | display | block
+      #fileField | ~width | 253
+      #hiddenField | ?visible | no
+      #hiddenField | display | none
+      #typoBox | ~width | 177
+      .doc-head | ?visible | yes
+    -->
+  </body>
+</html>

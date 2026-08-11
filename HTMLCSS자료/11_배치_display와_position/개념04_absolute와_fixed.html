@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>11단원 개념04 - absolute와 fixed</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ── 섹션 1: 흐름에서 빠진다는 것 ── */
+      .fl-stage {
+        position: relative;
+        background: #f7f7f7;
+        border: 1px solid #ccc;
+        padding: 10px;
+      }
+      .fl-box {
+        width: 200px;
+        height: 40px;
+        background: #dbe7fb;
+        border: 1px solid #2d6cdf;
+        margin: 4px 0;
+        line-height: 40px;
+        text-align: center;
+      }
+      .abs-out {
+        position: absolute;
+        top: 10px;
+        left: 260px;
+        background: #ffe08a;
+        border-color: #d9a100;
+      }
+      /* 화면: 노란 상자가 회색 무대의 오른쪽 위로 날아가고,
+               남은 상자들이 위로 올라와 빈자리를 메웁니다 */
+
+      /* ── 섹션 2: 기준이 되는 조상 ── */
+      .card-ok {
+        position: relative;
+        background: #f4f8ff;
+        border: 2px solid #2d6cdf;
+        padding: 14px;
+      }
+      /* 화면: 이 한 줄 덕분에 안쪽 배지가 카드 오른쪽 위 구석에 붙습니다 */
+      .card-txt {
+        margin: 0;
+      }
+      .badge {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        background: #c0392b;
+        color: #fff;
+        font-size: 13px;
+        padding: 3px 8px;
+      }
+      /* 화면: 빨간 NEW 조각이 카드 오른쪽 위 구석에서 8px 씩 떨어져 붙습니다 */
+
+      /* ── 섹션 3·4: 스크롤 안내 ── */
+      .scroll-hint {
+        background: #fff3a0;
+        border: 2px solid #d9a100;
+        padding: 10px 14px;
+        margin: 14px 0;
+        font-size: 21px;
+        font-weight: bold;
+        text-align: center;
+      }
+      /* 화면: 노란 바탕에 굵은 큰 글씨로 안내가 한 줄 보입니다 */
+
+      /* ── 섹션 3: fixed ── */
+      .fixed-note {
+        position: fixed;
+        left: 12px;
+        bottom: 12px;
+        width: 150px;
+        background: #2b2b2b;
+        color: #fff;
+        font-size: 12px;
+        line-height: 1.5;
+        padding: 8px 10px;
+      }
+      /* 화면: 검은 쪽지가 브라우저 창 왼쪽 아래 구석에 붙어 있고,
+               페이지를 아무리 스크롤해도 그 자리에 그대로 있습니다 */
+
+      /* ── 섹션 4: sticky ── */
+      .sticky-scroll {
+        height: 180px;
+        overflow: auto;
+        background: #fff;
+        border: 2px solid #999;
+      }
+      .sticky-head {
+        position: sticky;
+        top: 0;
+        background: #2d6cdf;
+        color: #fff;
+        padding: 8px 12px;
+        font-weight: bold;
+      }
+      /* 화면: 상자 안에서 스크롤하면 이 파란 줄만 상자 맨 위에 붙어 남습니다 */
+      .sticky-item {
+        padding: 6px 12px;
+        border-bottom: 1px solid #eee;
+      }
+
+      /* ── 섹션 5: 비교 표 ── */
+      /* border-collapse 는 표 전용 속성이라 이 자료에서 따로 가르치지 않습니다.
+         칸과 칸 사이의 이중 선을 없애 주는 줄이라고만 알아 두세요. */
+      .cmp {
+        border-collapse: collapse;
+        background: #fff;
+      }
+      .cmp th,
+      .cmp td {
+        border: 1px solid #bbb;
+        padding: 6px 10px;
+        font-size: 14px;
+        text-align: left;
+      }
+      .cmp th {
+        background: #eef2f7;
+      }
+      /* 화면: 머리줄 하나 + 값 다섯 줄, 모두 여섯 줄짜리 비교 표가 보입니다.
+               머리줄만 연한 파란 배경입니다 */
+
+      /* ── 섹션 6: 기준을 못 찾은 absolute ── */
+      .badge-lost {
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        background: #c0392b;
+        color: #fff;
+        font-size: 13px;
+        padding: 3px 8px;
+      }
+      /* 화면: 이 배지는 카드 안이 아니라 페이지 맨 위 왼쪽 구석에 가 있습니다 */
+      .card-bad {
+        background: #fff6f6;
+        border: 2px solid #e0b4b4;
+        padding: 14px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         11단원 · 개념 04 — absolute 와 fixed
+         ────────────────────────────────────────────────────────────
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         개념03 의 relative 는 예의가 발랐습니다.
+         원래 자리를 남겨 두고 그림만 살짝 옮겼습니다.
+
+         이 파일의 absolute 와 fixed 는 그렇지 않습니다.
+         흐름에서 아예 빠져나옵니다.
+
+             흐름에서 빠진다 = 다른 요소들이 그 요소를 없는 것으로 치고 자리를 다시 잡는다
+
+         그래서 이렇게 됩니다.
+
+             흐름 안        [1][2][3]        2 를 옮기면 자리가 빈 채로 남음(relative)
+             흐름 밖        [1][3]  ↗[2]     2 가 없는 셈이 되어 3 이 앞으로 당겨짐
+
+         그다음 질문은 "그럼 어디를 기준으로 놓을 것인가" 입니다. 값마다 다릅니다.
+
+             absolute   position 이 static 이 아닌 가장 가까운 조상
+             fixed      브라우저 창 (화면)
+             sticky     평소엔 원래 자리, 스크롤이 정해진 지점에 닿으면 그때 붙음
+
+         absolute 의 기준 설명이 길고 어렵게 들릴 텐데, 실제로는 관용구 하나입니다.
+
+             붙이고 싶은 부모에 position: relative;  ← 기준이 되겠다는 표시
+             붙일 자식에      position: absolute;    ← 그 기준 안에서 좌표 지정
+
+         이 두 줄이 짝입니다. 부모 쪽 한 줄을 빠뜨리면 자식이 화면 구석으로 날아갑니다.
+         섹션 6 에서 진짜로 날아간 모습을 보게 됩니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 04 — absolute 와 fixed</h1>
+    <p class="doc-sub">11단원 · 배치 (display와 position)</p>
+
+    <p class="doc-guide">
+      이 파일에는 <strong>스크롤해야만 보이는 데모가 두 개</strong> 있습니다(섹션 3, 섹션 4).
+      화면 왼쪽 아래 구석에 붙어 있는 검은 쪽지도 이 파일이 만든 것입니다.
+      마우스 휠을 굴리면서 무엇이 따라오고 무엇이 안 따라오는지 보세요.
+    </p>
+
+    <!-- ══════════ 섹션 1: absolute 는 흐름에서 빠집니다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — absolute 는 흐름에서 빠집니다</h2>
+      <p class="doc-desc">
+        아래 두 무대는 완전히 같습니다. 아래쪽만 <strong>2 번 상자에
+        <code>position: absolute</code> 를 줬습니다.</strong>
+      </p>
+
+      <!--
+        두 무대에 준 CSS 는 같습니다.
+
+            .fl-stage { position: relative; background: #f7f7f7; padding: 10px; }
+            .fl-box   { width: 200px; height: 40px; margin: 4px 0; }
+
+        아래 무대에서만 2 번 상자에 한 덩어리를 더 줬습니다.
+
+            .abs-out { position: absolute; top: 10px; left: 260px; }
+
+        결과를 두 가지로 나눠 보세요.
+
+            [옮긴 상자]   2 번이 무대 오른쪽 위로 날아갔습니다. 여기까지는 예상대로입니다.
+            [남은 상자]   3 번이 위로 올라와 2 번이 있던 자리를 메웠습니다.
+                          그리고 회색 무대 자체가 한 칸만큼 낮아졌습니다.
+
+        두 번째가 relative 와의 결정적 차이입니다.
+
+            relative  자리를 남겨 둠  → 무대 높이가 그대로
+            absolute  자리를 없앰     → 무대 높이가 줄어듦
+
+        무대 높이를 우리가 정해 준 적이 없다는 점이 중요합니다.
+        안에 든 상자 세 개가 무대 높이를 만들고 있었는데,
+        그중 하나가 흐름에서 빠지자 무대가 두 개짜리 높이로 줄어든 것입니다.
+
+        이 성질 때문에 absolute 를 쓸 때는 항상 이 질문을 해야 합니다.
+
+            "이 요소가 빠지면 남은 것들이 어떻게 다시 배치되는가"
+
+        회색 무대에 붙어 있는 position: relative 한 줄은 개념03 섹션4 에서 예고한
+        그 관용구입니다. 다음 섹션에서 그 줄이 무슨 일을 하는지 봅니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">비교용 — 세 상자 모두 흐름 안</p>
+        <div class="fl-stage" id="flowStage">
+          <div class="fl-box" id="fbox1">1</div>
+          <div class="fl-box" id="fbox2">2</div>
+          <div class="fl-box" id="fbox3">3</div>
+        </div>
+        <!-- 화면: 파란 상자 세 개가 회색 무대 안에 위아래로 쌓입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">2 번만 absolute 로 바꾼 결과</p>
+        <div class="fl-stage" id="absStage">
+          <div class="fl-box" id="abox1">1</div>
+          <div class="fl-box abs-out" id="abox2">2</div>
+          <div class="fl-box" id="abox3">3</div>
+        </div>
+        <!-- 화면: 노란 2 번 상자가 무대 오른쪽 위에 따로 떠 있고,
+                  1 번과 3 번이 붙어 있으며, 회색 무대가 위 무대보다 눈에 띄게 낮아졌습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — <code>.abs-out</code> 의 <code>position</code> 을
+        <code>relative</code> 로 바꿔 보세요. 노란 상자는 비슷한 곳으로 가는데
+        <strong>회색 무대 높이가 다시 커집니다.</strong> 확인했으면 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 기준이 되는 조상 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 기준이 되는 조상 찾기</h2>
+      <p class="doc-desc">
+        <code>absolute</code> 의 기준은
+        <strong><code>position</code> 이 <code>static</code> 이 아닌 가장 가까운 조상</strong>입니다.
+      </p>
+
+      <!--
+        절차는 이렇습니다. 브라우저가 absolute 요소를 만나면
+
+            1. 부모를 봅니다.        position 이 static 이 아니면 → 그 부모가 기준
+            2. static 이면 그 위로.  또 static 이면 또 위로.
+            3. 끝까지 못 찾으면      → 페이지 전체(맨 처음 화면) 가 기준
+
+        그래서 실무에서는 이렇게 씁니다.
+
+            .card  { position: relative; }   ← 기준이 되겠다고 표시만 해 둠
+            .badge { position: absolute; top: 8px; right: 8px; }
+
+        .card 에는 top 도 left 도 없습니다. 그래서 카드는 조금도 안 움직입니다.
+        그런데 이 한 줄이 있느냐 없느냐로 배지의 운명이 갈립니다.
+
+        기준이 정해지면 좌표는 그 기준 상자의 안쪽(테두리 안) 을 기준으로 잽니다.
+
+            top: 8px    기준 상자의 위쪽 안쪽 면에서 8px 아래
+            right: 8px  기준 상자의 오른쪽 안쪽 면에서 8px 왼쪽
+
+        left 대신 right 를 쓴 것에 주목하세요.
+        오른쪽에 붙이고 싶으면 right 를 쓰는 것이 훨씬 편합니다.
+        left 로 하려면 카드 폭을 알아야 하는데, 카드 폭은 화면 크기에 따라 바뀝니다.
+
+        top/right/bottom/left 를 짝지어 쓰는 법도 여기서 정리해 둡니다.
+
+            top + left      왼쪽 위 구석 기준
+            top + right     오른쪽 위 구석 기준
+            bottom + left   왼쪽 아래 구석 기준
+            bottom + right  오른쪽 아래 구석 기준
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">부모에 position: relative 를 건 카드</p>
+        <div class="card-ok" id="cardOk">
+          <div class="badge" id="badgeOk">NEW</div>
+          <p class="card-txt">크림 파스타</p>
+          <p class="card-txt">부드러운 소스에 버섯을 듬뿍 넣었습니다.</p>
+        </div>
+        <!-- 화면: 파란 테두리 카드의 오른쪽 위 구석에 빨간 NEW 조각이 붙어 있습니다.
+                  카드 안쪽 면에서 위로도 오른쪽으로도 8px 씩 떨어져 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>.card-ok</code> 에서 <code>position: relative;</code> 한 줄만 지우면
+        NEW 조각이 카드를 떠나 <strong>페이지 맨 위 구석으로 날아갑니다.</strong>
+        섹션 6 실수 1 에 그 모습을 진짜로 띄워 놓았습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — <code>.badge</code> 의 <code>right: 8px;</code> 를
+        <code>left: 8px;</code> 로 바꿔 보세요. NEW 조각이 카드 왼쪽 위 구석으로 옮겨 갑니다.
+        확인했으면 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: fixed ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — fixed 는 화면에 붙습니다</h2>
+      <p class="doc-desc">
+        <code>fixed</code> 의 기준은 페이지가 아니라 <strong>브라우저 창</strong>입니다.
+        그래서 스크롤해도 안 움직입니다.
+      </p>
+      <p class="doc-note">
+        이 "브라우저 창" 을 정확히는 <strong>뷰포트(viewport)</strong> 라고 부릅니다.
+        페이지가 실제로 그려지는 영역이라는 뜻입니다.
+        13단원에서 화면 크기에 따라 모양을 바꿀 때 이 이름으로 다시 나옵니다.
+      </p>
+
+      <p class="scroll-hint">⬇ 마우스 휠을 굴려 보세요</p>
+
+      <!--
+        이 파일에는 fixed 요소가 딱 하나 있습니다.
+
+            .fixed-note {
+              position: fixed;
+              left: 12px;
+              bottom: 12px;
+              width: 150px;
+            }
+
+        지금 브라우저 창 왼쪽 아래 구석을 보세요. 검은 쪽지가 하나 붙어 있습니다.
+        페이지를 위아래로 스크롤해도 그 쪽지만 제자리에 남습니다.
+        다른 글자들은 전부 위로 흘러가는데 쪽지만 안 흘러갑니다.
+
+        absolute 와 뭐가 다를까요? 기준이 다릅니다.
+
+            absolute  기준 = 조상 상자   → 페이지의 일부라서 페이지와 함께 스크롤됩니다
+            fixed     기준 = 브라우저 창 → 페이지와 상관없이 창에 붙어 있습니다
+
+        그래서 fixed 는 조상에 relative 를 걸든 말든 상관하지 않습니다.
+        아무리 깊이 들어 있어도 기준은 언제나 창입니다.
+
+        실무에서 fixed 를 쓰는 곳은 정해져 있습니다.
+
+            항상 떠 있는 맨 위 메뉴 막대
+            오른쪽 아래에 붙어 있는 '맨 위로' 버튼
+            화면 전체를 덮는 팝업
+
+        조심할 점도 있습니다. fixed 요소는 흐름 밖에 있어서
+        아래 내용을 그냥 덮습니다. 그래서 화면이 좁은 휴대폰에서는
+        글자를 가리기 쉽습니다. 크게 만들지 마세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">지금 화면 왼쪽 아래 구석을 보세요</p>
+        <p>
+          검은 쪽지가 창 왼쪽 아래에 붙어 있습니다. 이 문단을 스크롤해서 지나가도
+          쪽지는 그 자리에 그대로 남습니다.
+        </p>
+        <!-- 화면: 이 상자에는 글자만 있습니다. 검은 쪽지는 상자 안이 아니라
+                  브라우저 창 왼쪽 아래 구석에 따로 떠 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        검은 쪽지는 이 문단 근처의 코드에서 만든 것이 아닙니다.
+        <strong><code>&lt;body&gt;</code> 맨 아래에 한 줄로 넣어 두었습니다.</strong>
+        코드를 어디에 쓰든 <code>fixed</code> 는 창을 기준으로 삼기 때문에 상관없습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>.fixed-note</code> 의 <code>bottom: 12px;</code> 를
+        <code>top: 12px;</code> 로 바꿔 보세요. 쪽지가 창 왼쪽 위로 올라갑니다.
+        스크롤해도 여전히 안 따라 내려옵니다. 확인했으면 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: sticky ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — sticky 는 스크롤하다 붙습니다</h2>
+      <p class="doc-desc">
+        <code>sticky</code> 는 <strong>평소에는 흐름 안에 얌전히 있다가</strong>,
+        정해진 지점에 닿는 순간 그 자리에 붙습니다.
+      </p>
+
+      <p class="scroll-hint">⬇ 아래 흰 상자 안에서 스크롤해 보세요</p>
+
+      <!--
+        sticky 는 relative 와 fixed 를 반씩 섞은 값입니다.
+
+            스크롤이 닿기 전  relative 처럼 흐름 안 원래 자리에 있습니다
+            스크롤이 닿은 뒤  fixed 처럼 그 자리에 붙어 버팁니다
+
+        붙는 지점은 top / bottom 으로 정합니다.
+
+            .sticky-head { position: sticky; top: 0; }
+
+        "스크롤 영역 위쪽에서 0px 지점에 닿으면 그때부터 붙어라" 라는 뜻입니다.
+
+        아래 흰 상자는 높이가 180px 이고 overflow: auto 가 걸려 있습니다(10단원).
+        안에 든 내용이 더 길어서 상자 안에서 따로 스크롤이 됩니다.
+        마우스를 상자 위에 올리고 휠을 굴려 보세요.
+        파란 줄만 상자 맨 위에 붙은 채 남고 숫자 줄들은 그 밑으로 지나갑니다.
+
+        여기서 꼭 알아야 할 것 하나.
+
+            top 또는 bottom 을 안 주면 sticky 는 아무 일도 안 합니다.
+
+        position: sticky 만 써 놓고 "안 붙어요" 하는 경우가 대부분 이것입니다.
+        어디에 붙을지를 안 말해 줬으니 붙을 수가 없습니다.
+
+        실무에서는 페이지 전체에 걸어 맨 위 메뉴 막대를 만들 때 많이 씁니다.
+        fixed 와 달리 처음에는 자리를 차지하고 있다가 나중에 붙기 때문에,
+        페이지가 갑자기 들썩이는 일이 없습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">상자 안에서 스크롤하면 파란 줄만 위에 붙습니다</p>
+        <div class="sticky-scroll" id="stickyScroll">
+          <div class="sticky-head" id="stickyHead">저는 sticky 입니다. 위에 붙습니다.</div>
+          <div class="sticky-item">1번 줄입니다</div>
+          <div class="sticky-item">2번 줄입니다</div>
+          <div class="sticky-item">3번 줄입니다</div>
+          <div class="sticky-item">4번 줄입니다</div>
+          <div class="sticky-item">5번 줄입니다</div>
+          <div class="sticky-item">6번 줄입니다</div>
+          <div class="sticky-item">7번 줄입니다</div>
+          <div class="sticky-item">8번 줄입니다</div>
+          <div class="sticky-item">9번 줄입니다</div>
+          <div class="sticky-item">10번 줄입니다</div>
+          <div class="sticky-item">11번 줄입니다</div>
+          <div class="sticky-item">12번 줄입니다</div>
+        </div>
+        <!-- 화면: 높이 180px 짜리 흰 상자 안에 파란 줄 하나와 숫자 줄들이 있습니다.
+                  상자 안에서 스크롤하면 파란 줄만 맨 위에 붙어 남습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>.sticky-head</code> 의 <code>top: 0;</code> 을
+        지워 보세요. 파란 줄이 더 이상 안 붙고 숫자 줄들과 함께 위로 흘러갑니다.
+        확인했으면 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 다섯 값을 한 표로 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 다섯 값을 한 표로</h2>
+      <p class="doc-desc">
+        여기까지 나온 <code>position</code> 값 다섯 개를 한자리에 놓고 비교합니다.
+        이 표 하나면 이 단원의 절반이 정리됩니다.
+      </p>
+
+      <!--
+        표를 읽는 순서를 알려 드립니다.
+
+            먼저 '흐름에서 빠지나' 칸을 세로로 훑으세요.
+            빠지는 것은 absolute 와 fixed 둘뿐입니다.
+            이 둘만 다른 요소들의 배치를 흔듭니다.
+
+            그다음 '기준' 칸을 보세요. 이것이 값을 고르는 실제 기준입니다.
+
+                부모 상자 안 어딘가에 붙이고 싶다   → absolute (부모에 relative 필수)
+                창에 고정하고 싶다                  → fixed
+                스크롤하다 붙게 하고 싶다           → sticky
+                몇 px 만 살짝 밀고 싶다             → relative
+
+        표에 안 적은 것도 하나 있습니다.
+        absolute 와 fixed 는 흐름에서 빠지기 때문에, width 를 안 주면
+        블록 요소여도 폭이 글자 길이만큼으로 줄어듭니다.
+        "absolute 로 바꿨더니 상자가 갑자기 홀쭉해졌다" 의 원인입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">position 다섯 값 비교</p>
+        <table class="cmp" id="cmpTable">
+          <thead>
+            <tr>
+              <th>값</th>
+              <th>무엇을 기준으로 놓나</th>
+              <th>흐름에서 빠지나</th>
+              <th>top·left 가 먹나</th>
+              <th>스크롤하면</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>static</td>
+              <td>기준 없음 (흐름이 준 자리)</td>
+              <td>아니요</td>
+              <td>안 먹습니다</td>
+              <td>같이 흘러갑니다</td>
+            </tr>
+            <tr>
+              <td>relative</td>
+              <td>자기 자신의 원래 자리</td>
+              <td>아니요 (자리 남음)</td>
+              <td>먹습니다</td>
+              <td>같이 흘러갑니다</td>
+            </tr>
+            <tr>
+              <td>absolute</td>
+              <td>static 이 아닌 가장 가까운 조상</td>
+              <td>네 (자리 없어짐)</td>
+              <td>먹습니다</td>
+              <td>같이 흘러갑니다</td>
+            </tr>
+            <tr>
+              <td>fixed</td>
+              <td>브라우저 창</td>
+              <td>네 (자리 없어짐)</td>
+              <td>먹습니다</td>
+              <td>안 움직입니다</td>
+            </tr>
+            <tr>
+              <td>sticky</td>
+              <td>평소엔 원래 자리, 닿으면 스크롤 영역</td>
+              <td>아니요 (자리 남음)</td>
+              <td>붙을 지점을 정합니다</td>
+              <td>어느 지점부터 붙습니다</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- 화면: 여섯 줄짜리 표가 보이고 맨 윗줄만 연한 파란 배경입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>.fixed-note</code> 의 <code>position</code> 을
+        <code>absolute</code> 로 바꿔 보세요. 처음에는 아무것도 안 바뀐 것처럼 보이는데,
+        <strong>스크롤을 내리면 쪽지가 페이지와 함께 위로 흘러가 사라집니다.</strong>
+        표의 '스크롤하면' 칸과 맞는지 확인하세요.
+        확인했으면 <code>fixed</code> 로 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        <code>absolute</code> 는 잘못 쓰면 요소가 <strong>엉뚱한 곳으로 사라집니다.</strong>
+        어디로 갔는지 찾는 방법까지 같이 익혀 두세요.
+      </p>
+
+      <!-- [실수 1] 부모에 relative 를 안 검 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 부모에 relative 를 안 걸고 absolute 를 씀</span>
+        <div class="doc-code">.card { border: 2px solid #999; }        /* relative 가 없습니다 */
+.badge { position: absolute; top: 6px; left: 6px; }</div>
+        <p>
+          아래 붉은 카드 안에 배지를 넣었는데 <strong>카드 안에 안 보입니다.</strong>
+          기준이 될 조상을 못 찾아서 <strong>페이지 맨 위 왼쪽 구석</strong>으로 날아갔습니다.
+          지금 페이지를 맨 위까지 올려서 왼쪽 구석을 보세요. 거기 붙어 있습니다.
+        </p>
+        <div class="card-bad" id="cardBad">
+          <div class="badge-lost" id="badgeLost">길 잃은 배지</div>
+          <p class="card-txt">이 카드 안에 배지가 있어야 하는데 비어 있습니다.</p>
+        </div>
+        <!-- 화면: 붉은 카드 안은 글자만 있고 비어 있습니다.
+                  "길 잃은 배지" 는 페이지 맨 위 왼쪽 구석에 가 있습니다 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 하세요</span>
+        <div class="doc-code">.card { position: relative; border: 2px solid #999; }
+.badge { position: absolute; top: 6px; left: 6px; }</div>
+      </div>
+
+      <!-- [실수 2] 흐름에서 빠진 것을 모름 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — absolute 로 바꿨더니 아래 내용이 위로 올라옴</span>
+        <div class="doc-code">.item2 { position: absolute; top: 0; left: 300px; }</div>
+        <p>
+          옮긴 요소만 신경 쓰다가 <strong>남은 요소들이 다 같이 올라오는 것</strong>을 놓칩니다.
+          흐름에서 빠지면 그 자리가 통째로 없어지기 때문입니다.
+          자리를 남기고 싶다면 <code>absolute</code> 가 아니라
+          <code>relative</code> 를 써야 합니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] width 를 안 줌 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — absolute 로 바꿨더니 상자가 홀쭉해짐</span>
+        <div class="doc-code">.panel { position: absolute; top: 0; left: 0; }</div>
+        <p>
+          <code>div</code> 는 블록이라 원래 가로를 꽉 채웠는데,
+          <code>absolute</code> 가 되는 순간 <strong>글자 길이만큼으로 줄어듭니다.</strong>
+          흐름에서 빠지면 "부모 폭을 꽉 채운다" 는 규칙도 같이 사라지기 때문입니다.
+          폭이 필요하면 <code>width</code> 를 직접 적어 주세요.
+        </p>
+      </div>
+
+      <!-- [실수 4] fixed 의 기준을 착각 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — fixed 가 부모 상자 기준일 거라고 생각함</span>
+        <div class="doc-code">.box { position: relative; }
+.inner { position: fixed; top: 0; left: 0; }</div>
+        <p>
+          <code>.inner</code> 는 <code>.box</code> 왼쪽 위가 아니라
+          <strong>브라우저 창 왼쪽 위 구석</strong>에 붙습니다.
+          <code>fixed</code> 는 조상을 아예 쳐다보지 않습니다.
+          부모 안에 붙이고 싶으면 <code>absolute</code> 를 쓰세요.
+        </p>
+      </div>
+
+      <!-- [실수 5] sticky 에 top 을 안 줌 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — sticky 를 썼는데 안 붙음</span>
+        <div class="doc-code">.head { position: sticky; }</div>
+        <p>
+          <strong>아무 일도 안 일어납니다.</strong> 어디에 붙을지를 안 말해 줬기 때문입니다.
+          <code>top: 0;</code> 처럼 붙을 지점을 반드시 같이 적어야 합니다.
+          부모에 <code>overflow: hidden</code> 이 걸려 있어도 안 붙으니 그것도 확인하세요.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>absolute</code> 와 <code>fixed</code> 는 <strong>흐름에서 빠집니다.</strong> 자리가 없어집니다.</p>
+      <p>2. <code>absolute</code> 의 기준은 <strong><code>static</code> 이 아닌 가장 가까운 조상</strong>입니다.</p>
+      <p>3. 그래서 <strong>부모에 <code>relative</code>, 자식에 <code>absolute</code></strong> 가 한 쌍입니다.</p>
+      <p>4. <code>fixed</code> 의 기준은 <strong>브라우저 창</strong>이라 스크롤해도 안 움직입니다.</p>
+      <p>5. <code>sticky</code> 는 평소엔 흐름 안에 있다가 정해진 지점에서 붙습니다. <code>top</code> 필수입니다.</p>
+      <p>6. 흐름에서 빠진 요소는 <code>width</code> 를 안 주면 글자 길이만큼으로 줄어듭니다.</p>
+    </div>
+
+    <div class="fixed-note" id="fixedNote">저는 fixed 입니다. 스크롤해도 이 자리에 남습니다.</div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) .abs-out 의 첫 줄을 이렇게 바꿉니다.
+
+                .abs-out { position: relative; top: 10px; left: 260px; ... }
+
+            → 노란 상자는 여전히 오른쪽으로 가지만, 회색 무대가 다시 세 칸 높이로 커집니다.
+              relative 는 원래 자리를 남겨 두니까요. 무대 높이가 두 값의 차이를 그대로 보여 줍니다.
+
+         2) .badge 의 right 줄을 이렇게 바꿉니다.
+
+                .badge { position: absolute; top: 8px; left: 8px; ... }
+
+            → NEW 조각이 카드 오른쪽 위에서 왼쪽 위로 옮겨 가고 "크림 파스타" 글자를 덮습니다.
+              흐름에서 빠진 요소라 글자가 비켜 주지 않는다는 것도 같이 확인하세요.
+
+         3) .fixed-note 의 bottom 줄을 이렇게 바꿉니다.
+
+                .fixed-note { position: fixed; left: 12px; top: 12px; ... }
+
+            → 검은 쪽지가 창 왼쪽 위 구석으로 올라갑니다.
+              스크롤을 아무리 내려도 창 왼쪽 위에 그대로 있습니다.
+
+         4) .sticky-head 에서 top: 0; 줄을 지웁니다.
+
+                .sticky-head { position: sticky; background: #2d6cdf; ... }
+
+            → 파란 줄이 더 이상 안 붙고 숫자 줄들과 같이 위로 사라집니다.
+              sticky 에는 붙을 지점이 반드시 필요하다는 뜻입니다.
+
+         5) .fixed-note 의 첫 줄을 이렇게 바꿉니다.
+
+                .fixed-note { position: absolute; left: 12px; bottom: 12px; ... }
+
+            → 스크롤을 안 한 상태에서는 쪽지가 있던 자리 그대로입니다. 달라진 것이 없어 보입니다.
+              그런데 스크롤을 내리면 쪽지가 페이지와 함께 위로 흘러가 사라집니다.
+              기준이 창에서 페이지로 바뀐 것입니다.
+
+              자리가 안 변한 이유는 섹션2 의 3번 규칙 때문입니다.
+              조상 중에 position 이 걸린 것이 하나도 없어서 페이지 전체가 기준이 되었는데,
+              그 기준 상자의 아래쪽이 바로 '맨 처음 화면의 아래쪽' 이라서
+              bottom: 12px 이 처음에는 fixed 일 때와 같은 자리를 가리킵니다.
+              달라지는 것은 스크롤할 때부터입니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #abox2 | position | absolute
+      #abox2 | ~x | 489
+      #abox3 | ~x | 239
+      #flowStage | ~height | 164
+      #absStage | ~height | 118
+      #cardOk | position | relative
+      #badgeOk | position | absolute
+      #badgeOk | ~x | 997
+      #fixedNote | position | fixed
+      #fixedNote | ~x | 12
+      #fixedNote | ~y | 836
+      #stickyHead | position | sticky
+      #stickyHead | top | 0px
+      #stickyScroll | ~height | 184
+      #badgeLost | ~x | 6
+      #badgeLost | ~y | 6
+      #cmpTable | ?visible | yes
+    -->
+  </body>
+</html>

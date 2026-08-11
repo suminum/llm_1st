@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 손으로 그린 SVG 그림입니다. 도형만 들어 있습니다. 인터넷이 없어도 보입니다. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+  <circle cx="48" cy="48" r="44" fill="#eaf0fb" />
+  <rect x="40" y="18" width="20" height="44" rx="4" fill="#f2b544"
+        transform="rotate(26 48 40)" />
+  <path d="M56 66 L48 74 L46 62 Z" fill="#3a4a63" />
+  <rect x="26" y="72" width="44" height="6" rx="3" fill="#2d6cdf" />
+</svg>
