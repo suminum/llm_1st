@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>10단원 개념05 - 입력값 읽기</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo label {
+        display: block;
+        margin: 10px 0 4px;
+        font-weight: bold;
+      }
+      input,
+      select,
+      textarea {
+        padding: 6px 8px;
+        font-size: 15px;
+        font-family: inherit;
+      }
+      #result {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 12px;
+        margin-top: 16px;
+        white-space: pre-line;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 05 — 입력값 읽기</h1>
+
+    <p class="guide">
+      브라우저로 열고 <strong>F12 → Console</strong> 을 함께 보세요. 아래 칸에는 미리
+      값이 채워져 있습니다. 코드가 그 값을 읽어 아래 결과 상자에 정리해 뒀습니다.<br />
+      <strong>값을 고쳐도 결과는 바뀌지 않습니다.</strong> 코드가 페이지를 열 때 한 번만
+      읽었기 때문입니다. 입력에 반응하는 방법은 11단원(이벤트)에서 배웁니다.
+    
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <label for="nameInput">이름</label>
+      <input type="text" id="nameInput" value="김민준" />
+
+      <label for="priceInput">가격</label>
+      <input type="number" id="priceInput" value="4500" />
+
+      <label for="countInput">개수</label>
+      <input type="number" id="countInput" value="3" />
+
+      <label for="emptyInput">비어 있는 칸</label>
+      <input type="text" id="emptyInput" placeholder="여기는 비어 있습니다" />
+
+      <label for="sizeSelect">사이즈</label>
+      <select id="sizeSelect">
+        <option value="S">작은 것</option>
+        <option value="L" selected>큰 것</option>
+      </select>
+
+      <label><input type="checkbox" id="iceCheck" checked /> 얼음 추가</label>
+      <label><input type="checkbox" id="giftCheck" /> 선물 포장</label>
+
+      <label for="memoArea">메모</label>
+      <textarea id="memoArea" rows="2">덜 달게 해주세요</textarea>
+
+      <div id="result">여기에 결과가 나옵니다</div>
+    </div>
+
+    <script>
+      // ============================================================
+      // 10단원 · 개념 05 — 입력값 읽기
+      // ------------------------------------------------------------
+      // 실행: 이 파일을 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+      //
+      // 화면의 입력칸에서 값을 꺼내는 방법입니다.
+      //
+      //     input.value      글자 / 숫자 칸
+      //     checkbox.checked 체크 여부 (true / false)
+      //     select.value     고른 option 의 value
+
+      // ── 섹션 1: value — 입력칸의 값 ──
+
+      const nameInput = document.querySelector("#nameInput");
+
+      console.log(nameInput.value);
+      // 콘솔: 김민준
+
+      // textContent 가 아니라 value 입니다. 아주 자주 틀리는 부분입니다.
+      console.log(nameInput.textContent);
+      // 콘솔:
+      // 빈 값입니다. input 은 여는 태그 하나뿐이라 안에 글자가 없습니다.
+      //
+      // 규칙:
+      //   input, textarea, select  →  .value
+      //   p, div, h1, li 등        →  .textContent
+
+      // 값을 넣을 수도 있습니다.
+      nameInput.value = "이서연";
+      console.log(nameInput.value);
+      // 콘솔: 이서연
+      // 화면: 이름 칸의 글자가 잠깐 "이서연" 이 됩니다
+      //       (바로 아래 줄에서 다시 "김민준" 으로 되돌리므로 눈에는 안 보입니다.
+      //        직접 보려면 아래 줄을 잠시 주석 처리하고 새로고침하세요)
+
+      nameInput.value = "김민준"; // 원래대로 되돌려 둡니다
+
+      // ✏️ 직접 해보기 1 — memoArea 의 값을 콘솔에 찍어 보세요.
+
+      // ── 섹션 2: value 는 언제나 문자열이다 ──
+
+      const priceInput = document.querySelector("#priceInput");
+      const countInput = document.querySelector("#countInput");
+
+      console.log(priceInput.value, typeof priceInput.value);
+      // 콘솔: 4500 string
+
+      // type="number" 인데도 문자열입니다! 이게 함정입니다.
+      console.log(priceInput.value + countInput.value);
+      // 콘솔: 45003
+      // 곱하기를 하려 했는데 이어붙었습니다. (01단원 개념05 에서 배운 그것입니다)
+
+      // 반드시 Number( ) 로 바꾸고 계산합니다.
+      const price = Number(priceInput.value);
+      const count = Number(countInput.value);
+
+      console.log(price, typeof price);
+      // 콘솔: 4500 number
+      console.log(price * count);
+      // 콘솔: 13500
+
+      // [주의] - * / 는 자동으로 숫자가 되지만 + 만 다릅니다.
+      console.log(priceInput.value * countInput.value);
+      // 콘솔: 13500
+      // 우연히 맞습니다. 하지만 + 를 쓰는 순간 무너지므로
+      // 습관적으로 Number( ) 를 붙이는 편이 안전합니다.
+
+      // ✏️ 직접 해보기 2 — 가격과 개수를 곱한 값에 1000 을 더해 콘솔에 찍어 보세요.
+
+      // ── 섹션 3: 빈 값 다루기 ──
+
+      const emptyInput = document.querySelector("#emptyInput");
+
+      console.log(emptyInput.value);
+      // 콘솔:
+      console.log(emptyInput.value === "");
+      // 콘솔: true
+      // 비어 있으면 빈 문자열입니다. null 이나 undefined 가 아닙니다.
+
+      // placeholder 는 값이 아닙니다. 그냥 안내 글자입니다.
+      console.log(emptyInput.placeholder);
+      // 콘솔: 여기는 비어 있습니다
+
+      // 빈 문자열은 falsy 라서 이렇게 검사합니다. (01단원, 03단원)
+      if (!emptyInput.value) {
+        console.log("값을 입력해 주세요");
+      }
+      // 콘솔: 값을 입력해 주세요
+
+      // 공백만 친 경우도 걸러내려면 trim( ) 을 씁니다.
+      const onlySpace = "   ";
+      console.log(onlySpace === "");
+      // 콘솔: false
+      console.log(onlySpace.trim() === "");
+      // 콘솔: true
+      // trim 은 앞뒤 공백을 없앤 새 문자열을 돌려줍니다.
+
+      // 빈 값을 Number 로 바꾸면 0 입니다. NaN 이 아닙니다. (01단원)
+      console.log(Number(""));
+      // 콘솔: 0
+      // "입력을 안 했는데 0으로 계산되는" 버그의 원인입니다. 먼저 비었는지 검사하세요.
+
+      // ✏️ 직접 해보기 3 — emptyInput 이 비어 있으면 "미입력", 아니면 그 값을
+      //                    콘솔에 찍는 코드를 써 보세요.
+
+      // ── 섹션 4: 체크박스 — checked ──
+
+      const iceCheck = document.querySelector("#iceCheck");
+      const giftCheck = document.querySelector("#giftCheck");
+
+      console.log(iceCheck.checked);
+      // 콘솔: true
+      console.log(giftCheck.checked);
+      // 콘솔: false
+
+      // value 를 보면 엉뚱한 값이 나옵니다.
+      console.log(iceCheck.value);
+      // 콘솔: on
+      // 체크박스는 value 가 아니라 checked 를 봐야 합니다.
+
+      // 결과가 불리언이라 조건문에 바로 씁니다.
+      if (iceCheck.checked) {
+        console.log("얼음을 추가합니다");
+      }
+      // 콘솔: 얼음을 추가합니다
+
+      // 삼항 연산자와도 잘 어울립니다. (03단원)
+      console.log(giftCheck.checked ? "선물 포장 함" : "선물 포장 안 함");
+      // 콘솔: 선물 포장 안 함
+
+      // ✏️ 직접 해보기 4 — giftCheck 를 체크된 상태로 바꿔 보세요. (checked = true)
+
+      // ── 섹션 5: select — 고른 값 ──
+
+      const sizeSelect = document.querySelector("#sizeSelect");
+
+      console.log(sizeSelect.value);
+      // 콘솔: L
+      // 화면에 보이는 "큰 것" 이 아니라 option 의 value 속성이 나옵니다.
+
+      // 화면에 보이는 글자가 필요하면 이렇게 꺼냅니다.
+      console.log(sizeSelect.options[sizeSelect.selectedIndex].text);
+      // 콘솔: 큰 것
+      //
+      // 처음 보는 것이 두 개 나왔습니다.
+      //   options 는 그 select 가 가진 option 들의 묶음입니다. 배열처럼 [0] 으로 꺼냅니다.
+      //   .text 는 그 option 의 '화면에 보이는 글자' 입니다. value 와는 다를 수 있습니다.
+      // 즉 "몇 번째가 골라졌는지 알아내서(selectedIndex), 그 option 의 글자를 꺼낸다" 입니다.
+
+      console.log(sizeSelect.selectedIndex);
+      // 콘솔: 1
+      // 몇 번째 option 인지 (0부터)
+
+      // 값을 바꾸면 화면의 선택도 따라 바뀝니다.
+      // sizeSelect.value = "S";
+
+      // ✏️ 직접 해보기 5 — sizeSelect 의 값을 "S" 로 바꾼 다음, value 와
+      //                   화면에 보이는 글자를 각각 콘솔에 찍어 보세요.
+
+      // ── 섹션 6: 모아서 화면에 보여 주기 ──
+
+      // 지금까지 읽은 값들을 정리해 결과 상자에 넣습니다.
+      const memo = document.querySelector("#memoArea").value;
+      const total = price * count;
+
+      const summary = `이름: ${nameInput.value}
+사이즈: ${sizeSelect.value}
+금액: ${price}원 x ${count}개 = ${total}원
+얼음: ${iceCheck.checked ? "추가" : "없음"}
+포장: ${giftCheck.checked ? "함" : "안 함"}
+메모: ${memo || "(없음)"}`;
+
+      document.querySelector("#result").textContent = summary;
+      // 화면: 결과 상자에 주문 내역이 여러 줄로 정리되어 나타납니다
+
+      console.log(summary);
+      // 콘솔: 위와 같은 내용이 여러 줄로 찍힙니다
+
+      // 백틱 안에서 줄을 바꾸면 그대로 줄바꿈이 됩니다. (02단원 개념05)
+      // 다만 HTML 에서는 줄바꿈이 무시되므로, CSS 에 white-space: pre-line 을
+      // 넣어 두었습니다. 그래서 화면에서도 여러 줄로 보입니다.
+
+      // ✏️ 직접 해보기 6 — memoArea 의 값을 빈 문자열로 만든 뒤,
+      //                   `${memo || "(없음)"}` 부분이 무엇을 내놓는지 확인해 보세요.
+
+      // ── 섹션 7: 자주 하는 실수 ──
+
+      // [실수 1] input 에 textContent 를 씀 (섹션 1에서 봤습니다)
+
+      // [실수 2] value 를 숫자라고 생각하고 더하기 (섹션 2)
+
+      // [실수 3] 체크박스에 value 를 씀 (섹션 4)
+
+      // [실수 4] 값을 페이지 열 때 한 번만 읽고 끝냄
+      // 이 파일이 그렇습니다. 입력칸을 고쳐도 결과가 안 바뀝니다.
+      // 사용자가 고칠 때마다 다시 읽으려면 11단원의 이벤트가 필요합니다.
+
+      // [실수 5] 빈 값을 검사하지 않고 계산
+      // const wrong = Number(emptyInput.value) * 100;
+      // 실수: Number("") 은 0 이라 결과가 0 이 됩니다.
+      //       "왜 계산이 0으로 나오지?" 하면 빈 칸부터 확인하세요.
+
+      // ── 정리 ──
+
+      // 1. input / textarea / select 는 .value, 나머지 태그는 .textContent
+      // 2. value 는 type="number" 여도 항상 문자열이다. 계산 전 Number( ).
+      // 3. 비어 있으면 빈 문자열 "". Number("") 은 0 이다.
+      // 4. 체크박스는 .checked (true / false). value 가 아니다.
+      // 5. select 는 고른 option 의 value 를 준다.
+      // 6. 입력에 반응하려면 11단원의 이벤트가 필요하다.
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) console.log(document.querySelector("#memoArea").value);
+      //    // 콘솔: 덜 달게 해주세요
+      //
+      // 2) console.log(Number(priceInput.value) * Number(countInput.value) + 1000);
+      //    // 콘솔: 14500
+      //
+      // 3) console.log(emptyInput.value || "미입력");
+      //    // 콘솔: 미입력
+      //    또는 if (emptyInput.value === "") { ... } else { ... }
+      //
+      // 4) giftCheck.checked = true;
+      //    → 화면의 체크박스가 실제로 체크됩니다.
+      //
+      // 5) sizeSelect.value = "S";
+      //    console.log(sizeSelect.value);
+      //    // 콘솔: S
+      //    console.log(sizeSelect.options[sizeSelect.selectedIndex].text);
+      //    // 콘솔: 작은 것
+      //    → value 를 바꾸면 selectedIndex 도 따라 0 으로 바뀝니다.
+      //      value("S") 와 화면 글자("작은 것") 가 다르다는 것이 이 섹션의 핵심입니다.
+      //
+      // 6) const memoArea = document.querySelector("#memoArea");
+      //    memoArea.value = "";
+      //    console.log(memoArea.value || "(없음)");
+      //    // 콘솔: (없음)
+      //    → 빈 문자열은 falsy 라서 || 의 오른쪽이 나옵니다. (03단원)
+      //      비어 있을 때 대신 보여 줄 글자를 정하는 가장 짧은 방법입니다.
+    </script>
+  </body>
+</html>

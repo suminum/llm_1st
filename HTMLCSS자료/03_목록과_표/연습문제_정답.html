@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>03단원 연습문제 정답 - 목록과 표</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ════════════════════════════════════════════════════════════
+         03단원 연습문제 정답 — 목록과 표
+         ────────────────────────────────────────────────────────────
+         읽는 법
+           문제 파일과 번호 · 문장이 똑같습니다.
+           비어 있던 상자에 답이 채워져 있고, 그 아래에 왜 그렇게 되는지 적어 두었습니다.
+           답이 하나만 있는 것은 아닙니다. 화면이 같게 나오면 맞은 것입니다.
+
+         먼저 스스로 풀어 보고 나서 여세요.
+    ════════════════════════════════════════════════════════════ -->
+
+    <h1 class="doc-head">03단원 연습문제 정답 — 목록과 표</h1>
+    <p class="doc-sub">03단원 · 목록과 표</p>
+
+    <p class="doc-guide">
+      상자 안에 답이 채워져 있습니다. 아래 회색 글씨는 <strong>왜 그렇게 되는지</strong>에 대한 설명입니다.
+      화면이 같게 나왔다면 코드가 조금 달라도 맞은 것입니다.
+    </p>
+
+    <!-- ───── 문제 1 ───── (개념01 섹션1) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 1 — 준비물 목록 만들기</h2>
+      <p class="doc-desc">
+        <code>ul</code> 과 <code>li</code> 로 "김밥 · 물통 · 돗자리" 목록을 만드세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 1 — 정답</p>
+        <ul id="a1">
+          <li>김밥</li>
+          <li>물통</li>
+          <li>돗자리</li>
+        </ul>
+        <!-- 화면: 점(•) 이 앞에 붙은 세 줄이 왼쪽에서 한 칸 들어간 자리에 보입니다 -->
+      </div>
+      <p class="doc-note">
+        항목 하나가 <code>li</code> 하나입니다. 점과 왼쪽 여백은 <code>ul</code> 을 썼기 때문에
+        브라우저가 저절로 붙인 것입니다. 여백은 재 보면 40px 입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 2 ───── (개념01 섹션3) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 2 — 항목 안의 한 부분만 굵게</h2>
+      <p class="doc-desc">
+        "연필 500원 · 지우개 300원 · 공책 1200원" 목록을 만들고
+        <strong>물건 이름만</strong> <code>strong</code> 으로 감싸세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 2 — 정답</p>
+        <ul id="a2">
+          <li><strong>연필</strong> 500원</li>
+          <li><strong>지우개</strong> 300원</li>
+          <li><strong>공책</strong> 1200원</li>
+        </ul>
+        <!-- 화면: 점이 붙은 세 줄이 보이고 각 줄에서 물건 이름 부분만 굵게 보입니다 -->
+      </div>
+      <p class="doc-note">
+        <code>strong</code> 을 <code>li</code> <strong>안</strong>에 넣은 것이 핵심입니다.
+        <code>&lt;strong&gt;&lt;li&gt;...&lt;/li&gt;&lt;/strong&gt;</code> 처럼 바깥에 씌우면
+        줄 전체가 굵어지고, <code>ul</code> 의 자식이 <code>li</code> 가 아니게 되어 규칙도 어깁니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 3 ───── (개념01 섹션4) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 3 — 목록 안에 목록 넣기</h2>
+      <p class="doc-desc">
+        "음료" 아래에 "커피" 와 "주스" 를 넣고, 그다음에 "음식" 항목이 오는
+        중첩 목록을 만드세요. 안쪽 <code>ul</code> 을 <code>li</code> <strong>안</strong>에 넣어야 합니다.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 3 — 정답</p>
+        <ul id="a3">
+          <li>음료
+            <ul>
+              <li>커피</li>
+              <li>주스</li>
+            </ul>
+          </li>
+          <li>음식</li>
+        </ul>
+        <!-- 화면: "음료" 와 "음식" 앞에는 까만 점(•), "커피" 와 "주스" 앞에는
+                  속이 빈 동그라미(◦) 가 붙고 한 칸 더 안으로 들어갑니다 -->
+      </div>
+      <p class="doc-note">
+        "음료" 뒤에서 <code>&lt;/li&gt;</code> 를 바로 닫지 않고, 안쪽 <code>ul</code> 이 끝난 뒤에
+        닫은 것이 핵심입니다. 표시가 <strong>•</strong> 에서 <strong>◦</strong> 로 바뀌는 것은
+        브라우저가 깊이에 따라 알아서 하는 일입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 4 ───── (개념02 섹션1) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 4 — 순서 있는 목록 만들기</h2>
+      <p class="doc-desc">
+        "물을 끓입니다 · 면을 넣습니다 · 4분 뒤 불을 끕니다" 를 <code>ol</code> 로 만드세요.
+        <strong>번호는 직접 쓰지 마세요.</strong>
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 4 — 정답</p>
+        <ol id="a4">
+          <li>물을 끓입니다</li>
+          <li>면을 넣습니다</li>
+          <li>4분 뒤 불을 끕니다</li>
+        </ol>
+        <!-- 화면: "1." "2." "3." 이 앞에 붙은 세 줄이 보입니다 -->
+      </div>
+      <p class="doc-note">
+        코드 어디에도 1, 2, 3 이 없습니다. 브라우저가 <code>li</code> 를 세어 준 것입니다.
+        중간에 항목을 끼워 넣어도 번호가 저절로 다시 매겨집니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 5 ───── (개념02 섹션2) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 5 — ul 과 ol 고르기</h2>
+      <p class="doc-desc">
+        (가) 냉장고 속 음식 "우유 · 계란 · 김치" 와
+        (나) 조리 순서 "물 붓기 · 면 넣기 · 스프 넣기" 를
+        각각 알맞은 태그로 만드세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 5 — 정답 (가) 냉장고 속 음식</p>
+        <ul id="a5-ul">
+          <li>우유</li>
+          <li>계란</li>
+          <li>김치</li>
+        </ul>
+        <!-- 화면: 점(•) 이 붙은 세 줄이 보입니다 -->
+      </div>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 5 — 정답 (나) 조리 순서</p>
+        <ol id="a5-ol">
+          <li>물 붓기</li>
+          <li>면 넣기</li>
+          <li>스프 넣기</li>
+        </ol>
+        <!-- 화면: "1." "2." "3." 이 붙은 세 줄이 보입니다 -->
+      </div>
+      <p class="doc-note">
+        (가) 는 "김치 · 우유 · 계란" 으로 바꿔 써도 뜻이 같으니 <code>ul</code> 입니다.
+        (나) 는 스프를 먼저 넣고 물을 부을 수 없으니 <code>ol</code> 입니다.
+        <strong>순서를 바꿔 보는 것</strong>이 판단 방법입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 6 ───── (개념02 섹션3) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 6 — 번호를 알파벳으로 바꾸기</h2>
+      <p class="doc-desc">
+        "가입 신청 · 서류 제출 · 결과 확인" 을 <strong>대문자 알파벳</strong> 번호가 붙는
+        목록으로 만드세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 6 — 정답</p>
+        <ol id="a6" type="A">
+          <li>가입 신청</li>
+          <li>서류 제출</li>
+          <li>결과 확인</li>
+        </ol>
+        <!-- 화면: "A." "B." "C." 가 앞에 붙은 세 줄이 보입니다 -->
+      </div>
+      <p class="doc-note">
+        <code>type</code> 의 값은 대소문자를 가립니다.
+        <code>type="a"</code> 라고 쓰면 소문자 "a. b. c." 가 나옵니다.
+        태그 이름은 대소문자를 안 가리지만 <strong>속성 값은 가립니다.</strong>
+      </p>
+    </section>
+
+    <!-- ───── 문제 7 ───── (개념02 섹션4) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 7 — 시작 번호 바꾸기</h2>
+      <p class="doc-desc">
+        "일곱 번째 순서입니다 · 여덟 번째 순서입니다" 를
+        <strong>7번부터</strong> 번호가 붙게 만드세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 7 — 정답</p>
+        <ol id="a7" start="7">
+          <li>일곱 번째 순서입니다</li>
+          <li>여덟 번째 순서입니다</li>
+        </ol>
+        <!-- 화면: "7." "8." 이 앞에 붙은 두 줄이 보입니다 -->
+      </div>
+      <p class="doc-note">
+        <code>start</code> 는 <code>ol</code> 에 붙습니다.
+        첫 항목에 <code>value="7"</code> 을 붙여도 화면 결과는 같지만,
+        목록 전체의 시작을 정하는 것은 <code>start</code> 입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 8 ───── (개념03 섹션1) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 8 — 용어집 만들기</h2>
+      <p class="doc-desc">
+        "태그 · 꺾쇠로 감싼 이름표입니다" 와
+        "요소 · 여는 태그부터 닫는 태그까지의 덩어리입니다" 를
+        <code>dl</code> 로 만드세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 8 — 정답</p>
+        <dl id="a8">
+          <dt>태그</dt>
+          <dd>꺾쇠로 감싼 이름표입니다</dd>
+          <dt>요소</dt>
+          <dd>여는 태그부터 닫는 태그까지의 덩어리입니다</dd>
+        </dl>
+        <!-- 화면: "태그" 와 "요소" 는 왼쪽 끝에, 두 설명 줄은 한 칸 안으로 들어가
+                  모두 네 줄로 보입니다. 점도 번호도 없습니다 -->
+      </div>
+      <p class="doc-note">
+        들여쓰기되는 쪽은 항상 <code>dd</code> 입니다. 재 보면 40px 입니다.
+        <code>dt</code> 는 굵어지지 않습니다. 굵기가 필요하면 <code>strong</code> 이나
+        09단원 CSS 를 씁니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 9 ───── (개념03 섹션2) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 9 — 용어 하나에 설명 두 개</h2>
+      <p class="doc-desc">
+        "말" 이라는 <code>dt</code> 하나에
+        "타고 다니는 동물입니다" 와 "입으로 하는 이야기입니다" 두 <code>dd</code> 를 다세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 9 — 정답</p>
+        <dl id="a9">
+          <dt>말</dt>
+          <dd>타고 다니는 동물입니다</dd>
+          <dd>입으로 하는 이야기입니다</dd>
+        </dl>
+        <!-- 화면: "말" 한 줄 아래에 들여쓰기된 설명 두 줄이 간격 없이 붙어 나옵니다 -->
+      </div>
+      <p class="doc-note">
+        브라우저는 <strong>다음 <code>dt</code> 가 나오기 전까지의 <code>dd</code></strong> 를
+        전부 앞 <code>dt</code> 의 설명으로 봅니다. 그래서 <code>dt</code> 를 다시 쓸 필요가 없습니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 10 ───── (개념04 섹션1) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 10 — 표 만들기</h2>
+      <p class="doc-desc">
+        "사과 1000" 과 "바나나 1500" 을 2행 2열 표로 만드세요.
+        <code>&lt;table border="1"&gt;</code> 로 시작하세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 10 — 정답</p>
+        <table border="1" id="a10">
+          <tr>
+            <td>사과</td>
+            <td>1000</td>
+          </tr>
+          <tr>
+            <td>바나나</td>
+            <td>1500</td>
+          </tr>
+        </table>
+        <!-- 화면: 칸마다 테두리가 있는 2행 2열 표가 보입니다.
+                  글자는 모두 보통 굵기이고 칸 왼쪽에 붙어 있습니다 -->
+      </div>
+      <p class="doc-note">
+        <code>tr</code> 이 가로 한 줄, 그 안의 <code>td</code> 가 칸입니다.
+        <strong>행 단위로</strong> 씁니다. 열을 만드는 태그는 없고,
+        각 행의 칸 개수가 같아서 2열이 된 것입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 11 ───── (개념04 섹션2) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 11 — 제목 칸 넣기</h2>
+      <p class="doc-desc">
+        문제 10 의 표 맨 위에 "이름 · 가격" 제목 줄을 붙여 3행 2열 표로 만드세요.
+        제목 칸에는 <code>td</code> 가 아닌 태그를 씁니다.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 11 — 정답</p>
+        <table border="1" id="a11">
+          <tr>
+            <th>이름</th>
+            <th>가격</th>
+          </tr>
+          <tr>
+            <td>사과</td>
+            <td>1000</td>
+          </tr>
+          <tr>
+            <td>바나나</td>
+            <td>1500</td>
+          </tr>
+        </table>
+        <!-- 화면: 맨 윗줄의 "이름" 과 "가격" 만 굵은 글씨로 칸 가운데에 놓입니다.
+                  아래 두 줄은 보통 굵기에 왼쪽 정렬입니다 -->
+      </div>
+      <p class="doc-note">
+        <code>th</code> 로 쓰면 굵기가 700, 정렬이 가운데가 됩니다.
+        <code>td</code> 는 굵기 400, 왼쪽 정렬입니다. 이 모양은 브라우저 기본값일 뿐이고,
+        <code>th</code> 를 고르는 진짜 이유는 <strong>"이 칸은 제목" 이라는 뜻</strong> 때문입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 12 ───── (개념04 섹션3·섹션4) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 12 — caption 과 thead · tbody</h2>
+      <p class="doc-desc">
+        문제 11 의 표에 <code>caption</code> 으로 "과일 가격표" 제목을 달고,
+        제목 줄은 <code>thead</code>, 나머지 두 줄은 <code>tbody</code> 로 감싸세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 12 — 정답</p>
+        <table border="1" id="a12">
+          <caption>과일 가격표</caption>
+          <thead>
+            <tr>
+              <th>이름</th>
+              <th>가격</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>사과</td>
+              <td>1000</td>
+            </tr>
+            <tr>
+              <td>바나나</td>
+              <td>1500</td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- 화면: 표 위에 "과일 가격표" 가 한 줄 보이고, 표 모양은 문제 11 과 같습니다 -->
+      </div>
+      <p class="doc-note">
+        <code>caption</code> 은 <code>table</code> 의 첫 자식으로 씁니다.
+        <code>thead</code> · <code>tbody</code> 는 화면을 거의 바꾸지 않지만
+        코드가 읽기 쉬워지고, 08단원에서 CSS 로 몸통 줄만 골라 꾸밀 때 쓰입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 13 ───── (개념05 섹션1·섹션2) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 13 — colspan 으로 가로로 합치기</h2>
+      <p class="doc-desc">
+        제목 줄이 "교시 · 월 · 화" 인 표를 만드세요.
+        1교시는 "국어 · 영어", 2교시는 두 칸을 합쳐 "봉사 활동" 한 칸으로 만드세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 13 — 정답</p>
+        <table border="1" id="a13">
+          <tr>
+            <th>교시</th>
+            <th>월</th>
+            <th>화</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>국어</td>
+            <td>영어</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td colspan="2">봉사 활동</td>
+          </tr>
+        </table>
+        <!-- 화면: 3행 3열 표에서 맨 아랫줄만 오른쪽 두 칸이 하나로 합쳐져 보입니다.
+                  표의 오른쪽 끝은 세 줄 모두 같은 자리에서 끝납니다 -->
+      </div>
+      <p class="doc-note">
+        마지막 행의 <code>td</code> 가 <strong>두 개뿐</strong>인 것이 핵심입니다.
+        1 + 2 = 3 으로 위 줄들과 칸 수가 맞습니다.
+        <code>&lt;td&gt;영어&lt;/td&gt;</code> 를 지우지 않으면 4칸이 되어
+        그 줄만 오른쪽으로 튀어나옵니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 14 ───── [응용] (개념05 섹션3·섹션4) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 14 — [응용] rowspan 으로 세로로 합치기</h2>
+      <p class="doc-desc">
+        제목 줄이 "시간 · 과목" 인 표를 만드세요.
+        "오전" 은 <code>rowspan</code> 으로 두 줄을 합쳐 "국어" 와 "영어" 를 덮고,
+        그 아래에 "오후 · 수학" 줄을 넣으세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 14 — 정답</p>
+        <table border="1" id="a14">
+          <tr>
+            <th>시간</th>
+            <th>과목</th>
+          </tr>
+          <tr>
+            <td rowspan="2">오전</td>
+            <td>국어</td>
+          </tr>
+          <tr>
+            <td>영어</td>
+          </tr>
+          <tr>
+            <td>오후</td>
+            <td>수학</td>
+          </tr>
+        </table>
+        <!-- 화면: 4행 2열 표에서 왼쪽 "오전" 칸이 아래 두 줄에 걸쳐 있고,
+                  그 아래에 "오후 · 수학" 줄이 있습니다.
+                  "오전" 글자는 두 줄 높이의 세로 가운데에 놓입니다 -->
+      </div>
+      <p class="doc-note">
+        "영어" 가 있는 행에 <code>td</code> 가 <strong>하나뿐</strong>인 것이 핵심입니다.
+        왼쪽 첫 자리는 위에서 내려온 "오전" 칸이 이미 차지하고 있습니다.
+        여기에 <code>&lt;td&gt;오전&lt;/td&gt;</code> 을 또 쓰면 없던 세 번째 열이 생깁니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 15 ───── [도전] (개념05 섹션5) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 15 — [도전] 제목이 두 줄인 표</h2>
+      <p class="doc-desc">
+        왼쪽에 "반"(세로 두 줄), 오른쪽 위에 "1학기"(가로 두 칸),
+        그 아래에 "중간" 과 "기말" 이 오는 제목을 만들고,
+        자료 줄로 "1반 90 95" 와 "2반 85 88" 을 넣으세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 15 — 정답</p>
+        <table border="1" id="a15">
+          <tr>
+            <th rowspan="2">반</th>
+            <th colspan="2">1학기</th>
+          </tr>
+          <tr>
+            <th>중간</th>
+            <th>기말</th>
+          </tr>
+          <tr>
+            <td>1반</td>
+            <td>90</td>
+            <td>95</td>
+          </tr>
+          <tr>
+            <td>2반</td>
+            <td>85</td>
+            <td>88</td>
+          </tr>
+        </table>
+        <!-- 화면: 4행짜리 표가 나오고, 왼쪽 "반" 칸이 위 두 줄에 걸쳐 있습니다.
+                  "1학기" 는 오른쪽 위에서 두 칸 폭을 차지하고,
+                  그 아래에 "중간" 과 "기말" 이 한 칸씩 있습니다.
+                  오른쪽 끝은 네 줄 모두 같은 자리에서 끝납니다 -->
+      </div>
+      <p class="doc-note">
+        행마다 칸을 세어 보세요.
+        첫 줄은 1(<code>rowspan</code>) + 2(<code>colspan</code>) = 3칸,
+        둘째 줄은 위에서 내려온 1칸 + 직접 쓴 2칸 = 3칸,
+        셋째 · 넷째 줄은 3칸입니다. <strong>모든 행이 3칸</strong>이라 오른쪽이 가지런합니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 16 ───── [확인] (개념04 섹션2 · 개념05 섹션2) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 16 — [확인] 이상한 표 고치기</h2>
+      <p class="doc-desc">
+        아래 표는 에러가 나지 않는데 두 곳이 이상합니다.
+        <strong>(1)</strong> 맨 윗줄이 제목인데 굵지도 가운데 정렬도 아닙니다.
+        <strong>(2)</strong> 맨 아랫줄만 오른쪽으로 튀어나옵니다.
+        무엇 때문인지 찾아 고치세요.
+      </p>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 16 — 고치기 전 (비교용)</p>
+        <table border="1" id="a16-before">
+          <tr>
+            <td>교시</td>
+            <td>월</td>
+            <td>화</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>국어</td>
+            <td>영어</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td colspan="2">전교 조회</td>
+            <td>수학</td>
+          </tr>
+        </table>
+        <!-- 화면: 표가 4열이 되어 맨 아랫줄만 오른쪽으로 튀어나옵니다.
+                  위 두 줄의 오른쪽 끝에는 테두리 없는 빈 공간이 남습니다.
+                  맨 윗줄 글자도 보통 굵기에 왼쪽 정렬입니다 -->
+      </div>
+      <div class="doc-demo">
+        <p class="doc-demo-label">문제 16 — 정답 (고친 표)</p>
+        <table border="1" id="a16">
+          <tr>
+            <th>교시</th>
+            <th>월</th>
+            <th>화</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>국어</td>
+            <td>영어</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td colspan="2">전교 조회</td>
+          </tr>
+        </table>
+        <!-- 화면: 3행 3열 표가 되고 맨 윗줄만 굵고 가운데 정렬입니다.
+                  오른쪽 끝이 세 줄 모두 같은 자리에서 끝납니다 -->
+      </div>
+      <p class="doc-note">
+        고친 곳은 두 군데입니다.
+        <strong>(1)</strong> 맨 윗줄의 <code>td</code> 세 개를 <code>th</code> 로 바꿨습니다.
+        제목 칸이라는 뜻이 없으면 굵기도 정렬도 안 바뀝니다.
+        <strong>(2)</strong> 마지막 행 끝의 <code>&lt;td&gt;수학&lt;/td&gt;</code> 을 지웠습니다.
+        <code>colspan="2"</code> 로 두 칸을 합쳤으니 그 행은 1 + 2 = 3칸이어야 하는데
+        4칸이 되어 있었습니다.
+      </p>
+      <p class="doc-note">
+        둘 다 <strong>에러가 나지 않는</strong> 종류의 문제입니다.
+        브라우저는 시키는 대로 그려 줄 뿐이라, 이런 것은 사람이 화면을 보고 찾아야 합니다.
+        표가 어긋나면 <strong>노려보지 말고 행마다 칸을 세세요.</strong>
+      </p>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. 순서가 뜻이 없으면 <code>ul</code>, 뜻이면 <code>ol</code>, 이름과 값의 짝이면 <code>dl</code> 입니다.</p>
+      <p>2. 중첩 목록에서 안쪽 <code>ul</code> 은 <strong><code>li</code> 안</strong>에 넣습니다.</p>
+      <p>3. 표는 <strong>행 단위</strong>로 쓰고, 제목 칸에는 <code>th</code> 를 씁니다.</p>
+      <p>4. <code>colspan</code> 을 쓰면 그 행의, <code>rowspan</code> 을 쓰면 아래 행의 칸을 줄입니다.</p>
+      <p>5. 표가 어긋나면 <strong>행마다 칸을 세는 것</strong>이 가장 빠른 해결법입니다.</p>
+    </div>
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #a1 | list-style-type | disc
+      #a1 li | display | list-item
+      #a2 strong | font-weight | 700
+      #a3 > li > ul | list-style-type | circle
+      #a4 | list-style-type | decimal
+      #a5-ul | list-style-type | disc
+      #a5-ol | list-style-type | decimal
+      #a6 | list-style-type | upper-alpha
+      #a7 | list-style-type | decimal
+      #a8 dd | margin-left | 40px
+      #a8 dt | font-weight | 400
+      #a9 dd | margin-left | 40px
+      #a10 td | font-weight | 400
+      #a10 td | text-align | start
+      #a11 th | font-weight | 700
+      #a11 th | text-align | center
+      #a12 caption | display | table-caption
+      #a12 thead | display | table-header-group
+      #a12 tbody | display | table-row-group
+      #a13 | ~width | 118
+      #a13 td[colspan] | display | table-cell
+      #a14 td[rowspan] | ~height | 64
+      #a14 | ~width | 80
+      #a15 th[colspan] | ~width | 74
+      #a15 th[rowspan] | ~height | 64
+      #a16 | ~width | 118
+      #a16-before | ~width | 156
+      #a16 th | font-weight | 700
+      #a16 th | text-align | center
+    -->
+  </body>
+</html>

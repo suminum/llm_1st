@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>10단원 연습문제 정답 - 박스 모델</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ============================================================
+         10단원 연습문제 정답
+         답이 달라도 화면이 같으면 맞은 것입니다. 가는 길은 여러 개입니다.
+         ============================================================ */
+
+      /* 문제 8 · 9 · 15 에서 기준선 역할을 하는 바깥 상자입니다. */
+      .q-stage {
+        border: 2px dashed #bbbbbb;
+      }
+
+      /* ───── 문제 1 ───── */
+      #q1 {
+        background-color: #dbe7fb;
+        padding: 20px;
+      }
+
+      /* ───── 문제 2 ───── */
+      #q2 {
+        background-color: #dbe7fb;
+        padding: 10px 40px;
+      }
+
+      /* ───── 문제 3 ───── */
+      #q3 {
+        background-color: #dbe7fb;
+        padding-left: 60px;
+      }
+
+      /* ───── 문제 4 ───── */
+      #q4 {
+        background-color: #ffffff;
+        padding: 10px;
+        border: 3px solid #c0392b;
+      }
+
+      /* ───── 문제 5 ───── */
+      #q5 {
+        background-color: #ffffff;
+        padding: 10px;
+        border: 4px dashed #2d6cdf;
+      }
+
+      /* ───── 문제 6 ───── */
+      #q6 {
+        background-color: #ffffff;
+        padding: 8px 0;
+        border-bottom: 5px solid #27853f;
+      }
+
+      /* ───── 문제 7 ───── */
+      #q7 {
+        background-color: #f3ecff;
+        border: 2px solid #6b3fc0;
+        padding: 12px;
+        border-radius: 12px;
+      }
+
+      /* ───── 문제 8 ───── */
+      #q8 {
+        background-color: #ffe9a8;
+        margin: 30px 0;
+      }
+
+      /* ───── 문제 9 ───── */
+      #q9 {
+        background-color: #ffd9a8;
+        width: 320px;
+        margin: 0 auto;
+      }
+
+      /* ───── 문제 10 ───── */
+      #q10 {
+        background-color: #d7f0d7;
+        width: 250px;
+        height: 100px;
+      }
+
+      /* ───── 문제 11 ───── */
+      #q11 {
+        background-color: #f3dcf3;
+        width: 100%;
+        max-width: 400px;
+      }
+
+      /* ───── 문제 12 ───── */
+      #q12 {
+        background-color: #d7f0d7;
+        padding: 20px;
+        border: 5px solid #27853f;
+        box-sizing: border-box;
+        width: 300px;
+      }
+
+      /* ───── 문제 13 ───── */
+      #q13 {
+        height: 120px;
+        border: 1px solid #999999;
+        background-color: #fff8dc;
+        background-image: url("무늬.svg");
+        background-repeat: no-repeat;
+        background-position: right top;
+      }
+
+      /* ───── 문제 14 ───── */
+      #q14 {
+        width: 300px;
+        padding: 8px;
+        border: 2px solid #888888;
+        background-color: #f4f4f4;
+        height: 90px;
+        overflow: auto;
+      }
+      .q14-text {
+        margin: 0;
+      }
+
+      /* ───── 문제 15 ───── */
+      #q15 {
+        box-sizing: border-box;
+        width: 360px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #cccccc;
+        border-radius: 8px;
+        background-color: #ffffff;
+      }
+
+      /* ───── 문제 16 ───── */
+      /* 고친 곳 세 군데
+         1) padding: 24;  →  padding: 24px;      단위를 붙였습니다
+         2) border-width / border-color 만 있고 style 이 없었습니다
+            →  border: 4px solid #c0392b;        한 줄 단축으로 합쳤습니다
+         3) margin: auto; 만 있고 width 가 없었습니다
+            →  width: 400px; 를 더하고 margin: 0 auto; 로 바꿨습니다 */
+      #q16 {
+        background-color: #fff8dc;
+        padding: 24px;
+        border: 4px solid #c0392b;
+        width: 400px;
+        margin: 0 auto;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         10단원 연습문제 정답 — 박스 모델
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              여러분이 푼 연습문제.html 과 나란히 열어 화면을 대조하세요.
+         ============================================================
+
+         답이 글자 하나까지 같을 필요는 없습니다.
+         화면이 같고, 개발자도구로 잰 숫자가 같으면 맞은 것입니다.
+         예를 들어 문제 1 은 padding: 20px 20px 20px 20px 라고 써도 똑같습니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">10단원 연습문제 정답 — 박스 모델</h1>
+    <p class="doc-sub">10단원 · 박스 모델</p>
+
+    <p class="doc-guide">
+      각 상자 위의 주석에 <strong>답과 해설</strong>이 있습니다.
+      답이 달라도 <strong>화면이 같으면 맞은 것</strong>입니다.
+      숫자가 애매하면 <strong>F12 개발자도구</strong>로 재서 대조하세요.
+    </p>
+
+    <!-- ───── 문제 1 ───── (개념02 섹션1) -->
+    <!--
+      답:  padding: 20px;
+
+      해설: 값을 하나만 쓰면 네 방향 모두 같은 값이 됩니다.
+            padding: 20px 20px 20px 20px 라고 네 개를 다 써도 결과는 같습니다.
+            상자의 세로 길이가 27px 에서 67px 로 늘어납니다. 27 + 20 + 20 = 67 입니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 1</p>
+      <p id="q1">안쪽 여백을 사방 20px 주세요</p>
+      <!-- 화면: 연파랑 상자가 위아래로 두꺼워지고 글자가 벽에서 20px 떨어집니다 -->
+    </div>
+
+    <!-- ───── 문제 2 ───── (개념02 섹션3) -->
+    <!--
+      답:  padding: 10px 40px;
+
+      해설: 값이 두 개면 "위아래 / 좌우" 입니다.
+            아래는 위의 맞은편이라 10px, 왼쪽은 오른쪽의 맞은편이라 40px 이 됩니다.
+            padding: 10px 40px 10px 40px 라고 써도 똑같습니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 2</p>
+      <p id="q2">위아래 10px, 좌우 40px</p>
+      <!-- 화면: 글자가 왼쪽 벽에서 40px 떨어져 시작하고 위아래 여백은 얇습니다 -->
+    </div>
+
+    <!-- ───── 문제 3 ───── (개념02 섹션4) -->
+    <!--
+      답:  padding-left: 60px;
+
+      해설: 한 방향만 주고 싶을 때는 방향 이름이 붙은 속성을 씁니다.
+            padding: 0 0 0 60px; 라고 써도 결과는 같지만,
+            방향 이름을 쓰는 쪽이 무엇을 하려는지 한눈에 보입니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 3</p>
+      <p id="q3">왼쪽에만 60px</p>
+      <!-- 화면: 글자만 오른쪽으로 밀리고 위아래 두께는 그대로입니다 -->
+    </div>
+
+    <!-- ───── 문제 4 ───── (개념03 섹션2) -->
+    <!--
+      답:  border: 3px solid #c0392b;
+
+      해설: 단축 border 는 두께 → 모양 → 색 순서로 씁니다.
+            solid 를 빠뜨리면 두께와 색을 아무리 정해도 선이 안 그어집니다.
+            border-style 의 기본값이 none 이기 때문입니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 4</p>
+      <p id="q4">3px 빨간 실선 테두리</p>
+      <!-- 화면: 흰 상자 둘레에 빨간 실선이 3px 두께로 그어집니다 -->
+    </div>
+
+    <!-- ───── 문제 5 ───── (개념03 섹션3) -->
+    <!--
+      답:  border: 4px dashed #2d6cdf;
+
+      해설: dashed 는 짧은 막대가 끊어져 이어진 점선입니다.
+            dotted 는 동그란 점이라서 모양이 다릅니다.
+            점선의 끊긴 틈으로 상자의 배경색이 그대로 보입니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 5</p>
+      <p id="q5">4px 파란 막대 점선 테두리</p>
+      <!-- 화면: 흰 상자 둘레에 파란 막대 점선이 그어집니다 -->
+    </div>
+
+    <!-- ───── 문제 6 ───── (개념03 섹션4) -->
+    <!--
+      답:  border-bottom: 5px solid #27853f;
+
+      해설: 방향 속성도 단축이라 안에 두께 · 모양 · 색을 그대로 씁니다.
+            border 단축을 쓰면 네 방향이 다 그어지므로 이 문제에서는 안 됩니다.
+            아래쪽만 그으면 상자의 세로 길이도 5px 만 늘어납니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 6</p>
+      <p id="q6">아래쪽에만 초록 실선</p>
+      <!-- 화면: 글자 아래에 초록색 굵은 선이 한 줄만 그어집니다 -->
+    </div>
+
+    <!-- ───── 문제 7 ───── (개념03 섹션5) -->
+    <!--
+      답:  border-radius: 12px;
+
+      해설: 값 하나를 쓰면 네 모서리를 모두 12px 만큼 깎습니다.
+            50% 를 쓰면 완전히 둥근 모양이 되므로 이 문제의 답이 아닙니다.
+            테두리뿐 아니라 배경색도 같이 깎인다는 점을 확인하세요.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 7</p>
+      <p id="q7">모서리를 12px 만큼 둥글게</p>
+      <!-- 화면: 보라 테두리 상자의 네 귀퉁이가 부드럽게 둥글어집니다 -->
+    </div>
+
+    <!-- ───── 문제 8 ───── (개념04 섹션2) -->
+    <!--
+      답:  margin: 30px 0;
+
+      해설: 값이 두 개면 "위아래 / 좌우" 입니다. padding 과 규칙이 같습니다.
+            좌우가 0 이라서 노란 상자의 가로는 점선 안쪽 폭 그대로 820px 입니다.
+            margin 자리에는 노란색이 안 칠해집니다. 흰 바탕이 그대로 보입니다.
+            p 요소에는 원래 위아래 margin 이 16px 씩 있는데, 이 답이 그것을 덮어씁니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 8</p>
+      <div class="q-stage">
+        <p id="q8">위아래 30px, 좌우 0</p>
+      </div>
+      <!-- 화면: 노란 상자가 점선의 위아래 벽에서 30px 떨어지고 좌우로는 딱 붙습니다 -->
+    </div>
+
+    <!-- ───── 문제 9 ───── (개념04 섹션3) -->
+    <!--
+      답:  width: 320px;
+           margin: 0 auto;
+
+      해설: 상자를 가운데로 보내려면 width 와 auto 가 둘 다 있어야 합니다.
+            width 가 없으면 상자가 한 줄을 다 먹어서 남는 자리가 0 이 되고,
+            auto 가 나눌 것이 없어 아무 일도 안 일어납니다.
+            text-align: center 를 쓰면 글자만 가운데로 가고 상자는 그대로입니다.
+            실제로 재면 상자의 왼쪽 끝이 화면 x 좌표 480 에 놓입니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 9</p>
+      <div class="q-stage">
+        <p id="q9">가로 320px, 가운데로</p>
+      </div>
+      <!-- 화면: 주황 상자가 점선 상자의 한가운데에 놓이고 좌우 흰 자리가 똑같습니다 -->
+    </div>
+
+    <!-- ───── 문제 10 ───── (개념05 섹션1) -->
+    <!--
+      답:  width: 250px;
+           height: 100px;
+
+      해설: 숫자에는 반드시 단위를 붙입니다. width: 250 이라고 쓰면
+            그 줄이 버려져서 상자가 한 줄을 통째로 차지합니다.
+            height 를 정하면 글자가 상자 위쪽에 붙습니다.
+            height 는 자리를 만들 뿐 내용을 가운데로 옮겨 주지 않기 때문입니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 10</p>
+      <p id="q10">가로 250px, 세로 100px</p>
+      <!-- 화면: 초록 상자가 왼쪽에 네모나게 자리 잡고 글자는 위쪽에 붙어 있습니다 -->
+    </div>
+
+    <!-- ───── 문제 11 ───── [응용] (개념05 섹션3) -->
+    <!--
+      답:  width: 100%;
+           max-width: 400px;
+
+      해설: width: 100% 는 "부모를 꽉 채워라",
+            max-width: 400px 은 "그래도 400 은 넘지 마라" 입니다.
+            부모 안쪽이 824px 이므로 한계선이 이겨서 400px 이 됩니다.
+            p 는 한 줄을 통째로 차지하는 상자라서 max-width: 400px 만 써도 화면은 같습니다.
+            그래도 width: 100% 를 같이 적어 두면 "채우되 넘지는 마라" 라는 뜻이
+            코드에 그대로 드러나서 읽기 좋습니다.
+            width: 400px 으로 못 박으면 창을 좁혔을 때 같이 안 줄어듭니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 11</p>
+      <p id="q11">꽉 채우되 400px 까지만</p>
+      <!-- 화면: 보라 상자의 가로가 정확히 400px 이 됩니다 -->
+    </div>
+
+    <!-- ───── 문제 12 ───── [응용] (개념05 섹션5) -->
+    <!--
+      답:  box-sizing: border-box;
+           width: 300px;
+
+      해설: box-sizing 없이 width: 300px 만 쓰면
+            300 + 20 + 20 + 5 + 5 = 350px 이 됩니다.
+            기본값 content-box 에서는 width 가 콘텐츠 영역만을 뜻하기 때문입니다.
+            border-box 로 바꾸면 300 안에서 padding 과 border 가 자리를 나눠 쓰므로
+            겉 크기가 정확히 300px 이 됩니다.
+            이때 글자가 들어가는 콘텐츠 폭은 300 - 40 - 10 = 250px 이 됩니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 12</p>
+      <p id="q12">실제 가로를 300px 로</p>
+      <!-- 화면: 초록 상자의 실제 가로가 개발자도구에서 300 으로 나옵니다 -->
+    </div>
+
+    <!-- ───── 문제 13 ───── [응용] (개념06 섹션2·3) -->
+    <!--
+      답:  background-image: url("무늬.svg");
+           background-repeat: no-repeat;
+           background-position: right top;
+
+      해설: 세 줄을 단축으로 합쳐도 됩니다.
+            background: #fff8dc url("무늬.svg") no-repeat right top;
+            다만 단축을 쓰면 위에 이미 적어 둔 background-color 를 덮어쓰므로
+            색을 단축 안에 같이 적어야 합니다.
+            반복을 안 끄면 무늬가 상자를 가득 채워서 위치 지정이 의미가 없어집니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 13</p>
+      <div id="q13"></div>
+      <!-- 화면: 연노랑 상자의 오른쪽 위 구석에 물방울 무늬가 하나만 보입니다 -->
+    </div>
+
+    <!-- ───── 문제 14 ───── [도전] (개념06 섹션6) -->
+    <!--
+      답:  height: 90px;
+           overflow: auto;
+
+      해설: overflow 는 넘친 부분을 어떻게 할지 정합니다.
+            auto 는 넘칠 때만 스크롤바를 붙입니다.
+            scroll 은 안 넘쳐도 가로세로 스크롤바 자리를 잡아 버리고,
+            hidden 은 잘라서 읽을 방법을 없애 버립니다.
+            상자의 실제 세로는 90 + 8 + 8 + 2 + 2 = 110px 입니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 14</p>
+      <div id="q14">
+        <p class="q14-text">
+          이 상자의 세로를 90px 로 고정하면 이 글이 상자보다 길어집니다.
+          넘친 부분을 어떻게 할지 정하는 속성이 무엇이었는지 떠올려 보세요.
+          넘칠 때만 스크롤바가 생기는 값을 골라야 합니다.
+        </p>
+      </div>
+      <!-- 화면: 회색 상자의 오른쪽에 세로 스크롤바가 생기고,
+                끌어내리면 나머지 글이 보입니다 -->
+    </div>
+
+    <!-- ───── 문제 15 ───── [도전] (개념02~06 종합) -->
+    <!--
+      답:  box-sizing: border-box;
+           width: 360px;
+           margin: 0 auto;
+           padding: 20px;
+           border: 1px solid #cccccc;
+           border-radius: 8px;
+           background-color: #ffffff;
+
+      해설: 조건이 여섯 개지만 이 단원에서 배운 것을 하나씩 옮겨 적으면 됩니다.
+            함정은 첫 줄입니다. box-sizing 이 없으면
+            360 + 20 + 20 + 1 + 1 = 402px 이 되어 "정확히 360px" 조건이 깨집니다.
+            margin: 0 auto 는 width 가 있어야 일을 하므로 순서가 꼬여도 상관없지만,
+            width 를 빼먹으면 카드가 왼쪽에 붙은 채로 남습니다.
+            실제로 재면 카드의 왼쪽 끝이 화면 x 좌표 460 에 놓입니다.
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 15</p>
+      <div class="q-stage">
+        <div id="q15">가운데 놓인 360px 짜리 카드</div>
+      </div>
+      <!-- 화면: 점선 상자 한가운데에 모서리가 둥근 흰 카드가 놓입니다 -->
+    </div>
+
+    <!-- ───── 문제 16 ───── [확인] (개념02·03·04) -->
+    <!--
+      고친 곳 세 군데와 그 이유입니다.
+
+        1) padding: 24;   →   padding: 24px;
+           숫자에 단위가 없으면 CSS 가 그 줄을 통째로 버립니다.
+           그래서 여백이 하나도 안 생겼습니다.
+
+        2) border-width: 4px;        →   border: 4px solid #c0392b;
+           border-color: #c0392b;
+           style 이 없으면 그을 선 자체가 없습니다.
+           border-style 의 기본값이 none 이라서 두께도 0 으로 계산됩니다.
+
+        3) margin: auto;   →   width: 400px;
+                               margin: 0 auto;
+           width 가 없으면 상자가 한 줄을 다 먹어서 남는 자리가 0 입니다.
+           auto 가 나눌 것이 없으니 가운데로 못 갑니다.
+
+      셋 다 에러가 나지 않는다는 점이 핵심입니다.
+      브라우저는 못 알아듣는 줄을 조용히 버리고 나머지만 그립니다.
+      그래서 "아무 일도 안 일어난다" 를 보고 원인을 역추적할 줄 알아야 합니다.
+
+      실제로 재 보면 이렇습니다.
+        상자의 가로  400 + 24 + 24 + 4 + 4 = 456px
+        왼쪽 끝 위치  화면 x 좌표 412
+    -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">문제 16</p>
+      <p id="q16">세 군데를 고쳐 주세요</p>
+      <!-- 화면: 연노랑 상자가 가운데에 놓이고 빨간 실선 테두리가 둘러지며
+                글자가 상자 벽에서 24px 떨어집니다 -->
+    </div>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. 값이 두 개면 <strong>위아래 / 좌우</strong>. padding 도 margin 도 같습니다.</p>
+      <p>2. 테두리가 안 보이면 <strong>style</strong>, 여백이 안 생기면 <strong>단위</strong>를 보세요.</p>
+      <p>3. 상자를 가운데 보내려면 <strong>width + margin: 0 auto</strong> 가 한 쌍입니다.</p>
+      <p>4. 크기를 정확히 맞추려면 <strong>box-sizing: border-box</strong> 를 켜세요.</p>
+      <p>5. 넘친 내용은 <code>overflow: auto</code> 가 대체로 정답입니다.</p>
+    </div>
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #q1 | padding-top | 20px
+      #q1 | ~height | 67
+      #q2 | padding-top | 10px
+      #q2 | padding-left | 40px
+      #q3 | padding-left | 60px
+      #q3 | padding-top | 0px
+      #q4 | border-top-width | 3px
+      #q4 | border-top-color | rgb(192, 57, 43)
+      #q5 | border-top-style | dashed
+      #q5 | border-top-width | 4px
+      #q6 | border-bottom-width | 5px
+      #q6 | border-top-width | 0px
+      #q7 | border-top-left-radius | 12px
+      #q8 | margin-top | 30px
+      #q8 | margin-left | 0px
+      #q8 | ~width | 820
+      #q9 | ~width | 320
+      #q9 | ~x | 480
+      #q10 | ~width | 250
+      #q10 | ~height | 100
+      #q11 | ~width | 400
+      #q12 | ~width | 300
+      #q12 | box-sizing | border-box
+      #q13 | background-repeat | no-repeat
+      #q13 | background-position | 100% 0%
+      #q14 | overflow | auto
+      #q14 | ~height | 110
+      #q15 | ~width | 360
+      #q15 | ~x | 460
+      #q15 | border-top-left-radius | 8px
+      #q16 | padding-top | 24px
+      #q16 | border-top-width | 4px
+      #q16 | ~width | 456
+      #q16 | ~x | 412
+    -->
+  </body>
+</html>

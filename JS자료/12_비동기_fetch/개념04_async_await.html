@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>12단원 개념04 - async 와 await</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 8px 16px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 6px;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+        min-height: 24px;
+      }
+      ul {
+        padding-left: 22px;
+        margin: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 04 — async 와 await</h1>
+
+    <p class="guide">
+      <strong>인터넷 연결이 필요합니다.</strong> 브라우저로 열고 버튼을 눌러 보세요.
+      <strong>F12 → Console</strong> 도 함께 보세요.
+    
+      <br /><br />
+      <strong>인터넷이 막혀 있어 안 된다면</strong> 이 파일 아래쪽
+      <code>&lt;script&gt;</code> 바로 위에 있는 <code>오프라인_대체.js</code> 줄에서
+      주석 기호를 지우세요. 인터넷 없이도 똑같이 동작합니다.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>① then 방식 vs await 방식</h3>
+      <button id="thenBtn">then 으로 가져오기</button>
+      <button id="awaitBtn">await 로 가져오기</button>
+      <div class="output" id="out1">버튼을 눌러 보세요</div>
+
+      <h3>② 순서대로 두 번 요청</h3>
+      <button id="seqBtn">글 → 작성자 순서로</button>
+      <div class="output" id="out2">대기 중</div>
+
+      <h3>③ 동시에 여러 개</h3>
+      <button id="allBtn">동시에 가져오기</button>
+      <div class="output"><ul id="allList"></ul></div>
+    </div>
+
+    <!-- 인터넷이 막혀 이 파일이 동작하지 않으면, 바로 아래 줄을 감싼 주석 기호를 지워서 켜세요. 설명은 오프라인_대체.js 맨 위에 있습니다. -->
+    <!-- <script src="오프라인_대체.js"></script> -->
+    <script>
+      // ============================================================
+      // 12단원 · 개념 04 — async 와 await
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 버튼 클릭. 인터넷 연결 필요.
+      // ============================================================
+      //
+      // then 을 계속 이어 붙이는 대신, 비동기 코드를 '동기처럼' 쓰는 문법입니다.
+      // 요즘 실무 코드는 거의 다 이 방식입니다.
+      //
+      //     async function 이름() {
+      //       const 값 = await 프로미스;
+      //     }
+      //
+      //   async  이 함수 안에서 await 를 쓰겠다는 표시
+      //   await  이 Promise 가 끝날 때까지 기다렸다가 '값' 을 꺼내라
+      //
+      // ★ 여기서 반드시 짚고 갈 것 — "기다린다" 는 말에 속지 마세요.
+      //
+      //   개념01 에서 이렇게 배웠습니다.
+      //     "3초 동안 기다리면 버튼이 안 눌리고 화면이 하얗게 멈춘다"
+      //   그런데 await 도 '기다린다' 고 합니다. 그럼 화면이 멈출까요?
+      //
+      //   안 멈춥니다. 둘은 기다리는 방식이 완전히 다릅니다.
+      //
+      //     개념01 의 while 로 버티기  →  브라우저 전체가 붙잡혀 아무것도 못 함
+      //     await 로 기다리기         →  이 async 함수 하나만 잠시 비켜서 있고,
+      //                                 그동안 브라우저는 평소대로 움직입니다.
+      //                                 버튼도 눌리고 스크롤도 됩니다.
+      //
+      //   비켜서 있던 함수는 Promise 가 끝나면 멈췄던 자리에서 다시 이어집니다.
+      //   개념01 의 '예약해 두고 나중에 꺼내 쓰기' 와 똑같은 방식입니다.
+      //
+      //   즉 await 는 '동기처럼 보이게 써 주는 비동기' 입니다.
+      //   생김새만 순서대로일 뿐, 속은 개념01·02 에서 배운 그대로입니다.
+
+      const BASE_URL = "https://jsonplaceholder.typicode.com";
+      const out1 = document.querySelector("#out1");
+      const out2 = document.querySelector("#out2");
+
+      // ── 섹션 1: then 방식과 나란히 비교 ──
+
+      // [then 방식] — 개념03 에서 쓰던 것
+      function loadWithThen() {
+        out1.textContent = "불러오는 중...";
+
+        fetch(`${BASE_URL}/posts/1`)
+          .then((res) => res.json())
+          .then((data) => {
+            out1.textContent = `[then] ${data.title}`;
+            console.log("then 방식 완료");
+          });
+      }
+
+      // [await 방식] — 같은 일을 합니다
+      async function loadWithAwait() {
+        out1.textContent = "불러오는 중...";
+
+        const res = await fetch(`${BASE_URL}/posts/1`);
+        const data = await res.json();
+
+        out1.textContent = `[await] ${data.title}`;
+        console.log("await 방식 완료");
+      }
+
+      document.querySelector("#thenBtn").addEventListener("click", loadWithThen);
+      document.querySelector("#awaitBtn").addEventListener("click", loadWithAwait);
+
+      // 차이를 보세요.
+      //   then : .then((res) => res.json()).then((data) => ...)
+      //   await: const res = await fetch(...);
+      //          const data = await res.json();
+      //
+      // await 쪽은 우리가 05단원까지 쓰던 평범한 코드처럼 생겼습니다.
+      // 변수에 값을 담고 다음 줄에서 쓰는, 익숙한 모양입니다.
+
+      // ✏️ 직접 해보기 1 — loadWithAwait 를 /posts/3 으로 바꿔 보세요.
+
+      // ── 섹션 2: 두 가지 규칙 ──
+
+      // [규칙 1] await 는 async 함수 '안'에서만 쓸 수 있다
+      //
+      //   const data = await fetch(url);        ← 함수 밖이면 SyntaxError
+      //
+      // [규칙 2] async 함수는 항상 Promise 를 돌려준다
+      async function getNumber() {
+        return 42;
+      }
+
+      console.log(getNumber());
+      // 콘솔: Promise {<fulfilled>: 42}
+      // 42 가 아니라 Promise 입니다!
+      // (표기는 브라우저마다 조금씩 다릅니다. 중요한 건 껍데기가 Promise 라는 점입니다)
+
+      getNumber().then((n) => console.log("then 으로 꺼내면:", n));
+      // 콘솔: then 으로 꺼내면: 42
+
+      // 그래서 async 함수의 결과를 쓰려면 그쪽에서도 await 를 쓰거나 then 을 씁니다.
+
+      // ✏️ 직접 해보기 2 — getNumber() 의 42 를 then 이 아니라 await 로 꺼내 보세요.
+      //                    (규칙 1을 기억하세요. await 를 쓸 자리를 먼저 만들어야 합니다)
+
+      // ── 섹션 3: 순서대로 요청하기 ──
+
+      // 앞의 결과가 있어야 다음 요청을 할 수 있는 경우입니다.
+      async function loadPostAndAuthor() {
+        out2.textContent = "불러오는 중...";
+        console.log("1단계 시작");
+
+        // 글을 가져오고
+        const postRes = await fetch(`${BASE_URL}/posts/1`);
+        const post = await postRes.json();
+        console.log("2단계: 글 받음, userId =", post.userId);
+
+        // 그 글의 작성자를 가져옵니다 (앞의 결과가 필요합니다)
+        const userRes = await fetch(`${BASE_URL}/users/${post.userId}`);
+        const user = await userRes.json();
+        console.log("3단계: 작성자 받음");
+
+        out2.textContent = `"${post.title}" — 작성자: ${user.name}`;
+      }
+
+      document.querySelector("#seqBtn").addEventListener("click", loadPostAndAuthor);
+
+      // then 으로 쓰면 이렇게 됩니다. 비교해 보세요.
+      //
+      //   fetch(url1)
+      //     .then((res) => res.json())
+      //     .then((post) => fetch(`${BASE_URL}/users/${post.userId}`))
+      //     .then((res) => res.json())
+      //     .then((user) => { ... });
+      //
+      // 문제는 마지막 then 에서 post 를 쓸 수 없다는 것입니다.
+      // 이미 흘려보냈으니까요. await 는 변수가 그대로 살아 있어서 편합니다.
+
+      // ✏️ 직접 해보기 3 — 작성자의 email 도 함께 보여 주세요.
+
+      // ── 섹션 4: 동시에 여러 개 — Promise.all ──
+
+      // 서로 상관없는 요청을 await 로 줄줄이 쓰면 순서대로 기다려서 느립니다.
+      //
+      //   const a = await fetch(url1);   // 0.5초
+      //   const b = await fetch(url2);   // 0.5초 → 합계 1초
+      //
+      // 동시에 보내면 0.5초면 됩니다.
+
+      async function loadAll() {
+        const allList = document.querySelector("#allList");
+        allList.innerHTML = "<li>불러오는 중...</li>";
+        console.log("동시 요청 시작");
+
+        // 이 파일 내내 "then 대신 await" 라고 했는데 여기만 then 이 나옵니다.
+        // 이유가 있습니다. await 는 async 함수 '안' 에서만 쓸 수 있는데,
+        // 아래 [ ] 배열 안은 함수 안이 아니라 그냥 값을 나열하는 자리입니다.
+        // 그래서 각 요청은 then 으로 json 까지 처리해 두고,
+        // 그 묶음 '전체' 를 Promise.all 로 감싸 한 번만 await 합니다.
+        const [post1, post2, post3] = await Promise.all([
+          fetch(`${BASE_URL}/posts/1`).then((r) => r.json()),
+          fetch(`${BASE_URL}/posts/2`).then((r) => r.json()),
+          fetch(`${BASE_URL}/posts/3`).then((r) => r.json()),
+        ]);
+
+        console.log("셋 다 도착");
+
+        allList.innerHTML = "";
+        [post1, post2, post3].forEach((post) => {
+          const li = document.createElement("li");
+          li.textContent = `${post.id}. ${post.title}`;
+          allList.appendChild(li);
+        });
+      }
+
+      document.querySelector("#allBtn").addEventListener("click", loadAll);
+
+      // Promise.all 은 배열을 돌려주므로 09단원의 배열 구조분해로 받으면 깔끔합니다.
+      //
+      // 기준:
+      //   앞의 결과가 다음 요청에 필요하다 → await 를 줄줄이 (섹션 3)
+      //   서로 상관없다                   → Promise.all
+
+      // ✏️ 직접 해보기 4 — 위 Promise.all 에 /posts/4 를 하나 더 넣어
+      //                    네 개를 받아 보세요. 구조분해도 함께 고쳐야 합니다.
+
+      // ── 섹션 5: 이벤트 콜백에 async 붙이기 ──
+
+      // addEventListener 의 콜백에도 async 를 붙일 수 있습니다.
+      //
+      // [주의] 아래는 #thenBtn 에 리스너를 '하나 더' 붙인 것입니다.
+      //        11단원 개념01에서 배웠듯 같은 이벤트에 여러 개를 붙이면 전부 실행됩니다.
+      //        그래서 "then 으로 가져오기" 를 누르면 요청이 두 번 나가고
+      //        콘솔에도 두 줄이 찍힙니다. 일부러 이렇게 두었습니다.
+      document.querySelector("#thenBtn").addEventListener("click", async () => {
+        const res = await fetch(`${BASE_URL}/posts/1`);
+        const data = await res.json();
+        console.log("콜백 안에서 await:", data.id);
+        // 콘솔: 콜백 안에서 await: 1
+      });
+
+      // 실무에서 가장 많이 보는 모양입니다.
+      //
+      //     button.addEventListener("click", async () => {
+      //       const data = await 가져오기();
+      //       화면에그리기(data);
+      //     });
+
+      // ✏️ 직접 해보기 5 — #seqBtn 에 async 콜백을 하나 더 붙여, 누르면
+      //                    /posts/2 의 title 을 콘솔에 찍게 해 보세요.
+
+      // ── 섹션 6: 자주 하는 실수 ──
+
+      // ★ 아래에서 SyntaxError 라고 적힌 것은 눈으로만 보세요. 주석을 풀지 마세요.
+      //   다른 에러(ReferenceError, TypeError)는 주석을 풀어도
+      //   그 줄에서만 나고 그 앞의 출력은 그대로 다 나옵니다.
+      //   그런데 SyntaxError 는 다릅니다. 자바스크립트가 파일을 아예 못 읽어서
+      //   출력이 한 줄도 안 나옵니다. 여러분이 망가뜨린 것이 아닙니다.
+      //   실수로 풀었다면 다시 // 를 붙이면 그대로 돌아옵니다.
+
+      // [실수 1] await 를 async 없이 씀 → SyntaxError
+
+      // [실수 2] await 를 빠뜨림
+      // const data = res.json();
+      // console.log(data);
+      // 실수: Promise { <pending> } 이 찍힙니다. await 를 붙여야 값이 나옵니다.
+
+      // [실수 3] async 함수의 결과를 값으로 착각 (섹션 2)
+      // const n = getNumber();       ← Promise
+      // const n = await getNumber(); ← 42
+
+      // [실수 4] 상관없는 요청도 줄줄이 await (섹션 4) — 느려집니다.
+
+      // [실수 5] forEach 안에서 await 를 쓰고 다 끝났다고 생각
+      // [1, 2].forEach(async (id) => { await fetch(...); });
+      // console.log("끝");   ← 아직 안 끝났는데 먼저 찍힙니다
+      //
+      // forEach 는 async 콜백을 기다려 주지 않습니다.
+      // 순서대로 기다리려면 for...of 안에서 await 를 쓰세요.
+      //
+      //   for (const id of [1, 2]) {
+      //     await fetch(...);
+      //   }
+
+      // ── 정리 ──
+
+      // 1. async function 안에서만 await 를 쓸 수 있다.
+      // 2. await 프로미스 → 끝날 때까지 기다렸다가 값을 꺼낸다.
+      // 3. fetch 는 await 를 두 번 쓴다. 응답 받기 + 내용 읽기.
+      // 4. async 함수는 항상 Promise 를 돌려준다.
+      // 5. 서로 상관없는 요청은 Promise.all 로 동시에.
+      // 6. forEach 는 async 를 기다려 주지 않는다. for...of 를 쓸 것.
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) const res = await fetch(`${BASE_URL}/posts/3`);
+      //
+      // 2) await 는 async 함수 안에서만 쓸 수 있으니, 쓸 자리를 하나 만듭니다.
+      //
+      //    async function show() {
+      //      const n = await getNumber();
+      //      console.log("await 로 꺼내면:", n);
+      //    }
+      //    show();
+      //    // 콘솔: await 로 꺼내면: 42
+      //    → then 으로 꺼낸 것과 결과는 같습니다. 다만 값을 변수에 담아
+      //      다음 줄에서 평범하게 쓸 수 있다는 점이 다릅니다.
+      //
+      // 3) out2.textContent =
+      //      `"${post.title}" — 작성자: ${user.name} (${user.email})`;
+      //
+      // 4) const [post1, post2, post3, post4] = await Promise.all([
+      //      fetch(`${BASE_URL}/posts/1`).then((r) => r.json()),
+      //      fetch(`${BASE_URL}/posts/2`).then((r) => r.json()),
+      //      fetch(`${BASE_URL}/posts/3`).then((r) => r.json()),
+      //      fetch(`${BASE_URL}/posts/4`).then((r) => r.json()),
+      //    ]);
+      //    → 아래 [post1, post2, post3] 도 [post1, post2, post3, post4] 로
+      //      함께 고쳐야 네 번째가 화면에 나옵니다.
+      //      요청이 4개로 늘어도 걸리는 시간은 거의 그대로입니다. 동시에 나가니까요.
+      //
+      // 5) document.querySelector("#seqBtn").addEventListener("click", async () => {
+      //      const res = await fetch(`${BASE_URL}/posts/2`);
+      //      const data = await res.json();
+      //      console.log("추가 콜백:", data.title);
+      //    });
+      //    // 콘솔: 추가 콜백: qui est esse
+      //    → 원래 붙어 있던 loadPostAndAuthor 도 함께 실행되므로
+      //      "1단계 시작" 같은 줄이 섞여 나옵니다. (11단원 개념01 섹션 4)
+      //      둘 다 네트워크를 기다리므로 어느 쪽이 먼저 찍힐지는 그때그때 다릅니다.
+    </script>
+  </body>
+</html>

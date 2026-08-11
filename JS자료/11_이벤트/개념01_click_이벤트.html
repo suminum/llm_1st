@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>11단원 개념01 - click 이벤트</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 8px 16px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 6px;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+      }
+      .on {
+        background: #2d6cdf;
+        color: #fff;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 01 — click 이벤트</h1>
+
+    <p class="guide">
+      브라우저로 열고 <strong>F12 → Console</strong> 을 함께 보세요. 이번 단원부터는
+      <strong>버튼을 직접 눌러야</strong> 결과가 나옵니다. 페이지를 여는 것만으로는
+      아무 일도 일어나지 않습니다.
+    
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>① 가장 기본</h3>
+      <button id="btn1">눌러 보세요</button>
+      <div class="output" id="out1">아직 안 눌렀습니다</div>
+
+      <h3>② 누를 때마다 숫자가 올라갑니다</h3>
+      <button id="btn2">+1</button>
+      <div class="output" id="out2">0</div>
+
+      <h3>③ 한 버튼에 두 가지 일</h3>
+      <button id="btn3">두 가지 실행</button>
+      <div class="output" id="out3">대기 중</div>
+
+      <h3>④ 눌러서 켜고 끄기</h3>
+      <button id="btn4">불 켜기</button>
+      <div class="output" id="out4">불이 꺼져 있습니다</div>
+    </div>
+
+    <script>
+      // ============================================================
+      // 11단원 · 개념 01 — click 이벤트
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 버튼을 눌러 보세요. F12 → Console 도 함께.
+      // ============================================================
+      //
+      // 10단원까지는 페이지를 열 때 코드가 한 번 쭉 실행되고 끝이었습니다.
+      // 이제 "사용자가 무언가 했을 때" 실행되게 만듭니다. 그것이 이벤트입니다.
+      //
+      //     요소.addEventListener("이벤트이름", 실행할함수);
+      //             ^^^^^^^^^^^^   ^^^^^^^^^^   ^^^^^^^^^^
+      //             "듣고 있어라"    "click"     콜백 (08단원)
+      //
+      // 이렇게 붙여 둔 콜백 하나를 '리스너(listener)' 라고 부릅니다.
+      // "듣고 있는 것" 이라는 뜻입니다. 앞으로 이 말이 종종 나옵니다.
+      //
+      // 넘긴 함수는 지금 실행되지 않습니다. 그 일이 생겼을 때 브라우저가 대신 불러 줍니다.
+      // 08단원에서 배운 콜백이 바로 이것입니다.
+
+      // ── 섹션 1: 가장 기본 형태 ──
+
+      const btn1 = document.querySelector("#btn1");
+      const out1 = document.querySelector("#out1");
+
+      btn1.addEventListener("click", () => {
+        out1.textContent = "버튼을 눌렀습니다!";
+        console.log("btn1 클릭됨");
+      });
+
+      // 이 줄이 실행된 시점에는 아무 일도 안 일어납니다.
+      // "누르면 이걸 해라" 라고 예약만 해 둔 것입니다.
+      console.log("예약 완료 — 아직 버튼은 안 눌렸습니다");
+      // 콘솔: 예약 완료 — 아직 버튼은 안 눌렸습니다
+
+      // ✏️ 직접 해보기 1 — 위 콜백 안에서 out1 의 글자를 자기 이름으로 바꿔 보세요.
+
+      // ── 섹션 2: 콜백에 괄호를 붙이면 안 된다 ──
+
+      function sayClicked() {
+        console.log("함수가 실행되었습니다");
+      }
+
+      // 괄호 하나 차이를 눈으로 먼저 봅시다. 아래 두 줄은 실제로 실행됩니다.
+
+      console.log(sayClicked);
+      // 콘솔: ƒ sayClicked()
+      // 함수 '그 자체' 입니다. 아직 실행되지 않았습니다.
+
+      console.log(sayClicked());
+      // 콘솔: 함수가 실행되었습니다
+      // 콘솔: undefined
+      // 괄호를 붙이는 순간 실행됩니다. 그리고 그 '결과' 가 남는데,
+      // 이 함수는 돌려주는 값이 없으니 결과가 undefined 입니다.
+      //
+      // 레시피 종이를 건네는 것(sayClicked)과
+      // 지금 요리해서 접시를 건네는 것(sayClicked())의 차이입니다.
+      // 브라우저는 '나중에 눌렸을 때' 요리해야 하므로 종이를 받아야 합니다.
+
+      // [맞음] 함수를 '넘긴다'
+      // btn1.addEventListener("click", sayClicked);
+
+      // [틀림] 함수를 '실행해서 그 결과를 넘긴다'
+      // btn1.addEventListener("click", sayClicked());
+      //   → 페이지를 여는 순간 한 번 실행되어 버립니다.
+      //   → 그리고 결과인 undefined 는 함수가 아니라서 이벤트가 아예 안 붙습니다.
+      //   → 정작 버튼을 누르면 아무 일도 일어나지 않습니다.
+      //
+      // 08단원 개념01 에서 배운 그 실수입니다. 이벤트에서 특히 자주 납니다.
+
+      // 인자를 넘겨야 한다면 화살표 함수로 감쌉니다.
+      function sayHello(name) {
+        console.log(`${name}님 안녕하세요`);
+      }
+      // btn1.addEventListener("click", sayHello("김민준"));   ← 틀림
+      // btn1.addEventListener("click", () => sayHello("김민준"));  ← 맞음
+
+      // ✏️ 직접 해보기 2 — btn1 을 누르면 "홍길동님 안녕하세요" 가 나오도록
+      //                    sayHello 를 붙여 보세요. 괄호 위치에 주의하세요.
+
+      // ── 섹션 3: 값을 바꾸며 세기 ──
+
+      const btn2 = document.querySelector("#btn2");
+      const out2 = document.querySelector("#out2");
+
+      let count = 0; // 콜백 '밖'에 만들어야 값이 유지됩니다
+
+      btn2.addEventListener("click", () => {
+        count++;
+        out2.textContent = count;
+        console.log("현재 개수:", count);
+      });
+
+      // count 를 콜백 '안'에 만들면 누를 때마다 0으로 되돌아갑니다.
+      // 05단원의 스코프 이야기가 여기서 그대로 쓰입니다.
+
+      // ✏️ 직접 해보기 3 — 누를 때마다 2씩 늘어나게 바꿔 보세요.
+
+      // ── 섹션 4: 하나에 여러 개 붙이기 ──
+
+      const btn3 = document.querySelector("#btn3");
+      const out3 = document.querySelector("#out3");
+
+      btn3.addEventListener("click", () => {
+        out3.textContent = "첫 번째 콜백이 실행됨";
+        console.log("첫 번째");
+      });
+
+      btn3.addEventListener("click", () => {
+        console.log("두 번째");
+      });
+
+      // 같은 이벤트에 여러 개를 붙이면 붙인 순서대로 전부 실행됩니다.
+      // 예전 방식인 onclick 은 나중에 쓴 것이 앞의 것을 덮어써서 하나만 남습니다.
+      //
+      //     btn.onclick = 함수A;
+      //     btn.onclick = 함수B;   ← A 는 사라짐
+      //
+      // 그래서 addEventListener 를 씁니다.
+
+      // ✏️ 직접 해보기 4 — btn3 에 세 번째 콜백을 붙여 "세 번째" 를 찍어 보세요.
+      //                    세 개가 어떤 순서로 나오는지 확인하세요.
+
+      // ── 섹션 5: 켜고 끄기 (토글) ──
+
+      const btn4 = document.querySelector("#btn4");
+      const out4 = document.querySelector("#out4");
+
+      let isOn = false;
+
+      btn4.addEventListener("click", () => {
+        isOn = !isOn; // 02단원의 ! — 뒤집기
+
+        out4.classList.toggle("on", isOn); // 10단원 개념03
+        out4.textContent = isOn ? "불이 켜졌습니다" : "불이 꺼져 있습니다";
+        btn4.textContent = isOn ? "불 끄기" : "불 켜기";
+
+        console.log("현재 상태:", isOn);
+      });
+
+      // 이 파일에서 지금까지 배운 게 전부 한자리에 모였습니다.
+      //   ! (02단원) / 삼항 연산자 (03단원) / classList (10단원) / 콜백 (08단원)
+
+      // ✏️ 직접 해보기 5 — 버튼 글자도 함께 바뀌도록 되어 있습니다.
+      //                    글자를 "ON" / "OFF" 로 바꿔 보세요.
+
+      // ── 섹션 6: 이벤트 떼기 ──
+
+      // addEventListener 로 붙인 것은 removeEventListener 로 뗄 수 있습니다.
+      // 다만 '같은 함수' 여야 합니다. 그래서 이름 있는 함수로 만들어야 합니다.
+
+      function onceHandler() {
+        console.log("이 메시지는 한 번만 나옵니다");
+        btn1.removeEventListener("click", onceHandler);
+      }
+      btn1.addEventListener("click", onceHandler);
+
+      // 화살표 함수를 그 자리에서 넘기면 뗄 수 없습니다.
+      // 붙일 때와 뗄 때가 서로 다른 함수이기 때문입니다.
+      //   btn.addEventListener("click", () => {});
+      //   btn.removeEventListener("click", () => {});   ← 안 떼어집니다
+
+      // 한 번만 실행하고 싶다면 이 방법이 더 간단합니다.
+      btn2.addEventListener(
+        "click",
+        () => {
+          console.log("btn2 를 처음 누른 순간에만 나옵니다");
+        },
+        { once: true }
+      );
+
+      // ✏️ 직접 해보기 6 — btn4 에 { once: true } 로 콜백을 하나 더 붙이고
+      //                    두 번 눌러 보세요. 메시지가 몇 번 나오나요?
+
+      // ── 섹션 7: 자주 쓰는 이벤트 이름 ──
+
+      //   click       눌렀을 때            ← 이 파일
+      //   input       입력칸에 글자가 바뀔 때마다   (개념03)
+      //   change      다 입력하고 벗어났을 때 / 체크·선택이 바뀔 때 (개념03)
+      //   submit      폼을 제출할 때        (개념04)
+      //   keydown     키를 눌렀을 때
+      //   mouseover   마우스를 올렸을 때
+      //
+      // 이름은 문자열입니다. "onclick" 이 아니라 "click" 입니다.
+
+      // ✏️ 직접 해보기 7 — btn1 에 mouseover 를 붙여, 마우스를 올리면
+      //                    콘솔에 글자가 나오게 해 보세요. (누르지 않아도 나옵니다)
+
+      // ── 섹션 8: 자주 하는 실수 ──
+
+      // [실수 1] 콜백에 괄호를 붙임 (섹션 2에서 봤습니다) — 가장 흔합니다.
+
+      // [실수 2] 이벤트 이름에 on 을 붙임
+      // btn1.addEventListener("onclick", ...);
+      // 실수: 에러도 안 나고 아무 일도 안 일어납니다. "click" 이 맞습니다.
+
+      // [실수 3] 세는 변수를 콜백 안에 만듦 (섹션 3)
+
+      // [실수 4] 요소를 못 찾은 채로 붙이기
+      // document.querySelector("#없는버튼").addEventListener("click", ...);
+      // 실수: TypeError: Cannot read properties of null
+      //       선택자 오타이거나 script 가 body 아래에 없는 경우입니다. (10단원 개념01)
+
+      // [실수 5] 화살표 함수를 removeEventListener 로 떼려고 함 (섹션 6)
+
+      // ── 정리 ──
+
+      // 1. 요소.addEventListener("click", 콜백) — 누르면 콜백이 실행된다.
+      // 2. 콜백에 괄호를 붙이지 않는다. 인자가 필요하면 () => 함수(인자) 로 감싼다.
+      // 3. 값을 유지해야 하는 변수는 콜백 밖에 만든다.
+      // 4. 같은 이벤트에 여러 개를 붙일 수 있고, 붙인 순서대로 실행된다.
+      // 5. 한 번만 실행하려면 { once: true }.
+      // 6. 이벤트 이름은 "click" 이다. "onclick" 이 아니다.
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) out1.textContent = "홍길동";
+      //
+      // 2) btn1.addEventListener("click", () => sayHello("홍길동"));
+      //    // 콘솔: 홍길동님 안녕하세요
+      //    → sayHello("홍길동") 을 그대로 넘기면 안 됩니다. 그건 '지금 실행한 결과'
+      //      인 undefined 를 넘기는 것이라 이벤트가 아예 안 붙습니다.
+      //      화살표 함수로 한 겹 감싸야 '나중에 실행할 것' 을 넘기게 됩니다.
+      //    → btn1 에는 이미 다른 콜백이 붙어 있어서 앞에 두 줄이 먼저 나옵니다.
+      //      "btn1 클릭됨" / "이 메시지는 한 번만 나옵니다" 다음에 나오면 맞습니다.
+      //
+      // 3) count += 2;   (count++ 를 바꾸면 됩니다)
+      //
+      // 4) btn3.addEventListener("click", () => {
+      //      console.log("세 번째");
+      //    });
+      //    // 콘솔: 첫 번째 / 두 번째 / 세 번째
+      //    → 붙인 순서대로 실행됩니다. 나중에 붙인 것이 앞의 것을 덮어쓰지 않습니다.
+      //
+      // 5) btn4.textContent = isOn ? "OFF" : "ON";
+      //
+      // 6) btn4.addEventListener(
+      //      "click",
+      //      () => {
+      //        console.log("한 번만 나옵니다");
+      //      },
+      //      { once: true }
+      //    );
+      //    → 한 번만 나옵니다. 두 번째 클릭부터는 안 나옵니다.
+      //      브라우저가 한 번 실행한 뒤 알아서 떼어 주기 때문입니다.
+      //      섹션 6의 removeEventListener 를 직접 부르지 않아도 됩니다.
+      //
+      // 7) btn1.addEventListener("mouseover", () => {
+      //      console.log("마우스가 올라왔습니다");
+      //    });
+      //    → 클릭과 똑같은 형태입니다. 이벤트 '이름' 만 바꾸면 됩니다.
+      //      바꿀 수 있는 이름은 위 섹션 7의 목록에 있습니다.
+    </script>
+  </body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>10단원 심화문제 - DOM 조작</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      table {
+        border-collapse: collapse;
+        background: #fff;
+        width: 100%;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 6px 10px;
+        text-align: left;
+      }
+      th {
+        background: #eee;
+      }
+      tr.soldout td {
+        color: #999;
+        text-decoration: line-through;
+      }
+      .box {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 6px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>10단원 심화문제 — DOM 조작</h1>
+
+    <p class="guide">
+      <strong>이건 선택 과제입니다.</strong> 연습문제를 다 푼 사람만 하세요.
+      안 풀어도 다음 단원에 지장 없습니다.<br />
+      코드를 쓰고 저장한 뒤 <strong>새로고침(F5)</strong> 하세요.
+      <strong>F12 → Console</strong> 도 함께 보세요.
+    </p>
+
+    <div class="demo">
+      <h3>심화 1 — 표 만들기</h3>
+      <table id="productTable">
+        <thead>
+          <tr>
+            <th>이름</th>
+            <th>가격</th>
+            <th>재고</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+
+      <h3>심화 3 — textContent 와 innerHTML</h3>
+      <div class="box" id="safeBox">여기에 textContent 로</div>
+      <div class="box" id="unsafeBox">여기에 innerHTML 로</div>
+    </div>
+
+    <script>
+      // ============================================================
+      // 10단원 심화문제 — DOM 조작
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+
+      const products = [
+        { name: "아메리카노", price: 4000, stock: 10 },
+        { name: "라떼", price: 4500, stock: 0 },
+        { name: "케이크", price: 6000, stock: 3 },
+      ];
+
+      // ───── 심화 1 ───── 표 만들기
+      // 위 products 로 tbody 안에 tr 을 만들어 넣으세요.
+      // tr 하나에 td 세 개(이름·가격·재고)가 들어갑니다.
+      //
+      // 조건:
+      //   - 가격은 "4,000원" 처럼 쉼표를 넣으세요 (toLocaleString 을 쓰면 됩니다)
+      //   - 재고가 0이면 그 tr 에 soldout 클래스를 붙이고 재고칸에 "품절" 을 넣으세요
+      //     (CSS 에 이미 만들어 두었습니다. 회색 + 취소선이 됩니다)
+      //
+      // 힌트: tr 을 만들고 → td 세 개를 만들어 tr 에 붙이고 → tr 을 tbody 에 붙입니다.
+      //       두 겹이라 순서가 중요합니다. tr 안을 다 채운 뒤에 tbody 에 붙이세요.
+      //
+      // 기대 결과 (화면): 표에 세 줄이 생깁니다.
+      //   아메리카노 | 4,000원 | 10
+      //   라떼       | 4,500원 | 품절   ← 회색 + 취소선
+      //   케이크     | 6,000원 | 3
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 심화 2 ───── 조건에 맞는 것만 세기
+      // 위에서 만든 표에서, 실제로 화면에 그려진 tr 을 골라
+      // 아래 세 가지를 콘솔에 찍으세요. products 배열이 아니라
+      // '화면에 있는 요소' 를 세어야 합니다.
+      //
+      //   ① 전체 행 수
+      //   ② 품절 행 수 (soldout 클래스가 붙은 것)
+      //   ③ 판매 중인 상품 이름들 (배열로)
+      //
+      // 힌트: querySelectorAll 에 CSS 선택자를 그대로 쓸 수 있습니다.
+      //       "#tableBody tr" / "#tableBody tr.soldout" 처럼요.
+      //       ③은 NodeList 라 map 이 안 됩니다. 09단원 스프레드로 배열로 바꾸세요.
+      //       판매 중인 것만 고르려면 :not(.soldout) 를 쓸 수 있습니다.
+      //
+      // 기대 결과 (콘솔):
+      // 전체 3 행
+      // 품절 1 행
+      // 판매 중: 아메리카노, 케이크
+      //
+      // (③은 배열을 그대로 찍지 말고 join(", ") 으로 이어서 찍으세요.
+      //  배열을 그대로 찍으면 브라우저마다 표기가 조금씩 달라 비교하기 어렵습니다)
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 심화 3 ───── textContent 와 innerHTML 의 차이를 눈으로
+      // 아래 문자열을 두 상자에 각각 넣으세요.
+      //   safeBox 에는 textContent 로
+      //   unsafeBox 에는 innerHTML 로
+      //
+      // 넣고 나서 화면을 보세요. 같은 문자열인데 결과가 다릅니다.
+
+      const userInput = "<b>굵게</b> 그리고 <span style='color:red'>빨강</span>";
+
+      // 기대 결과 (화면):
+      //   위 상자: <b>굵게</b> 그리고 <span style='color:red'>빨강</span>   ← 글자 그대로
+      //   아래 상자: 굵게 그리고 빨강                                      ← 굵게 + 빨간색
+      //
+      // 그리고 아래 질문에 주석으로 답해 보세요.
+      // 사용자가 입력한 글을 화면에 보여 줄 때 둘 중 무엇을 써야 할까요? 왜일까요?
+      // 답: __________________________________________
+
+      // TODO: 여기에 코드를 쓰세요
+    </script>
+  </body>
+</html>

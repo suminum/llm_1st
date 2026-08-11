@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>07단원 개념05 - 상속과 기본값</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ── 섹션 1: 부모에만 색을 줬습니다 ── */
+      .family-box {
+        color: #2d6cdf;
+      }
+      /* 화면: 이 상자 안의 문단·스팬·굵은 글자가 전부 파랗게 보입니다.
+               자식에게는 규칙을 하나도 안 줬는데 그렇습니다 */
+
+      /* ── 섹션 2: 배경색은 안 내려옵니다 ── */
+      .paint-box {
+        color: #ffffff;
+        background-color: #c0392b;
+      }
+      /* 화면: 빨간 상자 안의 글자가 전부 흰색입니다.
+               자식 문단 자체의 배경색은 여전히 없습니다 */
+
+      /* ── 섹션 3: inherit 로 억지로 받아 오기 ── */
+      .paint-box2 {
+        color: #ffffff;
+        background-color: #27853f;
+      }
+      /* 화면: 초록 상자 안의 글자가 전부 흰색입니다 */
+
+      .take-bg {
+        background-color: inherit;
+      }
+      /* 화면: 이 클래스가 붙은 문단은 부모와 똑같은 초록 배경을 갖게 됩니다 */
+
+      /* ── 섹션 5: 브라우저 기본값 덮어쓰기 ── */
+      #overrideTitle {
+        color: #c0392b;
+      }
+      /* 화면: 제목이 빨간색이 됩니다. 크고 굵은 것은 그대로 남습니다 */
+
+      /* ── 섹션 6: 상속을 이기는 것 ── */
+      .link-box {
+        color: #c0392b;
+      }
+      /* 화면: 상자 안 보통 글자는 빨개지지만 링크와 버튼은 안 바뀝니다 */
+
+      #linkFixed {
+        color: #c0392b;
+      }
+      /* 화면: 이 링크만 빨간 글자가 됩니다. 밑줄은 그대로 남습니다 */
+
+      /* ── 섹션 7: 자주 하는 실수 ── */
+      .parent-blue {
+        color: #2d6cdf;
+      }
+      /* 화면: 상자 안 글자가 파래집니다. 단 자기 색을 직접 받은 자식은 예외입니다 */
+
+      .kid-own {
+        color: #c0392b;
+      }
+      /* 화면: 부모가 파란색을 내려보내도 이 문단만 빨간 글자로 남습니다 */
+
+      .take-nothing {
+        background-color: inherit;
+      }
+      /* 화면: 아무 일도 안 일어납니다. 부모가 배경색을 정한 적이 없기 때문입니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         07단원 · 개념 05 — 상속과 기본값
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 파일 맨 위 <style> 을 함께 보세요.
+         ============================================================
+
+         지금까지는 꾸미고 싶은 요소를 하나하나 골라서 규칙을 줬습니다.
+         그런데 실제로 CSS 를 써 보면 이상한 일이 두 가지 생깁니다.
+
+             1. 규칙을 안 준 요소인데 색이 바뀌어 있다
+             2. 규칙을 하나도 안 썼는데 제목은 크고 굵게 나온다
+
+         1번의 원인이 상속이고, 2번의 원인이 브라우저 기본 스타일입니다.
+         이 파일에서 그 둘을 다룹니다.
+
+         상속(inheritance) 이란 이런 뜻입니다.
+
+             부모 요소에 준 스타일 중 일부가 자식 요소에게 저절로 내려가는 것
+
+         01단원 개념02 에서 부모·자식이라는 말을 배웠습니다.
+         감싼 쪽이 부모, 감싸인 쪽이 자식입니다.
+
+             <div class="family-box">        ← 부모. 여기에만 color 를 줍니다
+               <p>안녕하세요</p>              ← 자식. 아무것도 안 줬는데 색이 바뀝니다
+             </div>
+
+         모든 속성이 내려가는 것은 아닙니다. 글자와 관련된 것만 내려갑니다.
+         왜 그렇게 나눴을까요? 그게 사람이 기대하는 방식이기 때문입니다.
+
+             글꼴을 정하면 안쪽 글자에도 다 적용되는 게 자연스럽습니다
+             테두리를 그렸는데 안쪽 요소마다 테두리가 또 생기면 이상합니다
+
+         이 성질을 알고 나면 CSS 를 훨씬 적게 쓰게 됩니다.
+         자식마다 규칙을 쓰지 않고 부모 한 곳에만 쓰면 되기 때문입니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 05 — 상속과 기본값</h1>
+    <p class="doc-sub">07단원 · CSS 시작하기</p>
+
+    <p class="doc-guide">
+      이 파일에서는 <strong>내가 안 썼는데 이미 적용되어 있는 것</strong>들을 다룹니다.
+      부모에게서 내려온 것(상속) 과 브라우저가 원래 갖고 있던 것(기본 스타일) 두 가지입니다.
+      둘을 구분할 줄 알아야 "왜 이 색이 안 바뀌지?" 를 스스로 풀 수 있습니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: 부모에 준 것이 내려옵니다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 부모에 준 스타일이 자식에게 내려옵니다</h2>
+      <p class="doc-desc">
+        <code>color</code> 는 <strong>상속되는</strong> 속성입니다.
+        부모 한 곳에만 주면 안쪽 글자가 전부 그 색이 됩니다.
+      </p>
+
+      <!--
+        style 에 적은 규칙은 이것 하나뿐입니다.
+
+            .family-box { color: #2d6cdf; }
+
+        그런데 아래 상자 안에는 문단도 있고 스팬도 있고 굵은 글자도 있습니다.
+        그 요소들에는 규칙을 하나도 안 줬습니다. 그래도 전부 파랗습니다.
+
+            <div class="family-box">        ← 규칙을 받은 곳은 여기뿐입니다
+              <p>...</p>                    ← 내려받음
+              <p>... <span>...</span></p>   ← 내려받고 그 안쪽까지 또 내려감
+              <p><strong>...</strong></p>   ← 여기도 내려받음
+            </div>
+
+        상속은 한 단계만 내려가는 게 아닙니다. 안쪽으로 계속 타고 들어갑니다.
+        위의 span 은 div 의 손자인데도 색을 받았습니다.
+
+        더 큰 예가 지금 여러분 눈앞에 있습니다.
+        이 화면의 거의 모든 글자는 검은빛이 도는 진한 회색입니다.
+        그 색을 정한 규칙은 공통.css 안에 딱 한 줄뿐입니다.
+
+            body { color: #222; }
+
+        body 는 문서 전체를 감싸는 요소입니다. 모든 요소의 조상입니다.
+        그래서 body 에 색을 주면 문서 안 거의 모든 글자가 그 색이 됩니다.
+        글꼴도 마찬가지입니다. 공통.css 는 body 한 곳에만 글꼴을 정했습니다.
+
+        상속이 없다면 어떻게 될까요?
+        문단마다, 제목마다, 목록 항목마다 글꼴과 색을 다시 써야 합니다.
+        수백 줄이 됩니다. 상속은 그 수고를 없애 주는 장치입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">부모 div 에만 color 를 줬습니다</p>
+        <div class="family-box">
+          <p id="familyKid">저는 자식 문단입니다. 규칙을 받은 적이 없습니다.</p>
+          <p>저 안에 <span id="familySpan">스팬</span> 이 하나 들어 있습니다.</p>
+          <p><strong id="familyStrong">굵은 글자</strong>도 색을 받습니다.</p>
+        </div>
+        <!-- 화면: 상자 안의 글자가 전부 같은 파란색입니다.
+                  굵은 글자만 굵기가 다르고 색은 똑같습니다 -->
+      </div>
+
+      <p class="doc-note">
+        상속되는 대표적인 속성은 <code>color</code>, <code>font-family</code>(글꼴),
+        <code>font-size</code>(글자 크기), <code>line-height</code>(줄 간격),
+        <code>text-align</code>(정렬) 입니다.
+        <strong>글자에 관한 것</strong>이라고 묶어서 기억하세요.
+        글꼴과 크기는 09단원에서 제대로 배웁니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — <code>.family-box</code> 의 색을
+        <code>#27853f</code> 로 바꿔 보세요. 규칙 한 줄만 고쳤는데
+        상자 안 세 문단이 한꺼번에 초록색이 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 안 내려오는 것도 있습니다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 모든 것이 내려오지는 않습니다</h2>
+      <p class="doc-desc">
+        <code>background-color</code> 는 <strong>상속되지 않습니다.</strong>
+        부모에 준 배경색은 자식의 배경색이 되지 않습니다.
+      </p>
+
+      <!--
+        style 에는 이렇게 적었습니다.
+
+            .paint-box {
+              color: #ffffff;
+              background-color: #c0392b;
+            }
+
+        결과를 보면 상자 전체가 빨갛고 글자는 흰색입니다.
+        여기서 헷갈리기 쉬운 점이 있습니다.
+
+            글자색   자식에게 내려갔습니다. 자식 문단의 color 는 흰색입니다
+            배경색   자식에게 안 내려갔습니다. 자식 문단의 배경색은 여전히 없습니다
+
+        "그런데 자식 자리도 빨간데요?" 라고 할 수 있습니다.
+        자식이 빨간 게 아니라, 자식이 투명해서 부모의 빨강이 비쳐 보이는 것입니다.
+        유리판을 빨간 종이 위에 올려 둔 것과 같습니다.
+        유리판이 빨개진 게 아닙니다.
+
+        지금은 겉보기가 같아서 구분할 실익이 없어 보이지만,
+        10단원에서 자식에게 여백이나 다른 배경을 주기 시작하면 바로 드러납니다.
+
+        상속되는 것과 안 되는 것을 나누는 기준은 이렇습니다.
+
+            내려감    글자에 관한 것         color · font-family · line-height · text-align
+            안 내려감  상자에 관한 것         background-color · border · padding · margin · width
+
+        border, padding, margin, width 는 10단원에서 배웁니다.
+        지금은 이름만 알아 두고, "상자에 관한 것은 안 내려간다" 만 기억하세요.
+
+        왜 이렇게 나눴을까요? 안 그러면 화면이 엉망이 되기 때문입니다.
+        테두리가 상속된다고 생각해 보세요. 바깥 상자에 테두리를 하나 그렸는데
+        안쪽의 모든 문단, 모든 단어에까지 테두리가 겹겹이 생깁니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">부모에 글자색과 배경색을 둘 다 줬습니다</p>
+        <div class="paint-box">
+          <p id="paintKid">저는 자식 문단입니다. 글자색은 받았고 배경색은 못 받았습니다.</p>
+          <p>제 뒤에 보이는 빨강은 부모의 배경이 비치는 것입니다.</p>
+        </div>
+        <!-- 화면: 빨간 덩어리 안에 흰 글자 두 줄이 보입니다.
+                  줄 사이에도 빨강이 이어져 있어서 한 덩어리로 보입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — F12 를 눌러 위 상자의 첫 번째 문단을 검사하고
+        Computed 탭에서 <code>background-color</code> 를 찾아보세요.
+        <code>rgba(0, 0, 0, 0)</code> 이라고 나옵니다. 완전히 투명하다는 뜻입니다.
+        <code>color</code> 는 <code>rgb(255, 255, 255)</code> 입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: inherit ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — inherit 로 억지로 내려받기</h2>
+      <p class="doc-desc">
+        안 내려오는 속성도 <strong><code>inherit</code></strong> 이라고 값을 적으면
+        부모의 값을 그대로 받아 옵니다.
+      </p>
+
+      <!--
+        inherit 는 색 이름이 아닙니다. "부모 것을 그대로 쓰겠다" 는 뜻의 특별한 값입니다.
+        거의 모든 속성에 쓸 수 있습니다.
+
+            .paint-box2 {
+              color: #ffffff;
+              background-color: #27853f;
+            }
+            .take-bg {
+              background-color: inherit;   ← 부모의 초록을 그대로 받아 옵니다
+            }
+
+        아래 상자에서 두 번째 문단에만 take-bg 를 붙였습니다.
+        그런데 화면으로는 첫 번째 문단과 구별이 안 됩니다. 둘 다 초록이니까요.
+
+        그러면 왜 쓸까요? 겉보기가 같아도 속이 다르기 때문입니다.
+
+            첫 번째 문단  자기 배경은 투명. 부모 배경이 비쳐 보이는 것
+            두 번째 문단  자기 배경이 진짜로 초록. 부모와 상관없이 자기 것
+
+        F12 로 Computed 값을 보면 둘이 다릅니다.
+
+            첫 번째 → rgba(0, 0, 0, 0)
+            두 번째 → rgb(39, 133, 63)
+
+        실제로 쓰는 경우는 이렇습니다.
+
+            1. 부모 색이 나중에 바뀌어도 자식이 자동으로 따라가게 하고 싶을 때
+               색 값을 두 곳에 적어 두면 한쪽만 고치는 실수가 납니다
+            2. 브라우저가 자기 색을 정해 둔 요소를 부모 색에 맞추고 싶을 때
+               링크나 버튼이 그런 요소입니다. 섹션 6 에서 봅니다
+
+        주의할 점이 하나 있습니다.
+        부모가 그 속성을 정한 적이 없으면 inherit 로도 받을 게 없습니다.
+        부모의 값(예를 들면 투명) 을 그대로 받아 오니 아무 일도 안 일어납니다.
+        섹션 7 의 실수 4 에서 그 경우를 봅니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">두 번째 문단에만 background-color: inherit 를 줬습니다</p>
+        <div class="paint-box2">
+          <p id="plainKid">저는 배경이 투명합니다. 부모 초록이 비칩니다.</p>
+          <p id="takeBgKid" class="take-bg">저는 제 배경이 진짜 초록입니다.</p>
+        </div>
+        <!-- 화면: 초록 덩어리 안에 흰 글자 두 줄. 눈으로는 두 줄을 구분할 수 없습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>inherit</code> 는 <strong>색이 아니라 값의 종류</strong>입니다.
+        <code>color: inherit;</code> 처럼 다른 속성에도 똑같이 쓸 수 있습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>.paint-box2</code> 의 배경색을
+        <code>#8e44ad</code> 로 바꿔 보세요. 두 문단 모두 보라색이 됩니다.
+        <code>.take-bg</code> 는 한 글자도 안 고쳤는데 따라옵니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 브라우저 기본 스타일 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 브라우저 기본 스타일</h2>
+      <p class="doc-desc">
+        CSS 를 하나도 안 써도 제목은 크고 굵게 나옵니다.
+        <strong>브라우저가 원래 갖고 있는 CSS 파일</strong> 때문입니다.
+      </p>
+
+      <!--
+        01단원에서 "태그에는 뜻이 들어 있어서 브라우저가 알아서 그려 준다" 고 했습니다.
+        그 "알아서" 의 정체가 이것입니다.
+
+        모든 브라우저는 자기만의 CSS 파일을 하나 갖고 있습니다.
+        여러분이 만든 CSS 를 읽기 전에 그 파일을 먼저 읽습니다. 대략 이런 내용입니다.
+
+            h1     { font-size: 2em; font-weight: bold; margin: 0.67em 0; }
+            p      { margin: 1em 0; }
+            strong { font-weight: bold; }
+            a      { color: blue; text-decoration: underline; }
+            ul     { padding-left: 40px; list-style-type: disc; }
+
+        그래서 아무 CSS 없이도 이렇게 됩니다.
+
+            h1 이 크고 굵은 이유       → font-size 와 font-weight 가 이미 정해져 있어서
+            문단 사이가 벌어지는 이유   → p 에 위아래 margin 이 이미 있어서
+            링크가 파랗고 밑줄 있는 이유 → a 에 color 와 text-decoration 이 이미 있어서
+
+        아래 상자에는 CSS 를 하나도 안 준 요소들을 넣어 두었습니다.
+        그런데도 다 다르게 생겼습니다. 전부 브라우저 기본 스타일입니다.
+
+        브라우저마다 기본값이 조금씩 다릅니다.
+        그래서 실무에서는 기본값을 초기화하는 CSS 를 맨 앞에 깔기도 합니다.
+        그건 10단원 이후의 이야기입니다.
+
+        여기서 알아 둘 것은 하나입니다.
+        화면에 이상한 여백이나 크기가 보이면 세 가지 중 하나입니다.
+
+            1. 내가 쓴 규칙
+            2. 부모에게서 내려온 상속
+            3. 브라우저 기본 스타일
+
+        F12 의 Styles 탭을 보면 어느 것 때문인지 알 수 있습니다.
+        브라우저 기본 스타일은 user agent stylesheet 라고 표시됩니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">CSS 를 하나도 안 준 요소들입니다</p>
+        <h1 id="defaultH1">저는 h1 입니다</h1>
+        <p id="defaultP">저는 문단입니다. 위아래에 여백이 이미 있습니다.</p>
+        <p>저는 그다음 문단입니다. 위 문단과 붙어 있지 않습니다.</p>
+        <p><strong id="defaultStrong">저는 굵습니다</strong> / 저는 보통입니다</p>
+        <p><a id="defaultLink" href="#">저는 링크입니다</a></p>
+        <!-- 화면: 맨 위 "저는 h1 입니다" 가 아주 크고 굵게 나옵니다.
+                  문단 세 줄은 사이가 벌어져 있고, 굵은 글자와 보통 글자가 한 줄에 섞여 있고,
+                  맨 아래 링크는 파란 글자에 밑줄이 그어져 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        위 상자의 <code>h1</code> 이 이 페이지 맨 위의 제목보다 더 커 보이지요?
+        맨 위 제목도 <code>h1</code> 인데, <code>공통.css</code> 가 거기에
+        다른 크기를 정해 뒀기 때문입니다. <strong>기본값은 덮어쓸 수 있습니다.</strong>
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 상자의 <code>&lt;p&gt;</code> 두 줄 사이에
+        문단을 하나 더 넣어 보세요. 여백을 지정한 적이 없는데도
+        새 문단 위아래가 똑같이 벌어집니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 기본값 덮어쓰기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 기본값을 덮어쓰는 법</h2>
+      <p class="doc-desc">
+        내가 쓴 규칙이 브라우저 기본값보다 <strong>셉니다.</strong>
+        같은 속성을 지정하면 내 값으로 바뀝니다.
+      </p>
+
+      <!--
+        방법은 특별할 게 없습니다. 그냥 그 속성을 다시 쓰면 됩니다.
+
+            #overrideTitle { color: #c0392b; }
+
+        아래 상자의 제목이 빨갛게 나옵니다.
+        그런데 크기와 굵기는 그대로 큽니다. 왜 그럴까요?
+
+            내가 지정한 것      color         → 내 값으로 덮어씀
+            내가 지정 안 한 것   font-size 등  → 브라우저 기본값이 그대로 남음
+
+        덮어쓰기는 속성 단위로 일어납니다.
+        "내 규칙을 하나 썼으니 브라우저 기본값이 다 사라진다" 가 아닙니다.
+        내가 건드린 속성만 바뀌고 나머지는 그대로입니다.
+        이게 CSS 를 조금씩 고쳐 나갈 수 있는 이유입니다.
+
+        크기와 굵기를 바꾸는 방법은 09단원에서 배웁니다.
+        이 단원에서 덮어쓸 수 있는 것은 색 두 가지뿐입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">제목에 color 만 줬습니다</p>
+        <h3 id="overrideTitle">저는 색만 바뀐 제목입니다</h3>
+        <h3>저는 아무것도 안 준 제목입니다</h3>
+        <!-- 화면: 두 제목이 똑같이 크고 굵은데, 위쪽만 빨간색이고 아래쪽은 검은색입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>#overrideTitle</code> 규칙에
+        <code>background-color: #fff3a0;</code> 을 한 줄 더 넣어 보세요.
+        제목 뒤가 노랗게 칠해집니다. 크기와 굵기는 여전히 그대로입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 상속을 이기는 것 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 링크와 버튼은 왜 색이 안 바뀔까</h2>
+      <p class="doc-desc">
+        부모에 색을 줬는데 <strong>링크만 파랗게 남는</strong> 일이 있습니다.
+        고장이 아니라 규칙대로 된 것입니다.
+      </p>
+
+      <!--
+        아래 상자에는 이렇게 줬습니다.
+
+            .link-box { color: #c0392b; }
+
+        상자 안 보통 글자는 빨개졌는데 링크는 여전히 파랗고, 버튼 글자는 검습니다.
+        이유는 브라우저 기본 스타일에 이런 줄이 있기 때문입니다.
+
+            a      { color: blue; }
+            button { color: buttontext; }
+
+        여기서 중요한 원칙이 나옵니다.
+
+            상속으로 내려온 값은 가장 약합니다.
+            그 요소를 '직접 고른' 규칙이 있으면 무조건 그쪽이 이깁니다.
+            브라우저 기본 스타일도 a 를 직접 고른 규칙입니다.
+
+        정리하면 이렇습니다.
+
+            부모의 color         → 자식을 직접 고른 게 아님 → 약함
+            브라우저의 a { ... }  → a 를 직접 고름          → 이김
+
+        그래서 링크 색을 바꾸려면 a 를 직접 골라야 합니다.
+
+            #linkFixed { color: #c0392b; }
+
+        아래 상자의 두 번째 링크가 그렇게 고친 것입니다. 빨갛게 바뀌었습니다.
+        밑줄은 그대로 남아 있는데, 그건 text-decoration 이라는 다른 속성이라
+        내가 건드리지 않았기 때문입니다. 09단원에서 지우는 법을 배웁니다.
+
+        규칙이 여러 개 겹쳤을 때 누가 이기는지 계산하는 방법을 명시도라고 합니다.
+        08단원에서 제대로 배웁니다. 지금은 이 한 줄만 기억하세요.
+
+            직접 고른 것이 상속보다 세다
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">부모에만 color 를 줬습니다</p>
+        <div class="link-box">
+          <p id="linkBoxText">저는 보통 글자입니다. 부모 색을 받았습니다.</p>
+          <p><a id="linkPlain" href="#">저는 손대지 않은 링크입니다</a></p>
+          <p><a id="linkFixed" href="#">저는 직접 색을 받은 링크입니다</a></p>
+          <p><button id="btnPlain">저는 버튼입니다</button></p>
+        </div>
+        <!-- 화면: 첫 줄은 빨간 글자, 둘째 줄 링크는 파란 글자에 밑줄,
+                  셋째 줄 링크는 빨간 글자에 밑줄, 맨 아래 회색 버튼의 글자는 검은색입니다 -->
+      </div>
+
+      <p class="doc-note">
+        버튼은 색뿐 아니라 <strong>글꼴까지</strong> 부모를 안 따릅니다.
+        위 버튼의 글자 모양이 주변과 다른 것이 그 때문입니다.
+        브라우저가 버튼에 자기 글꼴을 직접 지정해 두었기 때문입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — <code>#linkFixed</code> 의 값을
+        <code>inherit</code> 로 바꿔 보세요(<code>color: inherit;</code>).
+        부모의 빨간색을 그대로 받아서 결과가 같아집니다.
+        색 값을 두 곳에 적지 않아도 되니 이쪽이 더 안전합니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        상속과 기본값은 <strong>보이지 않는 곳에서</strong> 움직입니다.
+        그래서 "분명히 규칙을 썼는데 안 먹는다" 의 원인이 되는 일이 많습니다.
+      </p>
+
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 부모 배경색이 자식에게 내려간 줄 앎</span>
+        <p>
+          <strong>겉보기는 같지만 자식의 배경색은 여전히 없습니다.</strong>
+          부모 배경이 비쳐 보이는 것뿐입니다.
+          지금은 차이가 안 보이지만, 10단원에서 자식에게 여백을 주기 시작하면
+          "왜 여기만 색이 끊기지?" 하는 문제로 나타납니다.
+          섹션 2 와 섹션 3 의 차이를 F12 로 꼭 한 번 확인해 두세요.
+        </p>
+      </div>
+
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 자식이 자기 색을 갖고 있는데 부모만 계속 고침</span>
+        <div class="doc-code">.parent-blue { color: #2d6cdf; }
+.kid-own    { color: #c0392b; }</div>
+        <p>
+          <strong>그 자식만 안 바뀝니다.</strong> 부모 색을 아무리 고쳐도 소용없습니다.
+          자식을 직접 고른 규칙이 이기기 때문입니다.
+          아래 상자에서 가운데 줄이 그 경우입니다.
+          "한 줄만 색이 안 따라온다" 면 그 요소에 직접 붙은 규칙을 찾으세요.
+        </p>
+        <div class="doc-demo">
+          <div class="parent-blue">
+            <p>저는 부모 색을 받았습니다.</p>
+            <p id="kidOwn" class="kid-own">저는 제 색을 갖고 있습니다.</p>
+            <p>저도 부모 색을 받았습니다.</p>
+          </div>
+          <!-- 화면: 첫 줄과 셋째 줄은 파란 글자인데 가운데 줄만 빨간 글자입니다 -->
+        </div>
+      </div>
+
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 링크와 버튼도 부모 색을 따를 거라고 생각</span>
+        <p>
+          <strong>안 따릅니다.</strong> 섹션 6 에서 본 그대로입니다.
+          브라우저가 <code>a</code> 와 <code>button</code> 의 색을 직접 정해 뒀기 때문입니다.
+          <code>a</code> 를 직접 골라서 색을 주거나 <code>color: inherit;</code> 를 쓰세요.
+          "다 바꿨는데 링크만 파랗다" 는 초보자 단골 질문입니다.
+        </p>
+      </div>
+
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 부모가 정한 적 없는 값을 inherit 로 받으려 함</span>
+        <div class="doc-code">.take-nothing { background-color: inherit; }</div>
+        <p>
+          <strong>아무 일도 안 일어납니다.</strong> 에러도 없습니다.
+          <code>inherit</code> 는 "부모 것을 그대로 쓰겠다" 는 뜻인데,
+          부모가 배경색을 정한 적이 없으면 부모의 값인 <strong>투명</strong>을 받아 옵니다.
+          받아 오긴 했는데 받아 온 것이 투명이라 보이는 변화가 없습니다.
+        </p>
+        <div class="doc-demo">
+          <div>
+            <p id="inheritNothing" class="take-nothing">배경을 물려받으려 했습니다.</p>
+          </div>
+          <!-- 화면: 배경이 안 칠해진 평범한 검은 글자 한 줄입니다 -->
+        </div>
+      </div>
+
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 브라우저 기본 여백을 자기가 만든 줄 앎</span>
+        <p>
+          <strong>문단 사이의 여백은 내가 만든 것이 아닙니다.</strong>
+          <code>p</code> 에 원래 위아래 여백이 들어 있습니다.
+          "여백을 준 적이 없는데 왜 벌어지지?" 하고 HTML 을 계속 뒤지게 됩니다.
+          여백을 없애는 방법은 10단원에서 배웁니다.
+          그리고 브라우저마다 기본값이 조금씩 달라서, 같은 파일이
+          크롬과 다른 브라우저에서 살짝 다르게 보이는 일도 있습니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <strong>상속</strong>은 부모에 준 스타일이 자식에게 저절로 내려가는 것입니다.</p>
+      <p>
+        2. <code>color</code>, <code>font-family</code>, <code>line-height</code> 처럼
+        <strong>글자에 관한 것</strong>이 내려갑니다.
+      </p>
+      <p>
+        3. <code>background-color</code>, <code>border</code>, <code>padding</code> 처럼
+        <strong>상자에 관한 것</strong>은 안 내려갑니다.
+      </p>
+      <p>4. <code>inherit</code> 를 값으로 쓰면 안 내려오는 것도 부모 값을 받아 옵니다.</p>
+      <p>5. CSS 를 안 써도 제목이 크고 굵은 것은 <strong>브라우저 기본 스타일</strong> 때문입니다.</p>
+      <p>6. 기본값은 그 속성을 다시 지정하면 덮어써집니다. <strong>건드린 속성만</strong> 바뀝니다.</p>
+      <p>7. <strong>직접 고른 규칙이 상속보다 셉니다.</strong> 링크 색이 안 바뀌는 이유입니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) style 안의 .family-box 를 이렇게 고칩니다.
+
+                .family-box {
+                  color: #27853f;
+                }
+
+            → 섹션 1 상자 안의 문단 세 줄과 스팬, 굵은 글자가 전부 초록색이 됩니다.
+              규칙은 한 줄인데 다섯 곳이 바뀌었습니다. 이것이 상속의 힘입니다.
+              확인했으면 #2d6cdf 로 되돌려 놓으세요.
+
+         2) F12 로 확인한 결과는 이렇습니다.
+
+                background-color → rgba(0, 0, 0, 0)
+                color            → rgb(255, 255, 255)
+
+            → 눈에는 빨갛게 보이는데 자기 배경색은 투명입니다.
+              보이는 빨강은 부모의 배경이 비친 것입니다.
+              글자색은 부모에게서 제대로 내려받았습니다.
+
+         3) style 안의 .paint-box2 를 이렇게 고칩니다.
+
+                .paint-box2 {
+                  color: #ffffff;
+                  background-color: #8e44ad;
+                }
+
+            → 섹션 3 상자가 통째로 보라색이 됩니다.
+              두 번째 문단은 .take-bg 로 inherit 를 받고 있어서 자동으로 따라옵니다.
+              색 값을 한 곳에만 적어 두면 이렇게 편합니다.
+              확인했으면 #27853f 로 되돌려 놓으세요.
+
+         4) 섹션 4 상자의 문단 두 줄 사이에 이렇게 넣습니다.
+
+                <p>저는 나중에 끼워 넣은 문단입니다.</p>
+
+            → 세 문단이 똑같은 간격으로 벌어집니다.
+              여백을 준 적이 없는데 벌어지는 것은 브라우저 기본 스타일 때문입니다.
+
+         5) style 안의 #overrideTitle 을 이렇게 고칩니다.
+
+                #overrideTitle {
+                  color: #c0392b;
+                  background-color: #fff3a0;
+                }
+
+            → 첫 번째 제목 뒤가 노랗게 칠해집니다.
+              글자 크기와 굵기는 그대로입니다. 내가 건드린 속성만 바뀌기 때문입니다.
+
+         6) style 안의 #linkFixed 를 이렇게 고칩니다.
+
+                #linkFixed {
+                  color: inherit;
+                }
+
+            → 화면은 그대로 빨간 링크입니다. 부모인 .link-box 의 색을 받았기 때문입니다.
+              차이는 나중에 나타납니다. .link-box 의 색을 바꾸면
+              #c0392b 라고 적어 뒀을 때는 링크만 옛 색으로 남지만,
+              inherit 로 적어 두면 링크도 같이 따라옵니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      body | color | rgb(34, 34, 34)
+      .family-box | color | rgb(45, 108, 223)
+      #familyKid | color | rgb(45, 108, 223)
+      #familySpan | color | rgb(45, 108, 223)
+      #familyStrong | color | rgb(45, 108, 223)
+      .paint-box | background-color | rgb(192, 57, 43)
+      #paintKid | color | rgb(255, 255, 255)
+      #paintKid | background-color | rgba(0, 0, 0, 0)
+      #plainKid | background-color | rgba(0, 0, 0, 0)
+      #takeBgKid | background-color | rgb(39, 133, 63)
+      #defaultH1 | font-size | 32px
+      #defaultH1 | font-weight | 700
+      #defaultP | margin-bottom | 16px
+      #defaultStrong | font-weight | 700
+      #defaultLink | color | rgb(0, 0, 238)
+      .doc-head | font-size | 26px
+      #overrideTitle | color | rgb(192, 57, 43)
+      #overrideTitle | font-weight | 700
+      #linkBoxText | color | rgb(192, 57, 43)
+      #linkPlain | color | rgb(0, 0, 238)
+      #linkFixed | color | rgb(192, 57, 43)
+      #kidOwn | color | rgb(192, 57, 43)
+      #inheritNothing | background-color | rgba(0, 0, 0, 0)
+    -->
+  </body>
+</html>

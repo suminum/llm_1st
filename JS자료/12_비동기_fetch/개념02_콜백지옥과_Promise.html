@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>12단원 개념02 - 콜백 지옥과 Promise</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 8px 16px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 6px;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+        white-space: pre-line;
+        min-height: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 02 — 콜백 지옥과 Promise</h1>
+
+    <p class="guide">
+      브라우저로 열고 <strong>F12 → Console</strong> 을 반드시 함께 보세요. 버튼을 누르면
+      단계마다 1초씩 걸립니다.
+    
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>① 콜백으로 이어 붙이기 (읽기 나쁨)</h3>
+      <button id="callbackBtn">콜백 방식 실행</button>
+      <div class="output" id="out1"></div>
+
+      <h3>② Promise 로 이어 붙이기 (읽기 좋음)</h3>
+      <button id="promiseBtn">Promise 방식 실행</button>
+      <div class="output" id="out2"></div>
+
+      <h3>③ 실패했을 때</h3>
+      <button id="failBtn">실패하는 작업 실행</button>
+      <div class="output" id="out3"></div>
+    </div>
+
+    <script>
+      // ============================================================
+      // 12단원 · 개념 02 — 콜백 지옥과 Promise
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 버튼을 눌러 보세요. F12 → Console 필수.
+      // ============================================================
+      //
+      // 비동기 작업을 '순서대로' 여러 개 하려면 어떻게 할까요?
+      //   주문하기 → 결제하기 → 영수증 받기
+      // 각 단계가 1초씩 걸린다고 해 봅시다.
+      //
+      // [주의] 이 파일은 버튼을 누르지 않아도 섹션 3·5의 예제가 페이지를 열 때
+      //        자동으로 실행됩니다. 그래서 아무것도 안 눌렀는데 콘솔에
+      //        "1. 주문 완료 (Promise)" 같은 줄이 이미 찍혀 있습니다. 정상입니다.
+
+      const out1 = document.querySelector("#out1");
+      const out2 = document.querySelector("#out2");
+      const out3 = document.querySelector("#out3");
+
+      // ── 섹션 1: 콜백으로 이어 붙이기 ──
+
+      // "끝나면 이 함수를 불러 줘" 를 계속 넘기는 방식입니다.
+      function order(callback) {
+        setTimeout(() => {
+          console.log("1. 주문 완료");
+          callback("주문번호-100");
+        }, 1000);
+      }
+
+      function pay(orderNo, callback) {
+        setTimeout(() => {
+          console.log("2. 결제 완료");
+          callback(`${orderNo} 결제됨`);
+        }, 1000);
+      }
+
+      function receipt(payInfo, callback) {
+        setTimeout(() => {
+          console.log("3. 영수증 발급");
+          callback(`영수증: ${payInfo}`);
+        }, 1000);
+      }
+
+      document.querySelector("#callbackBtn").addEventListener("click", () => {
+        out1.textContent = "진행 중...";
+
+        // 콜백 안에 콜백 안에 콜백 — 계단처럼 깊어집니다
+        order((orderNo) => {
+          pay(orderNo, (payInfo) => {
+            receipt(payInfo, (result) => {
+              out1.textContent = result;
+              console.log("최종:", result);
+            });
+          });
+        });
+      });
+
+      // 이렇게 오른쪽으로 계속 밀려나는 모양을 '콜백 지옥' 이라고 부릅니다.
+      // 단계가 5개만 되어도 읽을 수 없게 됩니다.
+      // 게다가 중간에 실패하면 어디서 처리해야 할지도 막막합니다.
+
+      // ✏️ 직접 해보기 1 — ① 버튼을 누르고 콘솔을 보세요.
+      //                    세 단계가 몇 초 간격으로 찍히나요? 왜 그럴까요?
+
+      // ── 섹션 2: Promise — 나중에 줄 값에 대한 약속 ──
+
+      // Promise 는 "지금은 없지만 나중에 값을 주겠다" 는 약속을 담은 객체입니다.
+      //
+      // 카페 진동벨을 떠올리면 쉽습니다.
+      //   주문하면 커피 대신 '진동벨' 을 먼저 줍니다.       ← 이게 Promise 입니다
+      //   벨은 커피가 아닙니다. "나오면 알려 주겠다" 는 약속일 뿐입니다.
+      //   그래서 벨을 받자마자 자리로 가서 다른 일을 할 수 있습니다.  ← 비동기
+      //   벨이 울리면 그때 커피를 받으러 갑니다.            ← .then
+      //   재료가 떨어져 못 만들면 그것도 알려 줍니다.        ← .catch
+      //
+      // 나중에 console.log(프로미스) 를 찍으면 값이 아니라
+      // Promise { <pending> } 같은 게 나오는 이유가 이것입니다.
+      // 손에 들고 있는 게 커피가 아니라 벨이기 때문입니다.
+      //
+      //     new Promise((resolve, reject) => {
+      //       성공하면 resolve(값)
+      //       실패하면 reject(이유)
+      //     });
+      //
+      // [잠깐] new 라는 키워드가 처음 나왔습니다.
+      //   "이 설계도로 새것을 하나 만들어라" 는 뜻입니다.
+      //   new Promise(...) 는 "약속 객체를 새로 하나 만들어라" 가 됩니다.
+      //   지금은 이 정도만 알면 됩니다.
+      //
+      // [또 잠깐] resolve 와 reject 는 어디서 왔을까요?
+      //   우리가 넘긴 콜백을 Promise 가 실행하면서 넘겨 주는 함수들입니다.
+      //   08단원에서 배운 "콜백의 매개변수는 실행하는 쪽이 넘겨 준다" 가 여기서도 그대로입니다.
+      //   이름은 관례일 뿐 마음대로 지어도 됩니다.
+
+      // 아래 세 함수는 섹션 1의 order / pay / receipt 를 Promise 판으로 바꾼 것입니다.
+      // 달라진 곳은 딱 두 군데입니다.
+      //   ① callback 매개변수가 사라졌습니다  (받을 필요가 없어졌습니다)
+      //   ② callback(값) 자리에 resolve(값) 이 들어갔습니다
+
+      function orderP() {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            console.log("1. 주문 완료 (Promise)");
+            resolve("주문번호-200");
+          }, 1000);
+        });
+      }
+
+      // 이 6줄이 무슨 순서로 도는지 한 번만 따라가 봅시다.
+      // 이 파일에서 제일 어려운 곳이니 천천히 보세요.
+      //
+      //   ① orderP() 를 부른다
+      //   ② 그 자리에서 Promise(진동벨) 하나가 만들어져 밖으로 나온다
+      //      ← 아직 값은 없습니다. 벨만 받은 상태입니다
+      //   ③ 동시에 안쪽 setTimeout 이 "1초 뒤에 실행" 으로 예약된다
+      //   ④ orderP() 는 여기서 이미 끝납니다. 아래 줄이 먼저 실행됩니다
+      //   ⑤ 1초 뒤 예약된 것이 실행되면서 resolve("주문번호-200") 이 불린다
+      //   ⑥ 그 순간 ②에서 나갔던 벨이 울리고,
+      //      거기 붙여 둔 .then 의 콜백이 실행된다
+      //
+      // 핵심은 ②와 ⑤ 사이에 1초의 틈이 있다는 것입니다.
+      // resolve 는 "값 나왔어, 이제 .then 불러도 돼" 라고 알리는 신호입니다.
+
+      function payP(orderNo) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            console.log("2. 결제 완료 (Promise)");
+            resolve(`${orderNo} 결제됨`);
+          }, 1000);
+        });
+      }
+
+      function receiptP(payInfo) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            console.log("3. 영수증 발급 (Promise)");
+            resolve(`영수증: ${payInfo}`);
+          }, 1000);
+        });
+      }
+
+      // ✏️ 직접 해보기 2 — orderP() 에 .then 을 붙여, 받은 값을 콘솔에 찍어 보세요.
+      //                    값이 바로 나오나요, 조금 뒤에 나오나요?
+
+      // ── 섹션 3: then 으로 이어 붙이기 ──
+
+      document.querySelector("#promiseBtn").addEventListener("click", () => {
+        out2.textContent = "진행 중...";
+
+        orderP()
+          .then((orderNo) => payP(orderNo))
+          .then((payInfo) => receiptP(payInfo))
+          .then((result) => {
+            out2.textContent = result;
+            console.log("최종:", result);
+          });
+      });
+
+      // 계단이 사라지고 '위에서 아래로' 읽힙니다. 이것을 체이닝이라고 합니다.
+      //
+      //   .then(콜백)  앞의 약속이 지켜지면(resolve) 그 값을 받아 실행
+      //
+      // then 의 콜백이 또 Promise 를 돌려주면, 다음 then 은 그것까지 기다립니다.
+      // 그래서 순서가 보장됩니다.
+      //
+      // 이 한 줄이 체이닝의 전부입니다. 눈으로 봐 두세요.
+      //
+      //   .then((no) => payP(no))       payP(no) 는 Promise 다
+      //                                 → 다음 then 은 그게 끝날 때까지 더 기다린다
+      //   .then((no) => no + " 확인")    그냥 문자열이다
+      //                                 → 기다릴 게 없으니 바로 다음으로 넘어간다
+      //
+      // 즉 then 은 '콜백이 돌려준 것' 을 보고 판단합니다.
+      //   Promise 를 받았다 → 끝날 때까지 기다렸다가 그 '안의 값' 을 다음으로 넘긴다
+      //   그냥 값을 받았다   → 그 값을 그대로 다음으로 넘긴다
+      //
+      // 그래서 return 을 빠뜨리면 순서가 깨집니다.
+      // 돌려준 게 없으니(undefined) 기다릴 것도 없다고 판단해 버립니다.
+
+      // Promise 객체를 그냥 찍어 보면 이렇게 생겼습니다.
+      const p = orderP();
+      console.log(p);
+      // 콘솔: Promise { <pending> }
+      // pending = 아직 결과가 안 나왔다는 뜻입니다.
+      // fulfilled(성공) 또는 rejected(실패) 로 바뀝니다.
+
+      p.then((value) => console.log("나중에 받은 값:", value));
+      // 콘솔: (1초 뒤) 나중에 받은 값: 주문번호-200
+
+      // ✏️ 직접 해보기 3 — then 을 하나 더 붙여, 받은 주문번호 뒤에 " (확인됨)" 을
+      //                    이어붙인 뒤 화면(out2)에 넣어 보세요.
+      //                    화면이 실제로 바뀌는지 눈으로 확인하는 것이 목적입니다.
+
+      // ✏️ 직접 해보기 4 — orderP 의 setTimeout 시간을 1000 에서 3000 으로 바꿔 보세요.
+      //                    ② 버튼을 눌렀을 때 각 단계가 언제 찍히는지 콘솔로 확인하세요.
+
+      // ── 섹션 4: 실패 처리 — reject 와 catch ──
+
+      // 성공과 실패를 우리가 마음대로 정할 수 있는 '연습용' 함수를 하나 만들겠습니다.
+      //   riskyTask(true)  → 1초 뒤 reject  (실패)
+      //   riskyTask(false) → 1초 뒤 resolve (성공)
+      //
+      // reject 에 그냥 문자열을 넣지 않고 new Error(...) 를 넣는 이유는
+      // 섹션 5에서 설명합니다. 지금은 "실패는 Error 로 알린다" 만 봐 두세요.
+
+      function riskyTask(shouldFail) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (shouldFail) {
+              reject(new Error("작업에 실패했습니다"));
+            } else {
+              resolve("작업 성공!");
+            }
+          }, 1000);
+        });
+      }
+
+      document.querySelector("#failBtn").addEventListener("click", () => {
+        out3.textContent = "진행 중...";
+
+        riskyTask(true)
+          .then((result) => {
+            out3.textContent = result;
+          })
+          .catch((error) => {
+            out3.textContent = `오류: ${error.message}`;
+            console.log("catch 에서 잡음:", error.message);
+          })
+          .finally(() => {
+            console.log("성공하든 실패하든 여기는 실행됩니다");
+          });
+      });
+
+      // .then   성공했을 때
+      // .catch  실패했을 때
+      // .finally 성공·실패 상관없이 마지막에 (로딩 표시를 끌 때 유용)
+      //
+      // catch 는 체인 어디에서 실패해도 전부 잡습니다.
+      // 그래서 맨 끝에 하나만 붙이면 됩니다. 콜백 방식보다 훨씬 편합니다.
+
+      // reject 에는 보통 new Error("메시지") 를 넣습니다.
+      // 그러면 catch 에서 error.message 로 꺼내 쓸 수 있습니다.
+
+      // ✏️ 직접 해보기 5 — riskyTask(true) 를 riskyTask(false) 로 바꿔 부르면
+      //                    then / catch / finally 중 무엇이 실행될까요?
+      //                    예상하고 직접 확인해 보세요.
+
+      // ── 섹션 5: 여러 개를 한꺼번에 — Promise.all ──
+
+      // 순서가 상관없고 전부 끝나기만 하면 될 때 씁니다.
+      Promise.all([riskyTask(false), riskyTask(false)]).then((results) => {
+        console.log("둘 다 끝남:", results);
+        // 콘솔: 둘 다 끝남: ['작업 성공!', '작업 성공!']
+      });
+
+      // 하나씩 순서대로 하면 2초, Promise.all 로 동시에 하면 1초입니다.
+      // 하나라도 실패하면 전체가 실패합니다(catch 로 갑니다).
+
+      // ✏️ 직접 해보기 6 — 위 Promise.all 의 둘 중 하나를 riskyTask(true) 로 바꾸고
+      //                    .catch 를 붙여 보세요. 성공한 나머지 하나는 어떻게 될까요?
+
+      // ── 섹션 6: 지금은 이것만 기억하세요 ──
+
+      // Promise 를 '직접 만드는' 일은 생각보다 드뭅니다.
+      // fetch 같은 함수들이 이미 Promise 를 돌려주기 때문입니다. (개념03)
+      //
+      // 그래서 지금 중요한 것은
+      //   1) Promise 는 "나중에 값을 주는 객체" 다
+      //   2) .then 으로 그 값을 받는다
+      //   3) .catch 로 실패를 잡는다
+      //
+      // 이 세 가지입니다. 그리고 개념04 에서 배울 async/await 를 쓰면
+      // then 조차 거의 안 쓰게 됩니다.
+
+      // ── 섹션 7: 자주 하는 실수 ──
+
+      // [실수 1] then 안에서 return 을 빠뜨림
+      // orderP().then((no) => { payP(no); }).then((info) => console.log(info));
+      // 실수: info 가 undefined 입니다. 중괄호를 썼으면 return payP(no); 가 필요합니다.
+      //       화살표 한 줄로 (no) => payP(no) 라고 쓰면 자동으로 return 됩니다. (05단원)
+
+      // [실수 2] Promise 를 값처럼 바로 씀
+      const value = orderP();
+      console.log(value);
+      // 콘솔: Promise { <pending> }
+      // 실수: 안의 값이 아니라 약속 객체 자체입니다. then 으로 꺼내야 합니다.
+
+      // [실수 3] catch 를 안 붙임
+      // 실패해도 아무 반응이 없어서 원인을 찾기 어렵습니다. 항상 붙이세요.
+
+      // [실수 4] resolve / reject 를 두 번 부름
+      // 처음 부른 것만 유효하고 나머지는 무시됩니다. 에러도 안 납니다.
+
+      // ── 정리 ──
+
+      // 1. 콜백을 겹치면 오른쪽으로 밀려 읽기 나빠진다(콜백 지옥).
+      // 2. Promise 는 "나중에 값을 주겠다" 는 약속 객체다.
+      // 3. .then(콜백) 으로 값을 받고, 이어 붙이면 위에서 아래로 읽힌다.
+      // 4. .catch 로 실패를 잡고, .finally 는 항상 실행된다.
+      // 5. then 안에서 다음 Promise 를 return 해야 순서가 이어진다.
+      // 6. Promise.all 로 여러 개를 동시에 처리할 수 있다.
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) 1초 간격으로 한 줄씩 찍힙니다.
+      //    // 콘솔: (1초) 1. 주문 완료 → (2초) 2. 결제 완료 → (3초) 3. 영수증 발급
+      //    → 각 단계가 앞 단계가 끝나기를 기다렸다가 시작하기 때문입니다.
+      //      pay 는 order 가 준 주문번호가 있어야 하고, receipt 는 pay 의 결과가
+      //      있어야 하니 어쩔 수 없이 순서대로입니다.
+      //      순서가 상관없다면 섹션 5의 Promise.all 로 동시에 할 수 있습니다.
+      //
+      // 2) orderP().then((no) => {
+      //      console.log(no);
+      //    });
+      //    // 콘솔: (1초 뒤) 주문번호-200
+      //    → 바로 나오지 않고 1초 뒤에 나옵니다. orderP() 는 값이 아니라
+      //      '벨' 을 즉시 돌려주고, 값은 1초 뒤 resolve 가 불릴 때 도착합니다.
+      //      그 전에 "1. 주문 완료 (Promise)" 가 먼저 찍히는 것도 확인하세요.
+      //
+      // 3) orderP()
+      //      .then((no) => no + " (확인됨)")
+      //      .then((text) => {
+      //        out2.textContent = text;
+      //      });
+      //    // 화면: 1초 뒤 "주문번호-200 (확인됨)" 이 나타납니다
+      //
+      //    then 의 콜백이 돌려준 값이 다음 then 으로 넘어갑니다.
+      //
+      // 4) function orderP() {
+      //      return new Promise((resolve) => {
+      //        setTimeout(() => { ... }, 3000);   // 1000 → 3000
+      //      });
+      //    }
+      //    ② 버튼을 누르면 3초 → 4초 → 5초 시점에 한 단계씩 찍힙니다.
+      //    각 단계가 앞 단계를 기다린다는 것을 시간으로 확인할 수 있습니다.
+      //
+      // 5) then 과 finally 가 실행되고, catch 는 건너뜁니다.
+      //    // 콘솔: then: 작업 성공!
+      //    // 콘솔: finally 실행
+      //    → catch 는 '실패했을 때만' 들르는 곳입니다. 성공하면 지나칩니다.
+      //      finally 는 성공이든 실패든 항상 실행됩니다. 그래서 "불러오는 중..."
+      //      같은 표시를 끄는 자리로 씁니다.
+      //
+      // 6) Promise.all([riskyTask(false), riskyTask(true)])
+      //      .then((results) => {
+      //        console.log("둘 다 끝남:", results);
+      //      })
+      //      .catch((error) => {
+      //        console.log("전체 실패:", error.message);
+      //      });
+      //    // 콘솔: 전체 실패: 작업에 실패했습니다
+      //    → 성공한 나머지 하나의 결과는 받아 볼 수 없습니다. then 이 아예
+      //      실행되지 않기 때문입니다. Promise.all 은 "전부 성공해야 성공" 입니다.
+      //      하나가 실패해도 나머지를 받고 싶다면 Promise.allSettled 를 쓰는데,
+      //      지금 단계에서는 몰라도 됩니다.
+    </script>
+  </body>
+</html>

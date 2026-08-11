@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>13단원 개념05 - 모바일 우선으로 만들기</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* 카드 하나의 모양입니다. 배치와는 상관없는 색과 여백입니다. */
+      .card {
+        background: #dbe7fb;
+        border: 1px solid #9ab8e8;
+        padding: 10px;
+        text-align: center;
+      }
+
+      /* ══════ 섹션 2 : 같은 결과를 두 가지 방법으로 ══════ */
+
+      /* [모바일 우선] 기본은 좁은 화면용, 넓어질 때 덧붙입니다 */
+      .mf-first {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      @media (min-width: 600px) {
+        .mf-first {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (min-width: 900px) {
+        .mf-first {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      /* 화면: 폭 1280 에서 268px 3칸, 768 에서 341px 2칸, 480 에서 404px 1칸 */
+
+      /* [데스크톱 우선] 기본은 넓은 화면용, 좁아질 때 되돌립니다 */
+      .dt-first {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+      }
+      @media (max-width: 899px) {
+        .dt-first {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 599px) {
+        .dt-first {
+          grid-template-columns: 1fr;
+        }
+      }
+      /* 화면: 위와 완전히 같은 결과입니다. 코드만 한 줄 더 깁니다 */
+
+      /* ══════ 섹션 3 : 1단계 — 기본(1단) ══════ */
+      .step-one {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      /* 화면: 어떤 폭에서도 카드가 세로로 한 줄씩 쌓입니다 */
+
+      /* ══════ 섹션 4 : 2단계 — 600px 이상이면 2단 ══════ */
+      .step-two {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      @media (min-width: 600px) {
+        .step-two {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      /* 화면: 폭 1280 에서 407px 2칸, 폭 480 에서 404px 1칸 */
+
+      /* ══════ 섹션 5 : 3단계 — 900px 이상이면 3단 ══════ */
+      .step-three {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      @media (min-width: 600px) {
+        .step-three {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (min-width: 900px) {
+        .step-three {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      /* 화면: 폭 1280 에서 268px 3칸, 768 에서 341px 2칸, 480 에서 404px 1칸 */
+
+      /* ══════ 섹션 6 : 머리말과 메뉴 ══════ */
+      .mf-head {
+        background: #2d6cdf;
+        color: #ffffff;
+        padding: 12px;
+        text-align: center;
+        font-size: clamp(18px, 3vw, 30px);
+        font-weight: bold;
+      }
+      /* 화면: 파란 띠. 글자는 폭 1280 에서 30px, 폭 480 에서 18px 입니다 */
+
+      .mf-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 8px;
+      }
+      .mf-nav span {
+        background: #eef2f7;
+        border: 1px solid #9ab8e8;
+        padding: 8px;
+        text-align: center;
+      }
+      @media (min-width: 600px) {
+        .mf-nav {
+          flex-direction: row;
+          justify-content: center;
+        }
+      }
+      /* 화면: 폭 480 에서 메뉴가 세로로 쌓이고, 폭 600 이상에서 가로 한 줄이 됩니다 */
+
+      /* ══════ 섹션 7 : 완성 페이지 ══════ */
+      .page {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "head"
+          "menu"
+          "body"
+          "side"
+          "foot";
+        gap: 10px;
+      }
+      .page-head {
+        grid-area: head;
+        background: #2d6cdf;
+        color: #ffffff;
+        padding: 12px;
+        font-size: clamp(18px, 3vw, 30px);
+        font-weight: bold;
+      }
+      .page-menu {
+        grid-area: menu;
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .page-menu span {
+        background: #eef2f7;
+        border: 1px solid #9ab8e8;
+        padding: 8px;
+        text-align: center;
+      }
+      .page-body {
+        grid-area: body;
+        border: 1px solid #cccccc;
+        padding: 12px;
+        box-sizing: border-box;
+      }
+      .page-side {
+        grid-area: side;
+        background: #fff3d9;
+        border: 1px solid #e8c67d;
+        padding: 12px;
+        box-sizing: border-box;
+      }
+      .page-foot {
+        grid-area: foot;
+        background: #333333;
+        color: #ffffff;
+        padding: 10px;
+        text-align: center;
+        font-size: 14px;
+      }
+      .page-cards {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+      }
+      .page-card {
+        border: 1px solid #cccccc;
+        padding: 8px;
+      }
+      .page-card img {
+        max-width: 100%;
+        display: block;
+      }
+      @media (min-width: 600px) {
+        .page-menu {
+          flex-direction: row;
+          justify-content: center;
+        }
+        .page-cards {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (min-width: 900px) {
+        .page {
+          grid-template-columns: 1fr 220px;
+          grid-template-areas:
+            "head head"
+            "menu menu"
+            "body side"
+            "foot foot";
+        }
+      }
+      /* 화면: 폭 1280 에서 본문 594px + 옆칸 220px 로 나뉘고 카드가 2칸,
+               폭 480 에서 전부 세로로 한 줄씩 쌓입니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         13단원 · 개념 05 — 모바일 우선으로 만들기
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              F12 → Ctrl+Shift+M 을 켜고 폭을 360, 480, 768, 1280 으로
+              바꿔 가며 보세요. 이 파일은 그렇게 봐야 뜻이 통합니다.
+         ============================================================
+
+         13단원의 마지막 파일입니다. 지금까지 배운 것을 한 페이지로 합칩니다.
+
+             12단원  flex        한 줄로 세우기
+             개념01  grid        격자 만들기
+             개념02  areas       이름으로 배치하기
+             개념03  @media      폭에 따라 규칙 바꾸기
+             개념04  % vw clamp  유연한 값 쓰기
+             개념05  ← 여기서 전부 합칩니다
+
+         여기서 배우는 것은 새 문법이 아니라 순서입니다.
+         "무엇을 기본으로 삼고 무엇을 덧붙일 것인가" 하는 순서입니다.
+
+             데스크톱 우선            모바일 우선
+             ┌─────────────┐         ┌───┐
+             │  넓은 화면   │         │좁은│   기본을 이렇게 잡고
+             │   (기본)     │         │화면│
+             └─────────────┘         └───┘
+                    │                    │
+                 좁히면서               넓히면서
+                 하나씩 되돌림          하나씩 덧붙임
+
+         요즘은 오른쪽, 즉 모바일 우선(mobile-first) 으로 만듭니다.
+         이유는 섹션 2 에서 코드를 나란히 놓고 봅니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 05 — 모바일 우선으로 만들기</h1>
+    <p class="doc-sub">13단원 · Grid 와 반응형</p>
+
+    <p class="doc-guide">
+      13단원 마무리입니다. <strong>모바일 우선</strong>이라는 만드는 순서를 배우고,
+      flex + grid + 미디어쿼리를 합쳐 <strong>카드 목록이 1단 → 2단 → 3단으로 바뀌는
+      페이지</strong>를 처음부터 끝까지 만듭니다.
+      <strong>F12 → Ctrl+Shift+M</strong> 을 켜 두고 폭을 바꿔 가며 읽으세요.
+    </p>
+
+    <!-- ══════════ 섹션 1: 모바일 우선이란 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 모바일 우선이란 무엇인가</h2>
+      <p class="doc-desc">
+        <strong>미디어쿼리 밖에 쓴 CSS 를 좁은 화면용으로 삼는 것</strong>입니다.
+        그리고 <code>min-width</code> 로 "넓어지면 이렇게 더 해라" 를 덧붙입니다.
+      </p>
+
+      <!--
+        미디어쿼리 밖에 쓴 규칙은 조건이 없습니다. 그래서 모든 폭에서 적용됩니다.
+        이것을 보통 "기본" 이라고 부릅니다.
+
+            .cards { grid-template-columns: 1fr; }          ← 기본. 항상 적용됩니다
+
+            @media (min-width: 600px) {
+              .cards { grid-template-columns: repeat(2, 1fr); }   ← 600 이상에서만 덧붙음
+            }
+
+        폭 400px 짜리 휴대폰에서는 조건이 안 맞으므로 기본만 남습니다. 1단입니다.
+        폭 1000px 짜리 노트북에서는 조건이 맞으므로 기본 위에 덮어써서 2단이 됩니다.
+
+        그러니 "기본을 무엇으로 잡을 것인가" 가 곧 "무엇을 우선할 것인가" 입니다.
+
+            기본을 1단으로  → 모바일 우선
+            기본을 3단으로  → 데스크톱 우선
+
+        모바일 우선으로 만들면 사고방식이 이렇게 바뀝니다.
+
+            (전) 넓은 화면을 먼저 그리고, 좁아지면 무엇을 뺄지 고민한다
+            (후) 꼭 필요한 것만 세로로 쌓아 놓고, 자리가 남으면 무엇을 더할지 고민한다
+
+        후자가 훨씬 편합니다. 좁은 화면에서 할 수 있는 배치는 사실 하나뿐입니다.
+        위에서 아래로 쌓는 것입니다. 고를 것이 없으니 고민도 없습니다.
+        그렇게 만들어 둔 다음, 자리가 넓어지면 옆으로 펼치면 됩니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">기억할 한 문장</p>
+        <p id="mfSlogan">
+          미디어쿼리 <strong>밖</strong>은 좁은 화면용, <code>min-width</code>
+          <strong>안</strong>은 넓어졌을 때 덧붙이는 것입니다.
+        </p>
+        <!-- 화면: 점선 상자 안에 위 한 문장이 보입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 개념03 파일을 열어 <code>.mq-cards</code> 규칙을 찾아보세요.
+        기본이 <code>1fr</code> 이고 <code>min-width</code> 로 칸을 늘렸습니다.
+        그 파일도 이미 모바일 우선으로 쓰여 있었다는 것을 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 왜 min-width 인가 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 왜 min-width 로 쌓는가</h2>
+      <p class="doc-desc">
+        max-width 로 만들어도 <strong>결과는 똑같습니다.</strong>
+        그런데도 min-width 를 권하는 이유가 네 가지 있습니다.
+      </p>
+
+      <!--
+        아래 두 상자는 화면에서 완전히 같게 보입니다. 폭을 어떻게 바꿔도 같습니다.
+        쓰인 CSS 만 다릅니다.
+
+            [모바일 우선]                        [데스크톱 우선]
+            .mf-first {                          .dt-first {
+              grid-template-columns: 1fr;          grid-template-columns: repeat(3, 1fr);
+            }                                    }
+            @media (min-width: 600px) {          @media (max-width: 899px) {
+              .mf-first { repeat(2, 1fr) }         .dt-first { repeat(2, 1fr) }
+            }                                    }
+            @media (min-width: 900px) {          @media (max-width: 599px) {
+              .mf-first { repeat(3, 1fr) }         .dt-first { 1fr }
+            }                                    }
+
+        결과가 같은데 왜 왼쪽을 쓸까요.
+
+        1) 기본이 가장 단순합니다.
+           1fr 한 줄이 기본입니다. 읽는 사람이 출발점을 바로 이해합니다.
+           오른쪽은 기본이 3단이라, 이 페이지가 좁은 화면에서 어떻게 되는지
+           미디어쿼리를 전부 읽어야 알 수 있습니다.
+
+        2) 휴대폰이 일을 덜 합니다.
+           휴대폰에서는 조건이 하나도 안 맞아 기본만 적용됩니다.
+           오른쪽은 반대로 휴대폰에서 조건 두 개가 다 맞아 세 번 계산합니다.
+
+        3) 숫자가 자연스럽습니다.
+           왼쪽은 600, 900 처럼 딱 떨어지는 값을 씁니다.
+           오른쪽은 겹치지 않게 하려고 899, 599 처럼 1을 뺀 값을 써야 합니다.
+           이 1 을 빼먹으면 폭이 정확히 600px 일 때 두 조건이 동시에 맞아
+           예측하기 어려운 결과가 나옵니다.
+
+        4) 무언가를 더하는 편이 빼는 것보다 안전합니다.
+           좁은 화면에서 잘 보이던 것이 넓어졌다고 깨지는 일은 드뭅니다.
+           반대로 넓은 화면 기준으로 만든 것을 좁히면 거의 항상 깨집니다.
+
+        정리하면 이렇습니다. 결과가 아니라 만드는 사람의 순서 문제입니다.
+        둘 중 아무거나 골라도 화면은 같지만, 모바일 우선 쪽이 덜 틀립니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 1 — 모바일 우선으로 쓴 카드 목록</p>
+        <div class="mf-first" id="mfFirst">
+          <div class="card">카드 1</div>
+          <div class="card">카드 2</div>
+          <div class="card">카드 3</div>
+        </div>
+        <!-- 화면: 폭 1280 에서 268px 짜리 3칸입니다.
+                  폭 768 에서 341px 2칸, 폭 480 에서 404px 1칸이 됩니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 2 — 데스크톱 우선으로 쓴 같은 카드 목록</p>
+        <div class="dt-first" id="dtFirst">
+          <div class="card">카드 1</div>
+          <div class="card">카드 2</div>
+          <div class="card">카드 3</div>
+        </div>
+        <!-- 화면: 위 상자와 폭마다 완전히 같은 모양이 됩니다.
+                  폭 1280 에서 268px 3칸, 768 에서 341px 2칸, 480 에서 404px 1칸 -->
+      </div>
+
+      <p class="doc-note">
+        두 방식 중 하나가 틀린 것이 아닙니다. 이미 만들어진 오래된 사이트를 고칠 때는
+        데스크톱 우선으로 쓰인 CSS 를 자주 만납니다. <strong>새로 만들 때 모바일 우선을
+        고르라</strong>는 이야기입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 기기 툴바로 폭을 <strong>600</strong> 에 맞춘 뒤,
+        위 두 상자가 정말 같은 모양인지 확인하세요.
+        그다음 <code>.dt-first</code> 의 <code>max-width: 899px</code> 를
+        <code>900px</code> 으로 바꾸고 폭 900 에서 무슨 일이 생기는지 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 1단계 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 1단계: 기본은 1단으로</h2>
+      <p class="doc-desc">
+        아무 조건 없이 <strong>세로로 한 줄씩 쌓는 것</strong>부터 만듭니다.
+        미디어쿼리는 아직 한 줄도 안 씁니다.
+      </p>
+
+      <!--
+        이렇게만 씁니다.
+
+            .step-one {
+              display: grid;
+              grid-template-columns: 1fr;
+              gap: 10px;
+            }
+
+        칸이 하나뿐인 격자입니다. 그래서 카드가 위에서 아래로 쌓입니다.
+
+        "그럴 거면 grid 를 왜 쓰나요? 그냥 두면 div 는 원래 쌓이는데요."
+        좋은 질문입니다. 실제로 지금 단계에서는 display: grid 가 없어도 모양이 같습니다.
+        그래도 처음부터 격자로 만들어 두는 이유가 두 가지 있습니다.
+
+            1) gap 을 쓸 수 있습니다. 카드마다 margin 을 주지 않아도 됩니다
+            2) 다음 단계에서 grid-template-columns 한 줄만 바꾸면 2단이 됩니다
+
+        즉 "지금은 1칸짜리 격자" 라고 선언해 두는 것입니다. 준비 작업입니다.
+
+        이 상자는 폭을 아무리 바꿔도 항상 1단입니다. 미디어쿼리가 없기 때문입니다.
+        다음 섹션에서 조건을 하나 붙여 봅니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 어떤 폭에서도 1단</p>
+        <div class="step-one" id="stepOne">
+          <div class="card">카드 1</div>
+          <div class="card">카드 2</div>
+          <div class="card">카드 3</div>
+          <div class="card">카드 4</div>
+        </div>
+        <!-- 화면: 폭 1280 에서 824px 짜리 카드 네 개가 세로로 쌓입니다.
+                  폭 480 에서는 404px 이 되지만 여전히 1단입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>.step-one</code> 의 <code>gap: 10px</code> 을
+        <code>gap: 0</code> 으로 바꿔 보세요. 카드가 서로 붙습니다.
+        확인했으면 되돌리세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 2단계 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 2단계: 600px 이상이면 2단</h2>
+      <p class="doc-desc">
+        조건을 하나 붙입니다. <strong>바꾸는 줄은 딱 한 줄</strong>입니다.
+      </p>
+
+      <!--
+        1단계 CSS 아래에 이것만 더합니다.
+
+            @media (min-width: 600px) {
+              .step-two {
+                grid-template-columns: repeat(2, 1fr);
+              }
+            }
+
+        display: grid 도 gap 도 다시 안 씁니다. 기본에 이미 있기 때문입니다.
+        미디어쿼리 안에는 바꿀 것만 씁니다. 나머지는 그대로 물려받습니다.
+
+        이것이 모바일 우선의 실제 이득입니다. 덧붙이는 코드가 짧습니다.
+
+        폭마다 재 보면 이렇습니다.
+
+            폭 1280   상자 안쪽 824px  → (824 − 10) ÷ 2 = 407px 짜리 2칸
+            폭  768   상자 안쪽 692px  → (692 − 10) ÷ 2 = 341px 짜리 2칸
+            폭  480   상자 안쪽 404px  → 조건이 안 맞아 404px 짜리 1칸
+
+        600 이라는 숫자는 어디서 왔을까요. 정해진 답은 없습니다.
+        카드 하나가 너무 좁아지지 않는 폭을 눈으로 찾아 정한 것입니다.
+        카드 안에 사진과 제목이 들어간다면 한 칸이 280px 쯤은 되어야 보기 좋습니다.
+        두 칸이면 560px + 여백이니 600px 쯤이 자연스러운 자리입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 1단 또는 2단</p>
+        <div class="step-two" id="stepTwo">
+          <div class="card">카드 1</div>
+          <div class="card">카드 2</div>
+          <div class="card">카드 3</div>
+          <div class="card">카드 4</div>
+        </div>
+        <!-- 화면: 폭 1280 에서 407px 짜리 2칸이 두 줄로 놓입니다.
+                  폭 480 에서는 404px 짜리 1칸이 되어 네 줄로 쌓입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 기기 툴바로 폭을 <strong>599</strong> 와 <strong>600</strong> 으로
+        번갈아 맞춰 보세요. 1px 차이로 1단과 2단이 갈립니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 3단계 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 3단계: 900px 이상이면 3단</h2>
+      <p class="doc-desc">
+        조건을 하나 더 <strong>아래에</strong> 붙입니다.
+        순서를 지키는 것이 여기서 중요해집니다.
+      </p>
+
+      <!--
+        2단계 CSS 아래에 이것만 더합니다.
+
+            @media (min-width: 900px) {
+              .step-three {
+                grid-template-columns: repeat(3, 1fr);
+              }
+            }
+
+        폭이 1000px 이면 min-width: 600px 조건도 맞고 min-width: 900px 조건도 맞습니다.
+        두 규칙이 같은 속성을 서로 다르게 정하고 있습니다. 어느 쪽이 이길까요.
+
+        08단원에서 배운 대로 명시도가 같으면 나중에 쓴 것이 이깁니다.
+        그래서 900px 짜리를 아래에 써야 3단이 됩니다.
+        위아래를 바꾸면 넓은 화면에서도 영영 2단입니다. 에러는 안 납니다.
+
+            작은 값부터 큰 값 순서로 위에서 아래로.
+            이것이 모바일 우선에서 미디어쿼리를 쓰는 순서입니다.
+
+        완성된 CSS 는 이렇게 생겼습니다. 위에서 아래로 읽으면 이야기가 됩니다.
+
+            .step-three { grid-template-columns: 1fr; }                       기본은 1단
+            @media (min-width: 600px) { … repeat(2, 1fr) }                    좀 넓으면 2단
+            @media (min-width: 900px) { … repeat(3, 1fr) }                    더 넓으면 3단
+
+        폭마다 재 보면 이렇습니다.
+
+            폭 1280   (824 − 20) ÷ 3 = 268px 짜리 3칸
+            폭  768   (692 − 10) ÷ 2 = 341px 짜리 2칸
+            폭  480   404px 짜리 1칸
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 1단 → 2단 → 3단</p>
+        <div class="step-three" id="stepThree">
+          <div class="card">카드 1</div>
+          <div class="card">카드 2</div>
+          <div class="card">카드 3</div>
+          <div class="card">카드 4</div>
+          <div class="card">카드 5</div>
+          <div class="card">카드 6</div>
+        </div>
+        <!-- 화면: 폭 1280 에서 268px 짜리 3칸이 두 줄, 폭 768 에서 341px 짜리 2칸이 세 줄,
+                  폭 480 에서 404px 짜리 1칸이 여섯 줄이 됩니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>.step-three</code> 의 두 미디어쿼리 순서를
+        서로 바꿔 보세요(900 을 위로, 600 을 아래로). 폭 1280 에서 몇 칸이 되는지
+        확인하고 이유를 설명한 뒤 되돌리세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 머리말과 메뉴 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 머리말과 메뉴도 같이 바꿉니다 (flex)</h2>
+      <p class="doc-desc">
+        칸 수만 바꾸면 반쪽입니다. <strong>메뉴 방향</strong>과 <strong>글자 크기</strong>도
+        화면에 맞춰야 합니다. 여기서 12단원 flex 가 다시 나옵니다.
+      </p>
+
+      <!--
+        메뉴는 격자보다 flex 가 어울립니다. 한 줄이고, 내용 길이가 제각각이기 때문입니다.
+        모바일 우선이므로 기본은 세로로 쌓습니다.
+
+            .mf-nav {
+              display: flex;
+              flex-direction: column;   기본은 세로
+              gap: 6px;
+            }
+
+            @media (min-width: 600px) {
+              .mf-nav {
+                flex-direction: row;         넓어지면 가로 한 줄
+                justify-content: center;     가운데로 모으기
+              }
+            }
+
+        좁은 화면에서 메뉴를 가로로 두면 글자가 잘리거나 두 줄로 접힙니다.
+        세로로 쌓으면 손가락으로 누르기도 훨씬 편합니다.
+
+        머리말 글자는 개념04 의 clamp() 를 씁니다.
+
+            font-size: clamp(18px, 3vw, 30px);
+
+            폭 1280 → 3vw 는 38.4px → 최댓값 30px 에 걸립니다
+            폭  768 → 3vw 는 23.04px → 그대로 23.04px
+            폭  480 → 3vw 는 14.4px → 최솟값 18px 로 올라갑니다
+
+        미디어쿼리를 하나도 안 쓰고 글자 크기가 부드럽게 따라옵니다.
+        칸 수처럼 툭툭 끊겨야 하는 것은 @media 로, 글자 크기처럼 부드럽게 변해도 되는 것은
+        clamp() 로. 이렇게 나눠 쓰면 코드가 짧아집니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 머리말과 메뉴</p>
+        <div class="mf-head" id="mfHead">우리 동네 도서관</div>
+        <nav class="mf-nav" id="mfNav">
+          <span>공지사항</span>
+          <span>도서 검색</span>
+          <span>이용 안내</span>
+        </nav>
+        <!-- 화면: 폭 1280 에서 파란 머리말 글자가 30px 이고 메뉴 세 개가 가로 한 줄로
+                  가운데 모입니다. 폭 480 에서는 글자가 18px 이 되고 메뉴가 세로로 쌓입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — <code>.mf-nav</code> 의 미디어쿼리 안에서
+        <code>justify-content: center;</code> 를 <code>space-between;</code> 으로
+        바꿔 보세요(12단원). 메뉴 세 개가 좌우 끝까지 벌어집니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: 완성 페이지 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 완성: 한 페이지로 합치기</h2>
+      <p class="doc-desc">
+        지금까지 만든 조각을 <strong>한 페이지</strong>로 합칩니다.
+        13단원에서 배운 것이 전부 들어 있습니다.
+      </p>
+
+      <!--
+        페이지 뼈대는 개념02 의 grid-template-areas 로 만듭니다.
+        모바일 우선이므로 기본은 한 줄로 쭉 쌓는 모양입니다.
+
+            .page {
+              display: grid;
+              grid-template-columns: 1fr;
+              grid-template-areas:
+                "head"
+                "menu"
+                "body"
+                "side"
+                "foot";
+              gap: 10px;
+            }
+
+        칸이 하나뿐이니 다섯 덩어리가 위에서 아래로 놓입니다.
+        휴대폰에서 보는 모양이 바로 이것입니다.
+
+        폭이 900px 이상이 되면 옆칸을 오른쪽으로 옮깁니다.
+
+            @media (min-width: 900px) {
+              .page {
+                grid-template-columns: 1fr 220px;
+                grid-template-areas:
+                  "head head"
+                  "menu menu"
+                  "body side"
+                  "foot foot";
+              }
+            }
+
+        ★ HTML 은 한 글자도 안 고쳤습니다.
+
+        이것이 grid-template-areas 의 가장 큰 장점입니다.
+        HTML 에서 side 가 body 보다 뒤에 있어도, 배치는 CSS 가 정합니다.
+        따옴표 안 글자만 바꾸면 옆칸이 왼쪽으로도 오른쪽으로도 갑니다.
+
+        그 안의 카드 목록은 섹션 4 와 같습니다.
+
+            .page-cards { grid-template-columns: 1fr; }
+            @media (min-width: 600px) { .page-cards { repeat(2, 1fr) } }
+
+        카드 안 사진에는 개념04 의 max-width: 100% 를 걸어 둡니다.
+        안 그러면 300px 짜리 사진이 좁은 칸을 뚫고 나갑니다.
+
+            .page-card img { max-width: 100%; display: block; }
+
+        폭마다 실제로 재 보면 이렇습니다.
+
+            폭 1280   본문 594px + 옆칸 220px,  카드 한 칸 279px  (2칸)
+            폭  768   본문 692px 한 줄,          카드 한 칸 328px  (2칸)
+            폭  480   전부 404px 한 줄,          카드 한 칸 378px  (1칸)
+
+        기기 툴바로 폭을 천천히 줄이면서 무엇이 언제 바뀌는지 보세요.
+        600 에서 카드가 2칸에서 1칸으로, 메뉴가 가로에서 세로로 바뀝니다.
+        900 에서 옆칸이 오른쪽에서 아래로 내려옵니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 완성된 반응형 페이지</p>
+        <div class="page" id="pageGrid">
+          <header class="page-head" id="pageHead">우리 동네 도서관</header>
+          <nav class="page-menu" id="pageMenu">
+            <span>공지사항</span>
+            <span>도서 검색</span>
+            <span>이용 안내</span>
+          </nav>
+          <main class="page-body" id="pageBody">
+            <h3>이달의 추천 도서</h3>
+            <div class="page-cards" id="pageCards">
+              <article class="page-card" id="pageCard1">
+                <img src="이미지/카드사진.svg" alt="추천 도서 표지 그림" />
+                <p>바다의 지도</p>
+              </article>
+              <article class="page-card">
+                <img src="이미지/카드사진.svg" alt="추천 도서 표지 그림" />
+                <p>겨울의 정원</p>
+              </article>
+              <article class="page-card">
+                <img src="이미지/카드사진.svg" alt="추천 도서 표지 그림" />
+                <p>느린 산책</p>
+              </article>
+              <article class="page-card">
+                <img src="이미지/카드사진.svg" alt="추천 도서 표지 그림" />
+                <p>작은 부엌</p>
+              </article>
+            </div>
+          </main>
+          <aside class="page-side" id="pageSide">
+            <p>오늘의 안내</p>
+            <p>월요일은 쉽니다.</p>
+          </aside>
+          <footer class="page-foot" id="pageFoot">우리 동네 도서관 · 연락처 02-000-0000</footer>
+        </div>
+        <!-- 화면: 폭 1280 에서 파란 머리말, 가운데 정렬된 메뉴, 그 아래 왼쪽 본문(594px)
+                  안에 카드가 2칸, 오른쪽에 노란 옆칸(220px), 맨 아래 검은 바닥글입니다.
+                  폭 480 에서는 머리말·메뉴·본문·옆칸·바닥글이 전부 세로로 한 줄씩 쌓이고
+                  메뉴도 세로가 되며 카드도 1칸이 됩니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 7 — <code>@media (min-width: 900px)</code> 안의
+        <code>grid-template-areas</code> 를 <code>"side body"</code> 로 바꿔
+        옆칸을 왼쪽으로 옮겨 보세요. 열 크기 <code>1fr 220px</code> 도 같이 바꿔야
+        옆칸이 좁게 나옵니다. HTML 은 건드리지 마세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 8: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 8 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        모바일 우선의 실수는 대부분 <strong>방향과 순서</strong>에서 납니다.
+        문법은 맞는데 결과만 반대로 나옵니다.
+      </p>
+
+      <!-- [실수 1] 방향이 반대 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 기본을 3단으로 잡고 min-width 로 1단을 만들려 함</span>
+        <div class="doc-code">.cards { grid-template-columns: repeat(3, 1fr); }
+
+@media (min-width: 600px) {
+  .cards { grid-template-columns: 1fr; }
+}</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 정확히 반대로 나옵니다.
+          휴대폰에서 3단이 되어 카드가 100px 도 안 되게 좁아지고,
+          넓은 화면에서 1단이 되어 카드가 화면 전체로 늘어납니다.
+          <strong>기본은 항상 좁은 화면용</strong>이어야 합니다.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">.cards { grid-template-columns: 1fr; }
+
+@media (min-width: 600px) {
+  .cards { grid-template-columns: repeat(3, 1fr); }
+}</div>
+      </div>
+
+      <!-- [실수 2] 순서를 거꾸로 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 큰 중단점을 위에 씀</span>
+        <div class="doc-code">@media (min-width: 900px) { .cards { repeat(3, 1fr) } }
+@media (min-width: 600px) { .cards { repeat(2, 1fr) } }</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 넓은 화면에서도 계속 2단입니다.
+          폭 1200px 이면 두 조건이 다 맞는데, 명시도가 같으므로
+          <strong>나중에 쓴 600px 짜리가 이깁니다</strong>(08단원).
+          모바일 우선에서는 <strong>작은 값부터 큰 값 순서로</strong> 위에서 아래로 씁니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] 중단점이 겹침 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 중단점이 1px 겹침</span>
+        <div class="doc-code">@media (max-width: 600px) { .cards { 1fr } }
+@media (min-width: 600px) { .cards { repeat(2, 1fr) } }</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 폭이 정확히 600px 일 때
+          두 조건이 <strong>동시에</strong> 맞습니다. 나중에 쓴 쪽이 이기므로 2단이 되는데,
+          코드를 읽는 사람은 1단을 기대합니다. 나중에 순서를 바꾸면 결과가 조용히 달라집니다.
+          한쪽을 <code>599px</code> 로 하거나, 아예 <strong>min-width 만</strong> 쓰세요.
+        </p>
+      </div>
+
+      <!-- [실수 4] 기본에 고정 px -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 기본에 고정 px 폭을 씀</span>
+        <div class="doc-code">.wrap { width: 960px; }
+
+@media (max-width: 600px) {
+  .wrap { width: auto; }
+}</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 폭이 601px ~ 959px 인 화면에서
+          <strong>가로 스크롤이 생깁니다.</strong> 중단점 사이의 구간을 잊은 것입니다.
+          기본은 폭을 아예 정하지 않거나 <code>max-width: 960px</code> 처럼
+          상한선으로 주세요(개념04). 그러면 중단점이 하나도 필요 없습니다.
+        </p>
+      </div>
+
+      <!-- [실수 5] viewport meta 누락 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — viewport meta 를 안 넣고 모바일 우선 CSS 를 씀</span>
+        <div class="doc-code">&lt;head&gt;
+  &lt;meta charset="UTF-8" /&gt;
+&lt;/head&gt;</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 휴대폰에서 <strong>3단짜리 데스크톱 화면이
+          그대로 축소되어</strong> 나옵니다. 브라우저가 폭을 980px 이라고 믿어
+          min-width 조건이 전부 맞아 버리기 때문입니다.
+          모바일 우선으로 아무리 잘 써도 이 한 줄이 없으면 헛일입니다(개념03 섹션 2).
+        </p>
+      </div>
+
+      <!-- [실수 6] 메뉴 방향을 안 바꿈 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 6 — 카드만 바꾸고 메뉴는 그대로 둠</span>
+        <div class="doc-code">.nav { display: flex; }   /* 방향을 안 바꿈 */</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 카드는 예쁘게 1단이 되는데
+          <strong>메뉴만 옆으로 삐져나갑니다.</strong> 글자가 잘리거나 줄이 접혀서 겹칩니다.
+          좁은 화면에서는 <code>flex-direction: column</code> 이 기본이어야 합니다.
+          <strong>폭을 좁혀 놓고 페이지를 위에서 아래로 한 번 훑어보는 습관</strong>을 들이세요.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <strong>모바일 우선</strong>은 미디어쿼리 밖을 좁은 화면용으로 삼는 것입니다.</p>
+      <p>2. <code>min-width</code> 로 "넓어지면 더한다" 를 붙입니다. 바꿀 줄만 쓰면 됩니다.</p>
+      <p>3. 미디어쿼리는 <strong>작은 값부터 큰 값 순서</strong>로 위에서 아래로 씁니다.</p>
+      <p>4. 칸 수처럼 툭 바뀌어야 하는 것은 <code>@media</code>, 글자 크기처럼 부드럽게 변해도 되는 것은 <code>clamp()</code>.</p>
+      <p>5. 페이지 뼈대는 <code>grid-template-areas</code>, 메뉴 한 줄은 <code>flex</code>.</p>
+      <p>6. 배치를 바꿀 때 <strong>HTML 은 고치지 않습니다.</strong> CSS 만 바꿉니다.</p>
+      <p>7. 사진에는 <code>max-width: 100%</code>, head 에는 viewport meta. 이 둘을 빠뜨리지 마세요.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 개념03 파일의 style 안에 이렇게 되어 있습니다.
+
+                .mq-cards { grid-template-columns: 1fr; }
+                @media (min-width: 600px) { .mq-cards { 1fr 1fr } }
+                @media (min-width: 900px) { .mq-cards { 1fr 1fr 1fr } }
+
+            → 기본이 1칸이고 min-width 로 칸을 늘렸으니 모바일 우선입니다.
+              작은 값(600)이 위, 큰 값(900)이 아래인 순서도 지켜져 있습니다.
+
+         2) 폭 600 에서 두 상자는 똑같이 2칸입니다.
+            .dt-first 의 조건을 max-width: 900px 으로 바꾸면
+
+                @media (max-width: 900px) { .dt-first { repeat(2, 1fr) } }
+
+            → 폭이 정확히 900px 일 때 두 상자의 모양이 달라집니다.
+              .mf-first 는 min-width: 900px 이 맞아서 3칸,
+              .dt-first 는 max-width: 900px 이 맞아서 2칸이 됩니다.
+              경계값이 겹치면 이런 어긋남이 생깁니다. 확인했으면 899px 로 되돌리세요.
+
+         3) .step-one 을 이렇게 바꿉니다.
+
+                gap: 0;
+
+            → 카드 네 개가 위아래로 딱 붙어서 테두리가 두 줄로 겹쳐 보입니다.
+              gap 은 격자 칸 사이 간격이므로 0 으로 하면 사이가 사라집니다.
+
+         4) 폭 599 에서는 카드가 1단, 폭 600 에서는 2단입니다.
+
+            → min-width: 600px 은 600 을 포함하기 때문입니다.
+              599 에서는 조건이 안 맞아 기본(1fr)만 남습니다.
+
+         5) .step-three 의 두 미디어쿼리 순서를 바꾸면
+
+                @media (min-width: 900px) { … repeat(3, 1fr) }
+                @media (min-width: 600px) { … repeat(2, 1fr) }
+
+            → 폭 1280 에서 3칸이 아니라 2칸이 됩니다.
+              폭 1280 은 900 조건도 600 조건도 다 맞습니다.
+              명시도가 같으므로 나중에 쓴 600px 짜리가 이깁니다.
+              에러는 나지 않고 조용히 2칸이 됩니다. 확인했으면 되돌리세요.
+
+         6) .mf-nav 의 미디어쿼리 안을 이렇게 바꿉니다.
+
+                justify-content: space-between;
+
+            → 메뉴 세 개가 왼쪽 끝, 가운데, 오른쪽 끝으로 벌어집니다.
+              12단원에서 배운 flex 정렬이 미디어쿼리 안에서도 그대로 동작합니다.
+
+         7) 미디어쿼리 안을 이렇게 바꿉니다.
+
+                @media (min-width: 900px) {
+                  .page {
+                    grid-template-columns: 220px 1fr;
+                    grid-template-areas:
+                      "head head"
+                      "menu menu"
+                      "side body"
+                      "foot foot";
+                  }
+                }
+
+            → 노란 옆칸이 왼쪽으로, 본문이 오른쪽으로 자리를 바꿉니다.
+              열 크기를 1fr 220px 그대로 두면 옆칸이 594px 로 넓어져 버리므로
+              220px 1fr 로 같이 바꿔야 합니다.
+              HTML 은 한 글자도 안 고쳤다는 점을 꼭 확인하세요.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #mfFirst | grid-template-columns | 268px 268px 268px
+      #dtFirst | grid-template-columns | 268px 268px 268px
+      #stepOne | grid-template-columns | 824px
+      #stepTwo | grid-template-columns | 407px 407px
+      #stepThree | grid-template-columns | 268px 268px 268px
+      #mfNav | flex-direction | row
+      #mfHead | font-size | 30px
+      #pageGrid | grid-template-columns | 594px 220px
+      #pageSide | ~width | 220
+      #pageCards | grid-template-columns | 279px 279px
+      @폭 768
+      #mfFirst | grid-template-columns | 341px 341px
+      #dtFirst | grid-template-columns | 341px 341px
+      #stepTwo | grid-template-columns | 341px 341px
+      #stepThree | grid-template-columns | 341px 341px
+      #mfNav | flex-direction | row
+      #mfHead | font-size | 23.04px
+      #pageGrid | grid-template-columns | 692px
+      #pageCards | grid-template-columns | 328px 328px
+      @폭 480
+      #mfFirst | grid-template-columns | 404px
+      #dtFirst | grid-template-columns | 404px
+      #stepOne | grid-template-columns | 404px
+      #stepTwo | grid-template-columns | 404px
+      #stepThree | grid-template-columns | 404px
+      #mfNav | flex-direction | column
+      #mfHead | font-size | 18px
+      #pageGrid | grid-template-columns | 404px
+      #pageCards | grid-template-columns | 378px
+    -->
+  </body>
+</html>

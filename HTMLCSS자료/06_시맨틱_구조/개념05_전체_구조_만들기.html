@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>06단원 개념05 - 전체 구조 만들기</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         06단원 · 개념 05 — 전체 구조 만들기
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         드디어 마지막 파일입니다. HTML 파트의 끝이기도 합니다.
+
+         지금까지 배운 것을 한 번 세어 볼까요.
+
+             01단원  html, head, body, meta, title, 주석
+             02단원  h1~h6, p, br, hr, strong, em, span, 특수문자
+             03단원  ul, ol, li, dl, table, tr, th, td
+             04단원  a, img, figure, figcaption
+             05단원  form, label, input, select, button
+             06단원  div, header, nav, main, section, article, aside, footer
+
+         이걸 전부 써서 블로그 글 페이지 한 장을 통째로 만들어 봅니다.
+         새로 배우는 태그는 하나도 없습니다. 조립만 합니다.
+
+         만드는 순서가 중요합니다. 초보자는 보통 위에서부터 한 줄씩 쓰다가
+         중간에 길을 잃습니다. 그러지 않는 방법이 있습니다.
+
+             1) 종이에 네모를 그립니다. 바깥 뼈대부터.
+             2) 바깥 네 덩어리를 먼저 코드로 씁니다. 내용은 비워 둡니다.
+             3) 그 다음에 안을 채웁니다.
+
+         "큰 상자부터, 안쪽은 나중에" 입니다.
+         이 파일도 그 순서대로 갑니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 05 — 전체 구조 만들기</h1>
+    <p class="doc-sub">06단원 · 시맨틱 구조</p>
+
+    <p class="doc-guide">
+      이 파일은 <strong>조립 실습</strong>입니다. 새 태그는 나오지 않습니다.
+      뼈대 그림 → 코드 → 실제 결과 순서로 한 단계씩 쌓아 올립니다.
+      마지막 섹션에 <strong>완성된 페이지 한 장</strong>이 통째로 들어 있습니다.
+      끝까지 따라온 뒤 그 코드를 새 파일에 옮겨 적어 보세요.
+    </p>
+
+    <!-- ══════════ 섹션 1: 만들 페이지 그려 보기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 만들 페이지를 먼저 그립니다</h2>
+      <p class="doc-desc">
+        코드를 쓰기 전에 <strong>네모를 그립니다</strong>. 이게 설계도입니다.
+      </p>
+
+      <!--
+        만들 것은 요리 블로그의 글 한 편 페이지입니다.
+
+        블로그 이름은 "민준의 부엌", 글 제목은 "고구마 맛탕 만들기" 로 하겠습니다.
+
+        그림을 그릴 때는 안쪽부터 그리지 않습니다. 바깥 네모부터 그립니다.
+        그래야 어디에 무엇이 들어갈지 정해집니다.
+
+        아래 그림에서 안쪽으로 들어갈수록 한 칸씩 들여쓴 것을 보세요.
+        코드의 들여쓰기도 정확히 이 모양이 됩니다.
+
+        그림을 보면서 확인할 것 두 가지입니다.
+
+            · main 은 몇 개인가요? 하나입니다.
+            · header 와 footer 는 몇 개인가요? 각각 두 개입니다.
+              하나는 블로그 전체의 것, 하나는 글 한 편의 것입니다.
+
+        개념03 섹션 6 에서 배운 그대로입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">설계도</p>
+        <div class="doc-code">+-------------------------------------+
+|  header                             |   블로그 이름, 한 줄 소개, 검색창
++-------------------------------------+
+|  nav                                |   전체 글 / 반찬 / 간식
++-------------------------------------+
+|  main                               |
+|    +---------------------------+    |
+|    |  article                  |    |   글 한 편
+|    |    header                 |    |     제목, 날짜
+|    |    section                |    |     재료
+|    |    section                |    |     만드는 순서
+|    |    footer                 |    |     글쓴이, 조회수
+|    +---------------------------+    |
+|    +---------------------------+    |
+|    |  aside                    |    |   같이 보면 좋은 글
+|    +---------------------------+    |
++-------------------------------------+
+|  footer                             |   연락처, 저작권</div>
+        <!-- 화면: 검은 상자 안에 흰 글씨로 네모 설계도가 보이고,
+                  오른쪽에 한글 설명이 붙어 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        이 그림에는 <code>&lt;div&gt;</code> 가 하나도 없습니다.
+        이 페이지의 모든 덩어리에 <strong>뜻이 있기 때문</strong>입니다.
+        뜻 없는 묶음이 필요해지면 그때 div 를 넣으면 됩니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 설계도를 종이에 한 번 그대로 옮겨 그려 보세요.
+        그리면서 main 이 몇 개인지, header 가 몇 개인지 세어 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 1단계 바깥 뼈대 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 1단계, 바깥 네 덩어리부터</h2>
+      <p class="doc-desc">
+        내용은 나중입니다. <strong>큰 상자 네 개</strong>를 먼저 세웁니다.
+      </p>
+
+      <!--
+        body 안에 이렇게 씁니다. 아직 내용은 한 줄씩만 넣었습니다.
+
+            <body>
+              <header>
+                <h2>민준의 부엌</h2>
+                <p>혼자 사는 사람의 밥상 기록</p>
+              </header>
+
+              <nav>
+                <ul>
+                  <li><a href="...">전체 글</a></li>
+                  <li><a href="...">반찬</a></li>
+                  <li><a href="...">간식</a></li>
+                </ul>
+              </nav>
+
+              <main>
+                (여기는 3단계에서 채웁니다)
+              </main>
+
+              <footer>
+                <p>민준의 부엌 · 문의 minjun 앳 example.com</p>
+              </footer>
+            </body>
+
+        네 덩어리가 body 바로 아래에 나란히 놓였습니다.
+        서로 안에 들어가 있지 않습니다. 형제입니다.
+
+        05단원에서 배운 검색창도 header 에 넣어 보겠습니다.
+        블로그 이름 옆의 검색창은 사이트 전체에 대한 것이므로 header 가 맞습니다.
+
+            <form>
+              <label for="keyword">검색어</label>
+              <input type="text" id="keyword" name="keyword" />
+              <button type="submit">찾기</button>
+            </form>
+
+        아래 상자에는 main 을 뺀 세 덩어리를 살아 있는 요소로 넣었습니다.
+        main 은 이 파일에 하나만 두기로 했으므로 섹션 5 의 완성본에만 있습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">1단계 결과 (main 자리는 아직 빈칸)</p>
+        <header id="step1Header">
+          <h3>민준의 부엌</h3>
+          <p>혼자 사는 사람의 밥상 기록</p>
+          <form id="step1Form">
+            <label for="keyword1">검색어</label>
+            <input type="text" id="keyword1" name="keyword" />
+            <button type="submit">찾기</button>
+          </form>
+        </header>
+        <nav id="step1Nav">
+          <ul>
+            <li><a href="개념04_본문_구획_태그.html">전체 글</a></li>
+            <li><a href="개념04_본문_구획_태그.html">반찬</a></li>
+            <li><a href="개념04_본문_구획_태그.html">간식</a></li>
+          </ul>
+        </nav>
+        <footer id="step1Footer">
+          <p>민준의 부엌 · 문의 minjun 앳 example.com</p>
+        </footer>
+        <!-- 화면: 굵고 조금 큰 글씨 "민준의 부엌", 그 아래 소개 한 줄,
+                  그 아래 "검색어" 글자와 입력칸과 [찾기] 단추가 한 줄로,
+                  그 아래 점(•) 이 붙은 링크 세 줄, 마지막에 연락처 한 줄 -->
+      </div>
+
+      <p class="doc-note">
+        검색창은 보낼 곳을 정하지 않아서 <strong>[찾기] 를 눌러도 이 페이지가 다시 열릴 뿐</strong>입니다.
+        어디로 보낼지 정하는 것은 서버가 있어야 하는 일이라 이 자료의 범위 밖입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위 <code>&lt;nav&gt;</code> 의 목록에
+        <code>&lt;li&gt;</code> 를 하나 더 넣어 "국물 요리" 메뉴를 만들어 보세요.
+        링크 주소는 옆의 것과 같은 것을 그대로 쓰세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 2단계 글 한 편 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 2단계, main 안에 글 한 편 넣기</h2>
+      <p class="doc-desc">
+        글 한 편은 떼어 내도 말이 되므로 <code>&lt;article&gt;</code> 입니다.
+        그 글만의 머리말과 꼬리말도 안에 넣습니다.
+      </p>
+
+      <!--
+        main 안에 들어갈 첫 번째 덩어리입니다.
+
+            <main>
+              <article>
+                <header>
+                  <h3>고구마 맛탕 만들기</h3>
+                  <p>2026년 8월 11일 · 간식</p>
+                </header>
+
+                <p>남은 고구마로 십 분이면 됩니다.</p>
+
+                <footer>
+                  <p>글쓴이 : 김민준 · 조회 128회</p>
+                </footer>
+              </article>
+            </main>
+
+        여기서 header 는 개념03 섹션 6 에서 본 '글 한 편의 머리말' 입니다.
+        섹션 2 에서 만든 블로그 전체의 header 와는 다른 header 입니다.
+        같은 태그를 두 번 썼지만 들어 있는 자리가 달라서 뜻이 다릅니다.
+
+        ★ 제목 단계를 지키세요
+
+        이 페이지의 제목 순서는 이렇게 갑니다.
+
+            h2  민준의 부엌        블로그 이름
+             h3  고구마 맛탕 만들기  글 제목
+              h4  재료             글 안의 소제목
+              h4  만드는 순서       글 안의 소제목
+
+        h2 다음에 h5 로 건너뛰면 안 됩니다. 한 단계씩 내려가야
+        낭독기가 만드는 목차가 어긋나지 않습니다.
+        (이 자료 파일에서는 맨 위 큰 제목이 h1 이라 데모는 h3 부터 씁니다)
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">2단계 결과 (article 부분만)</p>
+        <article id="step2Article">
+          <header id="step2PostHeader">
+            <h3>고구마 맛탕 만들기</h3>
+            <p>2026년 8월 11일 · 간식</p>
+          </header>
+          <p>남은 고구마로 십 분이면 됩니다.</p>
+          <footer id="step2PostFooter">
+            <p>글쓴이 : 김민준 · 조회 128회</p>
+          </footer>
+        </article>
+        <!-- 화면: 굵고 조금 큰 글씨 "고구마 맛탕 만들기", 그 아래 날짜 한 줄,
+                  본문 한 줄, 마지막에 "글쓴이 : 김민준 · 조회 128회" 한 줄 -->
+      </div>
+
+      <p class="doc-note">
+        글 제목 · 날짜 · 본문 · 글쓴이가 그냥 네 줄로 보입니다.
+        <strong>어디까지가 머리말인지 화면으로는 알 수 없습니다.</strong>
+        코드에서 <code>&lt;/header&gt;</code> 가 어디인지 찾아보세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 <code>&lt;footer id="step2PostFooter"&gt;</code> 안에
+        <code>&lt;p&gt;댓글 4개&lt;/p&gt;</code> 를 한 줄 더 넣어 보세요.
+        글 꼬리말이 두 줄이 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 3단계 안을 나누고 곁다리 붙이기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 3단계, 글 안을 나누고 곁다리를 붙입니다</h2>
+      <p class="doc-desc">
+        글 안의 "재료" 와 "만드는 순서" 는 제목을 붙일 수 있는 주제 묶음이므로
+        <code>&lt;section&gt;</code> 입니다. 관련 글 목록은 <code>&lt;aside&gt;</code> 입니다.
+      </p>
+
+      <!--
+        개념04 의 흐름도로 판단해 봅시다.
+
+            "재료" 부분
+                떼어 내면 무슨 요리의 재료인지 모릅니다   → article 아님
+                지우면 요리를 못 만듭니다               → aside 아님
+                "재료" 라는 제목을 붙일 수 있습니다      → section 입니다
+
+            "같이 보면 좋은 글" 목록
+                떼어 내면 어느 글의 관련 글인지 모릅니다  → article 아님
+                지워도 맛탕 만드는 데 아무 지장 없습니다  → aside 입니다
+
+        코드는 이렇게 됩니다.
+
+            <article>
+              <header> ... </header>
+
+              <section>
+                <h4>재료</h4>
+                <ul>
+                  <li>고구마 2개</li>
+                  <li>설탕 3큰술</li>
+                </ul>
+              </section>
+
+              <section>
+                <h4>만드는 순서</h4>
+                <ol>
+                  <li>고구마를 깍둑 썹니다.</li>
+                  <li>기름에 노릇하게 튀깁니다.</li>
+                </ol>
+              </section>
+
+              <footer> ... </footer>
+            </article>
+
+            <aside>
+              <h4>같이 보면 좋은 글</h4>
+              <ul> ... </ul>
+            </aside>
+
+        재료는 순서가 없으니 ul, 만드는 순서는 순서가 있으니 ol 입니다.
+        03단원에서 배운 그대로입니다. 목록 태그도 시맨틱 태그입니다.
+
+        aside 는 main 안에 article 과 나란히 두었습니다.
+        이 글에 딸린 곁다리라서 그렇습니다.
+        사이트 전체에 대한 곁다리라면 main 밖에 두는 것이 맞습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">3단계 결과 (section 두 개와 aside)</p>
+        <section id="step3Ingredient">
+          <h4>재료</h4>
+          <ul>
+            <li>고구마 2개</li>
+            <li>설탕 3큰술</li>
+            <li>식용유 적당량</li>
+          </ul>
+        </section>
+        <section id="step3Order">
+          <h4>만드는 순서</h4>
+          <ol>
+            <li>고구마를 깍둑 썹니다.</li>
+            <li>기름에 노릇하게 튀깁니다.</li>
+            <li>졸인 설탕물에 버무립니다.</li>
+          </ol>
+        </section>
+        <aside id="step3Aside">
+          <h4>같이 보면 좋은 글</h4>
+          <ul>
+            <li>감자 조림 만들기</li>
+            <li>남은 고구마 보관법</li>
+          </ul>
+        </aside>
+        <!-- 화면: "재료" 아래에 점(•) 목록 세 줄, "만드는 순서" 아래에
+                  1. 2. 3. 번호 목록 세 줄, "같이 보면 좋은 글" 아래에
+                  점(•) 목록 두 줄이 차례로 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        세 덩어리가 전부 왼쪽에 세로로 쌓였습니다.
+        <code>&lt;aside&gt;</code> 도 옆으로 안 갑니다. 개념04 에서 본 그대로입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>&lt;section id="step3Ingredient"&gt;</code> 의 목록에
+        <code>&lt;li&gt;물엿 1큰술&lt;/li&gt;</code> 을 하나 더 넣어 보세요.
+        재료가 네 줄이 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 완성 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 완성된 페이지 한 장</h2>
+      <p class="doc-desc">
+        1단계부터 3단계까지를 한 덩어리로 합쳤습니다.
+        <strong>이것이 06단원의 결승선</strong>입니다.
+      </p>
+
+      <!--
+        아래 상자가 완성본입니다. 이 안에 이 파일의 유일한 main 이 들어 있습니다.
+
+        코드에서 확인할 것들입니다.
+
+            · header 가 두 번 나옵니다.  블로그 것 하나, 글 한 편 것 하나.
+            · footer 가 두 번 나옵니다.  블로그 것 하나, 글 한 편 것 하나.
+            · main 은 한 번뿐입니다.
+            · nav 는 위쪽 메뉴 한 곳에만 있습니다.
+              aside 안의 관련 글 목록에는 nav 를 쓰지 않았습니다.
+              그건 주요 길 안내가 아니라 곁다리 목록이기 때문입니다.
+            · div 는 하나도 없습니다. 모든 덩어리에 뜻이 있어서 그렇습니다.
+
+        들여쓰기를 눈으로 따라가 보세요. 안으로 들어갈수록 두 칸씩 밀려 있습니다.
+        브라우저는 들여쓰기를 안 보지만, 사람은 들여쓰기로 구조를 읽습니다.
+
+        ★ 화면을 보고 실망하지 마세요.
+
+        아주 밋밋한 글 덩어리로 보입니다. 선도 없고 색도 없고 배치도 없습니다.
+        그게 정상입니다. HTML 은 "무엇인가" 만 정합니다.
+        07단원부터 CSS 를 배우면 이 페이지가 눈에 띄게 달라집니다.
+        그때 지금 만든 뼈대를 그대로 다시 씁니다. 버리지 마세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">완성된 블로그 글 페이지</p>
+        <header id="fullSiteHeader">
+          <h3>민준의 부엌</h3>
+          <p>혼자 사는 사람의 밥상 기록</p>
+          <form id="fullForm">
+            <label for="keyword2">검색어</label>
+            <input type="text" id="keyword2" name="keyword" />
+            <button type="submit">찾기</button>
+          </form>
+        </header>
+
+        <nav id="fullNav">
+          <ul>
+            <li><a href="개념04_본문_구획_태그.html">전체 글</a></li>
+            <li><a href="개념04_본문_구획_태그.html">반찬</a></li>
+            <li><a href="개념04_본문_구획_태그.html">간식</a></li>
+          </ul>
+        </nav>
+
+        <main id="fullMain">
+          <article id="fullArticle">
+            <header id="fullPostHeader">
+              <h3>고구마 맛탕 만들기</h3>
+              <p>2026년 8월 11일 · 간식</p>
+            </header>
+
+            <p>남은 고구마로 <strong>십 분</strong>이면 됩니다.</p>
+
+            <section id="fullIngredient">
+              <h4>재료</h4>
+              <ul>
+                <li>고구마 2개</li>
+                <li>설탕 3큰술</li>
+                <li>식용유 적당량</li>
+              </ul>
+            </section>
+
+            <section id="fullOrder">
+              <h4>만드는 순서</h4>
+              <ol>
+                <li>고구마를 깍둑 썹니다.</li>
+                <li>기름에 노릇하게 튀깁니다.</li>
+                <li>졸인 설탕물에 버무립니다.</li>
+              </ol>
+            </section>
+
+            <footer id="fullPostFooter">
+              <p>글쓴이 : 김민준 · 조회 128회</p>
+            </footer>
+          </article>
+
+          <aside id="fullAside">
+            <h4>같이 보면 좋은 글</h4>
+            <ul>
+              <li>감자 조림 만들기</li>
+              <li>남은 고구마 보관법</li>
+            </ul>
+          </aside>
+        </main>
+
+        <footer id="fullSiteFooter">
+          <p>민준의 부엌 · 문의 minjun 앳 example.com</p>
+          <p>&copy; 2026 민준의 부엌</p>
+        </footer>
+        <!-- 화면: 블로그 이름과 소개, 검색칸 한 줄, 점(•) 메뉴 세 줄,
+                  글 제목과 날짜, 본문 한 줄("십 분" 만 굵게),
+                  "재료" 와 점 목록 세 줄, "만드는 순서" 와 번호 목록 세 줄,
+                  글쓴이 한 줄, "같이 보면 좋은 글" 과 점 목록 두 줄,
+                  마지막에 연락처와 저작권 두 줄이 위에서 아래로 이어집니다 -->
+      </div>
+
+      <p class="doc-note">
+        위 완성본 안에는 <strong>구역 태그가 열 개</strong> 들어 있습니다.
+        (header 2개 · footer 2개 · section 2개 · nav · main · article · aside)
+        그런데 화면에는 그 흔적이 하나도 없습니다.
+        HTML 이 하는 일이 무엇인지 이보다 잘 보여 주는 그림은 없습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 새 파일 <code>내블로그.html</code> 을 만들어
+        위 완성본을 참고해 <strong>여러분의 글 페이지</strong>를 만들어 보세요.
+        <code>&lt;!DOCTYPE html&gt;</code> 부터 직접 쓰고, 주제는 마음대로 정하세요.
+        <code>&lt;link&gt;</code> 로 <code>../공통.css</code> 를 연결하면 글꼴이 이 파일과 같아집니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 조립할 때 자주 하는 실수</h2>
+      <p class="doc-desc">
+        태그 하나하나는 알겠는데 <strong>합치면 헷갈리는</strong> 지점들입니다.
+      </p>
+
+      <!-- [실수 1] 닫는 순서를 어김 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 닫는 태그 순서가 뒤엉킴</span>
+        <div class="doc-code">&lt;main&gt;
+  &lt;article&gt;
+    &lt;p&gt;본문&lt;/p&gt;
+&lt;/main&gt;
+  &lt;/article&gt;</div>
+        <p>
+          <strong>에러는 안 납니다.</strong> 브라우저가 자기 나름대로 고쳐서 그립니다.
+          그런데 고친 결과가 내 생각과 다릅니다. article 이 main 밖으로 밀려나거나
+          엉뚱한 곳에 붙습니다. 화면은 비슷해 보여서 한참 뒤에야 알아챕니다.
+          <strong>나중에 연 태그를 먼저 닫으세요.</strong> 들여쓰기를 지키면 눈에 보입니다.
+        </p>
+      </div>
+
+      <!-- [실수 2] 공통 부분을 main 안에 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — header 와 nav 를 main 안에 넣음</span>
+        <div class="doc-code">&lt;main&gt;
+  &lt;header&gt;민준의 부엌&lt;/header&gt;
+  &lt;nav&gt;전체 글 / 반찬&lt;/nav&gt;
+  &lt;article&gt; ... &lt;/article&gt;
+&lt;/main&gt;</div>
+        <p>
+          "다 안에 넣으면 깔끔하겠지" 하고 이렇게 씁니다. 화면은 똑같습니다.
+          하지만 <strong>"이 페이지의 본문은 블로그 이름부터입니다" 라고 말한 셈</strong>입니다.
+          본문으로 건너뛰어도 또 메뉴부터 듣게 됩니다.
+          모든 페이지에 똑같이 있는 것은 main 밖에 두세요.
+        </p>
+      </div>
+
+      <!-- [실수 3] 제목 단계 건너뛰기 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 제목 단계를 건너뜀</span>
+        <div class="doc-code">&lt;h2&gt;민준의 부엌&lt;/h2&gt;
+  &lt;h5&gt;고구마 맛탕 만들기&lt;/h5&gt;</div>
+        <p>
+          "h5 가 크기가 딱 맞아서" 골랐다면 잘못 고른 것입니다.
+          <code>h1~h6</code> 은 크기를 고르는 태그가 아니라 <strong>단계를 적는 태그</strong>입니다.
+          h2 다음은 h3 입니다. 건너뛰면 낭독기가 만드는 목차에 빈 칸이 생겨
+          <strong>"여기서 두 단계를 건너뛰었는데 뭘 빠뜨렸나" 하고 헷갈리게 됩니다.</strong>
+          크기는 09단원에서 CSS 로 정합니다.
+        </p>
+      </div>
+
+      <!-- [실수 4] 화면이 밋밋해서 잘못한 줄 앎 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 화면이 밋밋해서 틀린 줄 알고 다 지움</span>
+        <div class="doc-code">&lt;div&gt;&lt;div&gt;&lt;div&gt; ... 로 되돌리기</div>
+        <p>
+          완성본을 열어 보고 "아무 일도 안 일어났네" 하며 시맨틱 태그를 전부 지우는 경우입니다.
+          <strong>밋밋한 것이 정상입니다.</strong> 06단원까지는 CSS 를 하나도 안 썼으니까요.
+          07단원부터 이 뼈대에 색과 배치를 입힙니다. 그때 이 구조가 없으면
+          꾸밀 곳을 잡을 수가 없습니다. <strong>지우지 마세요.</strong>
+        </p>
+      </div>
+
+      <!-- [실수 5] 들여쓰기 포기 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 들여쓰기를 안 함</span>
+        <div class="doc-code">&lt;main&gt;
+&lt;article&gt;
+&lt;header&gt;
+&lt;h3&gt;고구마 맛탕&lt;/h3&gt;
+&lt;/header&gt;
+&lt;/article&gt;
+&lt;/main&gt;</div>
+        <p>
+          브라우저는 들여쓰기를 안 봅니다. 그래서 <strong>화면은 완벽하게 똑같습니다.</strong>
+          문제는 사람입니다. 태그가 서른 개쯤 되면 어느 닫는 태그가 어느 여는 태그의
+          짝인지 못 찾습니다. 실수 1 이 바로 여기서 나옵니다.
+          <strong>한 단계 들어갈 때마다 스페이스 두 칸</strong>을 지키세요.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. 페이지는 <strong>바깥 뼈대부터</strong> 만듭니다. 큰 상자 먼저, 안쪽은 나중에.</p>
+      <p>2. 기본 뼈대는 <code>header</code> · <code>nav</code> ·
+        <code>main</code> · <code>footer</code> 네 개입니다.</p>
+      <p>3. <code>main</code> 안의 글 한 편은 <code>article</code>,
+        그 안의 주제 묶음은 <code>section</code> 입니다.</p>
+      <p>4. 글에 딸린 곁다리는 <code>aside</code> 입니다. 옆으로 가지는 않습니다.</p>
+      <p>5. <code>header</code> 와 <code>footer</code> 는 사이트에 하나, 글 한 편에 하나씩 있어도 됩니다.</p>
+      <p>6. 제목은 <strong>h2 다음 h3</strong> 처럼 한 단계씩 내려갑니다. 크기 보고 고르지 않습니다.</p>
+      <p>7. 완성 화면은 밋밋합니다. <strong>그게 HTML 이 하는 일의 전부</strong>입니다. 색과 배치는 07단원부터입니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 종이에 옮겨 그리는 문제라 화면은 안 바뀝니다. 세어 본 결과는 이렇습니다.
+
+                main    1개
+                header  2개  (블로그 것 1개, article 안 1개)
+                footer  2개  (블로그 것 1개, article 안 1개)
+                nav     1개
+                section 2개  (재료, 만드는 순서)
+                article 1개
+                aside   1개
+
+            → main 만 하나로 정해져 있고 나머지는 필요한 만큼 씁니다.
+
+         2) 섹션 2 의 nav 안, 마지막 li 아래에 넣습니다.
+
+                <li><a href="개념04_본문_구획_태그.html">국물 요리</a></li>
+
+            → 점(•) 이 붙은 메뉴가 네 줄이 됩니다. 네 번째도 파란 밑줄 링크입니다.
+
+         3) 섹션 3 의 step2PostFooter 안, p 아래에 넣습니다.
+
+                <p>댓글 4개</p>
+
+            → 글 꼬리말이 "글쓴이 : 김민준 · 조회 128회" 와 "댓글 4개" 두 줄이 됩니다.
+
+         4) 섹션 4 의 step3Ingredient 목록 안, 마지막 li 아래에 넣습니다.
+
+                <li>물엿 1큰술</li>
+
+            → 재료 목록이 네 줄이 됩니다.
+
+         5) 새 파일 내블로그.html 의 뼈대는 이렇습니다.
+            (내용은 각자 다릅니다. 구조만 맞으면 정답입니다)
+
+                <!DOCTYPE html>
+                <html lang="ko">
+                  <head>
+                    <meta charset="UTF-8" />
+                    <title>내 블로그</title>
+                    <link rel="stylesheet" href="../공통.css" />
+                  </head>
+                  <body>
+                    <header>
+                      <h1>서연의 기록</h1>
+                      <p>매일 한 줄씩</p>
+                    </header>
+                    <nav>
+                      <ul>
+                        <li><a href="개념05_전체_구조_만들기.html">전체 글</a></li>
+                      </ul>
+                    </nav>
+                    <main>
+                      <article>
+                        <header>
+                          <h2>첫 글을 씁니다</h2>
+                          <p>2026년 8월 11일</p>
+                        </header>
+                        <section>
+                          <h3>오늘 한 일</h3>
+                          <ul>
+                            <li>HTML 06단원을 끝냈습니다.</li>
+                          </ul>
+                        </section>
+                        <footer><p>글쓴이 : 이서연</p></footer>
+                      </article>
+                      <aside>
+                        <h3>메모</h3>
+                        <p>내일은 CSS 를 시작합니다.</p>
+                      </aside>
+                    </main>
+                    <footer>
+                      <p>&copy; 2026 서연의 기록</p>
+                    </footer>
+                  </body>
+                </html>
+
+            → 이 자료 파일과 달리 여러분 파일에서는 맨 위 제목을 h1 으로 씁니다.
+              페이지에 h1 이 하나 있는 것이 좋기 때문입니다.
+              화면은 역시 밋밋한 글 덩어리로 보입니다. 그게 맞습니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      .doc-code | white-space | pre
+      #step1Header | display | block
+      #step1Nav | display | block
+      #step1Footer | display | block
+      #step2Article | display | block
+      #step2PostHeader | display | block
+      #step2PostFooter | text | 글쓴이 : 김민준 · 조회 128회
+      #step3Ingredient | display | block
+      #step3Order | display | block
+      #step3Aside | display | block
+      #fullMain | display | block
+      #fullMain | ~width | 824
+      #fullArticle | display | block
+      #fullIngredient | display | block
+      #fullOrder | display | block
+      #fullAside | display | block
+      #fullSiteFooter | display | block
+      #fullPostHeader | display | block
+      #keyword2 | ?visible | yes
+    -->
+  </body>
+</html>

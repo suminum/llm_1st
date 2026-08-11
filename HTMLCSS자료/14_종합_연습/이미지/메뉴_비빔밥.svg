@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 손으로 그린 SVG 그림입니다. 도형만 들어 있습니다. 인터넷이 없어도 보입니다. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="100" viewBox="0 0 160 100">
+  <rect x="0" y="0" width="160" height="100" fill="#f6e7cf" />
+  <ellipse cx="80" cy="62" rx="54" ry="30" fill="#8c5a3c" />
+  <ellipse cx="80" cy="56" rx="46" ry="24" fill="#fdf7ec" />
+  <ellipse cx="62" cy="52" rx="14" ry="7" fill="#4f9a4f" />
+  <ellipse cx="96" cy="50" rx="13" ry="7" fill="#e2913a" />
+  <ellipse cx="80" cy="63" rx="12" ry="6" fill="#d1483a" />
+  <circle cx="80" cy="52" r="6" fill="#f7d04a" />
+</svg>

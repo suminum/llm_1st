@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>08단원 개념03 - 관계로 고르기</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ── 섹션 1: 가족 용어 ── */
+      .shop {
+        background-color: #f0f4f8;
+      }
+      .shop-name {
+        color: #1a7f5a;
+      }
+      /* 화면: 바깥 상자가 연한 회청색으로 칠해져서 "어디까지가 상자 안인지" 보이고,
+               가게 이름 줄만 초록 글자입니다 */
+
+      /* ── 섹션 2: 자손 선택자 (공백) ── */
+      .notice-box p {
+        color: #c0392b;
+      }
+      /* 화면: 알림 상자 안에 있는 문단은 깊이에 상관없이 전부 빨간 글자가 되고,
+               상자 밖 문단은 검은 글자 그대로입니다 */
+
+      /* ── 섹션 3: 자식 선택자 ── */
+      .crumb-box > p {
+        background-color: #fff3a0;
+      }
+      /* 화면: 상자의 바로 아래 단계 문단만 노란 배경이 되고,
+               한 겹 더 들어간 문단은 배경이 없습니다 */
+
+      /* ── 섹션 4: 자손과 자식을 나란히 ── */
+      .deep-a p {
+        background-color: #ffe9e9;
+      }
+      .deep-b > p {
+        background-color: #e2f4ea;
+      }
+      /* 화면: 위 상자는 자식 문단과 손자 문단이 모두 분홍,
+               아래 상자는 자식 문단만 연한 초록이고 손자 문단은 색이 없습니다 */
+
+      /* ── 섹션 5: 인접 형제 선택자 ── */
+      .q + p {
+        background-color: #eef7ff;
+      }
+      /* 화면: 질문 줄 바로 다음 줄만 연한 하늘색 배경이 됩니다 */
+
+      /* ── 섹션 6: 이후 형제 선택자 ── */
+      .qq ~ p {
+        background-color: #e2f4ea;
+      }
+      /* 화면: 기준 줄 뒤에 오는 형제 문단이 전부 연한 초록 배경이 됩니다 */
+
+      /* ── 섹션 7: 자주 하는 실수 ── */
+      .miss1 > p {
+        color: crimson;
+      }
+      /* 화면: 자식 문단만 빨개지고, 한 겹 더 안에 있는 손자 문단은 그대로입니다 */
+
+      .miss2 p {
+        color: crimson;
+      }
+      /* 화면: 상자 안의 문단만 빨개지고, 상자에 바로 쓴 글자는 검은색 그대로입니다 */
+
+      .key3 + p {
+        background-color: #fff3a0;
+      }
+      /* 화면: 기준 줄의 다음 줄만 노랗고, 앞 줄은 아무 변화가 없습니다 */
+
+      .key4 + p {
+        background-color: #fff3a0;
+      }
+      /* 화면: 아무 일도 일어나지 않습니다. 기준 줄과 문단 사이에 가로줄이 끼어 있습니다 */
+
+      .key5 + p {
+        background-color: #fff3a0;
+      }
+      /* 화면: 아무 일도 일어나지 않습니다. 다음 형제가 p 가 아니라 상자입니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         08단원 · 개념 03 — 관계로 고르기
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         지금까지는 요소를 "그 자체의 이름표" 로만 골랐습니다.
+         태그 이름, 클래스, id 전부 그 요소에 직접 붙어 있는 것입니다.
+
+         그런데 실제로는 이렇게 말하고 싶을 때가 훨씬 많습니다.
+
+             "머리말 안에 있는 링크만"
+             "메뉴 목록의 항목만"
+             "제목 바로 아래 문단만"
+
+         전부 위치, 즉 다른 요소와의 관계로 말하고 있습니다.
+         이렇게 관계로 고르는 선택자가 네 가지 있습니다.
+
+             A B     자손    A 안에 있는 B 를 전부 (깊이 상관없음)
+             A > B   자식    A 의 바로 한 단계 아래 B 만
+             A + B   인접형제 A 바로 다음에 오는 B 하나
+             A ~ B   이후형제 A 뒤에 오는 B 를 전부
+
+         가운데의 공백, 부등호, 더하기, 물결을 결합자라고 부릅니다.
+         결합자는 "왼쪽과 오른쪽이 어떤 사이인가" 를 말합니다.
+         그리고 색이 칠해지는 것은 언제나 맨 오른쪽 것입니다.
+
+             .notice-box p { color: crimson; }
+                          └ 빨개지는 것은 p 입니다. .notice-box 가 아닙니다.
+
+         이 점을 먼저 못 박아 두세요. 여기서 정말 많이 헷갈립니다.
+
+         그리고 이 네 가지를 쓰려면 부모·자식·형제·자손이라는 말을
+         정확히 알아야 합니다. 섹션 1 에서 그것부터 정리합니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 03 — 관계로 고르기</h1>
+    <p class="doc-sub">08단원 · 선택자</p>
+
+    <p class="doc-guide">
+      이 파일은 <strong>요소와 요소의 사이</strong>로 고르는 법을 다룹니다.
+      <code>A B</code> · <code>A &gt; B</code> · <code>A + B</code> · <code>A ~ B</code>
+      네 가지입니다. 색이 칠해지는 것은 <strong>언제나 오른쪽</strong>이라는 점을
+      계속 확인하면서 읽으세요.
+    </p>
+
+    <!-- ══════════ 섹션 1: 가족 용어 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 부모, 자식, 형제, 자손</h2>
+      <p class="doc-desc">
+        01단원과 06단원에서 태그 안에 태그를 넣는 것을 배웠습니다.
+        그 <strong>포개진 모양에 붙는 이름</strong>을 여기서 정리합니다.
+      </p>
+
+      <!--
+        아래 상자의 HTML 은 이렇게 생겼습니다.
+
+            <div class="shop">
+              <p class="shop-name">봄내 카페</p>
+              <ul class="menu">
+                <li>아메리카노</li>
+                <li>카페라떼</li>
+              </ul>
+            </div>
+
+        들여쓰기만 남기고 그리면 이런 모양입니다.
+
+            div.shop
+              p.shop-name
+              ul.menu
+                li
+                li
+
+        여기에 이름을 붙입니다.
+
+            부모(parent)  바로 바깥에서 감싸고 있는 요소 하나
+                          → li 의 부모는 ul.menu 입니다.
+
+            자식(child)   바로 한 단계 안에 있는 요소
+                          → div.shop 의 자식은 p.shop-name 과 ul.menu 두 개입니다.
+                            li 는 div.shop 의 자식이 아닙니다. 한 단계 더 들어갔습니다.
+
+            자손(descendant) 안에 들어 있는 모든 요소. 깊이는 상관없습니다.
+                          → div.shop 의 자손은 p.shop-name, ul.menu, li, li 넷 다입니다.
+                            자식은 자손에 포함됩니다. 자손이 더 넓은 말입니다.
+
+            형제(sibling) 부모가 같은 요소들
+                          → p.shop-name 과 ul.menu 는 형제입니다(부모가 둘 다 div.shop).
+                            li 두 개도 서로 형제입니다(부모가 둘 다 ul.menu).
+                            p.shop-name 과 li 는 형제가 아닙니다. 부모가 다릅니다.
+
+        사람 가족과 똑같습니다. 자식은 한 세대 아래, 자손은 그 아래 전부입니다.
+        형제는 같은 부모를 둔 사이입니다. 사촌은 형제가 아닙니다.
+
+        헷갈리면 이 한 문장만 기억하세요.
+        "자식은 한 칸, 자손은 몇 칸이든, 형제는 옆칸"
+      -->
+      <div class="doc-demo" id="familyBox">
+        <p class="doc-demo-label">실제 결과</p>
+        <div class="shop">
+          <p class="shop-name">봄내 카페</p>
+          <ul class="menu">
+            <li>아메리카노</li>
+            <li>카페라떼</li>
+          </ul>
+        </div>
+        <!-- 화면: 연한 회청색 상자가 하나 보이고, 그 안에 초록 글자로 "봄내 카페",
+                  그 아래에 점이 붙은 목록 두 줄이 들어 있습니다 -->
+      </div>
+
+      <p class="doc-desc">위 상자를 들여쓰기만 남기고 그리면 이렇습니다.</p>
+      <div class="doc-code">div class="shop"                  ← 바깥 상자
+  p class="shop-name"             ← shop 의 자식
+  ul class="menu"                 ← shop 의 자식, shop-name 과 형제
+    li                            ← menu 의 자식, shop 의 자손(손자)
+    li                            ← menu 의 자식, shop 의 자손(손자)</div>
+
+      <p class="doc-note">
+        상자에 배경색을 준 이유는 <strong>"어디까지가 안쪽인지" 를 눈으로 보기 위해서</strong>입니다.
+        배경색이 칠해진 범위가 곧 <code>div.shop</code> 의 영역입니다.
+        상자에 테두리와 여백을 주면 더 잘 보이는데, 그건 10단원에서 배웁니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 상자의 <code>ul class="menu"</code> 안에
+        <code>&lt;li&gt;딸기라떼&lt;/li&gt;</code> 를 하나 더 넣어 보세요.
+        새로 넣은 항목의 부모는 무엇이고, <code>div.shop</code> 과는 어떤 사이인지 말해 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 자손 선택자 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 자손 선택자 (공백)</h2>
+      <p class="doc-desc">
+        선택자 사이에 <strong>공백</strong>을 두면 "왼쪽 <strong>안에 있는</strong> 오른쪽" 입니다.
+        <strong>깊이는 따지지 않습니다.</strong>
+      </p>
+
+      <!--
+        개념02 에서 살짝 봤던 그 공백입니다. 이제 제대로 봅니다.
+
+            .notice-box p {
+                       └ 여기 공백 한 칸이 결합자입니다
+              color: #c0392b;
+            }
+
+        읽는 법: "notice-box 안에 있는 p 를 전부"
+
+        여기서 '안에' 는 아주 넓은 뜻입니다.
+        바로 안이든, 상자 두 겹 안이든, 열 겹 안이든 전부입니다.
+        아래 상자에서 두 번째 문단은 상자가 한 겹 더 있는데도 빨개집니다.
+
+        이게 왜 편할까요? 실제 웹페이지에서는 안쪽 구조가 자주 바뀌기 때문입니다.
+        나중에 div 로 한 번 더 감싸도 자손 선택자는 그대로 살아 있습니다.
+
+        반대로 위험한 점도 같습니다. 너무 넓게 걸립니다.
+        "머리말 안의 모든 p" 라고 써 두면, 나중에 머리말 안에 새 문단을 넣을 때마다
+        생각지도 못한 색이 따라붙습니다.
+
+        그리고 한 번 더 강조합니다.
+        .notice-box 자신은 빨개지지 않습니다. 색이 칠해지는 것은 오른쪽 p 입니다.
+      -->
+      <div class="doc-demo" id="descDemo">
+        <p class="doc-demo-label">실제 결과</p>
+        <div class="notice-box">
+          <p>알림 상자 안에 바로 있는 문단입니다.</p>
+          <div class="notice-inner">
+            <p>상자 안의 또 다른 상자 안에 있는 문단입니다.</p>
+          </div>
+        </div>
+        <p>알림 상자 밖에 있는 문단입니다.</p>
+        <!-- 화면: 위의 두 문단은 빨간 글자이고, 마지막 문단만 검은 글자입니다 -->
+      </div>
+
+      <p class="doc-note">
+        자손 선택자는 몇 단계든 이어 쓸 수 있습니다.
+        <code>.shop .menu li</code> 처럼요. 다만 길어질수록 깨지기 쉽습니다.
+        <strong>두 단계 정도</strong>에서 끊고, 그 이상 필요하면 클래스를 하나 더 만드세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위 상자의 마지막 문단("알림 상자 밖에 있는 문단입니다")을
+        <code>&lt;div class="notice-box"&gt;</code> 안쪽 맨 아래로 옮겨 보세요.
+        빨개지는 것을 확인한 뒤 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 자식 선택자 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 자식 선택자 (부등호)</h2>
+      <p class="doc-desc">
+        <code>&gt;</code> 를 쓰면 <strong>바로 한 단계 아래</strong>만 골라집니다.
+        손자는 걸리지 않습니다.
+      </p>
+
+      <!--
+        자손 선택자가 너무 넓어서 곤란할 때 쓰는 것이 자식 선택자입니다.
+
+            .crumb-box > p {
+                       └ 부등호가 결합자입니다. 앞뒤 공백은 있어도 없어도 같습니다.
+              background-color: #fff3a0;
+            }
+
+        읽는 법: "crumb-box 의 바로 아래 단계 p 만"
+
+            .crumb-box p     안에 있으면 전부       (자손)
+            .crumb-box > p   바로 아래 한 단계만    (자식)
+
+        아래 상자를 보면, 한 겹 더 들어간 문단에는 노란 배경이 없습니다.
+        그 문단의 부모는 crumb-box 가 아니라 안쪽 상자이기 때문입니다.
+
+        언제 자식 선택자를 쓸까요?
+        목록 안에 목록이 들어가는 경우가 대표적입니다.
+        "겉 목록의 항목만 굵게" 하고 싶은데 자손으로 쓰면 안쪽 목록까지 굵어집니다.
+        그때 > 로 한 단계만 잡습니다.
+
+        참고로 부등호 앞뒤의 공백은 뜻이 없습니다.
+
+            .crumb-box>p     같은 뜻
+            .crumb-box > p   같은 뜻 (이렇게 띄어 쓰는 편이 읽기 좋습니다)
+
+        여기서 조심할 것이 있습니다. 공백이 결합자라고 배웠는데,
+        부등호 옆의 공백은 결합자가 아닙니다. 부등호가 이미 결합자이기 때문입니다.
+        결합자는 두 선택자 사이에 하나만 옵니다.
+      -->
+      <div class="doc-demo" id="childDemo">
+        <p class="doc-demo-label">실제 결과</p>
+        <div class="crumb-box">
+          <p>상자의 바로 아래 단계 문단입니다.</p>
+          <div class="crumb-inner">
+            <p>한 겹 더 들어간 문단입니다.</p>
+          </div>
+        </div>
+        <!-- 화면: 첫 문단만 노란 배경이고, 아래 문단은 배경색이 없습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>&lt;style&gt;</code> 의 <code>.crumb-box &gt; p</code> 에서
+        부등호를 지워 <code>.crumb-box p</code> 로 만들어 보세요.
+        노란 배경이 몇 줄이 되는지 세어 본 뒤 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 자손과 자식을 나란히 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 자손과 자식, 손자로 증명하기</h2>
+      <p class="doc-desc">
+        아래 두 상자의 <strong>HTML 구조는 완전히 같습니다.</strong>
+        다른 것은 CSS 의 부등호 하나뿐입니다.
+      </p>
+
+      <!--
+        말로 백 번 듣는 것보다 한 번 보는 것이 낫습니다.
+        아래 두 상자는 클래스 이름만 다르고 구조가 똑같습니다.
+
+            <div class="deep-a">              <div class="deep-b">
+              <p>자식 문단</p>                   <p>자식 문단</p>
+              <div>                             <div>
+                <p>손자 문단</p>                   <p>손자 문단</p>
+              </div>                            </div>
+            </div>                            </div>
+
+        CSS 만 다릅니다.
+
+            .deep-a p   { background-color: #ffe9e9; }   자손 → 자식도 손자도
+            .deep-b > p { background-color: #e2f4ea; }   자식 → 자식만
+
+        결과를 세어 보세요.
+            위 상자   색칠된 문단 2개 (자식, 손자)
+            아래 상자 색칠된 문단 1개 (자식만)
+
+        손자 문단이 색칠되는가, 아닌가. 이 한 가지가 자손과 자식의 전부입니다.
+
+        왜 손자는 안 걸릴까요?
+        손자 문단의 부모는 deep-b 가 아니라 가운데 div 이기 때문입니다.
+        > 는 "네 부모가 왼쪽이냐" 만 묻습니다. 할아버지는 묻지 않습니다.
+      -->
+      <div class="doc-demo" id="deepADemo">
+        <p class="doc-demo-label">자손 선택자 (.deep-a p) — 공백</p>
+        <div class="deep-a">
+          <p id="deepAChild">자식 문단입니다.</p>
+          <div>
+            <p id="deepAGrand">손자 문단입니다.</p>
+          </div>
+        </div>
+        <!-- 화면: 두 문단 모두 연한 분홍 배경입니다 -->
+      </div>
+
+      <div class="doc-demo" id="deepBDemo">
+        <p class="doc-demo-label">자식 선택자 (.deep-b &gt; p) — 부등호</p>
+        <div class="deep-b">
+          <p id="deepBChild">자식 문단입니다.</p>
+          <div>
+            <p id="deepBGrand">손자 문단입니다.</p>
+          </div>
+        </div>
+        <!-- 화면: 첫 문단만 연한 초록 배경이고, 손자 문단은 배경색이 없습니다 -->
+      </div>
+
+      <p class="doc-note">
+        평소에는 <strong>자손 선택자를 기본으로</strong> 쓰고,
+        "안쪽까지 번지면 곤란하다" 는 것을 알았을 때만 <code>&gt;</code> 로 좁히세요.
+        처음부터 <code>&gt;</code> 를 쓰면 나중에 구조를 한 겹 감쌀 때 조용히 죽습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 아래 상자(<code>deep-b</code>)의 손자 문단을
+        가운데 <code>&lt;div&gt;</code> 밖으로 꺼내 자식으로 만들어 보세요.
+        연한 초록 배경이 두 줄이 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 인접 형제 선택자 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 인접 형제 선택자 (더하기)</h2>
+      <p class="doc-desc">
+        <code>A + B</code> 는 <strong>A 바로 다음에 오는 형제 B</strong> 하나입니다.
+        안이 아니라 <strong>옆</strong>입니다.
+      </p>
+
+      <!--
+        지금까지 본 둘은 "안쪽" 을 봤습니다. 이번 둘은 "옆" 을 봅니다.
+
+            .q + p {
+               └ 더하기가 결합자입니다
+              background-color: #eef7ff;
+            }
+
+        읽는 법: "class 가 q 인 요소 바로 다음에 오는 형제 p"
+
+        조건이 두 가지입니다. 둘 다 맞아야 합니다.
+            1) 부모가 같아야 합니다 (형제여야 합니다)
+            2) 바로 다음이어야 합니다 (사이에 아무 요소도 없어야 합니다)
+
+        아래 상자에서 색칠된 줄을 세어 보세요.
+        질문 줄이 두 개니까 답 줄도 두 개가 칠해집니다.
+        "추가 안내" 줄은 질문 바로 다음이 아니라서 안 칠해집니다.
+
+        어디에 쓸까요?
+        "제목 바로 아래 문단만 조금 다르게" 같은 곳입니다.
+        HTML 을 안 고치고도 위치만으로 첫 문단을 골라낼 수 있습니다.
+
+        그리고 이것도 마찬가지입니다. 색이 칠해지는 것은 오른쪽 p 입니다.
+        질문 줄(.q) 자체는 아무 변화가 없습니다.
+      -->
+      <div class="doc-demo" id="adjDemo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p class="q">주차할 수 있나요?</p>
+        <p>건물 뒤에 두 자리 있습니다.</p>
+        <p>주말에는 만차일 수 있습니다.</p>
+        <p class="q">반려동물과 갈 수 있나요?</p>
+        <p>테라스 자리만 가능합니다.</p>
+        <!-- 화면: 2번째 줄과 5번째 줄만 연한 하늘색 배경입니다.
+                  질문 줄과 "주말에는" 줄은 배경색이 없습니다 -->
+      </div>
+
+      <p class="doc-note">
+        더하기는 <strong>앞쪽으로는 절대 가지 않습니다.</strong>
+        "바로 앞 형제" 를 고르는 방법은 이 자료의 범위 밖입니다.
+        앞을 꾸미고 싶으면 그 요소에 클래스를 하나 붙이는 것이 정답입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 위 상자의 "주말에는 만차일 수 있습니다" 줄을
+        첫 번째 질문 줄 바로 위로 옮겨 보세요. 하늘색 줄이 어떻게 바뀌는지 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 이후 형제 선택자 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 이후 형제 선택자 (물결)</h2>
+      <p class="doc-desc">
+        <code>A ~ B</code> 는 <strong>A 뒤에 오는 형제 B 를 전부</strong> 고릅니다.
+        바로 다음이 아니어도 됩니다.
+      </p>
+
+      <!--
+            .qq ~ p {
+                └ 물결이 결합자입니다
+              background-color: #e2f4ea;
+            }
+
+        읽는 법: "qq 뒤에 오는 형제 p 를 전부"
+
+        더하기와 물결의 차이는 딱 하나, 개수입니다.
+
+            A + B    A 다음 첫 형제 하나만
+            A ~ B    A 다음 형제 전부
+
+        둘 다 "형제여야 한다" 와 "뒤쪽만 본다" 는 똑같습니다.
+
+        아래 상자에서 기준 줄 뒤의 문단이 전부 초록으로 칠해집니다.
+        기준 줄 앞에 있는 문단은 칠해지지 않습니다. 뒤쪽만 보기 때문입니다.
+
+        물결은 자주 쓰지는 않습니다. 다만 05단원에서 배운 체크박스와 함께 쓰면
+        자바스크립트 없이도 "체크하면 아래가 바뀌는" 화면을 만들 수 있습니다.
+        그건 개념04 에서 봅니다.
+      -->
+      <div class="doc-demo" id="genDemo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p>기준 줄보다 앞에 있는 문단입니다.</p>
+        <p class="qq">여기가 기준 줄입니다.</p>
+        <p>기준 줄 바로 다음 문단입니다.</p>
+        <p>그다음 문단입니다.</p>
+        <p>맨 마지막 문단입니다.</p>
+        <!-- 화면: 마지막 세 문단이 모두 연한 초록 배경입니다.
+                  기준 줄과 그 앞 문단은 배경색이 없습니다 -->
+      </div>
+
+      <p class="doc-note">
+        네 결합자를 한 문장으로 줄이면 이렇습니다.
+        <strong>공백은 안쪽 전부, 부등호는 안쪽 한 칸,
+        더하기는 옆쪽 한 칸, 물결은 옆쪽 전부</strong>입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — <code>&lt;style&gt;</code> 의 <code>.qq ~ p</code> 를
+        <code>.qq + p</code> 로 바꿔 보세요. 초록 줄이 세 개에서 몇 개로 줄어드는지 세어 본 뒤
+        되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        관계 선택자의 실수는 <strong>"일부만 바뀌거나 하나도 안 바뀌는"</strong> 모양으로 나타납니다.
+        에러는 끝까지 안 납니다.
+      </p>
+
+      <!-- [실수 1] 자식으로 써서 손자를 놓침 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 자식으로 썼는데 손자까지 바꾸고 싶었음</span>
+        <div class="doc-code">.miss1 &gt; p { color: crimson; }</div>
+        <p>
+          "상자 안 문단을 전부 빨갛게" 하려고 썼는데 부등호를 넣었습니다.
+          <strong>한 겹 더 들어간 문단은 그대로 남습니다.</strong>
+          "왜 어떤 건 되고 어떤 건 안 되지?" 싶으면 부등호를 의심하세요.
+          고치려면 부등호를 지우고 공백만 남기면 됩니다.
+        </p>
+        <div class="miss1">
+          <p id="miss1Child">자식 문단입니다. 빨개집니다.</p>
+          <div>
+            <p id="miss1Grand">손자 문단입니다. 안 빨개집니다.</p>
+          </div>
+        </div>
+        <!-- 화면: 첫 줄만 빨간 글자이고 둘째 줄은 검은 글자입니다 -->
+      </div>
+
+      <!-- [실수 2] 왼쪽도 함께 꾸며진다고 생각함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 왼쪽 요소도 함께 바뀐다고 생각함</span>
+        <div class="doc-code">.miss2 p { color: crimson; }</div>
+        <p>
+          이 규칙은 <strong>p 만</strong> 빨갛게 합니다. <code>.miss2</code> 상자 자체나
+          상자에 바로 쓴 글자는 바뀌지 않습니다.
+          <strong>색은 언제나 맨 오른쪽 것에 칠해집니다.</strong>
+          상자도 같이 바꾸려면 <code>.miss2, .miss2 p</code> 처럼 쉼표로 묶어야 합니다.
+        </p>
+        <div class="miss2" id="miss2Box">
+          상자에 바로 쓴 글자입니다.
+          <p id="miss2Inner">상자 안의 문단입니다.</p>
+        </div>
+        <!-- 화면: 첫 줄은 검은 글자, 그 아래 문단만 빨간 글자입니다 -->
+      </div>
+
+      <!-- [실수 3] 더하기가 앞도 고른다고 생각함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 더하기가 앞 형제도 고른다고 생각함</span>
+        <div class="doc-code">.key3 + p { background-color: #fff3a0; }</div>
+        <p>
+          더하기와 물결은 <strong>뒤쪽만</strong> 봅니다. 앞은 절대 안 봅니다.
+          아래에서 기준 줄 앞의 문단은 아무리 기다려도 노래지지 않습니다.
+          앞 요소를 꾸미고 싶으면 그 요소에 클래스를 붙이세요.
+        </p>
+        <div id="miss3Box">
+          <p id="miss3Before">기준 줄보다 앞에 있는 문단입니다.</p>
+          <p class="key3">기준 줄입니다.</p>
+          <p id="miss3After">기준 줄 다음 문단입니다.</p>
+        </div>
+        <!-- 화면: 마지막 줄만 노란 배경이고, 첫 줄은 배경색이 없습니다 -->
+      </div>
+
+      <!-- [실수 4] 사이에 다른 요소가 끼어 있음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 사이에 다른 요소가 끼어서 인접이 아니게 됨</span>
+        <div class="doc-code">.key4 + p { background-color: #fff3a0; }</div>
+        <p>
+          더하기는 <strong>바로 다음</strong>만 봅니다.
+          아래에서는 기준 줄과 문단 사이에 가로줄(<code>&lt;hr /&gt;</code>) 이 하나 있습니다.
+          그것 때문에 규칙이 통째로 안 걸립니다.
+          <strong>보이는 것이 거의 없는 요소도 순서에는 포함됩니다.</strong>
+        </p>
+        <div id="miss4Box">
+          <p class="key4">기준 줄입니다.</p>
+          <hr />
+          <p id="miss4After">가로줄 때문에 안 걸리는 문단입니다.</p>
+        </div>
+        <!-- 화면: 두 문단 모두 배경색이 없습니다. 가운데에 회색 가로줄만 보입니다 -->
+      </div>
+
+      <!-- [실수 5] 한 겹 감싸서 형제가 아니게 됨 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 한 겹 감쌌더니 형제가 아니게 됨</span>
+        <div class="doc-code">.key5 + p { background-color: #fff3a0; }</div>
+        <p>
+          어제까지 잘 되던 규칙이 오늘 갑자기 안 되는 대표적인 이유입니다.
+          문단을 <code>&lt;div&gt;</code> 로 한 번 감쌌더니
+          기준 줄의 다음 형제가 <strong>p 가 아니라 div</strong> 가 되었습니다.
+          형제 선택자는 구조를 바꾸면 쉽게 깨집니다.
+        </p>
+        <div id="miss5Box">
+          <p class="key5">기준 줄입니다.</p>
+          <div>
+            <p id="miss5Inner">한 겹 감싸인 문단입니다.</p>
+          </div>
+        </div>
+        <!-- 화면: 두 문단 모두 배경색이 없습니다 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 고칩니다</span>
+        <div class="doc-code">.key5 + div p { background-color: #fff3a0; }</div>
+        <p class="doc-note">
+          "기준 줄 다음 div 안의 p" 라는 뜻입니다.
+          형제와 자손을 이어 붙여 쓸 수 있습니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>
+        1. <strong>부모</strong>는 바로 바깥, <strong>자식</strong>은 바로 안,
+        <strong>자손</strong>은 안쪽 전부, <strong>형제</strong>는 부모가 같은 사이입니다.
+      </p>
+      <p>2. <code>A B</code> — 공백. A 안에 있는 B 를 <strong>깊이 상관없이 전부</strong>.</p>
+      <p>3. <code>A &gt; B</code> — 부등호. A 의 <strong>바로 아래 한 단계</strong> B 만.</p>
+      <p>4. <code>A + B</code> — 더하기. A <strong>바로 다음</strong> 형제 B 하나.</p>
+      <p>5. <code>A ~ B</code> — 물결. A <strong>뒤에 오는</strong> 형제 B 전부.</p>
+      <p>
+        6. 색이 칠해지는 것은 <strong>언제나 맨 오른쪽</strong>입니다.
+        왼쪽은 "어디에 있는지" 를 말할 뿐입니다.
+      </p>
+      <p>7. 형제 선택자는 <strong>뒤쪽만</strong> 봅니다. 앞으로는 가지 않습니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 섹션 1 상자의 ul 안에 이렇게 넣습니다.
+
+                <ul class="menu">
+                  <li>아메리카노</li>
+                  <li>카페라떼</li>
+                  <li>딸기라떼</li>
+                </ul>
+
+            → 목록이 세 줄이 됩니다.
+              새 li 의 부모는 ul.menu 입니다.
+              div.shop 과는 자손(손자) 사이입니다. 자식이 아닙니다.
+              그리고 나머지 li 두 개와는 형제입니다.
+
+         2) 섹션 2 상자의 마지막 문단을 notice-box 안쪽으로 옮깁니다.
+
+                <div class="notice-box">
+                  <p>알림 상자 안에 바로 있는 문단입니다.</p>
+                  <div class="notice-inner">
+                    <p>상자 안의 또 다른 상자 안에 있는 문단입니다.</p>
+                  </div>
+                  <p>알림 상자 밖에 있는 문단입니다.</p>
+                </div>
+
+            → 그 문단도 빨간 글자가 됩니다. 상자 안 문단이 세 줄 모두 빨개집니다.
+              HTML 위치만 바꿨는데 색이 바뀌었습니다. 이것이 관계 선택자의 성질입니다.
+
+         3) style 의 규칙을 이렇게 고칩니다.
+
+                .crumb-box p {
+                  background-color: #fff3a0;
+                }
+
+            → 노란 배경이 한 줄에서 두 줄이 됩니다.
+              한 겹 더 들어간 문단까지 걸리기 때문입니다.
+              부등호 하나로 "한 단계만" 과 "안쪽 전부" 가 갈립니다.
+
+         4) 섹션 4 아래 상자를 이렇게 고칩니다.
+
+                <div class="deep-b">
+                  <p id="deepBChild">자식 문단입니다.</p>
+                  <p id="deepBGrand">손자 문단입니다.</p>
+                  <div></div>
+                </div>
+
+            → 두 문단 모두 연한 초록 배경이 됩니다.
+              문단 자체는 한 글자도 안 고쳤습니다. 부모가 바뀌었을 뿐입니다.
+              자식 선택자는 "부모가 누구냐" 만 본다는 것을 확인하는 문제입니다.
+
+         5) 섹션 5 상자를 이렇게 고칩니다.
+
+                <p>주말에는 만차일 수 있습니다.</p>
+                <p class="q">주차할 수 있나요?</p>
+                <p>건물 뒤에 두 자리 있습니다.</p>
+                <p class="q">반려동물과 갈 수 있나요?</p>
+                <p>테라스 자리만 가능합니다.</p>
+
+            → 하늘색 줄은 그대로 두 개입니다. 위치만 2번째와 5번째에서
+              3번째와 5번째로 바뀝니다.
+              옮긴 줄 자체는 질문 바로 다음이 아니므로 여전히 안 칠해집니다.
+
+         6) style 의 규칙을 이렇게 고칩니다.
+
+                .qq + p {
+                  background-color: #e2f4ea;
+                }
+
+            → 초록 줄이 세 개에서 한 개로 줄어듭니다.
+              기준 줄 바로 다음 문단 하나만 남습니다.
+              더하기는 하나, 물결은 전부입니다. 확인했으면 물결로 되돌리세요.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #familyBox .shop | background-color | rgb(240, 244, 248)
+      #familyBox .shop-name | color | rgb(26, 127, 90)
+      #familyBox .menu li | color | rgb(34, 34, 34)
+      #descDemo .notice-box p | color | rgb(192, 57, 43)
+      #descDemo .notice-inner p | color | rgb(192, 57, 43)
+      #descDemo .notice-box | color | rgb(34, 34, 34)
+      #childDemo .crumb-box > p | background-color | rgb(255, 243, 160)
+      #childDemo .crumb-inner p | background-color | rgba(0, 0, 0, 0)
+      #deepAChild | background-color | rgb(255, 233, 233)
+      #deepAGrand | background-color | rgb(255, 233, 233)
+      #deepBChild | background-color | rgb(226, 244, 234)
+      #deepBGrand | background-color | rgba(0, 0, 0, 0)
+      #adjDemo .q + p | background-color | rgb(238, 247, 255)
+      #adjDemo .q | background-color | rgba(0, 0, 0, 0)
+      #adjDemo p:nth-of-type(4) | background-color | rgba(0, 0, 0, 0)
+      #genDemo .qq ~ p | background-color | rgb(226, 244, 234)
+      #genDemo p:nth-of-type(2) | background-color | rgba(0, 0, 0, 0)
+      #genDemo p:nth-of-type(6) | background-color | rgb(226, 244, 234)
+      #miss1Child | color | rgb(220, 20, 60)
+      #miss1Grand | color | rgb(34, 34, 34)
+      #miss2Box | color | rgb(34, 34, 34)
+      #miss2Inner | color | rgb(220, 20, 60)
+      #miss3Before | background-color | rgba(0, 0, 0, 0)
+      #miss3After | background-color | rgb(255, 243, 160)
+      #miss4After | background-color | rgba(0, 0, 0, 0)
+      #miss5Inner | background-color | rgba(0, 0, 0, 0)
+    -->
+  </body>
+</html>

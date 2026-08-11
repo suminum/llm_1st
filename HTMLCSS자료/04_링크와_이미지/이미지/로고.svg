@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 손으로 그린 SVG 그림입니다. 도형과 글자만 들어 있습니다. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="240" height="80" viewBox="0 0 240 80">
+  <rect x="0" y="0" width="240" height="80" rx="10" fill="#2d6cdf" />
+  <rect x="14" y="18" width="44" height="44" rx="6" fill="#ffffff" />
+  <polygon points="24,52 36,28 48,52" fill="#2d6cdf" />
+  <text x="150" y="38" text-anchor="middle" font-size="24"
+        font-family="Consolas, monospace" fill="#ffffff">HTML</text>
+  <text x="150" y="62" text-anchor="middle" font-size="14"
+        font-family="Malgun Gothic, sans-serif" fill="#cfe0ff">우리 웹사이트</text>
+</svg>

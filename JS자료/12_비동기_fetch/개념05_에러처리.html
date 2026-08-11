@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>12단원 개념05 - 에러 처리</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 8px 16px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 6px;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+        min-height: 24px;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+      }
+      .loading {
+        color: #888;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 05 — 에러 처리</h1>
+
+    <p class="guide">
+      <strong>인터넷 연결이 필요합니다.</strong> 각 버튼을 눌러 성공·실패 경우를 모두
+      확인해 보세요. <strong>F12 → Console</strong> 도 함께 보세요.
+    
+      <br /><br />
+      <strong>인터넷이 막혀 있어 안 된다면</strong> 이 파일 아래쪽
+      <code>&lt;script&gt;</code> 바로 위에 있는 <code>오프라인_대체.js</code> 줄에서
+      주석 기호를 지우세요. 인터넷 없이도 똑같이 동작합니다.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>① try / catch</h3>
+      <button id="okBtn">성공하는 요청</button>
+      <button id="failBtn">실패하는 주소</button>
+      <div class="output" id="out1">버튼을 눌러 보세요</div>
+
+      <h3>② 404 는 catch 로 가지 않습니다</h3>
+      <button id="notFoundBtn">없는 글 요청 (404)</button>
+      <div class="output" id="out2">대기 중</div>
+
+      <h3>③ 제대로 만든 버전</h3>
+      <button id="goodBtn">글 가져오기 (완성형)</button>
+      <div class="output" id="out3">대기 중</div>
+    </div>
+
+    <!-- 인터넷이 막혀 이 파일이 동작하지 않으면, 바로 아래 줄을 감싼 주석 기호를 지워서 켜세요. 설명은 오프라인_대체.js 맨 위에 있습니다. -->
+    <!-- <script src="오프라인_대체.js"></script> -->
+    <script>
+      // ============================================================
+      // 12단원 · 개념 05 — 에러 처리
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 버튼 클릭. 인터넷 연결 필요.
+      // ============================================================
+      //
+      // 서버 요청은 실패할 수 있습니다.
+      //   인터넷이 끊겼다 / 주소가 틀렸다 / 서버가 죽었다 / 권한이 없다
+      //
+      // 실패해도 화면이 멈추지 않고 "실패했다" 고 알려 주는 것이 에러 처리입니다.
+
+      const BASE_URL = "https://jsonplaceholder.typicode.com";
+      const out1 = document.querySelector("#out1");
+      const out2 = document.querySelector("#out2");
+      const out3 = document.querySelector("#out3");
+
+      // ── 섹션 1: try / catch ──
+
+      // await 방식에서는 then 의 .catch 대신 try / catch 를 씁니다.
+      //
+      //     try {
+      //       위험한 코드
+      //     } catch (error) {
+      //       실패했을 때 할 일
+      //     }
+
+      async function loadPost(url, target) {
+        target.textContent = "불러오는 중...";
+        target.classList.remove("error");
+
+        try {
+          const res = await fetch(url);
+          const data = await res.json();
+
+          target.textContent = data.title;
+          console.log("성공:", data.id);
+        } catch (error) {
+          target.textContent = "가져오지 못했습니다";
+          target.classList.add("error");
+          console.log("catch 에서 잡음:", error.message);
+        }
+      }
+
+      document.querySelector("#okBtn").addEventListener("click", () => {
+        loadPost(`${BASE_URL}/posts/1`, out1);
+      });
+
+      document.querySelector("#failBtn").addEventListener("click", () => {
+        // 존재하지 않는 주소 — 네트워크 자체가 실패합니다
+        loadPost("https://이런주소는없습니다-abcxyz.example/posts/1", out1);
+      });
+
+      // try 안에서 에러가 나면 그 즉시 catch 로 뜁니다.
+      // try 안의 남은 줄은 실행되지 않습니다.
+      //
+      // catch (error) 의 error 에는 에러 객체가 들어옵니다.
+      //   error.message  사람이 읽을 수 있는 설명
+      //   error.name     에러 종류
+
+      // ✏️ 직접 해보기 1 — catch 안에서 error 객체 전체를 콘솔에 찍어 보세요.
+
+      // ── 섹션 2: 404 는 에러가 아니다 ──
+
+      // 이것이 fetch 의 가장 큰 함정입니다.
+      //
+      // fetch 는 '서버와 연결이 안 될 때' 만 실패로 칩니다.
+      // 서버가 "그런 거 없어요(404)" 라고 대답한 것은
+      // fetch 입장에서는 '대답을 받았으니 성공' 입니다.
+
+      async function loadWithoutCheck() {
+        out2.textContent = "불러오는 중...";
+
+        try {
+          const res = await fetch(`${BASE_URL}/posts/9999`); // 없는 글
+
+          console.log("status:", res.status);
+          // 콘솔: status: 404
+          console.log("ok:", res.ok);
+          // 콘솔: ok: false
+
+          const data = await res.json();
+          console.log("받은 데이터:", data);
+          // 콘솔: 받은 데이터: {}   ← 빈 객체입니다
+
+          out2.textContent = data.title;
+          // 화면: 아무것도 안 나옵니다. data.title 이 undefined 니까요.
+        } catch (error) {
+          out2.textContent = "여기로는 오지 않습니다";
+          console.log("catch:", error.message);
+        }
+      }
+
+      document.querySelector("#notFoundBtn").addEventListener("click", loadWithoutCheck);
+
+      // catch 로 가지 않고 조용히 빈 화면이 됩니다.
+      // "왜 아무것도 안 나오지?" 하는 문제의 정체입니다.
+      //
+      // 해결: res.ok 를 직접 확인하고 직접 에러를 던집니다.
+      //
+      //   res.ok      2xx 응답이면 true
+      //   res.status  200, 404, 500 같은 숫자
+
+      // ✏️ 직접 해보기 2 — ② 버튼을 누르고 콘솔을 보세요. status 와 ok 가 무엇인가요?
+      //                    그리고 catch 안의 "여기로는 오지 않습니다" 가 찍히나요?
+
+      // ── 섹션 3: 제대로 만든 버전 ──
+
+      const goodBtn = document.querySelector("#goodBtn");
+
+      // [참고] 아래에서 classList 대신 className 에 통째로 넣습니다.
+      //   10단원 개념03에서 "className 에 = 로 덮어쓰면 원래 클래스가 날아간다" 고 했죠.
+      //   여기서는 그게 오히려 편합니다. 로딩·성공·실패 상태를 매번 깨끗이 갈아끼워야 하니까요.
+      //   기준: 클래스를 '더하고 뺄' 때는 classList, '통째로 정할' 때는 className.
+
+      async function loadPostProperly(id) {
+        // 1) 로딩 시작 — 버튼을 잠그고 안내 문구
+        goodBtn.disabled = true;
+        out3.textContent = "불러오는 중...";
+        out3.className = "output loading";
+
+        try {
+          const res = await fetch(`${BASE_URL}/posts/${id}`);
+
+          // 2) 응답 상태를 직접 확인
+          if (!res.ok) {
+            throw new Error(`서버 응답 오류 (${res.status})`);
+          }
+
+          const data = await res.json();
+
+          // 3) 성공
+          out3.textContent = data.title;
+          out3.className = "output";
+          console.log("성공:", data.id);
+        } catch (error) {
+          // 4) 실패 — 사용자에게는 쉬운 말로, 콘솔에는 자세히
+          out3.textContent = "글을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.";
+          out3.className = "output error";
+          console.log("에러 내용:", error.message);
+        } finally {
+          // 5) 성공하든 실패하든 버튼은 다시 풀어 줘야 합니다
+          goodBtn.disabled = false;
+          console.log("finally 실행 — 버튼 잠금 해제");
+        }
+      }
+
+      goodBtn.addEventListener("click", () => loadPostProperly(1));
+
+      // throw new Error("메시지") 는 "여기서 에러를 내겠다" 는 뜻입니다.
+      // 던지면 즉시 catch 로 뜁니다.
+      //
+      // finally 는 성공하든 실패하든 반드시 실행됩니다.
+      // 로딩 표시 끄기, 버튼 잠금 풀기처럼 "무조건 해야 하는 뒷정리" 에 씁니다.
+      // finally 가 없으면 실패했을 때 버튼이 영원히 잠긴 채로 남습니다.
+
+      // ✏️ 직접 해보기 3 — id 를 9999 로 바꿔 눌러 보고,
+      //                    이번에는 catch 로 가는지 확인해 보세요.
+
+      // ── 섹션 4: 좋은 에러 처리의 조건 ──
+
+      // 1) 사용자에게 보여 주는 말과 개발자용 정보를 나눈다
+      //    화면 : "불러오지 못했습니다. 다시 시도해 주세요"
+      //    콘솔 : error.message, 상태 코드, 요청 주소
+      //
+      // 2) 로딩 중임을 알린다
+      //    아무 반응이 없으면 사용자는 고장 났다고 생각하고 계속 누릅니다.
+      //
+      // 3) 버튼을 잠근다 (disabled)
+      //    연속으로 눌러 요청이 여러 번 나가는 것을 막습니다.
+      //
+      // 4) finally 로 뒷정리를 한다
+      //    실패했을 때 로딩 표시가 영원히 남는 사고를 막습니다.
+      //
+      // 5) 실패해도 화면이 깨지지 않는다
+      //    데이터가 없으면 "내용 없음" 정도는 나와야 합니다.
+
+      // ✏️ 직접 해보기 4 — loadPostProperly 에서 finally 블록을 통째로 지우면
+      //                    요청이 실패했을 때 화면이 어떻게 될까요? 말로 설명해 보세요.
+
+      // ── 섹션 5: then 방식의 에러 처리 ──
+
+      // 개념02 에서 본 것과 같습니다. 같은 구조입니다.
+      //
+      //   fetch(url)
+      //     .then((res) => {
+      //       if (!res.ok) throw new Error(`오류 ${res.status}`);
+      //       return res.json();
+      //     })
+      //     .then((data) => { 성공 처리 })
+      //     .catch((error) => { 실패 처리 })
+      //     .finally(() => { 뒷정리 });
+      //
+      //   try   ↔ then
+      //   catch ↔ .catch
+      //   finally ↔ .finally
+      //
+      // 하는 일은 같습니다. 요즘은 try/catch 쪽을 더 많이 씁니다.
+
+      // ✏️ 직접 해보기 5 — 위 then 방식에서 if (!res.ok) throw ... 줄을 지우면
+      //                    404 일 때 어디로 갈까요? (섹션 2를 떠올려 보세요)
+
+      // ── 섹션 6: try/catch 는 fetch 전용이 아니다 ──
+
+      // 비동기가 아니어도 쓸 수 있습니다.
+      try {
+        JSON.parse("이건 JSON 이 아닙니다");
+      } catch (error) {
+        console.log("JSON 파싱 실패:", error.name);
+        // 콘솔: JSON 파싱 실패: SyntaxError
+      }
+      console.log("에러가 났지만 프로그램은 계속됩니다");
+      // 콘솔: 에러가 났지만 프로그램은 계속됩니다
+
+      // try/catch 가 없었다면 여기서 코드가 멈췄을 겁니다.
+      //
+      // [주의] 모든 코드를 try 로 감싸지는 마세요.
+      // 오타로 인한 에러까지 조용히 삼켜 버리면 버그를 못 찾습니다.
+      // "실패할 수 있다고 예상되는 곳" 에만 씁니다. 서버 요청, JSON 파싱 같은 것.
+
+      // ✏️ 직접 해보기 6 — 위 JSON.parse 에 올바른 JSON 문자열 '{"a":1}' 을 넣으면
+      //                    catch 안의 코드는 실행될까요? 예상하고 확인해 보세요.
+
+      // ── 섹션 7: 자주 하는 실수 ──
+
+      // ★ 아래에서 SyntaxError 라고 적힌 것은 눈으로만 보세요. 주석을 풀지 마세요.
+      //   다른 에러(ReferenceError, TypeError)는 주석을 풀어도
+      //   그 줄에서만 나고 그 앞의 출력은 그대로 다 나옵니다.
+      //   그런데 SyntaxError 는 다릅니다. 자바스크립트가 파일을 아예 못 읽어서
+      //   출력이 한 줄도 안 나옵니다. 여러분이 망가뜨린 것이 아닙니다.
+      //   실수로 풀었다면 다시 // 를 붙이면 그대로 돌아옵니다.
+
+      // [실수 1] res.ok 를 확인 안 함 (섹션 2) — 이 단원의 핵심입니다.
+
+      // [실수 2] catch 를 비워 둠
+      // catch (e) {}
+      // 실수: 에러가 났는데 아무 흔적도 안 남습니다. 최소한 console.log 는 하세요.
+
+      // [실수 3] finally 없이 로딩 표시를 끔
+      // try 안 마지막에만 "로딩 끝" 을 두면 실패했을 때 영원히 로딩 중입니다.
+
+      // [실수 4] 에러 객체를 그대로 화면에 보여 줌
+      // out.textContent = error.message;
+      // 실수: "Failed to fetch" 같은 영어가 사용자에게 보입니다.
+      //       사용자에게는 쉬운 말로, 자세한 건 콘솔에.
+
+      // [실수 5] await 를 try 밖에 둠
+      // const res = await fetch(url);
+      // try { ... } catch { ... }
+      // 실수: fetch 가 실패하면 try 밖이라 잡히지 않습니다.
+
+      // ── 정리 ──
+
+      // 1. await 방식은 try / catch / finally 로 처리한다.
+      // 2. fetch 는 404·500 을 실패로 치지 않는다. res.ok 를 직접 확인할 것.
+      // 3. if (!res.ok) throw new Error(...) 로 직접 에러를 던진다.
+      // 4. finally 에서 로딩 해제·버튼 잠금 해제 같은 뒷정리를 한다.
+      // 5. 사용자에게는 쉬운 말, 콘솔에는 자세한 정보.
+      // 6. try/catch 는 실패할 만한 곳에만 쓴다. 전부 감싸면 버그를 놓친다.
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) catch (error) {
+      //      console.log(error);          // 에러 객체 전체
+      //      console.log(error.name);     // 종류
+      //      console.log(error.message);  // 설명
+      //    }
+      //
+      // 2) // 콘솔: status: 404
+      //    // 콘솔: ok: false
+      //    // 콘솔: 받은 데이터: {}
+      //    "여기로는 오지 않습니다" 는 찍히지 않습니다.
+      //    → 없는 글을 달라고 했는데도 catch 로 가지 않습니다.
+      //      fetch 입장에서는 서버가 "없다" 고 대답해 준 것도 '대답을 받은 것'
+      //      이라 성공이기 때문입니다. 그래서 res.ok 를 직접 봐야 합니다.
+      //      이것이 이 단원에서 가장 중요한 한 가지입니다.
+      //
+      // 3) goodBtn.addEventListener("click", () => loadPostProperly(9999));
+      //    → res.ok 가 false 이므로 throw 가 실행되고 catch 로 갑니다.
+      //    → 화면에 "글을 불러오지 못했습니다..." 가 나오고
+      //      콘솔에 "에러 내용: 서버 응답 오류 (404)" 가 찍힙니다.
+      //
+      // 4) 화면이 "불러오는 중..." 에서 멈춘 것처럼 보이고,
+      //    버튼이 잠긴 채로 영원히 풀리지 않습니다.
+      //    → 버튼 잠금 해제(goodBtn.disabled = false)가 finally 안에 있기 때문입니다.
+      //      이 줄을 try 안 마지막에 두면 성공했을 때만 실행됩니다.
+      //      실패한 사용자는 다시 시도할 방법이 없어집니다.
+      //      "무조건 해야 하는 뒷정리" 를 finally 에 두는 이유가 이것입니다.
+      //
+      // 5) 성공 쪽(.then)으로 갑니다. .catch 로 가지 않습니다.
+      //    → 섹션 2에서 본 것과 똑같은 함정입니다. then 방식이든 try/catch
+      //      방식이든, 404 를 실패로 만들어 주는 것은 오직 res.ok 검사뿐입니다.
+      //      그 줄을 지우면 빈 객체 {} 를 받아 화면이 조용히 비어 버립니다.
+      //
+      // 6) 실행되지 않습니다.
+      //    바꾸기 전에는 두 줄이 나왔는데
+      //    // 콘솔: JSON 파싱 실패: SyntaxError
+      //    // 콘솔: 에러가 났지만 프로그램은 계속됩니다
+      //
+      //    바꾼 뒤에는 아랫줄 하나만 남습니다.
+      //    // 콘솔: 에러가 났지만 프로그램은 계속됩니다
+      //
+      //    → catch 는 '에러가 났을 때만' 들르는 곳입니다.
+      //      try 안이 무사히 끝나면 catch 는 통째로 건너뜁니다.
+      //      즉 "JSON 파싱 실패" 줄이 사라진 것이 정답의 증거입니다.
+      //      개념02 섹션 4의 .catch 와 같은 규칙입니다.
+      //
+      //    [주의] ③ 버튼을 눌렀다면 콘솔에 "성공: 1" 이라는 줄도 보입니다.
+      //           그건 섹션 3의 loadPostProperly 가 찍은 것이지 이 실습과 무관합니다.
+    </script>
+  </body>
+</html>

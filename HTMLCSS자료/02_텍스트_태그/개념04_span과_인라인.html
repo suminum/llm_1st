@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>02단원 개념04 - span 과 인라인</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         02단원 · 개념 04 — span 과 인라인
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         지금까지 태그를 열 개 넘게 배웠습니다.
+         그런데 눈치채셨을지 모르겠지만 태그들이 두 무리로 나뉘어 행동했습니다.
+
+             h1  p  hr  blockquote        →  항상 한 줄을 통째로 차지했습니다
+             strong  em  mark  del  sub   →  글자 사이에 쏙 끼어 들어갔습니다
+
+         이 두 무리에 이름이 있습니다.
+
+             블록(block) 요소     한 줄을 통째로 차지합니다
+             인라인(inline) 요소  글자 흐름 안에 낍니다
+
+         이것이 HTML 을 배우면서 만나는 가장 중요한 구분 중 하나입니다.
+         이걸 모르면 07단원부터 시작하는 CSS 에서 계속 막힙니다.
+         "왜 이건 옆에 안 붙지?" "왜 이건 폭을 줘도 안 먹지?" 의 답이 전부 여기 있습니다.
+
+         그림으로 그리면 이렇습니다.
+
+             블록 요소
+             ┌──────────────────────────────────────┐
+             │ 문단 하나                              │   ← 옆이 비어 있어도 통째로 차지
+             └──────────────────────────────────────┘
+             ┌──────────────────────────────────────┐
+             │ 다음 문단                              │   ← 그래서 반드시 아랫줄로 감
+             └──────────────────────────────────────┘
+
+             인라인 요소
+             글자 글자 [끼어듦] 글자 글자 [끼어듦] 글자   ← 한 줄 안에서 이어짐
+
+         그리고 이 파일에서 태그를 하나 더 배웁니다. span 입니다.
+         span 은 아무 뜻도 없는 인라인 요소입니다.
+         뜻이 없다는 것이 무슨 소린지, 그런 게 왜 필요한지 섹션 1 에서 봅니다.
+
+         [예고] 요소가 블록인지 인라인인지는 display 라는 값이 정합니다.
+                이 값을 여러분이 직접 바꾸는 것은 11단원에서 배웁니다.
+                이 파일에서는 값을 바꾸지 않고 읽기만 합니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 04 — span 과 인라인</h1>
+    <p class="doc-sub">02단원 · 텍스트 태그</p>
+
+    <p class="doc-guide">
+      이 파일은 <code>span</code> 태그 하나와,
+      <strong>블록 요소와 인라인 요소</strong>라는 큰 구분을 다룹니다.
+      뒤에 나오는 CSS 단원 전체가 이 구분 위에 세워집니다.
+      데모 상자에서 <strong>무엇이 줄을 차지하고 무엇이 끼어드는지</strong>를 눈으로 익히세요.
+    </p>
+
+    <!-- ══════════ 섹션 1: span ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — span 은 아무 뜻도 없는 태그입니다</h2>
+      <p class="doc-desc">
+        <code>span</code> 은 감싸기만 하고 <strong>아무 일도 하지 않습니다.</strong>
+        화면도 전혀 바뀌지 않습니다.
+      </p>
+
+      <!--
+        지금까지 배운 태그는 전부 뜻이 있었습니다.
+        p 는 문단, strong 은 중요, mark 는 형광펜이었습니다.
+
+        span 은 다릅니다. 뜻이 하나도 없습니다.
+
+            <p>가격은 <span>12,000원</span> 입니다.</p>
+
+        span 을 넣기 전과 후의 화면이 완전히 같습니다.
+        굵어지지도, 색이 바뀌지도, 줄이 바뀌지도 않습니다.
+
+        그러면 왜 쓸까요. 이유는 하나입니다.
+
+            나중에 CSS 로 그 부분만 골라 꾸미려고 붙잡아 두는 손잡이
+
+        예를 들어 "가격만 빨갛게" 하고 싶다고 합시다.
+        빨갛게 할 부분을 브라우저에게 가리켜 줘야 하는데, 글자에는 손잡이가 없습니다.
+        그래서 span 으로 감싸서 손잡이를 만듭니다. 08단원에서 이렇게 씁니다.
+
+            <p>가격은 <span class="price">12,000원</span> 입니다.</p>
+
+            .price { color: red; }
+
+        여기서 판단 기준이 하나 생깁니다.
+
+            뜻이 있으면      →  뜻에 맞는 태그 (strong, mark, del ...)
+            뜻이 정말 없으면 →  span
+
+        "빨갛게 하고 싶으니까 무조건 span" 이 아닙니다.
+        중요해서 빨갛게 하는 것이면 strong 이 맞습니다.
+        개념03 의 원칙이 여기서도 그대로 적용됩니다.
+
+        span 은 인라인 요소입니다. 그래서 감싼 글자가 원래 있던 줄에 그대로 남습니다.
+        크롬에서 재 보면 display 값이 inline 입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p>가격은 <span id="sp-basic">12,000원</span> 입니다.</p>
+        <p>가격은 12,000원 입니다.</p>
+        <!-- 화면: 두 줄이 완전히 똑같아 보입니다. 위 줄에만 span 이 들어 있는데
+                  화면에서는 아무 차이도 찾을 수 없습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>span</code> 은 이 자료에서 아직 화면을 바꾸지 못합니다.
+        <strong>07단원에서 CSS 를 배우기 전까지는 손잡이일 뿐</strong>입니다.
+        지금은 "이런 태그가 있고 인라인이다" 만 알아 두세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 상자 첫 줄의 <code>&lt;span&gt;</code> 과
+        <code>&lt;/span&gt;</code> 를 지워 보세요. 저장하고(Ctrl+S) 새로고침(F5) 해도
+        화면이 하나도 안 바뀌는 것을 확인한 뒤 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 블록 요소 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 블록 요소는 한 줄을 통째로 차지합니다</h2>
+      <p class="doc-desc">
+        <code>p</code>, <code>h1</code>~<code>h6</code>, <code>hr</code>,
+        <code>blockquote</code> 가 블록 요소입니다.
+      </p>
+
+      <!--
+        블록 요소의 성질은 두 가지입니다.
+
+            [1] 가로로 한 줄을 전부 차지합니다.
+                글자가 짧아도 그렇습니다. 오른쪽이 비어 있어도 그 자리는 이미 임자가 있습니다.
+
+            [2] 그래서 다음 요소는 반드시 아랫줄로 내려갑니다.
+                옆에 붙일 방법이 없습니다.
+
+        아래 상자에 짧은 문단 세 개를 나란히 썼습니다.
+        글자는 다섯 글자뿐인데 세 줄이 나옵니다.
+
+        크롬에서 재 보면 문단 하나의 가로폭이 824px 입니다.
+        점선 상자 안쪽 폭이 딱 그만큼입니다. 즉 글자 길이와 상관없이 꽉 채웁니다.
+        이것이 "한 줄을 통째로 차지한다" 의 정확한 의미입니다.
+
+        그림으로 보면 이렇습니다.
+
+            ┌────────────────────────────────────┐
+            │ 블록 하나  (오른쪽은 비었지만 자리는 차지) │
+            └────────────────────────────────────┘
+            ┌────────────────────────────────────┐
+            │ 블록 둘                              │
+            └────────────────────────────────────┘
+
+        여기서 초보자가 가장 많이 하는 질문이 나옵니다.
+        "그럼 문단 두 개를 옆에 나란히 못 놓나요?"
+        지금은 못 놓습니다. 11단원과 12단원에서 CSS 로 놓는 법을 배웁니다.
+        HTML 만으로는 안 됩니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 짧은 문단 세 개</p>
+        <p id="blk-a">블록 하나</p>
+        <p id="blk-b">블록 둘</p>
+        <p id="blk-c">블록 셋</p>
+        <!-- 화면: 세 줄이 위에서 아래로 차례로 놓입니다. 글자는 짧은데도
+                  옆에 나란히 붙지 않고 각자 한 줄씩 차지합니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위 상자의 세 문단을 한 줄에 이어서 써 보세요.
+        <code>&lt;p&gt;블록 하나&lt;/p&gt;&lt;p&gt;블록 둘&lt;/p&gt;</code> 처럼
+        소스에서 붙여 써도 화면에서는 여전히 줄이 나뉩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 인라인 요소 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 인라인 요소는 글자 흐름 안에 낍니다</h2>
+      <p class="doc-desc">
+        <code>span</code>, <code>strong</code>, <code>em</code>, <code>mark</code>,
+        <code>del</code>, <code>ins</code>, <code>sub</code>, <code>sup</code>,
+        <code>q</code>, <code>code</code> 가 인라인 요소입니다.
+      </p>
+
+      <!--
+        인라인 요소의 성질도 두 가지입니다.
+
+            [1] 딱 글자만큼만 차지합니다. 남는 자리를 차지하지 않습니다.
+            [2] 그래서 앞뒤에 다른 것이 계속 이어 붙습니다. 줄이 안 바뀝니다.
+
+        아래 상자에 span 세 개를 붙여 썼습니다. 세 개가 한 줄에 나란히 나옵니다.
+        블록 세 개는 세 줄이었는데 인라인 세 개는 한 줄입니다. 이 차이가 전부입니다.
+
+        크롬에서 재 보면 이렇습니다.
+
+            span "인라인 하나"  →  가로 86px   (글자 길이만큼)
+            span "인라인 둘"    →  가로 70px   (글자 길이만큼)
+
+        길이가 서로 다릅니다. 글자가 다르니 폭도 다른 것입니다.
+        블록은 글자가 뭐든 824px 로 똑같았습니다. 정확히 반대입니다.
+
+        [왜 흐름이라고 부르나]
+        글자는 왼쪽에서 오른쪽으로 흘러가다가 오른쪽 끝에 닿으면 아랫줄로 넘어갑니다.
+        이 흐름을 문서 흐름이라고 부릅니다.
+        인라인 요소는 이 흐름 안에 글자처럼 끼어듭니다. 흐름을 끊지 않습니다.
+        블록 요소는 흐름을 끊고 새 줄부터 시작합니다.
+
+        [목록의 code 는 무엇인가]
+        위 목록에 code 가 하나 끼어 있습니다. 이 자료에서 코드 글자를 보여 줄 때 쓰는 태그인데,
+        수업에서 따로 배우지는 않습니다. 지금은 "이런 태그도 인라인이구나" 만 보고 넘어가세요.
+
+        [주의] 인라인 요소에는 가로폭을 줄 수 없습니다.
+               10단원에서 width 를 배운 다음 span 에 폭을 줘 봐도 안 먹습니다.
+               "인라인이라서 안 된다" 가 그 답인데, 왜 그런지와 어떻게 푸는지는
+               11단원에서 제대로 다룹니다.
+               지금 이 구분을 익혀 두면 그때 헤매지 않습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 짧은 인라인 세 개</p>
+        <p id="inline-row"><span id="inl-a">인라인 하나</span><span id="inl-b">인라인 둘</span><span
+          id="inl-c">인라인 셋</span></p>
+        <!-- 화면: 세 덩어리가 한 줄에 빈틈없이 이어 붙어 "인라인 하나인라인 둘인라인 셋" 으로
+                  보입니다. 줄이 나뉘지 않습니다 -->
+      </div>
+
+      <p class="doc-note">
+        위 결과에 띄어쓰기가 없는 것은 소스에서 <code>&lt;/span&gt;&lt;span&gt;</code> 를
+        붙여 썼기 때문입니다. <strong>인라인 요소는 글자와 똑같이 취급됩니다.</strong>
+        띄우고 싶으면 사이에 공백 한 칸을 넣으면 됩니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 상자에서 <code>&lt;/span&gt;</code> 와
+        <code>&lt;span</code> 사이에 스페이스를 한 칸씩 넣어 보세요.
+        세 덩어리가 띄어져 보이지만 여전히 한 줄입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 나란히 놓고 비교하기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 같은 글자를 블록과 인라인으로 각각 감싸 보기</h2>
+      <p class="doc-desc">
+        글자를 똑같이 두고 감싸는 태그만 바꾸면 <strong>차지하는 폭이 달라집니다.</strong>
+      </p>
+
+      <!--
+        아래 상자에는 "짧은 글자" 라는 똑같은 다섯 글자가 두 번 들어 있습니다.
+
+            <p id="cmp-block">짧은 글자</p>              ← p 는 블록
+            <p><span id="cmp-inline">짧은 글자</span></p>  ← span 은 인라인
+
+        화면만 보면 둘 다 그냥 한 줄에 "짧은 글자" 입니다. 똑같아 보입니다.
+        그런데 크롬에서 가로폭을 재 보면 완전히 다릅니다.
+
+            p    →  824px    (상자 안쪽을 꽉 채움)
+            span →   70px    (글자 길이만큼만)
+
+        눈에는 안 보이는데 실제로는 열 배 넘게 차이가 납니다.
+        p 의 오른쪽 754px 은 비어 보이지만 이미 p 가 차지한 자리입니다.
+        그래서 그 자리에 다른 것을 붙일 수 없습니다.
+
+        08단원에서 CSS 로 배경색을 칠해 보면 이 차이가 눈에 보이게 됩니다.
+        지금은 자로 잰 숫자로만 확인합니다.
+        이 파일 맨 아래 자동 검사 목록에 그 숫자가 적혀 있습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 같은 글자, 다른 태그</p>
+        <p id="cmp-block">짧은 글자</p>
+        <p><span id="cmp-inline">짧은 글자</span></p>
+        <!-- 화면: 두 줄 모두 "짧은 글자" 로 똑같아 보입니다.
+                  화면만으로는 차지한 폭의 차이를 알 수 없습니다 -->
+      </div>
+
+      <p class="doc-note">
+        지금까지 배운 태그를 두 무리로 나누면 이렇습니다.<br />
+        <strong>블록</strong> — <code>h1</code>~<code>h6</code>, <code>p</code>,
+        <code>hr</code>, <code>blockquote</code><br />
+        <strong>인라인</strong> — <code>span</code>, <code>strong</code>, <code>b</code>,
+        <code>em</code>, <code>i</code>, <code>mark</code>, <code>small</code>,
+        <code>del</code>, <code>ins</code>, <code>sub</code>, <code>sup</code>,
+        <code>q</code>, <code>code</code>, <code>br</code>
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 개념03 파일을 열고 <code>&lt;mark&gt;</code> 데모를 보세요.
+        노란 칠이 글자 뒤에만 있고 줄 끝까지 이어지지 않습니다.
+        <code>mark</code> 가 인라인이라 글자만큼만 차지하기 때문입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 인라인 안에 블록을 넣으면 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 인라인 안에 블록을 넣으면 어떻게 되나</h2>
+      <p class="doc-desc">
+        인라인 요소 안에는 <strong>블록 요소를 넣지 않습니다.</strong>
+        넣어도 에러는 안 납니다. 대신 줄이 쪼개집니다.
+      </p>
+
+      <!--
+        규칙은 이렇습니다.
+
+            블록 안에 인라인   →  됩니다.   <p>글자 <strong>강조</strong></p>
+            블록 안에 블록     →  됩니다.   (06단원에서 div 로 많이 하게 됩니다)
+            인라인 안에 인라인 →  됩니다.   <span>글자 <strong>강조</strong></span>
+            인라인 안에 블록   →  안 됩니다.
+
+        마지막 것만 안 됩니다. 이유는 성질이 서로 부딪히기 때문입니다.
+        인라인은 "줄을 안 끊는다" 는 약속인데 그 안에 "줄을 끊는" 블록이 들어오면
+        약속을 지킬 수가 없습니다.
+
+        그래서 브라우저는 어떻게든 그려 내려고 이렇게 합니다.
+
+            span 은 그대로 인라인으로 두고,
+            안의 p 는 블록이니까 줄을 끊어서 그립니다.
+
+        결과가 아래 상자입니다. 한 줄이던 것이 세 줄로 쪼개집니다.
+
+            앞글자
+            안에 넣은 문단
+            뒷글자
+
+        span 하나 안에 든 글자인데 세 줄로 흩어졌습니다.
+        크롬에서 재 보면 span 의 display 값은 여전히 inline 입니다.
+        인라인인데 높이가 107px 로 세 줄만큼 커져 버린 이상한 상태입니다.
+
+        나중에 CSS 로 이 span 에 배경색이나 테두리를 주면 모양이 크게 어긋납니다.
+        그때 원인을 찾기가 아주 어렵습니다. 지금 규칙으로 익혀 두세요.
+
+            인라인 안에는 인라인만 넣습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">span 안에 p 를 넣은 실제 결과</p>
+        <span id="span-with-p">앞글자 <p id="p-in-span">안에 넣은 문단</p> 뒷글자</span>
+        <!-- 화면: "앞글자", "안에 넣은 문단", "뒷글자" 가 세 줄로 쪼개져 보입니다.
+                  한 줄로 이어질 것 같은데 그렇지 않습니다 -->
+      </div>
+
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">&lt;p&gt;앞글자 &lt;span&gt;가운데 글자&lt;/span&gt; 뒷글자&lt;/p&gt;</div>
+        <p>
+          바깥을 블록(<code>p</code>)으로, 안을 인라인(<code>span</code>)으로 두면
+          <strong>한 줄로 자연스럽게 이어집니다.</strong> 아래가 그 결과입니다.
+        </p>
+        <div class="doc-demo">
+          <p class="doc-demo-label">제대로 쓴 실제 결과</p>
+          <p id="p-with-span">앞글자 <span id="span-inside">가운데 글자</span> 뒷글자</p>
+          <!-- 화면: "앞글자 가운데 글자 뒷글자" 가 한 줄로 이어져 보입니다 -->
+        </div>
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 위 첫 상자의 <code>&lt;p id="p-in-span"&gt;</code> 를
+        <code>&lt;span id="p-in-span"&gt;</code> 로, <code>&lt;/p&gt;</code> 를
+        <code>&lt;/span&gt;</code> 로 바꿔 보세요. 세 줄이 한 줄로 합쳐집니다.
+        확인했으면 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        블록과 인라인을 헷갈리면 <strong>화면이 미묘하게 어긋납니다.</strong>
+        에러는 나지 않으니 눈으로 알아채야 합니다.
+      </p>
+
+      <!-- [실수 1] span 으로 줄을 바꾸려 함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — span 을 나누면 줄이 바뀔 줄 알았음</span>
+        <div class="doc-code">&lt;span&gt;첫 줄&lt;/span&gt;
+&lt;span&gt;둘째 줄&lt;/span&gt;</div>
+        <p>
+          소스에서 줄을 나눠 썼으니 화면에서도 나뉠 것 같습니다. 안 나뉩니다.
+          <strong>"첫 줄 둘째 줄" 이 한 줄로 붙어 나옵니다.</strong>
+          span 이 인라인이라 줄을 끊지 않고, 소스의 엔터는 개념02 에서 배운 대로
+          공백 한 칸으로 접히기 때문입니다.
+        </p>
+        <div class="doc-demo">
+          <p class="doc-demo-label">span 을 줄 나눠 쓴 실제 결과</p>
+          <span id="mis-span-a">첫 줄</span>
+          <span id="mis-span-b">둘째 줄</span>
+          <!-- 화면: "첫 줄 둘째 줄" 이 한 줄로 이어져 보입니다 -->
+        </div>
+      </div>
+
+      <!-- [실수 2] 블록을 옆에 붙이려 함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 문단 두 개를 옆에 나란히 놓으려 함</span>
+        <div class="doc-code">&lt;p&gt;왼쪽&lt;/p&gt;&lt;p&gt;오른쪽&lt;/p&gt;</div>
+        <p>
+          소스에서 아무리 붙여 써도 두 줄로 나옵니다.
+          <strong>p 가 블록이라 각자 한 줄씩 통째로 차지하기 때문</strong>입니다.
+          옆에 나란히 놓는 방법은 11단원과 12단원에서 CSS 로 배웁니다.
+          HTML 만으로는 방법이 없습니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] 뜻이 있는데 span 을 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 뜻이 있는데도 span 으로 감쌈</span>
+        <div class="doc-code">&lt;p&gt;마감은
+  &lt;span class="important"&gt;오늘&lt;/span&gt;입니다&lt;/p&gt;</div>
+        <p>
+          중요하다는 뜻이 있으니 <code>&lt;strong&gt;</code> 이 맞습니다.
+          span 으로 감싸고 CSS 로 굵게 만들면 화면은 똑같이 나옵니다.
+          하지만 <strong>화면 낭독기에게는 아무 강조도 전달되지 않습니다.</strong>
+          개념03 섹션 3 에서 본 것과 똑같은 문제입니다.
+        </p>
+      </div>
+
+      <!-- [실수 4] 모든 글자를 span 으로 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 모든 글자를 span 으로 감쌈</span>
+        <div class="doc-code">&lt;span&gt;안&lt;/span&gt;&lt;span&gt;녕&lt;/span&gt;</div>
+        <p>
+          화면은 <code>안녕</code> 그대로입니다. 아무 문제 없어 보입니다.
+          하지만 <strong>손잡이가 필요 없는 곳에 손잡이를 단 것</strong>이라
+          소스만 길어지고 읽기 어려워집니다.
+          span 은 꾸밀 계획이 있는 곳에만 붙이세요.
+        </p>
+      </div>
+
+      <!-- [실수 5] 인라인에 폭을 주려 함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 인라인 요소에 가로폭을 주려 함</span>
+        <div class="doc-code">span { width: 300px; }</div>
+        <p>
+          10단원에서 <code>width</code> 를 배우고 나면 꼭 한 번 해 보게 되는 일입니다.
+          <strong>아무 일도 일어나지 않습니다.</strong> 에러도 안 납니다.
+          인라인 요소는 글자만큼만 차지하기로 되어 있어서 폭 지시를 무시합니다.
+          해결법은 11단원의 <code>display</code> 에서 배웁니다.
+          (위 코드는 CSS 입니다. 07단원부터 배우니 지금은 눈으로만 보세요)
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>span</code> 은 <strong>아무 뜻도 없는 인라인 요소</strong>입니다.
+        나중에 CSS 로 꾸미려고 붙잡아 두는 손잡이입니다.</p>
+      <p>2. <strong>블록 요소</strong>는 한 줄을 통째로 차지합니다. 글자가 짧아도 그렇습니다.
+        <code>h1</code>~<code>h6</code>, <code>p</code>, <code>hr</code>,
+        <code>blockquote</code> 가 블록입니다.</p>
+      <p>3. <strong>인라인 요소</strong>는 글자만큼만 차지하고 흐름 안에 낍니다.
+        <code>span</code>, <code>strong</code>, <code>em</code>, <code>mark</code> 등입니다.</p>
+      <p>4. 같은 글자라도 <code>p</code> 로 감싸면 824px, <code>span</code> 으로 감싸면 70px 을
+        차지합니다. <strong>화면에는 안 보이는 차이</strong>입니다.</p>
+      <p>5. <strong>인라인 안에 블록을 넣지 마세요.</strong> 줄이 쪼개집니다.</p>
+      <p>6. 블록과 인라인을 바꾸는 <code>display</code> 는 11단원에서 배웁니다.
+        지금은 바꾸지 않고 성질만 익힙니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 섹션 1 상자의 첫 줄을 이렇게 바꿉니다.
+
+                <p>가격은 12,000원 입니다.</p>
+
+            → 화면이 하나도 바뀌지 않습니다. 두 줄이 여전히 똑같습니다.
+              span 은 화면을 바꾸는 태그가 아니기 때문입니다.
+              확인했으면 span 을 다시 붙여 놓으세요.
+
+         2) 섹션 2 상자를 이렇게 한 줄로 붙여 씁니다.
+
+                <p id="blk-a">블록 하나</p><p id="blk-b">블록 둘</p><p id="blk-c">블록 셋</p>
+
+            → 화면은 그대로 세 줄입니다.
+              소스에서 붙여 쓰는 것과 화면에서 붙는 것은 아무 상관이 없습니다.
+              블록 요소는 한 줄을 통째로 차지하기 때문입니다.
+
+         3) 섹션 3 상자를 이렇게 바꿉니다.
+
+                <p id="inline-row"><span id="inl-a">인라인 하나</span>
+                  <span id="inl-b">인라인 둘</span> <span id="inl-c">인라인 셋</span></p>
+
+            → "인라인 하나 인라인 둘 인라인 셋" 처럼 사이가 한 칸씩 띄어집니다.
+              줄은 여전히 하나입니다. 인라인은 줄을 끊지 않기 때문입니다.
+
+         4) 개념03 파일 섹션 4 의 mark 데모를 보면
+            노란 칠이 "김치찌개" 네 글자 뒤에서 끝납니다.
+
+            → mark 가 인라인이라 글자 길이만큼만 차지하기 때문입니다.
+              만약 mark 가 블록이었다면 노란 칠이 줄 끝까지 이어졌을 것입니다.
+
+         5) 섹션 5 첫 상자를 이렇게 바꿉니다.
+
+                <span id="span-with-p">앞글자 <span id="p-in-span">안에 넣은 문단</span> 뒷글자</span>
+
+            → 세 줄이던 것이 "앞글자 안에 넣은 문단 뒷글자" 한 줄로 합쳐집니다.
+              인라인 안에 인라인만 들어가서 흐름이 끊기지 않기 때문입니다.
+              확인했으면 되돌려 놓으세요.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #sp-basic | display | inline
+      #sp-basic | font-weight | 400
+      #blk-a | display | block
+      #blk-a | ~width | 824
+      #blk-b | ~width | 824
+      #blk-a | ~height | 27
+      #inline-row | ~height | 27
+      #inl-a | display | inline
+      #inl-a | ~width | 86
+      #inl-b | ~width | 70
+      #inl-a | ~height | 21
+      #cmp-block | ~width | 824
+      #cmp-inline | ~width | 70
+      #cmp-inline | display | inline
+      #span-with-p | display | inline
+      #span-with-p | ~height | 107
+      #span-with-p | ?visible | yes
+      #cmp-inline | text | 짧은 글자
+      #cmp-block | text | 짧은 글자
+      #p-in-span | display | block
+      #p-in-span | ~width | 824
+      #p-with-span | ~height | 27
+      #span-inside | display | inline
+      #mis-span-a | display | inline
+    -->
+  </body>
+</html>

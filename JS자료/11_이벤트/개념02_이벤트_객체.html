@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>11단원 개념02 - 이벤트 객체</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 8px 16px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 6px;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+      }
+      #cardBox {
+        background: #eef3ff;
+        border: 2px solid #2d6cdf;
+        padding: 16px;
+      }
+      #cardBox button {
+        margin-top: 6px;
+      }
+      input[type="text"] {
+        padding: 6px 8px;
+        font-size: 15px;
+        width: 200px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 02 — 이벤트 객체</h1>
+
+    <p class="guide">
+      브라우저로 열고 버튼을 눌러 보세요. <strong>F12 → Console</strong> 도 함께 보세요.
+    
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>① 어떤 버튼을 눌렀는지 알아내기</h3>
+      <button class="menuBtn" data-price="4000">아메리카노</button>
+      <button class="menuBtn" data-price="4500">라떼</button>
+      <button class="menuBtn" data-price="6000">케이크</button>
+      <div class="output" id="out1">메뉴를 골라 보세요</div>
+
+      <h3>② target 과 currentTarget</h3>
+      <div id="cardBox">
+        이 파란 상자 안 아무 곳이나 눌러 보세요.
+        <button id="innerBtn">안쪽 버튼</button>
+      </div>
+      <div class="output" id="out2">대기 중</div>
+
+      <h3>③ 키보드 이벤트</h3>
+      <input type="text" id="keyInput" placeholder="여기에 타이핑해 보세요" />
+      <div class="output" id="out3">누른 키가 여기에 나옵니다</div>
+
+      <h3>④ 기본 동작 막기</h3>
+      <a href="https://example.com" id="blockedLink">이 링크는 이동하지 않습니다</a>
+      <div class="output" id="out4">링크를 눌러 보세요</div>
+    </div>
+
+    <script>
+      // ============================================================
+      // 11단원 · 개념 02 — 이벤트 객체
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 버튼·입력칸·링크를 눌러 보세요.
+      // ============================================================
+      //
+      // 콜백은 매개변수를 하나 받을 수 있습니다.
+      //
+      //     btn.addEventListener("click", (e) => { ... });
+      //                                    ^
+      //                            이벤트 객체
+      //
+      // 브라우저가 "무슨 일이 어디서 어떻게 일어났는지" 를 객체에 담아 넘겨 줍니다.
+      // 08단원에서 배운 "콜백의 매개변수는 실행하는 쪽이 넘겨 준다" 가 그대로 적용됩니다.
+      //
+      // 이름은 e, event, evt 무엇이든 됩니다. 보통 e 를 씁니다.
+
+      // ── 섹션 1: e.target — 실제로 눌린 요소 ──
+
+      const out1 = document.querySelector("#out1");
+      const menuButtons = document.querySelectorAll(".menuBtn");
+
+      menuButtons.forEach((btn) => {
+        btn.addEventListener("click", (e) => {
+          // e.target 은 '실제로 눌린 요소' 입니다
+          const name = e.target.textContent;
+          const price = e.target.dataset.price;
+
+          out1.textContent = `${name} ${price}원을 골랐습니다`;
+
+          console.log("눌린 요소:", e.target);
+          console.log("메뉴:", name, "가격:", price);
+        });
+      });
+
+      // 버튼이 세 개인데 콜백은 하나입니다.
+      // e.target 덕분에 "어느 것이 눌렸는지" 를 안에서 알 수 있습니다.
+      //
+      // data-price 같은 속성은 dataset 으로 읽습니다. (10단원 개념04)
+      //     HTML: data-price="4000"
+      //     JS  : e.target.dataset.price
+      //
+      // [주의] dataset 으로 읽은 값도 문자열입니다.
+      console.log(typeof menuButtons[0].dataset.price);
+      // 콘솔: string
+      // 계산하려면 Number( ) 로 바꿔야 합니다.
+
+      // ✏️ 직접 해보기 1 — 고른 메뉴 두 잔의 값을 계산해 출력해 보세요.
+
+      // ── 섹션 2: e.target 과 e.currentTarget ──
+
+      const cardBox = document.querySelector("#cardBox");
+      const out2 = document.querySelector("#out2");
+
+      cardBox.addEventListener("click", (e) => {
+        console.log("target:", e.target.tagName);
+        console.log("currentTarget:", e.currentTarget.tagName);
+
+        out2.textContent = `실제 눌린 것: ${e.target.tagName} / 이벤트를 붙인 것: ${e.currentTarget.tagName}`;
+      });
+
+      // tagName 은 그 요소의 '태그 이름' 입니다. 항상 대문자로 나옵니다.
+      //   <button> → "BUTTON",  <div> → "DIV",  <p> → "P"
+      //
+      // 파란 상자의 빈 곳을 누르면  → target 도 currentTarget 도 DIV
+      // 안쪽 버튼을 누르면          → target 은 BUTTON, currentTarget 은 DIV
+      //
+      //   e.target        실제로 눌린 그 요소
+      //   e.currentTarget addEventListener 를 붙인 요소
+      //
+      // 안쪽 요소를 누르면 그 이벤트가 부모에게도 전달됩니다.
+      // 이것을 '버블링' 이라고 합니다. 물속 공기방울이 위로 올라가듯
+      // 이벤트가 부모 쪽으로 올라갑니다.
+      //
+      // 버블링은 불편한 게 아니라 아주 유용합니다. 개념05에서 이걸로 큰 문제를 해결합니다.
+
+      // ✏️ 직접 해보기 2 — 안쪽 버튼을 눌렀을 때와 상자 빈 곳을 눌렀을 때의
+      //                    콘솔 출력을 비교해 보세요.
+
+      // ── 섹션 3: 이벤트 객체에 뭐가 들어 있나 ──
+
+      document.querySelector("#innerBtn").addEventListener("click", (e) => {
+        console.log("type:", e.type);
+        // 콘솔: type: click
+        console.log("눌린 좌표:", e.clientX, e.clientY);
+        // 콘솔: 눌린 좌표: (숫자) (숫자)   ← 화면 기준 마우스 위치
+      });
+
+      // 자주 쓰는 것들:
+      //   e.type          이벤트 이름 ("click")
+      //   e.target        눌린 요소
+      //   e.currentTarget 이벤트를 붙인 요소
+      //   e.preventDefault()  기본 동작 막기 (섹션 5)
+      //   e.key           누른 키 (키보드 이벤트, 섹션 4)
+      //
+      // 궁금하면 console.log(e) 로 통째로 찍어 보세요. 속성이 아주 많습니다.
+
+      // ✏️ 직접 해보기 3 — innerBtn 콜백 안에서 e.target 과 e.currentTarget 이
+      //                    같은지 === 로 비교해 찍어 보세요. 왜 그런 결과가 나올까요?
+
+      // ── 섹션 4: 키보드 이벤트 ──
+
+      const keyInput = document.querySelector("#keyInput");
+      const out3 = document.querySelector("#out3");
+
+      keyInput.addEventListener("keydown", (e) => {
+        out3.textContent = `누른 키: ${e.key}`;
+        console.log("key:", e.key);
+
+        // Enter 를 누르면 따로 처리하기 — 아주 자주 쓰는 패턴입니다
+        if (e.key === "Enter") {
+          out3.textContent = `엔터! 입력값은 "${keyInput.value}" 입니다`;
+          console.log("엔터가 눌렸습니다");
+        }
+      });
+
+      // e.key 에 들어오는 값
+      //   글자 키 → "a", "1", "가"
+      //   특수 키 → "Enter", "Escape", "Backspace", "ArrowUp", " "(스페이스)
+      //
+      // 대소문자를 구분합니다. Shift + a 는 "A" 입니다.
+
+      // ✏️ 직접 해보기 4 — Escape 키를 누르면 입력칸을 비우도록 만들어 보세요.
+
+      // ── 섹션 5: preventDefault — 기본 동작 막기 ──
+
+      const blockedLink = document.querySelector("#blockedLink");
+      const out4 = document.querySelector("#out4");
+
+      blockedLink.addEventListener("click", (e) => {
+        e.preventDefault(); // 링크의 '페이지 이동' 을 막습니다
+
+        out4.textContent = "이동을 막았습니다. 주소창을 보세요 — 그대로입니다.";
+        console.log("링크 이동을 막았습니다");
+      });
+
+      // 브라우저가 원래 하려던 일을 취소합니다.
+      //   링크(a)      → 페이지 이동
+      //   폼(form)     → 페이지 새로고침하며 제출   ← 개념04 에서 핵심
+      //   체크박스     → 체크 상태 바뀜
+      //
+      // e.preventDefault() 는 반드시 콜백 '안'에서, e 를 받아야 쓸 수 있습니다.
+      // 매개변수 e 를 안 적으면 ReferenceError 가 납니다.
+
+      // ✏️ 직접 해보기 5 — 위 e.preventDefault(); 줄 앞에 // 를 붙여 주석 처리하고
+      //                    링크를 눌러 보세요. 무엇이 달라지나요?
+      //                    확인했으면 // 를 다시 지워 되돌려 놓으세요.
+
+      // ── 섹션 6: 자주 하는 실수 ──
+
+      // [실수 1] 매개변수 e 를 안 적고 e 를 씀
+      // btn.addEventListener("click", () => { console.log(e.target); });
+      // 실수: ReferenceError: e is not defined
+      //       괄호 안에 (e) 를 적어야 받을 수 있습니다.
+
+      // [실수 2] e.target 과 e.currentTarget 을 혼동 (섹션 2)
+      // 버튼 안에 아이콘이나 span 이 들어 있으면 e.target 이 그 안쪽 요소가 됩니다.
+      // "버튼을 눌렀는데 왜 다른 게 잡히지?" 하면 이 경우입니다.
+      // 이럴 땐 e.currentTarget 을 쓰거나 e.target.closest("button") 을 씁니다. (개념05)
+
+      // [실수 3] dataset 값을 숫자로 착각 (섹션 1)
+
+      // [실수 4] preventDefault 를 괄호 없이 씀
+      // e.preventDefault;
+      // 실수: 아무 일도 안 일어납니다. 함수라서 괄호가 필요합니다.
+
+      // [실수 5] e.key 를 소문자로만 비교
+      // if (e.key === "enter")
+      // 실수: 대문자 E 입니다. "Enter" 입니다.
+
+      // ── 정리 ──
+
+      // 1. 콜백의 첫 매개변수 e 가 이벤트 객체다.
+      // 2. e.target 은 실제로 눌린 요소, e.currentTarget 은 이벤트를 붙인 요소.
+      // 3. 안쪽 요소의 이벤트는 부모로 올라간다(버블링).
+      // 4. data-이름 속성은 e.target.dataset.이름 으로 읽는다. 값은 문자열.
+      // 5. e.key 로 누른 키를 안다. "Enter", "Escape" 등.
+      // 6. e.preventDefault() 로 브라우저의 기본 동작을 막는다.
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) const price = Number(e.target.dataset.price);
+      //    console.log(price * 2);
+      //
+      // 2) 안쪽 버튼 → target: BUTTON / currentTarget: DIV
+      //    상자 빈 곳 → target: DIV / currentTarget: DIV
+      //
+      // 3) document.querySelector("#innerBtn").addEventListener("click", (e) => {
+      //      console.log(e.target === e.currentTarget);
+      //    });
+      //    // 콘솔: true
+      //    → 이 콜백은 innerBtn '자신' 에 붙어 있고, 누른 것도 innerBtn 이라
+      //      둘이 같습니다. 섹션 2의 cardBox 는 부모에 붙였기 때문에 달랐습니다.
+      //      즉 둘이 다른 경우는 "부모에 붙이고 자식을 눌렀을 때" 뿐입니다.
+      //    → true 앞뒤로 다른 줄도 함께 나옵니다. 이 버튼에는 섹션 3의 콜백이
+      //      이미 붙어 있고, 클릭이 부모 cardBox 로 올라가 섹션 2의 콜백도
+      //      실행되기 때문입니다. 버블링을 눈으로 확인할 수 있는 자리입니다.
+      //      // 콘솔: type: click / 눌린 좌표: ... / true / target: BUTTON / currentTarget: DIV
+      //
+      // 4) if (e.key === "Escape") {
+      //      keyInput.value = "";
+      //      out3.textContent = "입력칸을 비웠습니다";
+      //    }
+      //
+      // 5) 링크가 실제로 눌린 대로 페이지를 이동해 버립니다.
+      //    → 주소창이 바뀌고 이 파일에서 벗어납니다. 뒤로 가기로 돌아오세요.
+      //      preventDefault 는 "브라우저가 원래 하려던 일을 하지 마라" 입니다.
+      //      링크의 원래 일이 '이동' 이었다는 걸 눈으로 확인하는 것이 이 실습입니다.
+    </script>
+  </body>
+</html>

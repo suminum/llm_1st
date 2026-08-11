@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>10단원 연습문제 정답 - DOM 조작</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo p,
+      .demo li {
+        background: #fff;
+        padding: 6px 10px;
+        margin: 4px 0;
+      }
+      label {
+        display: block;
+        margin: 10px 0 4px;
+        font-weight: bold;
+      }
+      input,
+      select {
+        padding: 6px 8px;
+        font-size: 15px;
+      }
+      /* .demo 를 앞에 붙인 이유: 위의 `.demo p` 보다 우선순위가 높아야
+         배경색이 실제로 바뀝니다. (CSS 명시도 — 이 자료의 범위 밖입니다) */
+      .demo .highlight {
+        background: #fff3a0;
+        font-weight: bold;
+      }
+      .demo .done {
+        color: #999;
+        text-decoration: line-through;
+      }
+      .hidden {
+        display: none;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 6px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>10단원 연습문제 정답 — DOM 조작</h1>
+
+    <p class="guide">
+      먼저 스스로 풀어 본 다음에 보세요. <strong>F12 → Console</strong> 을 함께 보면
+      각 문제의 콘솔 결과를 확인할 수 있습니다.
+    
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h2 id="mainTitle">원래 제목</h2>
+      <p id="target1">문제 2에서 바뀝니다</p>
+      <p id="target2">문제 3에서 태그가 들어갑니다</p>
+      <p class="item">항목 A</p>
+      <p class="item">항목 B</p>
+      <p class="item">항목 C</p>
+      <p id="styleTarget">문제 6에서 색이 바뀝니다</p>
+      <p id="classTarget">문제 7에서 클래스가 붙습니다</p>
+      <p id="toggleTarget">문제 8에서 사라집니다</p>
+      <ul id="fruitList"></ul>
+      <div id="cardArea"></div>
+      <ul id="removeList">
+        <li id="removeMe">문제 11에서 사라집니다</li>
+        <li>남아 있는 항목</li>
+      </ul>
+
+      <label for="nameInput">이름</label>
+      <input type="text" id="nameInput" value="이서연" />
+
+      <label for="priceInput">가격</label>
+      <input type="number" id="priceInput" value="4500" />
+
+      <label for="countInput">개수</label>
+      <input type="number" id="countInput" value="4" />
+
+      <label for="sizeSelect">사이즈</label>
+      <select id="sizeSelect">
+        <option value="S">작은 것</option>
+        <option value="L" selected>큰 것</option>
+      </select>
+
+      <label><input type="checkbox" id="iceCheck" checked /> 얼음 추가</label>
+
+      <p id="result">문제 13의 결과가 여기에 나옵니다</p>
+      <ul id="challengeList"></ul>
+    </div>
+
+    <script>
+      // ============================================================
+      // 10단원 연습문제 정답 — DOM 조작
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+
+      // ───── 문제 1 ─────
+      const mainTitle = document.querySelector("#mainTitle");
+      console.log(mainTitle);
+      // 콘솔: <h2 id="mainTitle">원래 제목</h2>
+      // getElementById("mainTitle") 로 써도 맞습니다. 이때는 # 을 붙이지 않습니다.
+
+      // ───── 문제 2 ─────
+      document.querySelector("#target1").textContent = "바꿨습니다!";
+      // 화면: 해당 줄이 "바꿨습니다!" 로 바뀝니다
+      // textContent 는 속성입니다. 괄호를 붙이면 TypeError 가 납니다.
+
+      // ───── 문제 3 ─────
+      document.querySelector("#target2").innerHTML = "<strong>굵은 글자</strong>";
+      // 화면: 실제로 굵게 보입니다
+      // textContent 로 넣었다면 <strong> 이 글자 그대로 보였을 겁니다.
+
+      // ───── 문제 4 ─────
+      const items = document.querySelectorAll(".item");
+      console.log(items.length);
+      // 콘솔: 3
+      // querySelector 였다면 첫 하나만 잡혀서 length 를 셀 수 없습니다.
+
+      // ───── 문제 5 ─────
+      items.forEach((item) => {
+        console.log(item.textContent);
+      });
+      // 콘솔: 항목 A
+      // 콘솔: 항목 B
+      // 콘솔: 항목 C
+
+      // ───── 문제 6 ─────
+      const styleTarget = document.querySelector("#styleTarget");
+      styleTarget.style.color = "white";
+      styleTarget.style.backgroundColor = "#2d6cdf";
+      // 화면: 파란 배경에 흰 글자
+      // background-color 라고 쓰면 SyntaxError 입니다. 카멜 표기법으로 씁니다.
+
+      // ───── 문제 7 ─────
+      document.querySelector("#classTarget").classList.add("highlight");
+      // 화면: 노란 배경에 굵은 글자
+      // add(".highlight") 처럼 점을 붙이면 안 됩니다. 이름만 씁니다.
+
+      // ───── 문제 8 ─────
+      const toggleTarget = document.querySelector("#toggleTarget");
+      toggleTarget.classList.toggle("hidden");
+      console.log(toggleTarget.classList.contains("hidden"));
+      // 콘솔: true
+      // 화면: 해당 줄이 사라집니다 (display: none)
+
+      // ───── 문제 9 ─────
+      const fruits = ["사과", "바나나", "포도"];
+      const fruitList = document.querySelector("#fruitList");
+
+      fruits.forEach((fruit, index) => {
+        const li = document.createElement("li"); // 반복문 '안'에서 매번 새로 만들기
+        li.textContent = `${index + 1}. ${fruit}`;
+        fruitList.appendChild(li);
+      });
+      // 화면: 1. 사과 / 2. 바나나 / 3. 포도
+
+      // 반복문 밖에서 li 를 한 번만 만들면 자리만 옮겨져 하나만 남습니다.
+
+      // ───── 문제 10 ─────
+      const products = [
+        { name: "아메리카노", price: 4000 },
+        { name: "케이크", price: 6000 },
+      ];
+      const cardArea = document.querySelector("#cardArea");
+
+      products.forEach(({ name, price }) => {
+        const div = document.createElement("div");
+        div.classList.add("card");
+        div.textContent = `${name} ${price}원`;
+        cardArea.appendChild(div);
+      });
+      // 화면: 테두리가 있는 카드 두 개
+      // 콜백 매개변수에서 구조분해를 썼습니다. (product) => product.name 도 맞습니다.
+
+      // ───── 문제 11 ─────
+      document.querySelector("#removeMe").remove();
+      // 화면: 해당 항목이 사라집니다
+      console.log(document.querySelector("#removeMe"));
+      // 콘솔: null
+
+      // ───── 문제 12 ─────
+      const nameInput = document.querySelector("#nameInput");
+      console.log(nameInput.value);
+      // 콘솔: 이서연
+      // input 은 textContent 가 아니라 value 입니다.
+
+      // ───── 문제 13 ─────
+      // 문제 12에서 만든 nameInput 을 그대로 씁니다.
+      // 문제 12를 document.querySelector(...) 한 줄로 풀었다면
+      // 여기서 nameInput 을 다시 만들어야 합니다.
+      const price = Number(document.querySelector("#priceInput").value);
+      const count = Number(document.querySelector("#countInput").value);
+      const size = document.querySelector("#sizeSelect").value;
+      const ice = document.querySelector("#iceCheck").checked;
+
+      const total = price * count;
+
+      document.querySelector("#result").textContent =
+        `${nameInput.value}님 / ${size} 사이즈 / ${total}원 / ${ice ? "얼음 추가" : "얼음 없음"}`;
+      // 화면: 이서연님 / L 사이즈 / 18000원 / 얼음 추가
+
+      console.log(total);
+      // 콘솔: 18000
+      // Number 를 빼먹으면 "4500" * "4" 는 우연히 18000 이 되지만,
+      // + 를 쓰는 순간 "45004" 가 되어 무너집니다. 습관적으로 Number 를 붙이세요.
+
+      // ───── 문제 14 ─────
+      const stockList = [
+        { name: "아메리카노", stock: 0 },
+        { name: "라떼", stock: 5 },
+        { name: "케이크", stock: 2 },
+        { name: "쿠키", stock: 0 },
+      ];
+      const challengeList = document.querySelector("#challengeList");
+
+      stockList
+        .filter(({ stock }) => stock > 0)
+        .forEach(({ name, stock }) => {
+          const li = document.createElement("li");
+          li.textContent = `${name} (재고 ${stock}개)`;
+          challengeList.appendChild(li);
+        });
+      // 화면: 라떼 (재고 5개) / 케이크 (재고 2개)
+
+      // filter 로 먼저 걸러 내고 forEach 로 붙였습니다.
+      // forEach 안에서 if 로 건너뛰어도 결과는 같습니다.
+      //   stockList.forEach((item) => {
+      //     if (item.stock === 0) return;
+      //     ...
+      //   });
+
+      // [다른 방법] innerHTML 과 map 을 쓰면 더 짧습니다.
+      // challengeList.innerHTML = stockList
+      //   .filter((p) => p.stock > 0)
+      //   .map((p) => `<li>${p.name} (재고 ${p.stock}개)</li>`)
+      //   .join("");
+
+      // ───── 문제 15 ─────
+      // const nothing = document.querySelector("#존재하지않는아이디");
+      // nothing.textContent = "안녕";
+      //
+      // 에러: TypeError: Cannot set properties of null (setting 'textContent')
+      //
+      // 왜:
+      //   querySelector 는 못 찾으면 null 을 돌려줍니다.
+      //   null 에는 textContent 라는 속성이 없으므로 값을 넣을 수 없습니다.
+      //
+      // 이 에러가 나는 이유 두 가지:
+      //   1) 선택자 오타 — # 이나 . 을 빠뜨렸거나 이름이 틀렸다
+      //   2) script 위치 — script 가 head 에 있어서 아직 그 태그가 만들어지지 않았다
+      //      (해결: script 를 body 맨 아래에 두거나 defer 를 붙인다)
+      //
+      // DOM 을 다룰 때 가장 많이 보는 에러입니다. 이 두 가지부터 확인하세요.
+    </script>
+  </body>
+</html>

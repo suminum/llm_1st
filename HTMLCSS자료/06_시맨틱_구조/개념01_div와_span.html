@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>06단원 개념01 - div와 span</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         06단원 · 개념 01 — div 와 span
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         01단원부터 05단원까지 배운 태그에는 전부 "뜻" 이 있었습니다.
+
+             <h1>       이 글자는 제목이다
+             <p>        이 글자 덩어리는 문단이다
+             <ul>       이건 순서 없는 목록이다
+             <img />    여기에 그림이 하나 있다
+             <input />  여기에 사람이 값을 적어 넣는다
+
+         그래서 태그를 고를 때 "이 글자가 무엇인가" 만 생각하면 됐습니다.
+
+         그런데 뜻이 하나도 필요 없는 순간이 있습니다.
+         "이 세 줄을 그냥 한 덩어리로 묶어 두고 싶다" 같은 때입니다.
+         묶는 것 말고는 아무 뜻도 붙이고 싶지 않습니다.
+
+         그때 쓰는 태그가 div 와 span 입니다.
+         이 둘은 뜻이 없습니다. 화면도 아무것도 바꾸지 않습니다.
+         하는 일은 딱 하나, 여러 요소를 묶어서 손잡이를 만드는 것입니다.
+
+             묶기 전                       묶은 뒤
+             <h3>제목</h3>                 <div>
+             <p>본문</p>          →          <h3>제목</h3>
+             <p>날짜</p>                     <p>본문</p>
+                                             <p>날짜</p>
+                                           </div>
+             따로 노는 세 조각             한 덩어리 + 그 안의 세 조각
+
+         왜 묶느냐고요? 07단원에서 CSS 를 배우면 답이 나옵니다.
+         "이 덩어리 전체를 회색 배경으로", "이 덩어리를 통째로 오른쪽으로" 같은 주문은
+         잡을 덩어리가 있어야 걸 수 있습니다. div 가 그 덩어리입니다.
+
+         지금은 CSS 를 아직 안 배웠으니, 이 파일에서 만드는 div 와 span 은
+         화면을 하나도 바꾸지 않습니다. 그게 정상입니다.
+         지금 배우는 것은 "나중에 잡을 손잡이를 미리 달아 두는 법" 입니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 01 — div 와 span</h1>
+    <p class="doc-sub">06단원 · 시맨틱 구조</p>
+
+    <p class="doc-guide">
+      이 파일에서 만드는 태그들은 <strong>화면을 거의 바꾸지 않습니다</strong>.
+      그래서 결과 상자들이 밋밋해 보입니다. 그게 맞습니다.
+      대신 <strong>코드가 어떻게 묶이는지</strong>를 보세요.
+      묶어 두면 07단원부터 그 묶음을 통째로 잡아 꾸밀 수 있게 됩니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: 뜻이 없는 상자가 왜 필요한가 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 뜻이 없는 상자가 왜 필요한가</h2>
+      <p class="doc-desc">
+        <code>&lt;div&gt;</code> 는 <strong>여러 요소를 하나로 묶기만 하는 상자</strong>입니다.
+        묶어도 화면은 그대로입니다.
+      </p>
+
+      <!--
+        아래 두 상자에 들어 있는 글자는 완전히 같습니다.
+        다른 것은 코드뿐입니다.
+
+            [묶기 전]
+            <h3>독서 모임 안내</h3>
+            <p>매주 목요일 저녁 7시에 모입니다.</p>
+            <p>장소는 3층 열람실입니다.</p>
+
+            [묶은 뒤]
+            <div>
+              <h3>독서 모임 안내</h3>
+              <p>매주 목요일 저녁 7시에 모입니다.</p>
+              <p>장소는 3층 열람실입니다.</p>
+            </div>
+
+        div 를 씌웠는데도 글자 크기, 줄 간격, 순서가 전부 그대로입니다.
+        높이까지 정확히 같습니다.
+
+        "그럼 왜 씌우느냐" 가 이 단원 전체의 질문입니다.
+        답은 두 가지입니다.
+
+            1) 사람이 읽기 좋아집니다.
+               코드가 200줄쯤 되면 "여기부터 여기까지가 안내문 한 덩어리" 라는 표시가
+               없으면 어디가 어디인지 못 찾습니다.
+
+            2) 나중에 통째로 다룰 수 있습니다.
+               07단원에서 "이 덩어리에 테두리를 둘러라" 라고 시킬 때,
+               시킬 대상이 있어야 합니다. div 가 그 대상입니다.
+
+        div 는 division(구획) 의 줄임말입니다. "여기부터 여기까지 한 칸" 이라는 뜻입니다.
+      -->
+      <div class="doc-demo" id="beforeBox">
+        <p class="doc-demo-label">묶기 전</p>
+        <h3>독서 모임 안내</h3>
+        <p>매주 목요일 저녁 7시에 모입니다.</p>
+        <p>장소는 3층 열람실입니다.</p>
+        <!-- 화면: 굵고 조금 큰 글씨로 "독서 모임 안내" 가 보이고,
+                  그 아래 두 문단이 한 줄씩 차례로 보입니다 -->
+      </div>
+      <div class="doc-demo" id="afterBox">
+        <p class="doc-demo-label">div 로 묶은 뒤</p>
+        <div id="noticeBox">
+          <h3>독서 모임 안내</h3>
+          <p>매주 목요일 저녁 7시에 모입니다.</p>
+          <p>장소는 3층 열람실입니다.</p>
+        </div>
+        <!-- 화면: 위 상자와 완전히 똑같이 보입니다. 달라진 곳이 한 군데도 없습니다 -->
+      </div>
+
+      <p class="doc-note">
+        두 상자의 높이는 <strong>같습니다</strong>. 눈으로도 자로 재도 같습니다.
+        div 는 "묶는다" 는 것 말고는 아무 일도 하지 않기 때문입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 두 번째 상자의 <code>&lt;div&gt;</code> 와
+        <code>&lt;/div&gt;</code> 두 줄을 지웠다가 새로고침(F5) 해 보세요.
+        화면이 하나도 안 바뀌는 것을 확인한 뒤 다시 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: div 는 한 줄을 통째로 차지한다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — div 는 한 줄을 통째로 차지합니다 (블록)</h2>
+      <p class="doc-desc">
+        <code>&lt;div&gt;</code> 는 <strong>블록</strong> 요소입니다.
+        가로 한 줄을 혼자 다 쓰고, 다음 것은 아래로 내려갑니다.
+      </p>
+
+      <!--
+        02단원 개념04 에서 블록과 인라인을 배웠습니다. 다시 한 번 정의합니다.
+
+            블록(block)   : 가로 한 줄을 혼자 다 차지합니다.
+                            폭이 남아도 옆에 아무도 못 옵니다.
+                            다음 요소는 아래로 내려갑니다.
+                            h1~h6, p, ul, li, hr, table 이 블록입니다.
+
+            인라인(inline): 글자 딱 그만큼만 차지합니다.
+                            옆에 다른 글자가 계속 이어붙습니다.
+                            strong, em, a, img 가 인라인입니다.
+
+        div 는 블록입니다. 그래서 div 를 세 개 쓰면 세 줄이 됩니다.
+
+        여기서 p 와 헷갈리기 쉬운 점이 하나 있습니다.
+        p 도 블록이라 세 줄이 되지만, p 에는 위아래 여백이 기본으로 붙어 있습니다.
+        div 에는 그 여백이 없습니다. 그래서 div 세 개는 줄이 딱 붙어 나옵니다.
+
+            <p>   → 블록 + 위아래 여백 16px 씩
+            <div> → 블록 + 여백 0
+
+        "왜 붙어 나오지?" 하고 놀라지 마세요. div 는 원래 이렇습니다.
+        여백은 10단원에서 CSS 로 직접 줍니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">div 세 개</p>
+        <div id="divBoxA">첫 번째 div 입니다.</div>
+        <div id="divBoxB">두 번째 div 입니다.</div>
+        <div id="divBoxC">세 번째 div 입니다.</div>
+        <!-- 화면: 세 줄이 위에서 아래로 바짝 붙어서 보입니다.
+                  줄과 줄 사이에 빈 공간이 없습니다 -->
+      </div>
+      <div class="doc-demo">
+        <p class="doc-demo-label">같은 글자를 p 로 썼을 때</p>
+        <p id="pBoxA">첫 번째 p 입니다.</p>
+        <p id="pBoxB">두 번째 p 입니다.</p>
+        <p id="pBoxC">세 번째 p 입니다.</p>
+        <!-- 화면: 세 줄이 보이는데, 줄과 줄 사이가 눈에 띄게 벌어져 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        두 상자 모두 "세 줄" 이라는 점은 같습니다. 둘 다 블록이기 때문입니다.
+        다른 것은 <strong>여백뿐</strong>입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위쪽 상자에 <code>&lt;div&gt;네 번째 div 입니다.&lt;/div&gt;</code> 를
+        한 줄 더 넣어 보세요. 줄이 네 개가 되고, 여전히 서로 붙어 있는지 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: span 은 글줄 안의 한 조각 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — span 은 글줄 안의 한 조각입니다 (인라인)</h2>
+      <p class="doc-desc">
+        <code>&lt;span&gt;</code> 은 <strong>인라인</strong> 요소입니다.
+        문장 한가운데의 몇 글자만 콕 집어 묶을 때 씁니다.
+      </p>
+
+      <!--
+        span 은 02단원에서 이름만 보고 지나갔습니다. 여기서 제대로 씁니다.
+
+            <p>저는 <span>가운데</span> 조각입니다.</p>
+
+        span 을 씌운 "가운데" 세 글자는 겉보기에 아무 변화가 없습니다.
+        굵어지지도, 색이 바뀌지도 않습니다. 줄도 안 바뀝니다.
+
+        strong 과 비교하면 차이가 분명합니다.
+
+            <strong>가운데</strong>  → 뜻이 있습니다. "이건 중요한 말이다"
+                                       그래서 브라우저가 굵게 그려 줍니다.
+
+            <span>가운데</span>      → 뜻이 없습니다. 아무 일도 안 일어납니다.
+                                       "여기부터 여기까지" 라는 표시만 남습니다.
+
+        그럼 span 은 언제 쓸까요?
+        "중요하지도 강조하지도 않는데, 이 몇 글자만 나중에 따로 꾸미고 싶을 때" 입니다.
+
+            <p>가격 <span>12,000원</span></p>
+            → 12,000원 은 중요한 말이 아닙니다. 그냥 값입니다.
+              그런데 나중에 이 숫자만 빨간색으로 하고 싶습니다. 그래서 span 을 씌워 둡니다.
+
+        span 은 인라인이라 옆에 계속 이어붙습니다.
+        span 을 세 개 나란히 쓰면 세 줄이 아니라 한 줄이 됩니다. 이게 div 와 가장 큰 차이입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">문장 한가운데를 span 으로 묶기</p>
+        <p id="spanLine">저는 <span id="spanWord">가운데</span> 조각입니다.</p>
+        <!-- 화면: "저는 가운데 조각입니다." 가 한 줄로 보입니다.
+                  "가운데" 도 나머지 글자와 똑같은 굵기, 똑같은 색입니다 -->
+      </div>
+      <div class="doc-demo">
+        <p class="doc-demo-label">span 세 개를 나란히</p>
+        <p id="spanRow"><span>빨강</span><span>파랑</span><span>노랑</span></p>
+        <!-- 화면: "빨강파랑노랑" 이 한 줄에 붙어서 보입니다. 세 줄이 되지 않습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>&lt;span&gt;</code> 사이에 띄어쓰기를 넣지 않으면 글자도 붙어 나옵니다.
+        띄우고 싶으면 태그 사이에 <strong>진짜 띄어쓰기</strong>를 한 칸 넣으세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 "빨강파랑노랑" 상자에서 span 과 span 사이에
+        띄어쓰기를 한 칸씩 넣어 "빨강 파랑 노랑" 으로 만들어 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 같은 글자, div 와 span ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 같은 글자를 div 로 쌀 때와 span 으로 쌀 때</h2>
+      <p class="doc-desc">
+        둘 다 뜻이 없고 둘 다 화면을 안 바꿉니다.
+        <strong>다른 것은 한 줄을 다 먹느냐 아니냐</strong>뿐입니다.
+      </p>
+
+      <!--
+        말로만 하면 안 와닿습니다. 눈으로 보는 방법이 있습니다.
+        상자 뒤에 글자를 하나 더 붙여 보는 것입니다.
+
+            <div>안녕하세요</div>뒤에 붙인 글자
+                  → div 가 한 줄을 다 먹으므로 "뒤에 붙인 글자" 는 다음 줄로 밀려납니다.
+
+            <span>안녕하세요</span>뒤에 붙인 글자
+                  → span 은 글자 폭만 먹으므로 그 자리에서 바로 이어집니다.
+
+        이것이 블록과 인라인의 실제 차이입니다.
+        아래 두 상자에서 줄 수를 세어 보세요. 위는 두 줄, 아래는 한 줄입니다.
+
+        폭을 자로 재면 이렇게 나옵니다.
+
+            div  → 824px  (상자 안쪽 폭을 끝까지 다 씁니다)
+            span →  80px  ("안녕하세요" 다섯 글자 폭만 씁니다)
+
+        배경색이 없어서 눈에는 안 보이지만, 차지한 자리는 이렇게 다릅니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">div 뒤에 글자를 붙이면</p>
+        <div id="wrapDiv">안녕하세요</div>뒤에 붙인 글자
+        <!-- 화면: "안녕하세요" 가 한 줄, "뒤에 붙인 글자" 가 그 아래 줄.
+                  모두 두 줄로 보입니다 -->
+      </div>
+      <div class="doc-demo">
+        <p class="doc-demo-label">span 뒤에 글자를 붙이면</p>
+        <span id="wrapSpan">안녕하세요</span>뒤에 붙인 글자
+        <!-- 화면: "안녕하세요뒤에 붙인 글자" 가 한 줄로 이어져 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        고를 때 기준은 간단합니다.
+        <strong>덩어리를 묶으면 div, 글줄 속 몇 글자를 묶으면 span</strong> 입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위쪽 상자의 <code>&lt;div&gt;</code> 를
+        <code>&lt;span&gt;</code> 으로 바꿔 보세요(닫는 태그도 같이).
+        두 줄이던 것이 한 줄로 합쳐집니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 이름표 붙여 두기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 묶은 김에 이름표를 붙여 둡니다</h2>
+      <p class="doc-desc">
+        묶기만 하면 나중에 "그 덩어리" 를 부를 방법이 없습니다.
+        그래서 <code>class</code> 라는 속성으로 이름을 붙여 둡니다.
+      </p>
+
+      <!--
+        class 는 01단원에서 배운 '속성' 중 하나입니다. 이렇게 씁니다.
+
+            <div class="post-card">   ... </div>
+                  └ 속성 이름   └ 값(내가 지은 이름)
+
+        이 이름은 화면에 안 보입니다. 사람이 지어 붙이는 꼬리표일 뿐입니다.
+        07·08단원에서 CSS 를 배우면 이 이름을 불러서 꾸미게 됩니다.
+
+            08단원에서 이렇게 씁니다(지금은 이런 게 있다는 것만 보세요).
+
+                .post-card { background: #eee; }
+                → "post-card 라는 이름표가 붙은 덩어리를 회색 배경으로"
+
+        이름 짓는 방법에도 약속이 있습니다.
+
+            · 영어 소문자로 씁니다.
+            · 단어 사이는 하이픈 한 개로 잇습니다.  post-card, menu-item
+            · 생김새가 아니라 역할을 적습니다.
+              red-text 처럼 색을 적으면, 나중에 파랑으로 바꿀 때 이름이 거짓말이 됩니다.
+              price, warning 처럼 역할을 적으면 색이 바뀌어도 이름은 그대로 맞습니다.
+
+        하나의 요소에 class 를 붙이는 것도 됩니다. span 에도 붙일 수 있습니다.
+        아래 상자에서 확인하세요. class 를 붙여도 화면은 여전히 그대로입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <div class="post-card" id="cardBox">
+          <h3>오늘 점심</h3>
+          <p>학교 앞 국숫집에 갔습니다.</p>
+          <p>가격 <span class="price" id="priceText">7,000원</span></p>
+        </div>
+        <!-- 화면: 굵고 조금 큰 글씨 "오늘 점심" 아래에 두 문단이 보입니다.
+                  "가격 7,000원" 은 한 줄이고, 7,000원 도 보통 글씨입니다 -->
+      </div>
+
+      <p class="doc-note">
+        class 이름에는 <code>doc-</code> 을 붙이지 마세요.
+        <code>doc-</code> 으로 시작하는 이름은 이 수업 자료의 겉모양 전용입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 위 상자의 두 번째 문단 전체를
+        <code>class="place"</code> 를 붙인 <code>&lt;div&gt;</code> 로 한 번 더 감싸 보세요.
+        화면이 그대로인지 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        div 와 span 은 <strong>아무 뜻도 없기 때문에</strong> 잘못 써도 화면이 멀쩡합니다.
+        그래서 틀린 줄 모르고 지나갑니다. 아래 다섯 가지를 눈에 익혀 두세요.
+      </p>
+
+      <!-- [실수 1] div 로 제목을 만듦 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 제목을 div 로 만듦</span>
+        <div class="doc-code">&lt;div&gt;오늘의 공지&lt;/div&gt;</div>
+        <div id="badTitle">오늘의 공지</div>
+        <p>
+          글자가 보통 크기 그대로입니다. 제목처럼 보이지 않습니다.
+          "나중에 CSS 로 크게 만들면 되지" 라고 생각하기 쉬운데,
+          <strong>크게 만들어도 제목이 되지는 않습니다.</strong>
+          검색엔진과 화면 낭독기에게는 여전히 그냥 글자 한 줄입니다.
+          자세한 이유는 개념02 에서 봅니다.
+        </p>
+        <!-- 화면: 코드가 적힌 검은 상자 아래에 보통 크기 글씨로 "오늘의 공지" 한 줄 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">&lt;h3&gt;오늘의 공지&lt;/h3&gt;</div>
+        <h3 id="goodTitle">오늘의 공지</h3>
+        <!-- 화면: 굵고 조금 큰 글씨로 "오늘의 공지" 한 줄 -->
+      </div>
+
+      <!-- [실수 2] span 안에 div 를 넣음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — span 안에 div 를 넣음</span>
+        <div class="doc-code">&lt;span&gt;앞 글자 &lt;div&gt;가운데&lt;/div&gt; 뒤 글자&lt;/span&gt;</div>
+        <span id="badNest">앞 글자 <div id="badInner">가운데</div> 뒤 글자</span>
+        <p>
+          한 줄이길 바랐는데 <strong>세 줄로 쪼개집니다</strong>. 에러는 안 납니다.
+          안에 넣은 div 가 블록이라 한 줄을 통째로 차지하기 때문입니다.
+          인라인 안에는 인라인만 넣으세요. 덩어리를 넣고 싶으면 바깥을 div 로 바꾸세요.
+        </p>
+        <!-- 화면: "앞 글자", "가운데", "뒤 글자" 가 각각 다른 줄로 세 줄이 됩니다 -->
+      </div>
+
+      <!-- [실수 3] 줄을 바꾸려고 div 를 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 줄을 바꾸려고 빈 div 를 씀</span>
+        <div class="doc-code">&lt;div&gt;&lt;/div&gt;
+&lt;div&gt;&lt;/div&gt;</div>
+        <p>
+          빈 div 는 높이가 0 입니다. <strong>아무 일도 안 일어납니다.</strong>
+          여백을 만들려고 빈 div 를 늘어놓는 사람이 많은데, 화면은 그대로이고
+          코드만 지저분해집니다. 여백은 10단원에서 CSS 로 줍니다.
+        </p>
+        <div id="emptyDiv"></div>
+      </div>
+
+      <!-- [실수 4] div 로만 도배 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 전부 div 로만 씀</span>
+        <div class="doc-code">&lt;div&gt;
+  &lt;div&gt;우리 반 소식&lt;/div&gt;
+  &lt;div&gt;
+    &lt;div&gt;체육대회&lt;/div&gt;
+    &lt;div&gt;다음 주 화요일입니다.&lt;/div&gt;
+  &lt;/div&gt;
+&lt;/div&gt;</div>
+        <p>
+          화면은 잘 나옵니다. 그래서 이게 실수라는 걸 알기가 가장 어렵습니다.
+          문제는 <strong>여는 div 가 열 개쯤 되면 어느 것이 어느 것의 짝인지 못 찾는다</strong>는 것입니다.
+          이 상태를 흔히 "div 수프" 라고 부릅니다.
+          제목은 <code>h1~h6</code>, 목록은 <code>ul</code>, 구획은 개념03·04 에서 배울
+          시맨틱 태그로 바꾸면 코드가 저절로 읽힙니다.
+        </p>
+      </div>
+
+      <!-- [실수 5] div 에 뜻이 있다고 착각 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — div 이름에 뜻이 담긴다고 생각함</span>
+        <div class="doc-code">&lt;div class="header"&gt;우리 가게&lt;/div&gt;</div>
+        <p>
+          <code>class="header"</code> 라고 적었으니 브라우저가 "아, 머리말이구나" 하고
+          알아들을 것 같지만 <strong>전혀 그렇지 않습니다</strong>.
+          class 값은 내가 지은 글자일 뿐이라 브라우저에게는 아무 뜻이 없습니다.
+          <code>class="banana"</code> 라고 써도 결과는 똑같습니다.
+          진짜로 뜻을 전하려면 개념03 의 <code>&lt;header&gt;</code> 태그를 써야 합니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>&lt;div&gt;</code> 와 <code>&lt;span&gt;</code> 은
+        <strong>뜻이 없는 상자</strong>입니다. 화면을 바꾸지 않습니다.</p>
+      <p>2. 여러 요소를 <strong>한 덩어리로 묶어 손잡이를 만들려고</strong> 씁니다. 07단원부터 그 손잡이를 잡습니다.</p>
+      <p>3. <code>&lt;div&gt;</code> 는 블록입니다. 가로 한 줄을 혼자 다 쓰고 다음 것은 아래로 갑니다.</p>
+      <p>4. <code>&lt;span&gt;</code> 은 인라인입니다. 글자 폭만 쓰고 옆에 계속 이어붙습니다.</p>
+      <p>5. <code>&lt;div&gt;</code> 에는 <code>&lt;p&gt;</code> 와 달리 위아래 여백이 없습니다.</p>
+      <p>6. <code>class</code> 로 이름표를 붙여 둡니다. 이름은 생김새가 아니라 역할로 짓습니다.</p>
+      <p>7. 뜻이 있는 자리에는 뜻이 있는 태그를 쓰세요. 제목에 div 를 쓰면 안 됩니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 섹션 1 의 두 번째 상자에서 이 두 줄을 지웁니다.
+
+                <div id="noticeBox">
+                </div>
+
+            → 화면이 하나도 안 바뀝니다. 글자 크기도 줄 간격도 그대로입니다.
+              div 는 묶는 일만 하기 때문입니다. 확인했으면 다시 붙여 두세요.
+
+         2) 섹션 2 위쪽 상자의 마지막 div 아래에 넣습니다.
+
+                <div>네 번째 div 입니다.</div>
+
+            → 줄이 네 개가 되고, 네 줄이 여전히 서로 바짝 붙어 있습니다.
+              아래쪽 p 상자와 견주면 여백 차이가 더 잘 보입니다.
+
+         3) 섹션 3 아래쪽 상자를 이렇게 고칩니다.
+
+                <p id="spanRow"><span>빨강</span> <span>파랑</span> <span>노랑</span></p>
+
+            → "빨강 파랑 노랑" 으로 사이가 한 칸씩 벌어집니다.
+              띄운 것은 span 이 아니라 태그와 태그 사이에 넣은 진짜 띄어쓰기입니다.
+
+         4) 섹션 4 위쪽 상자를 이렇게 고칩니다.
+
+                <span id="wrapDiv">안녕하세요</span>뒤에 붙인 글자
+
+            → 두 줄이던 것이 "안녕하세요뒤에 붙인 글자" 한 줄로 합쳐집니다.
+              span 은 글자 폭만 차지하므로 뒤 글자가 그 자리에서 바로 이어집니다.
+
+         5) 섹션 5 상자의 두 번째 문단을 이렇게 감쌉니다.
+
+                <div class="place">
+                  <p>학교 앞 국숫집에 갔습니다.</p>
+                </div>
+
+            → 화면은 그대로입니다. 덩어리가 하나 더 생겼을 뿐입니다.
+              나중에 "장소 부분만 회색으로" 같은 주문을 걸 자리가 생긴 것입니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #noticeBox | display | block
+      #beforeBox | ~height | 212
+      #afterBox | ~height | 212
+      #divBoxA | display | block
+      #divBoxA | ~width | 824
+      #divBoxA | margin-top | 0px
+      #pBoxA | margin-top | 16px
+      #spanWord | display | inline
+      #spanWord | ~width | 48
+      #spanLine | text | 저는 가운데 조각입니다.
+      #spanRow | text | 빨강파랑노랑
+      #wrapDiv | ~width | 824
+      #wrapSpan | ~width | 80
+      #wrapSpan | display | inline
+      #cardBox | display | block
+      #priceText | display | inline
+      #badTitle | font-size | 16px
+      #goodTitle | font-size | 18.72px
+      #badInner | display | block
+      #emptyDiv | ~height | 0
+    -->
+  </body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>03단원 개념03 - 설명 목록</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ════════════════════════════════════════════════════════════
+         03단원 · 개념 03 — 설명 목록
+         ────────────────────────────────────────────────────────────
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ════════════════════════════════════════════════════════════
+
+         지금까지 배운 목록은 항목이 한 종류였습니다.
+
+             ul  사과 · 바나나 · 포도            항목만 나열
+             ol  물 끓이기 · 면 넣기             항목만 나열
+
+         그런데 세상에는 항목이 두 종류인 목록이 있습니다.
+
+             HTML   웹페이지의 뼈대를 만드는 언어입니다
+             CSS    뼈대를 꾸미는 언어입니다
+             └ 용어  └ 그 용어에 대한 설명
+
+         왼쪽은 이름이고 오른쪽은 설명입니다. 둘은 짝입니다.
+         이런 짝 목록을 만드는 태그가 이번 파일의 주제입니다. 태그는 세 개입니다.
+
+             dl  짝 목록 전체를 감싸는 상자   (description list, 설명 목록)
+             dt  왼쪽의 용어                 (description term, 설명할 대상)
+             dd  오른쪽의 설명               (description details, 자세한 내용)
+
+         d 는 셋 다 description(설명) 의 d 입니다.
+         t 는 term(용어), d 는 details(내용) 라고 기억하면 헷갈리지 않습니다.
+
+             <dl>
+               <dt>HTML</dt>
+               <dd>웹페이지의 뼈대를 만드는 언어입니다</dd>
+             </dl>
+
+         ul 이 li 를 담았던 것처럼, dl 은 dt 와 dd 를 담습니다.
+         다른 점은 담기는 태그가 두 종류라는 것뿐입니다.
+    ════════════════════════════════════════════════════════════ -->
+
+    <h1 class="doc-head">개념 03 — 설명 목록</h1>
+    <p class="doc-sub">03단원 · 목록과 표</p>
+
+    <p class="doc-guide">
+      이 파일에서는 <strong>용어와 설명이 짝을 이루는 목록</strong>을 만듭니다.
+      <code>dl</code>, <code>dt</code>, <code>dd</code> 세 태그를 씁니다.
+      점도 번호도 붙지 않아서 처음에는 "이게 목록인가?" 싶습니다.
+      대신 <strong>설명 쪽만 오른쪽으로 들어가는 모양</strong>으로 짝이 눈에 보입니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: dl, dt, dd 로 짝 만들기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — dl, dt, dd 로 짝 만들기</h2>
+      <p class="doc-desc">
+        <code>dl</code> 로 감싸고, 그 안에 <code>dt</code>(용어) 와 <code>dd</code>(설명) 를
+        번갈아 씁니다.
+      </p>
+
+      <!--
+        아래 상자 안에 이렇게 썼습니다.
+
+            <dl id="term-list">
+              <dt>HTML</dt>
+              <dd>웹페이지의 뼈대를 만드는 언어입니다.</dd>
+              <dt>CSS</dt>
+              <dd>뼈대를 꾸미는 언어입니다.</dd>
+            </dl>
+
+        결과에서 확인할 것이 두 가지 있습니다.
+
+            1) dd 만 왼쪽에서 안으로 들어갑니다. 재 보면 40px 입니다.
+               dt 는 들어가지 않고 왼쪽 끝에 그대로 있습니다.
+               이 어긋남 하나로 "위가 용어, 아래가 설명" 이라는 관계가 눈에 보입니다.
+
+            2) 점도 번호도 붙지 않습니다.
+               ul 과 ol 은 표시가 붙었지만 dl 은 붙지 않습니다.
+               그래서 "이건 목록이 아니라 그냥 글 아닌가?" 하고 착각하기 쉽습니다.
+               목록이 맞습니다. 짝이라는 뜻이 코드에 들어 있습니다.
+
+        여기서 초보자가 가장 많이 오해하는 것을 짚고 갑니다.
+
+            dt 는 굵게 나오지 않습니다.
+
+        책이나 블로그의 용어집에서 용어가 굵게 인쇄된 것을 본 기억 때문에
+        "dt 를 쓰면 굵어지겠지" 하고 기대하게 됩니다. 실제로 재 보면 굵기는 400,
+        즉 본문과 똑같은 보통 굵기입니다. 굵게 만들고 싶으면 09단원에서 CSS 로 하거나,
+        지금 당장 하고 싶다면 02단원에서 배운 strong 으로 감싸면 됩니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <dl id="term-list">
+          <dt>HTML</dt>
+          <dd>웹페이지의 뼈대를 만드는 언어입니다.</dd>
+          <dt>CSS</dt>
+          <dd>뼈대를 꾸미는 언어입니다.</dd>
+        </dl>
+        <!-- 화면: "HTML" 은 왼쪽 끝에, 그 아래 설명 줄은 한 칸 안으로 들어가 있습니다.
+                  "CSS" 도 같은 모양으로 이어집니다. 점도 번호도 없고 글자 굵기는 전부 같습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>dt</code> 와 <code>dd</code> 는 <strong>짝의 개수가 같을 필요가 없습니다.</strong>
+        섹션 2 에서 <code>dt</code> 하나에 <code>dd</code> 를 여러 개 다는 경우를 봅니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 목록에 <code>&lt;dt&gt;브라우저&lt;/dt&gt;</code> 와
+        그 설명 <code>&lt;dd&gt;웹페이지를 열어 보는 프로그램입니다.&lt;/dd&gt;</code> 를
+        한 짝 더 넣어 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: dt 하나에 dd 여러 개 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — dt 하나에 dd 여러 개</h2>
+      <p class="doc-desc">
+        용어 하나에 설명이 여럿일 수 있습니다. <code>dd</code> 를 이어서 쓰면 됩니다.
+      </p>
+
+      <!--
+        한 단어에 뜻이 여러 개인 경우를 생각해 보세요.
+
+            <dl id="multi-dd">
+              <dt>배</dt>
+              <dd>물 위를 떠다니는 탈것입니다.</dd>
+              <dd>배나무의 열매입니다.</dd>
+              <dd>사람 몸의 앞쪽 가운데 부분입니다.</dd>
+            </dl>
+
+        dt 를 다시 쓰지 않고 dd 만 이어 붙입니다.
+        브라우저는 "다음 dt 가 나오기 전까지의 dd 는 전부 앞 dt 의 설명" 으로 봅니다.
+
+        반대로 dt 를 여러 개 쓰고 dd 를 하나만 쓸 수도 있습니다.
+        뜻이 같은 여러 이름을 한 번에 설명할 때입니다.
+
+            <dt>냉장고</dt>
+            <dt>냉장 보관고</dt>
+            <dd>음식을 차게 보관하는 기계입니다.</dd>
+
+        규칙은 하나입니다. dl 안에서 dt 와 dd 만 쓰고, 순서는 dt 가 먼저입니다.
+        몇 개씩 쓸지는 내용에 맞춰 정하면 됩니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">dt 하나에 dd 세 개</p>
+        <dl id="multi-dd">
+          <dt>배</dt>
+          <dd>물 위를 떠다니는 탈것입니다.</dd>
+          <dd>배나무의 열매입니다.</dd>
+          <dd>사람 몸의 앞쪽 가운데 부분입니다.</dd>
+        </dl>
+        <!-- 화면: "배" 가 왼쪽 끝에 한 줄, 그 아래 설명 세 줄이 모두 같은 만큼 안으로 들어가
+                  나란히 붙어 있습니다. 설명끼리는 위아래 간격이 없습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">dt 두 개에 dd 하나</p>
+        <dl id="multi-dt">
+          <dt>냉장고</dt>
+          <dt>냉장 보관고</dt>
+          <dd>음식을 차게 보관하는 기계입니다.</dd>
+        </dl>
+        <!-- 화면: 왼쪽 끝에 두 줄이 붙어 나오고, 그 아래 설명 한 줄이 안으로 들어가 있습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — "눈" 이라는 <code>dt</code> 를 만들고 뜻이 다른
+        <code>dd</code> 두 개(하늘에서 내리는 것 · 몸의 기관) 를 달아 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 언제 쓰나 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 언제 쓰나 (용어집 · 상품 스펙 · FAQ)</h2>
+      <p class="doc-desc">
+        <strong>"왼쪽 이름 · 오른쪽 값" 으로 정리되는 내용</strong>이면 <code>dl</code> 자리입니다.
+      </p>
+
+      <!--
+        실제로 많이 쓰는 곳은 세 가지입니다.
+
+            1) 용어집
+               섹션 1 에서 본 모양 그대로입니다.
+
+            2) 상품 스펙
+               쇼핑몰에서 "화면 크기 : 15.6인치" 처럼 항목과 값이 짝지어진 표입니다.
+               dt 가 항목 이름, dd 가 값입니다.
+
+            3) FAQ (자주 묻는 질문)
+               dt 에 질문, dd 에 답을 넣습니다.
+               질문 하나에 답이 여러 문단이면 섹션 2 처럼 dd 를 여러 개 씁니다.
+
+        여기서 한 가지 헷갈리는 점이 생깁니다.
+        상품 스펙은 다음 파일에서 배울 table 로도 만들 수 있습니다. 무엇을 써야 할까요?
+        기준은 값이 몇 줄기인가입니다.
+
+            항목마다 값이 하나  →  dl
+                화면 크기 : 15.6인치
+                무게      : 1.4kg
+
+            항목마다 값이 여럿  →  table
+                        1분기  2분기  3분기
+                매출     100    120    150
+
+        위쪽은 이름 하나에 값 하나라 짝 목록입니다.
+        아래쪽은 가로와 세로 두 방향으로 읽어야 하니 표입니다.
+        "가로줄과 세로줄이 만나는 자리를 읽어야 하면 표" 라고 기억해 두세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">상품 스펙으로 쓴 예</p>
+        <dl id="spec-list">
+          <dt>화면 크기</dt>
+          <dd>15.6인치</dd>
+          <dt>무게</dt>
+          <dd>1.4kg</dd>
+          <dt>색상</dt>
+          <dd>은색</dd>
+        </dl>
+        <!-- 화면: 항목 이름이 왼쪽 끝에, 값이 한 칸 안으로 들어간 줄로 번갈아 여섯 줄 보입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">FAQ 로 쓴 예</p>
+        <dl id="faq-list">
+          <dt>배송은 얼마나 걸리나요?</dt>
+          <dd>주문 다음 날 출발해서 보통 이틀 안에 도착합니다.</dd>
+          <dd>주말과 공휴일은 하루씩 더 걸립니다.</dd>
+          <dt>교환은 어떻게 하나요?</dt>
+          <dd>받으신 날부터 7일 안에 신청하시면 됩니다.</dd>
+        </dl>
+        <!-- 화면: 질문이 왼쪽 끝에, 답이 한 칸 안으로 들어가 보입니다.
+                  첫 질문 아래에는 답이 두 줄 연달아 붙어 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>dt</code> 에 <code>&lt;strong&gt;</code> 을 씌워 질문을 굵게 만들 수 있습니다.
+        <code>dt</code> 자체는 굵어지지 않기 때문입니다. 다만 이런 꾸미기는 09단원 CSS 로 하는 편이
+        더 깔끔합니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 상품 스펙 목록에 "가격 · 89만원" 짝을 하나 더 넣어 보세요.
+        <code>dt</code> 와 <code>dd</code> 중 어느 쪽이 들여쓰기되는지 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: ul·ol 과 무엇이 다른가 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — ul · ol 과 무엇이 다른가</h2>
+      <p class="doc-desc">
+        같은 내용을 세 가지 목록으로 써 보면 차이가 분명해집니다.
+      </p>
+
+      <!--
+        "화면 크기는 15.6인치, 무게는 1.4kg" 이라는 내용을 세 가지로 써 보겠습니다.
+
+            ul 로 쓰면
+                • 화면 크기 : 15.6인치
+                • 무게 : 1.4kg
+              점이 붙습니다. 항목 안에서 이름과 값을 콜론으로 나눈 것은
+              사람이 눈으로 읽으라고 한 것이지, 코드에는 짝이라는 정보가 없습니다.
+
+            ol 로 쓰면
+                1. 화면 크기 : 15.6인치
+                2. 무게 : 1.4kg
+              순서가 없는 내용인데 번호가 붙어 "1번이 먼저" 라는 없던 뜻이 생깁니다. 틀렸습니다.
+
+            dl 로 쓰면
+                화면 크기
+                    15.6인치
+              들여쓰기로 짝이 보이고, 코드에도 "이건 이름, 이건 값" 이 들어갑니다.
+
+        세 가지 다 화면에는 무언가가 나옵니다. 에러는 어느 쪽도 나지 않습니다.
+        다른 것은 뜻입니다. 뜻이 맞아야 화면 낭독기가 제대로 읽어 주고,
+        08단원에서 CSS 선택자로 원하는 부분만 골라 꾸밀 수도 있습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">같은 내용을 ul 로 쓴 것</p>
+        <ul id="compare-ul">
+          <li>화면 크기 : 15.6인치</li>
+          <li>무게 : 1.4kg</li>
+        </ul>
+        <!-- 화면: 점(•) 이 붙은 두 줄이 보입니다. 이름과 값이 한 줄 안에 붙어 있습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">같은 내용을 dl 로 쓴 것</p>
+        <dl id="compare-dl">
+          <dt>화면 크기</dt>
+          <dd>15.6인치</dd>
+          <dt>무게</dt>
+          <dd>1.4kg</dd>
+        </dl>
+        <!-- 화면: 네 줄이 보이고, 값이 적힌 두 줄만 한 칸 안으로 들어가 있습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 여러분의 휴대전화 정보(기종 · 색상 · 산 곳) 를
+        <code>dl</code> 로 만들어 위 상자 아래에 넣어 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        <code>dl</code> 은 점도 번호도 없어서 <strong>잘못 써도 티가 잘 안 납니다.</strong>
+        그만큼 코드를 눈으로 확인하는 습관이 필요합니다.
+      </p>
+
+      <!-- [실수 1] dt 가 굵게 나올 거라고 기대함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — dt 가 굵게 나올 거라고 기대함</span>
+        <div class="doc-code">&lt;dt&gt;HTML&lt;/dt&gt;</div>
+        <dl id="not-bold">
+          <dt id="not-bold-dt">HTML</dt>
+          <dd>굵어지지 않았습니다.</dd>
+        </dl>
+        <p>
+          <strong>용어가 보통 굵기 그대로 나옵니다.</strong> 재 보면 굵기 값이 400 으로
+          본문과 같습니다. <code>dt</code> 는 "여기가 용어다" 라는 뜻만 붙이고
+          겉모양은 건드리지 않습니다. 굵게 하려면 <code>&lt;strong&gt;</code> 으로 감싸거나
+          09단원에서 CSS 로 하세요.
+        </p>
+        <!-- 화면: "HTML" 과 그 아래 설명 줄의 글자 굵기가 똑같습니다 -->
+      </div>
+
+      <!-- [실수 2] dl 안에 다른 태그를 바로 넣음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — dl 안에 p 를 바로 넣음</span>
+        <div class="doc-code">&lt;dl&gt;
+  &lt;p&gt;아래는 용어 설명입니다&lt;/p&gt;
+  &lt;dt&gt;HTML&lt;/dt&gt;
+&lt;/dl&gt;</div>
+        <dl id="stray-p-dl">
+          <p>아래는 용어 설명입니다</p>
+          <dt>HTML</dt>
+          <dd>웹페이지의 뼈대입니다.</dd>
+        </dl>
+        <p>
+          <code>ul</code> 의 규칙과 같습니다. <code>dl</code> 의 자식 자리에는
+          <code>dt</code> 와 <code>dd</code> 만 옵니다.
+          <strong>화면에는 그냥 한 줄이 더 늘어날 뿐이라 알아채기 어렵습니다.</strong>
+          안내 문장이 필요하면 <code>dl</code> 바깥, 그 위에 <code>p</code> 로 쓰세요.
+        </p>
+        <!-- 화면: 세 줄이 보입니다. 첫 줄과 둘째 줄은 왼쪽 끝에 붙어 있고
+                  셋째 줄만 한 칸 안으로 들어가 있습니다 -->
+      </div>
+
+      <!-- [실수 3] dt 없이 dd 만 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — dt 없이 dd 만 씀</span>
+        <div class="doc-code">&lt;dl&gt;
+  &lt;dd&gt;설명만 있습니다&lt;/dd&gt;
+&lt;/dl&gt;</div>
+        <dl id="dd-only">
+          <dd>설명만 있습니다</dd>
+        </dl>
+        <p>
+          <strong>들여쓰기만 된 줄 하나가 보입니다.</strong> 에러는 없습니다.
+          그래서 "글자를 안으로 밀고 싶을 때" <code>dd</code> 를 쓰는 사람이 있는데,
+          이것은 뜻을 속이는 일입니다. 무엇에 대한 설명인지가 사라집니다.
+          들여쓰기는 10단원에서 CSS 로 하세요.
+        </p>
+        <!-- 화면: "설명만 있습니다" 한 줄이 왼쪽에서 한 칸 들어간 자리에 보입니다 -->
+      </div>
+
+      <!-- [실수 4] dt 를 dl 밖에서 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — dt 를 dl 밖에서 씀</span>
+        <div class="doc-code">&lt;dt&gt;혼자 있는 용어&lt;/dt&gt;</div>
+        <dt id="lonely-dt">혼자 있는 용어</dt>
+        <p>
+          <strong>평범한 한 줄로 보일 뿐입니다.</strong> <code>li</code> 는 혼자 있어도 점이라도
+          붙어서 티가 났지만, <code>dt</code> 는 원래 아무 표시가 없어서 완전히 똑같아 보입니다.
+          <code>p</code> 를 쓴 것과 화면상 구분이 안 됩니다. 반드시 <code>dl</code> 안에 두세요.
+        </p>
+        <!-- 화면: "혼자 있는 용어" 가 왼쪽 끝에 평범한 한 줄로 보입니다 -->
+      </div>
+
+      <!-- [실수 5] dd 를 먼저 쓰고 dt 를 나중에 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — dd 를 먼저 쓰고 dt 를 나중에 씀</span>
+        <div class="doc-code">&lt;dl&gt;
+  &lt;dd&gt;웹페이지의 뼈대입니다&lt;/dd&gt;
+  &lt;dt&gt;HTML&lt;/dt&gt;
+&lt;/dl&gt;</div>
+        <p>
+          화면에는 설명이 위, 용어가 아래로 나옵니다. 보기에도 어색하지만 더 큰 문제는
+          <strong>어느 용어에 딸린 설명인지 알 수 없게 된다는 점</strong>입니다.
+          브라우저는 <code>dd</code> 를 <strong>바로 위의</strong> <code>dt</code> 에 딸린 것으로 봅니다.
+          위에 <code>dt</code> 가 없으면 딸릴 곳이 없습니다. <code>dt</code> 를 먼저 쓰세요.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. 용어와 설명이 짝인 목록은 <code>&lt;dl&gt;</code> 로 감쌉니다.</p>
+      <p>
+        2. <code>&lt;dt&gt;</code> 가 용어, <code>&lt;dd&gt;</code> 가 설명입니다.
+        <code>dt</code> 를 먼저 씁니다.
+      </p>
+      <p>3. <code>dd</code> 만 왼쪽에서 <strong>안으로 들어갑니다</strong>. 점도 번호도 붙지 않습니다.</p>
+      <p>
+        4. <strong><code>dt</code> 는 굵어지지 않습니다.</strong>
+        굵기가 필요하면 <code>strong</code> 이나 CSS 를 씁니다.
+      </p>
+      <p>5. <code>dt</code> 하나에 <code>dd</code> 여러 개, 그 반대도 됩니다. 개수를 맞출 필요가 없습니다.</p>
+      <p>6. 용어집 · 상품 스펙 · FAQ 처럼 <strong>이름과 값이 짝</strong>인 내용에 씁니다.</p>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════
+         ✏️ 직접 해보기 정답
+         ════════════════════════════════════════════════════════════
+
+         1) 섹션 1 의 dl 안, 마지막 dd 아래에 이렇게 넣습니다.
+
+                <dt>브라우저</dt>
+                <dd>웹페이지를 열어 보는 프로그램입니다.</dd>
+
+            → 왼쪽 끝에 "브라우저" 한 줄, 그 아래 한 칸 들어간 설명 한 줄이 늘어납니다.
+              앞의 두 짝과 똑같은 모양이 됩니다.
+
+         2) 섹션 2 의 상자 아래에 이렇게 넣습니다.
+
+                <dl>
+                  <dt>눈</dt>
+                  <dd>하늘에서 내리는 하얀 것입니다.</dd>
+                  <dd>사물을 보는 몸의 기관입니다.</dd>
+                </dl>
+
+            → "눈" 아래에 들여쓰기된 설명 두 줄이 간격 없이 붙어 나옵니다.
+              dt 를 한 번만 썼는데 설명 두 개가 모두 그 아래 딸립니다.
+
+         3) 섹션 3 의 상품 스펙 목록 맨 아래에 이렇게 넣습니다.
+
+                <dt>가격</dt>
+                <dd>89만원</dd>
+
+            → "가격" 은 왼쪽 끝에, "89만원" 은 한 칸 들어간 자리에 나옵니다.
+              들여쓰기되는 쪽은 항상 dd 입니다.
+
+         4) 섹션 4 의 상자 아래에 이렇게 넣습니다. 내용은 본인 것으로 바꾸세요.
+
+                <dl>
+                  <dt>기종</dt>
+                  <dd>스마트폰 A</dd>
+                  <dt>색상</dt>
+                  <dd>검정</dd>
+                  <dt>산 곳</dt>
+                  <dd>동네 대리점</dd>
+                </dl>
+
+            → 여섯 줄이 나오고 값이 적힌 세 줄만 안으로 들어갑니다.
+              ul 로 썼을 때와 달리 점이 하나도 없습니다.
+    ════════════════════════════════════════════════════════════ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #term-list | display | block
+      #term-list dt | display | block
+      #term-list dt | font-weight | 400
+      #term-list dt | margin-left | 0px
+      #term-list dd | margin-left | 40px
+      #multi-dd dd | margin-left | 40px
+      #multi-dt dt | display | block
+      #spec-list dd | margin-left | 40px
+      #faq-list dt | text | 배송은 얼마나 걸리나요?
+      #compare-ul | list-style-type | disc
+      #compare-dl dd | margin-left | 40px
+      #not-bold-dt | font-weight | 400
+      #stray-p-dl > p | margin-left | 0px
+      #dd-only dd | margin-left | 40px
+      #lonely-dt | font-weight | 400
+    -->
+  </body>
+</html>

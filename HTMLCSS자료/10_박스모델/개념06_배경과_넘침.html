@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>10단원 개념06 - 배경과 넘침</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ── 섹션 1: background-color 가 칠해지는 범위 ── */
+      .bgc-box {
+        background-color: #dbe7fb;
+        padding: 20px;
+        border: 10px dashed #2d6cdf;
+      }
+      /* 화면: 점선의 틈 사이로 연파랑이 비칩니다. 배경이 테두리 아래까지 깔려 있습니다 */
+
+      /* ── 섹션 2: background-image 와 repeat ── */
+      .bgi-repeat {
+        background-image: url("무늬.svg");
+        height: 120px;
+        border: 1px solid #999999;
+      }
+      /* 화면: 40px 짜리 물방울 무늬가 상자 전체에 바둑판처럼 반복됩니다 */
+      .bgi-norepeat {
+        background-image: url("무늬.svg");
+        background-repeat: no-repeat;
+        height: 120px;
+        border: 1px solid #999999;
+      }
+      /* 화면: 왼쪽 위 구석에 물방울 하나만 보입니다 */
+      .bgi-repeatx {
+        background-image: url("무늬.svg");
+        background-repeat: repeat-x;
+        height: 120px;
+        border: 1px solid #999999;
+      }
+      /* 화면: 맨 윗줄에만 가로로 한 줄 반복됩니다 */
+
+      /* ── 섹션 3: background-position ── */
+      .bgp-righttop {
+        background-image: url("무늬.svg");
+        background-repeat: no-repeat;
+        background-position: right top;
+        height: 110px;
+        border: 1px solid #999999;
+      }
+      .bgp-center {
+        background-image: url("무늬.svg");
+        background-repeat: no-repeat;
+        background-position: center;
+        height: 110px;
+        border: 1px solid #999999;
+      }
+      .bgp-px {
+        background-image: url("무늬.svg");
+        background-repeat: no-repeat;
+        background-position: 120px 40px;
+        height: 110px;
+        border: 1px solid #999999;
+      }
+
+      /* ── 섹션 4: background-size ── */
+      .bgs-auto {
+        background-image: url("풍경.svg");
+        background-repeat: no-repeat;
+        height: 140px;
+        border: 1px solid #999999;
+      }
+      /* 화면: 그림이 원래 크기(300 x 200)로 깔려서 아래쪽이 잘립니다 */
+      .bgs-cover {
+        background-image: url("풍경.svg");
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 140px;
+        border: 1px solid #999999;
+      }
+      /* 화면: 하늘이 상자를 빈틈없이 덮고 해의 윗부분만 크게 보입니다.
+               그림이 확대되어 아래쪽 산과 땅은 잘려 나갑니다 */
+      .bgs-contain {
+        background-image: url("풍경.svg");
+        background-repeat: no-repeat;
+        background-size: contain;
+        height: 140px;
+        border: 1px solid #999999;
+      }
+      /* 화면: 그림 전체가 다 보입니다. 대신 오른쪽에 빈 자리가 남습니다 */
+      .bgs-px {
+        background-image: url("풍경.svg");
+        background-repeat: no-repeat;
+        background-size: 150px 100px;
+        height: 140px;
+        border: 1px solid #999999;
+      }
+
+      /* ── 섹션 5: background 단축 ── */
+      .bg-short {
+        background: #fff8dc url("무늬.svg") no-repeat right center;
+        height: 110px;
+        padding: 16px;
+        border: 1px solid #999999;
+      }
+      /* 화면: 연노랑 바탕 오른쪽 한가운데에 물방울 하나가 놓입니다 */
+
+      /* ── 섹션 6: overflow ── */
+      .ov-visible,
+      .ov-hidden,
+      .ov-auto,
+      .ov-scroll {
+        width: 300px;
+        height: 90px;
+        padding: 8px;
+        border: 2px solid #888888;
+        background-color: #f4f4f4;
+      }
+      .ov-visible {
+        overflow: visible;
+        margin-bottom: 80px;
+      }
+      /* 화면: 넘친 글자가 상자 밖 아래로 그대로 흘러나옵니다 */
+      .ov-hidden {
+        overflow: hidden;
+      }
+      /* 화면: 넘친 부분이 잘려 안 보입니다. 스크롤바도 없습니다 */
+      .ov-auto {
+        overflow: auto;
+      }
+      /* 화면: 오른쪽에 세로 스크롤바가 생깁니다 */
+      .ov-scroll {
+        overflow: scroll;
+      }
+      /* 화면: 넘치지 않아도 가로세로 스크롤바 자리가 항상 잡혀 있습니다 */
+      .ov-text {
+        margin: 0;
+      }
+
+      /* ── 섹션 7: 실수 데모 ── */
+      .bad-url {
+        background-color: #fbe0e0;
+        height: 60px;
+        border: 1px solid #c0392b;
+      }
+      /* 화면: 그림이 안 뜬 상자가 어떻게 보이는지 흉내 낸 상자입니다.
+               배경색만 남고 아무 그림도 없습니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         10단원 · 개념 06 — 배경과 넘침
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              같은 폴더에 있는 무늬.svg 와 풍경.svg 를 배경으로 씁니다.
+              인터넷 없이도 그대로 보입니다.
+         ============================================================
+
+         이 단원의 마지막 파일입니다. 두 가지를 다룹니다.
+
+             1) 상자의 배경을 꾸미는 법     background 계열
+             2) 상자에서 넘친 내용을 다루는 법  overflow
+
+         07단원에서 background-color 로 배경색을 칠해 봤습니다.
+         배경에는 색뿐 아니라 그림도 깔 수 있습니다.
+
+             background-color     배경색
+             background-image     배경 그림
+             background-repeat    그림을 반복할지 말지
+             background-position  그림을 어디에 둘지
+             background-size      그림을 얼마나 키울지
+             background           위 다섯 개를 한 줄로
+
+         뒷부분의 overflow 는 개념05 에서 미뤄 둔 숙제입니다.
+         height 를 정해 놓았는데 내용이 그보다 길면 밖으로 삐져나왔습니다.
+         그 삐져나온 부분을 어떻게 할지 정하는 것이 overflow 입니다.
+
+             visible   그냥 밖으로 나오게 둔다 (기본값)
+             hidden    잘라서 안 보이게 한다
+             auto      넘칠 때만 스크롤바를 붙인다
+             scroll    항상 스크롤바 자리를 잡아 둔다
+
+         배경과 넘침은 사실 서로 다른 주제입니다.
+         둘 다 '상자를 어떻게 보이게 할 것인가' 에 속해서 한 파일에 모았습니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 06 — 배경과 넘침</h1>
+    <p class="doc-sub">10단원 · 박스 모델</p>
+
+    <p class="doc-guide">
+      이 파일은 <strong>배경 꾸미기</strong>와 <strong>넘친 내용 다루기</strong> 두 가지를 다룹니다.
+      배경 그림은 같은 폴더의 <code>무늬.svg</code> 와 <code>풍경.svg</code> 를 씁니다.
+      인터넷 주소를 쓰지 않았으므로 인터넷이 끊겨 있어도 그대로 보입니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: 배경이 칠해지는 범위 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 배경이 칠해지는 범위</h2>
+      <p class="doc-desc">
+        배경은 <strong>콘텐츠 + padding + 테두리 아래</strong>까지 깔립니다.
+        margin 자리에는 안 깔립니다.
+      </p>
+
+      <!--
+        개념01 섹션4 에서 배경색으로 확인했던 내용입니다.
+        여기서 한 번 더 짚고 넘어가는 이유는, 배경 그림도 똑같은 범위에 깔리기 때문입니다.
+
+            background-color   이 범위에 색을 칠합니다
+            background-image   이 범위에 그림을 깝니다
+
+        아래 상자는 테두리를 굵은 점선으로 그었습니다.
+        점선의 끊긴 틈으로 연파랑 배경이 보입니다.
+        배경이 테두리 아래까지 깔려 있다는 뜻입니다.
+
+        색과 그림을 둘 다 주면 그림이 색 위에 올라갑니다.
+        그래서 그림이 상자를 다 못 채우면 빈 자리에 배경색이 보입니다.
+        섹션 5 의 단축 예에서 그 모습을 확인할 수 있습니다.
+
+        그림이 안 뜰 때를 대비해 배경색을 같이 주는 것은 좋은 습관입니다.
+        그림 파일 경로가 틀려도 최소한 글자는 읽히기 때문입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">굵은 점선 사이로 배경이 비칩니다</p>
+        <p id="bgcBox" class="bgc-box">background-color 는 테두리 아래까지 깔립니다</p>
+        <!-- 화면: 파란 굵은 점선 상자 안이 연파랑이고, 점선의 틈에도 연파랑이 보입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 파일 위쪽 <code>&lt;style&gt;</code> 에서
+        <code>.bgc-box</code> 에 <code>margin: 20px;</code> 한 줄을 추가해 보세요.
+        새로 생긴 20px 자리에는 연파랑이 안 칠해지는 것을 확인하고 되돌리세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: background-image 와 repeat ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 배경에 그림 깔기</h2>
+      <p class="doc-desc">
+        <code>background-image: url("파일이름");</code> 으로 그림을 깝니다.
+        그림은 <strong>기본적으로 반복</strong>됩니다.
+      </p>
+
+      <!--
+        배경 그림은 이렇게 씁니다.
+
+            background-image: url("무늬.svg");
+
+        url( ) 안에는 그림 파일의 경로를 씁니다.
+        경로 쓰는 법은 04단원에서 img 태그로 배운 것과 똑같습니다.
+
+            url("무늬.svg")          같은 폴더에 있는 파일
+            url("이미지/무늬.svg")   이미지 폴더 안의 파일
+            url("../무늬.svg")       한 단계 위 폴더의 파일
+
+        주의할 점이 하나 있습니다.
+        CSS 파일 안에서 쓰는 경로는 'HTML 파일' 이 아니라 'CSS 파일' 기준입니다.
+        지금은 HTML 파일 안의 style 태그에 쓰고 있으므로 HTML 기준입니다.
+
+        무늬.svg 는 가로세로 40px 짜리 작은 그림입니다.
+        그런데 아래 첫 번째 상자는 가로 820px, 세로 120px 입니다.
+        그림이 훨씬 작은데 어떻게 될까요?
+
+            브라우저는 그림을 바둑판처럼 반복해서 상자를 채웁니다.
+
+        이것이 background-repeat 의 기본값 repeat 입니다.
+        타일을 붙이듯 채우기 때문에 작은 그림 하나로 넓은 면을 꾸밀 수 있습니다.
+
+        반복을 조절하는 값은 네 가지입니다.
+
+            repeat      가로세로 모두 반복 (기본값)
+            no-repeat   반복하지 않고 하나만
+            repeat-x    가로로만 반복
+            repeat-y    세로로만 반복
+
+        no-repeat 를 주면 그림이 왼쪽 위 구석에 하나만 놓입니다.
+        왜 왼쪽 위일까요? background-position 의 기본값이 왼쪽 위이기 때문입니다.
+        그 이야기는 다음 섹션에서 합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">repeat (기본값) / no-repeat / repeat-x</p>
+        <div id="bgiRepeat" class="bgi-repeat"></div>
+        <div id="bgiNoRepeat" class="bgi-norepeat"></div>
+        <div id="bgiRepeatX" class="bgi-repeatx"></div>
+        <!-- 화면: 첫 상자는 물방울 무늬가 상자를 가득 채우고,
+                  둘째 상자는 왼쪽 위에 물방울 하나만 있으며,
+                  셋째 상자는 맨 윗줄에만 물방울이 가로로 늘어서 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        배경 그림은 <code>&lt;img&gt;</code> 태그와 역할이 다릅니다.
+        내용으로서 의미가 있는 사진은 <code>&lt;img&gt;</code> 로 넣고(04단원),
+        장식용 무늬나 배경은 CSS 의 <code>background-image</code> 로 넣습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — <code>.bgi-repeatx</code> 의
+        <code>background-repeat: repeat-x;</code> 를 <code>repeat-y;</code> 로 바꿔 보세요.
+        무늬가 어느 방향으로 늘어서는지 확인하고 되돌리세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: background-position ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 그림을 어디에 둘지 정하기</h2>
+      <p class="doc-desc">
+        <code>background-position</code> 은 <strong>가로 위치와 세로 위치</strong>를
+        차례로 씁니다.
+      </p>
+
+      <!--
+        값은 두 개를 씁니다. 앞이 가로, 뒤가 세로입니다.
+
+            background-position: right top;      오른쪽 · 위
+            background-position: center;         가운데 (가로세로 둘 다)
+            background-position: 120px 40px;     왼쪽에서 120px, 위에서 40px
+
+        말로 쓸 수 있는 값은 이렇습니다.
+
+            가로 : left    center  right
+            세로 : top     center  bottom
+
+        기본값은 left top 입니다.
+        그래서 앞 섹션의 no-repeat 상자에서 무늬가 왼쪽 위에 놓였던 것입니다.
+
+        숫자로 쓰면 왼쪽 위 구석에서 얼마나 떨어뜨릴지를 뜻합니다.
+        px 뿐 아니라 % 도 쓸 수 있는데, % 는 계산 방식이 조금 특이해서
+        처음에는 말로 쓰는 값과 px 만 써도 충분합니다.
+
+        position 은 no-repeat 와 거의 항상 같이 씁니다.
+        반복해서 다 채워 버리면 위치를 정하는 의미가 없기 때문입니다.
+
+        아래 세 상자에서 무늬가 어디에 놓였는지 확인해 보세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">right top / center / 120px 40px</p>
+        <div id="bgpRightTop" class="bgp-righttop"></div>
+        <div id="bgpCenter" class="bgp-center"></div>
+        <div id="bgpPx" class="bgp-px"></div>
+        <!-- 화면: 첫 상자는 오른쪽 위 구석,
+                  둘째 상자는 정확히 한가운데,
+                  셋째 상자는 왼쪽에서 조금 떨어진 위쪽에 물방울이 하나씩 있습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>.bgp-righttop</code> 의
+        <code>background-position: right top;</code> 을 <code>left bottom;</code> 으로
+        바꿔 보세요. 무늬가 대각선 반대편으로 옮겨 갑니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: background-size 와 cover / contain ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 그림 크기 정하기 (cover 와 contain)</h2>
+      <p class="doc-desc">
+        <code>cover</code> 는 <strong>빈틈없이 채우기</strong>,
+        <code>contain</code> 은 <strong>다 보이게 넣기</strong>입니다.
+      </p>
+
+      <!--
+        풍경.svg 는 가로 300px, 세로 200px 짜리 그림입니다.
+        아래 상자들은 가로 820px, 세로 140px 입니다. 모양이 전혀 다릅니다.
+        이럴 때 그림을 어떻게 앉힐지 정하는 것이 background-size 입니다.
+
+            (아무것도 안 씀)  그림을 원래 크기 그대로 놓습니다. 300 x 200 입니다.
+                              상자보다 세로가 커서 아래쪽이 잘립니다.
+
+            cover             상자를 빈틈없이 채울 때까지 그림을 키웁니다.
+                              가로세로 비율은 유지합니다. 대신 넘치는 쪽이 잘립니다.
+
+            contain           그림 전체가 다 보이도록 상자 안에 넣습니다.
+                              가로세로 비율은 유지합니다. 대신 빈 자리가 남습니다.
+
+            150px 100px       가로세로를 직접 지정합니다. 비율이 깨질 수 있습니다.
+
+        cover 와 contain 은 이렇게 나눠 쓰면 됩니다.
+
+            사진을 배경으로 꽉 채우고 싶다  → cover   (잘려도 괜찮은 경우)
+            로고나 도표가 다 보여야 한다     → contain (잘리면 안 되는 경우)
+
+        cover 를 쓸 때는 background-position 을 같이 주는 일이 많습니다.
+        어느 쪽이 잘릴지 정할 수 있기 때문입니다.
+        사람 얼굴이 위쪽에 있는 사진이라면 position 을 top 으로 두는 식입니다.
+
+        아래 네 상자를 비교해 보세요. 같은 그림인데 결과가 전부 다릅니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">원래 크기 / cover / contain / 직접 지정</p>
+        <div id="bgsAuto" class="bgs-auto"></div>
+        <div id="bgsCover" class="bgs-cover"></div>
+        <div id="bgsContain" class="bgs-contain"></div>
+        <div id="bgsPx" class="bgs-px"></div>
+        <!-- 화면: 첫 상자는 왼쪽에 그림이 원래 크기로 놓이고 아래쪽 땅이 잘려 있습니다.
+                  둘째 상자는 하늘이 전체를 덮고 오른쪽 아래에 커다란 해만 보입니다.
+                  셋째 상자는 그림 전체가 세로에 맞춰 작게 들어가고 오른쪽이 비어 있습니다.
+                  넷째 상자는 그림이 작게 줄어 왼쪽 위에 놓입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>.bgs-cover</code> 에
+        <code>background-position: center bottom;</code> 한 줄을 추가해 보세요.
+        잘리는 부분이 위쪽으로 바뀌어 땅이 보이기 시작합니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: background 단축 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — background 한 줄로 줄여 쓰기</h2>
+      <p class="doc-desc">
+        <code>background</code> 하나에 색 · 그림 · 반복 · 위치를 몰아서 쓸 수 있습니다.
+      </p>
+
+      <!--
+        네 줄을 한 줄로 줄일 수 있습니다.
+
+            background-color: #fff8dc;
+            background-image: url("무늬.svg");     →  background: #fff8dc url("무늬.svg")
+            background-repeat: no-repeat;                        no-repeat right center;
+            background-position: right center;
+
+        padding 이나 border 와 같은 단축 속성입니다.
+        값의 순서는 자유롭지만, 보통 색 → 그림 → 반복 → 위치 순으로 씁니다.
+
+        여기에도 단축 속성의 함정이 그대로 있습니다.
+
+            background: #fff8dc;
+            background-image: url("무늬.svg");     이 순서는 괜찮습니다
+
+            background-image: url("무늬.svg");
+            background: #fff8dc;                   그림이 사라집니다
+
+        단축 background 는 자기가 안 적은 항목까지 전부 기본값으로 되돌립니다.
+        아래 줄의 background 에 그림이 안 적혀 있으니 그림이 없어지는 것입니다.
+        padding, border 에서 본 것과 똑같은 규칙입니다.
+
+            단축을 먼저, 개별을 나중에.
+
+        아래 상자에는 배경색과 배경 그림을 한 줄로 같이 줬습니다.
+        무늬가 오른쪽 한가운데에만 놓이고, 나머지 자리는 배경색이 보입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">background 한 줄로 네 가지를 한꺼번에</p>
+        <div id="bgShort" class="bg-short">
+          background: #fff8dc url("무늬.svg") no-repeat right center;
+        </div>
+        <!-- 화면: 연노랑 상자의 오른쪽 한가운데에 물방울 무늬 하나가 놓여 있습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>.bg-short</code> 의 값에서
+        <code>no-repeat</code> 를 빼고 새로고침해 보세요.
+        무늬가 상자를 가득 채우고, 위치 지정이 아무 의미가 없어집니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: overflow ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 넘친 내용 다루기 (overflow)</h2>
+      <p class="doc-desc">
+        상자보다 내용이 길 때 <strong>넘친 부분을 어떻게 할지</strong> 정합니다.
+      </p>
+
+      <!--
+        개념05 에서 height 를 정해 놓으면 내용이 밖으로 삐져나온다고 했습니다.
+        아래 네 상자는 전부 가로 300px, 세로 90px 로 똑같고
+        안에 든 글도 똑같습니다. overflow 값만 다릅니다.
+
+            visible   기본값. 넘친 글이 상자 밖으로 그대로 흘러나옵니다.
+                      상자 아래에 있던 다른 요소와 글자가 겹칠 수 있습니다.
+
+            hidden    넘친 부분을 잘라 냅니다. 안 보이게 됩니다.
+                      스크롤바가 없으므로 잘린 내용은 읽을 방법이 없습니다.
+
+            auto      넘칠 때만 스크롤바가 생깁니다. 넘치지 않으면 안 생깁니다.
+                      대부분의 경우 이것이 정답입니다.
+
+            scroll    넘치든 안 넘치든 스크롤바 자리를 항상 잡아 둡니다.
+                      내용이 바뀌어도 상자 크기가 안 흔들린다는 장점이 있습니다.
+
+        네 번째 상자를 잘 보세요. 스크롤바가 두 개(가로·세로) 다 있습니다.
+        scroll 은 안 넘치는 방향에도 자리를 잡기 때문입니다.
+
+        스크롤바가 생겨도 상자 자체의 크기는 안 바뀝니다.
+        네 상자 모두 가로 320px, 세로 110px 로 똑같습니다.
+        스크롤바는 상자 안쪽에 자리를 잡으므로 글이 들어갈 폭만 조금 줄어듭니다.
+        (스크롤바의 굵기와 생김새는 브라우저와 운영체제에 따라 다릅니다)
+
+        overflow 는 가로세로를 따로 정할 수도 있습니다.
+
+            overflow-x: hidden;   가로로 넘치는 것만 자르기
+            overflow-y: auto;     세로로 넘칠 때만 스크롤바
+
+        페이지 전체에 가로 스크롤바가 생겼을 때
+        overflow-x: hidden 으로 덮어 버리고 싶어질 때가 있습니다.
+        그것은 원인을 가리는 것일 뿐 고치는 것이 아닙니다.
+        대개는 개념05 에서 본 width 100% + padding 문제가 진짜 원인입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">visible (기본값) — 글이 상자 밖으로 흘러나옵니다</p>
+        <div id="ovVisible" class="ov-visible">
+          <p class="ov-text">
+            이 상자의 세로 길이는 90px 입니다. 그런데 안에 든 글이 그보다 훨씬 깁니다.
+            남는 부분이 어떻게 되는지 보세요. overflow 속성이 그것을 정합니다.
+            지금은 아무것도 안 정했으므로 기본값 visible 이 쓰이고 있습니다.
+          </p>
+        </div>
+        <!-- 화면: 회색 상자 아래로 글자 세 줄 정도가 테두리를 뚫고 흘러나와 있습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">hidden — 넘친 부분이 잘립니다</p>
+        <div id="ovHidden" class="ov-hidden">
+          <p class="ov-text">
+            이 상자의 세로 길이는 90px 입니다. 그런데 안에 든 글이 그보다 훨씬 깁니다.
+            남는 부분이 어떻게 되는지 보세요. overflow 속성이 그것을 정합니다.
+            지금은 hidden 이라서 넘친 글이 잘려 나갑니다.
+          </p>
+        </div>
+        <!-- 화면: 글이 상자 아래 테두리에서 뚝 끊깁니다. 스크롤바는 없습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">auto — 넘칠 때만 스크롤바가 생깁니다</p>
+        <div id="ovAuto" class="ov-auto">
+          <p class="ov-text">
+            이 상자의 세로 길이는 90px 입니다. 그런데 안에 든 글이 그보다 훨씬 깁니다.
+            남는 부분이 어떻게 되는지 보세요. overflow 속성이 그것을 정합니다.
+            지금은 auto 라서 오른쪽에 세로 스크롤바가 생겼습니다.
+          </p>
+        </div>
+        <!-- 화면: 상자 오른쪽에 세로 스크롤바가 하나 생기고, 끌어내리면 나머지 글이 보입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">scroll — 스크롤바 자리를 항상 잡아 둡니다</p>
+        <div id="ovScroll" class="ov-scroll">
+          <p class="ov-text">
+            이 상자의 세로 길이는 90px 입니다. 그런데 안에 든 글이 그보다 훨씬 깁니다.
+            남는 부분이 어떻게 되는지 보세요. overflow 속성이 그것을 정합니다.
+            지금은 scroll 이라서 가로 스크롤바 자리까지 잡혀 있습니다.
+          </p>
+        </div>
+        <!-- 화면: 오른쪽에 세로 스크롤바, 아래쪽에 가로 스크롤바가 둘 다 보입니다.
+                  가로로는 넘친 것이 없는데도 자리가 잡혀 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        헷갈리면 <code>auto</code> 를 쓰세요.
+        필요할 때만 스크롤바를 붙여 주므로 대부분의 경우에 맞습니다.
+        <code>hidden</code> 은 잘린 내용을 읽을 방법이 없어지므로,
+        정말 안 보여도 되는 내용에만 쓰세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — <code>.ov-hidden</code> 의 <code>height: 90px</code> 을
+        지우려면 어디를 고쳐야 할까요? 위쪽 <code>&lt;style&gt;</code> 에서
+        네 상자가 공유하는 규칙을 찾아 <code>height</code> 줄을 잠깐 지워 보고,
+        네 상자가 어떻게 변하는지 확인한 뒤 되돌리세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        배경 그림은 <strong>안 보여도 에러가 안 납니다.</strong>
+        그냥 빈 상자가 보일 뿐이라 원인을 찾기 어렵습니다.
+      </p>
+
+      <!-- [실수 1] 경로가 틀림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 그림 경로가 틀림</span>
+        <div class="doc-code">background-image: url("없는그림.svg");</div>
+        <p>
+          <strong>아무 그림도 안 보입니다.</strong> 화면에는 배경색만 남습니다.
+          깨진 그림 아이콘조차 안 나옵니다. <code>&lt;img&gt;</code> 태그와 다른 점입니다.
+          아래 상자가 그때의 모습입니다. 배경색만 있고 그림 자리는 그냥 비어 있습니다.
+          여러분 파일에서 진짜로 경로가 틀리면 F12 개발자도구의 Console 탭에
+          그 파일을 못 찾았다는 빨간 줄이 뜹니다.
+          <strong>배경이 안 보이면 Console 부터 확인하세요.</strong>
+          (아래 상자는 모습만 흉내 낸 것이라 이 페이지의 Console 에는 아무것도 안 뜹니다)
+        </p>
+        <div id="badUrl" class="bad-url"></div>
+        <!-- 화면: 분홍 배경색만 있는 빈 상자가 보입니다 -->
+      </div>
+
+      <!-- [실수 2] height 를 안 줌 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 빈 상자에 배경만 주고 height 를 안 줌</span>
+        <div class="doc-code">&lt;div class="hero"&gt;&lt;/div&gt;
+
+.hero {
+  background-image: url("풍경.svg");
+}</div>
+        <p>
+          <strong>아무것도 안 보입니다.</strong> 안에 내용이 없으면 상자의 세로 길이가
+          0 이 되고, 세로가 0 인 상자에는 배경을 칠할 자리가 없기 때문입니다.
+          빈 상자에 배경 그림을 깔 때는 <code>height</code> 를 꼭 같이 주세요.
+        </p>
+      </div>
+
+      <!-- [실수 3] 단축을 나중에 써서 그림이 사라짐 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 단축 background 를 나중에 씀</span>
+        <div class="doc-code">background-image: url("무늬.svg");
+background: #fff8dc;</div>
+        <p>
+          <strong>배경 그림이 조용히 사라집니다.</strong>
+          단축 <code>background</code> 는 자기가 안 적은 항목까지 전부 기본값으로
+          되돌리기 때문입니다. padding, border 와 똑같은 규칙입니다.
+          <strong>단축을 먼저, 개별을 나중에</strong> 쓰세요.
+        </p>
+      </div>
+
+      <!-- [실수 4] cover 와 contain 을 바꿔 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — cover 와 contain 을 바꿔 씀</span>
+        <p>
+          로고에 <code>cover</code> 를 쓰면 <strong>로고 가장자리가 잘려 나갑니다.</strong>
+          배경 사진에 <code>contain</code> 을 쓰면 <strong>옆에 빈 자리가 생겨</strong>
+          어색해집니다. 잘려도 되면 cover, 다 보여야 하면 contain 입니다.
+        </p>
+      </div>
+
+      <!-- [실수 5] 넘치는 것을 overflow: hidden 으로 덮음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 넘치는 원인을 안 고치고 hidden 으로 덮음</span>
+        <div class="doc-code">overflow-x: hidden;   /* 가로 스크롤바만 안 보이게 */</div>
+        <p>
+          가로 스크롤바는 사라지지만 <strong>내용은 여전히 밖에 있습니다.</strong>
+          잘려서 안 보일 뿐입니다. 화면이 좁아지면 글자가 통째로 안 읽히기도 합니다.
+          진짜 원인은 대개 개념05 의 <code>width: 100%</code> + <code>padding</code> 입니다.
+          <code>box-sizing: border-box</code> 로 원인을 고치세요.
+        </p>
+      </div>
+
+      <!-- [실수 6] url 안에 따옴표와 괄호를 잘못 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 6 — url 을 문자열처럼만 씀</span>
+        <div class="doc-code">background-image: "무늬.svg";</div>
+        <p>
+          <code>url( )</code> 을 빼먹었습니다. <strong>이 줄이 통째로 버려집니다.</strong>
+          배경이 아예 안 나옵니다. 파일 이름만 적는 것이 아니라
+          <code>url("무늬.svg")</code> 형태로 감싸야 합니다.
+          따옴표는 없어도 되지만 파일 이름에 공백이나 한글이 있으면 붙이는 편이 안전합니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. 배경은 <strong>콘텐츠 + padding + 테두리 아래</strong>까지 깔립니다.</p>
+      <p>2. <code>background-image: url("무늬.svg");</code> 로 그림을 깝니다. 기본은 반복입니다.</p>
+      <p>
+        3. <code>background-repeat</code> 는 <code>repeat</code> / <code>no-repeat</code> /
+        <code>repeat-x</code> / <code>repeat-y</code>.
+      </p>
+      <p>4. <code>background-position</code> 은 <strong>가로 위치 → 세로 위치</strong> 순으로 씁니다.</p>
+      <p>5. <code>cover</code> 는 빈틈없이 채우고(잘림), <code>contain</code> 은 다 보이게 넣습니다(빈 자리).</p>
+      <p>6. 단축 <code>background</code> 는 안 적은 항목을 기본값으로 되돌립니다. 먼저 쓰세요.</p>
+      <p>
+        7. <code>overflow</code> 는 <code>visible</code> / <code>hidden</code> /
+        <code>auto</code> / <code>scroll</code>. 헷갈리면 <code>auto</code>.
+      </p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) style 안의 .bgc-box 를 이렇게 바꿉니다.
+
+                .bgc-box {
+                  background-color: #dbe7fb;
+                  margin: 20px;
+                  padding: 20px;
+                  border: 10px dashed #2d6cdf;
+                }
+
+            → 상자가 사방으로 20px 씩 안쪽으로 물러납니다.
+              새로 생긴 20px 자리는 흰색입니다. 연파랑이 안 칠해집니다.
+              margin 은 배경이 안 깔린다는 것을 다시 확인한 것입니다. 되돌리세요.
+
+         2) style 안의 .bgi-repeatx 를 이렇게 바꿉니다.
+
+                .bgi-repeatx {
+                  background-image: url("무늬.svg");
+                  background-repeat: repeat-y;
+                  height: 120px;
+                  border: 1px solid #999999;
+                }
+
+            → 무늬가 가로 한 줄이 아니라 왼쪽 세로 한 줄로 늘어섭니다.
+              x 는 가로축, y 는 세로축입니다. 되돌려 놓으세요.
+
+         3) style 안의 .bgp-righttop 의 position 을 이렇게 바꿉니다.
+
+                background-position: left bottom;
+
+            → 무늬가 오른쪽 위에서 왼쪽 아래로, 대각선 반대편으로 옮겨 갑니다.
+              앞 값이 가로, 뒤 값이 세로라는 것을 확인하세요.
+
+         4) style 안의 .bgs-cover 에 한 줄을 추가합니다.
+
+                .bgs-cover {
+                  background-image: url("풍경.svg");
+                  background-repeat: no-repeat;
+                  background-size: cover;
+                  background-position: center bottom;
+                  height: 140px;
+                  border: 1px solid #999999;
+                }
+
+            → 잘리는 부분이 아래쪽에서 위쪽으로 바뀝니다.
+              초록색 땅이 보이기 시작하고 하늘이 덜 보입니다.
+              cover 는 반드시 어딘가를 자르므로, 어디를 자를지 position 으로 고릅니다.
+
+         5) style 안의 .bg-short 를 이렇게 바꿉니다.
+
+                .bg-short {
+                  background: #fff8dc url("무늬.svg") right center;
+                  height: 110px;
+                  padding: 16px;
+                  border: 1px solid #999999;
+                }
+
+            → 무늬가 상자를 가득 채웁니다. 배경색은 무늬에 완전히 가려 안 보입니다.
+              반복이 켜지면 상자가 그림으로 다 덮이므로 위치 지정이 의미가 없어집니다.
+              되돌려 놓으세요.
+
+         6) style 안에서 네 상자가 공유하는 규칙은 이것입니다.
+
+                .ov-visible,
+                .ov-hidden,
+                .ov-auto,
+                .ov-scroll {
+                  width: 300px;
+                  height: 90px;
+                  ...
+                }
+
+            여기서 height: 90px; 줄을 잠깐 지웁니다.
+
+            → 네 상자 모두 글 길이에 맞게 세로로 늘어나고, 넘치는 것이 없어집니다.
+              그래서 visible 과 hidden 은 아무 차이가 없어 보이고,
+              auto 의 스크롤바도 사라집니다. scroll 만 스크롤바 자리를 계속 잡고 있습니다.
+              넘치는 것이 있어야 overflow 가 일을 한다는 뜻입니다. 되돌려 놓으세요.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #bgcBox | background-color | rgb(219, 231, 251)
+      #bgiRepeat | background-repeat | repeat
+      #bgiNoRepeat | background-repeat | no-repeat
+      #bgiRepeatX | background-repeat | repeat-x
+      #bgpRightTop | background-position | 100% 0%
+      #bgpCenter | background-position | 50% 50%
+      #bgpPx | background-position | 120px 40px
+      #bgsAuto | background-size | auto
+      #bgsCover | background-size | cover
+      #bgsContain | background-size | contain
+      #bgsPx | background-size | 150px 100px
+      #bgShort | background-color | rgb(255, 248, 220)
+      #bgShort | background-repeat | no-repeat
+      #ovVisible | overflow | visible
+      #ovHidden | overflow | hidden
+      #ovAuto | overflow | auto
+      #ovScroll | overflow | scroll
+      #ovHidden | ~width | 320
+      #ovHidden | ~height | 110
+    -->
+  </body>
+</html>

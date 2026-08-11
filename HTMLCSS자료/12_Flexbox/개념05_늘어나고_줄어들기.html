@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>12단원 개념05 - 늘어나고 줄어들기</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ── 무대: 안쪽 폭 600px ── */
+      .stage {
+        width: 600px;
+        padding: 10px;
+        background: #eef2f7;
+        display: flex;
+      }
+      /* 화면: 옅은 파란 칸 안에 상자들이 가로로 나란히 놓입니다 */
+
+      .tile {
+        background: #2d6cdf;
+        color: #fff;
+        padding: 10px 0;
+        width: 100px;
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 14px;
+      }
+      /* 화면: 폭 100px 짜리 진한 파란 상자가 됩니다 */
+
+      .stage-label {
+        font-size: 13px;
+        color: #555;
+        margin: 14px 0 4px;
+      }
+      /* 화면: 각 무대 위에 작은 회색 글씨로 어떤 값인지 적힙니다 */
+
+      /* ── 섹션 1 : flex-grow ── */
+      .grow-all .tile {
+        flex-grow: 1;
+      }
+      /* 화면: 남는 300px 을 셋이 100px 씩 나눠 가져 상자가 200px 이 됩니다 */
+      .grow2 {
+        flex-grow: 2;
+      }
+      .grow1 {
+        flex-grow: 1;
+      }
+      .grow0 {
+        flex-grow: 0;
+      }
+
+      /* ── 섹션 2 : flex-shrink ── */
+      .shrink-stage .tile {
+        width: 300px;
+      }
+      /* 화면: 300px 짜리 셋이 600px 무대에 억지로 들어가 200px 씩으로 줄어듭니다 */
+      .shrink0 {
+        flex-shrink: 0;
+      }
+      .shrink2 {
+        flex-shrink: 2;
+      }
+
+      .overflow-stage .tile {
+        width: 250px;
+        flex-shrink: 0;
+        background: #b9432f;
+      }
+      /* 화면: 줄어들기를 막았더니 상자들이 무대 밖으로 150px 삐져나옵니다 */
+
+      /* ── 섹션 3 : flex-basis ── */
+      .basis-stage .tile {
+        flex-basis: 200px;
+      }
+      /* 화면: width 100px 을 무시하고 200px 씩 자리를 잡습니다 */
+
+      .word {
+        background: #2d6cdf;
+        color: #fff;
+        padding: 10px 8px;
+        box-sizing: border-box;
+        text-align: center;
+        font-size: 14px;
+      }
+      /* 화면: 글자 길이에 따라 폭이 달라지는 파란 상자가 됩니다 */
+      .basis-auto-stage .word {
+        flex-grow: 1;
+        flex-basis: auto;
+      }
+      /* 화면: 글자가 긴 상자가 더 넓은 채로 남습니다 (폭이 제각각) */
+      .basis-zero-stage .word {
+        flex-grow: 1;
+        flex-basis: 0;
+      }
+      /* 화면: 글자 길이와 상관없이 셋 다 정확히 200px 이 됩니다 */
+
+      /* ── 섹션 4 : flex 단축 ── */
+      .flex1-stage .tile {
+        flex: 1;
+      }
+      /* 화면: 세 상자가 정확히 200px 씩 똑같이 나눠 가집니다 */
+      .flex-ratio2 {
+        flex: 2;
+      }
+      .flex-ratio1 {
+        flex: 1;
+      }
+      .flex-none-item {
+        flex: none;
+      }
+
+      /* ── 섹션 5 : order ── */
+      .order-stage .tile {
+        width: 160px;
+      }
+      .order-first {
+        order: -1;
+      }
+      /* 화면: 이 상자만 맨 앞으로 옵니다 */
+      .order-3 {
+        order: 3;
+      }
+      .order-1 {
+        order: 1;
+      }
+      .order-2 {
+        order: 2;
+      }
+
+      /* ── 섹션 6 : 자주 하는 실수 ── */
+      .bad-stage {
+        background: #f7eeee;
+      }
+      .bad-stage .tile {
+        background: #b9432f;
+      }
+      .grow-on-container {
+        flex-grow: 1;
+      }
+      /* 화면: 컨테이너에 걸어 봐야 아이템은 그대로입니다 */
+      .width-lost-stage .tile {
+        width: 300px;
+        flex: 1;
+      }
+      /* 화면: width 300px 을 썼는데 200px 씩으로 똑같이 나뉩니다 */
+      .percent-stage .tile {
+        flex-grow: 50;
+      }
+      /* 화면: 50 이라고 썼지만 셋이 같은 값이라 결국 똑같이 나눠 가집니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ════════════════════════════════════════════════════════════
+         12단원 · 개념 05 — 늘어나고 줄어들기
+         ────────────────────────────────────────────────────────────
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ════════════════════════════════════════════════════════════
+
+         지금까지는 아이템 크기를 그대로 둔 채 '위치'만 옮겼습니다.
+         이 파일에서는 아이템의 '크기'를 flex 에게 맡깁니다.
+
+         여기서 배우는 속성은 전부 아이템에 쓰는 것입니다.
+         개념01 섹션 5 의 표에서 아래쪽에 있던 것들입니다.
+
+             flex-grow    남는 공간이 있을 때 얼마나 더 가져갈까
+             flex-shrink  공간이 모자랄 때 얼마나 양보할까
+             flex-basis   나눠 갖기를 시작하기 전의 기본 크기
+             flex         위 셋을 한 줄로 (가장 많이 씁니다)
+             order        보이는 순서
+
+         이 셋의 관계는 한 문장으로 정리됩니다.
+
+             먼저 basis 만큼 자리를 잡고, 남으면 grow 비율로 더 갖고,
+             모자라면 shrink 비율로 양보한다.
+
+         이 파일의 무대는 안쪽 폭이 600px 입니다.
+         숫자가 딱 떨어지도록 골라 두었으니 직접 더하고 나눠 보면서 읽으세요.
+    ════════════════════════════════════════════════════════════ -->
+
+    <h1 class="doc-head">개념 05 — 늘어나고 줄어들기</h1>
+    <p class="doc-sub">12단원 · Flexbox</p>
+
+    <p class="doc-guide">
+      이 파일의 속성은 <strong>전부 아이템에 씁니다.</strong> 컨테이너가 아닙니다.
+      무대 안쪽 폭은 600px 이고, 기본 상자 폭은 100px 입니다.
+      상자 셋이면 300px 을 쓰고 <strong>300px 이 남는다</strong>는 것만 기억하고 읽으세요.
+    </p>
+
+    <p class="doc-note">
+      이 파일에 나오는 <strong>"왼쪽 좌표"</strong> 는 브라우저 창을 1280px 로 놓고 잰 값입니다.
+      본문이 가운데 정렬이라 <strong>창 폭이 다르면 숫자가 통째로 좌우로 밀립니다.</strong>
+      숫자 자체를 외우지 말고, 상자들 사이의 <strong>차이</strong>(간격·나뉜 몫)를 보세요.
+      그 차이는 창 폭과 상관없이 늘 같습니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: flex-grow ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — flex-grow, 남는 공간을 비율로 나눠 갖기</h2>
+      <p class="doc-desc">
+        <code>flex-grow</code> 는 <strong>남는 공간을 몇 몫 가져갈지</strong> 적는 숫자입니다.
+        기본값은 0 이고, 0 은 "한 몫도 안 받겠다" 는 뜻입니다.
+      </p>
+
+      <!--
+        먼저 아무것도 안 준 상태입니다. 기본값이 0 이라 아무도 안 가져갑니다.
+        상자는 100px 그대로이고 남는 300px 은 오른쪽에 그냥 남습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">flex-grow 를 안 준 상태 (기본값 0)</p>
+        <div class="stage" id="growNoneStage">
+          <div class="tile" id="growNoneTile1">100px</div>
+          <div class="tile">100px</div>
+          <div class="tile">100px</div>
+        </div>
+        <!-- 화면: 상자 셋이 100px 씩, 오른쪽에 300px 이 빈 칸으로 남습니다 -->
+      </div>
+
+      <!--
+        이번에는 셋 다 1 을 줍니다.
+
+            .grow-all .tile { flex-grow: 1; }
+
+        몫을 세는 방법은 이렇습니다.
+
+            몫의 합 = 1 + 1 + 1 = 3
+            한 몫의 크기 = 남는 공간 300 ÷ 3 = 100
+            각 상자의 최종 폭 = 원래 100 + 받은 100 = 200
+
+        재어 보면 정말 200px 씩입니다. 왼쪽 좌표는 238 / 438 / 638 입니다.
+        중요한 것은 "200px 로 만들어라" 라고 시킨 적이 없다는 점입니다.
+        무대가 넓어지면 상자도 알아서 넓어집니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">셋 다 flex-grow: 1</p>
+        <div class="stage grow-all" id="growAllStage">
+          <div class="tile" id="growAllTile1">1</div>
+          <div class="tile" id="growAllTile2">1</div>
+          <div class="tile">1</div>
+        </div>
+        <!-- 화면: 상자 셋이 200px 씩으로 넓어져 무대를 빈틈없이 채웁니다 -->
+      </div>
+
+      <!--
+        숫자를 다르게 주면 비율이 달라집니다.
+
+            첫 상자 flex-grow: 2, 나머지 1, 1
+
+            몫의 합 = 2 + 1 + 1 = 4
+            한 몫 = 300 ÷ 4 = 75
+            첫 상자  = 100 + 75 × 2 = 250
+            둘째 상자 = 100 + 75 = 175
+            셋째 상자 = 100 + 75 = 175
+
+        여기서 자주 오해하는 것이 있습니다.
+        2 는 "두 배 넓게" 가 아니라 "남는 공간에서 두 몫" 이라는 뜻입니다.
+        250 은 175 의 두 배가 아닙니다. 원래 폭 100 이 그대로 깔려 있기 때문입니다.
+        폭 자체를 2:1:1 로 만들고 싶다면 섹션 3 의 flex-basis: 0 이 필요합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">flex-grow 를 2 : 1 : 1 로</p>
+        <div class="stage" id="growMixStage">
+          <div class="tile grow2" id="growMixTile1">grow 2</div>
+          <div class="tile grow1" id="growMixTile2">grow 1</div>
+          <div class="tile grow1">grow 1</div>
+        </div>
+        <!-- 화면: 첫 상자만 250px 로 넓고 나머지 둘은 175px 씩입니다 -->
+      </div>
+
+      <!--
+        한쪽만 늘리는 것도 자주 씁니다.
+
+            첫 상자 flex-grow: 1, 나머지 0
+
+            몫의 합 = 1 → 첫 상자가 300 을 통째로 가져갑니다
+            첫 상자 = 100 + 300 = 400, 나머지는 100 그대로
+
+        개념06 에서 만들 "로고는 왼쪽, 메뉴는 오른쪽" 내비게이션 바가 바로 이 원리입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">첫 상자만 flex-grow: 1</p>
+        <div class="stage" id="growOneStage">
+          <div class="tile grow1" id="growOneTile1">grow 1</div>
+          <div class="tile grow0" id="growOneTile2">grow 0</div>
+          <div class="tile grow0">grow 0</div>
+        </div>
+        <!-- 화면: 첫 상자만 400px 로 늘어나고 나머지 둘은 100px 그대로입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — <code>.grow2</code> 의 값을 <code>flex-grow: 4</code> 로 바꿔 보세요.
+        몫의 합이 6 이 되어 한 몫은 50 이 되고, 첫 상자는 300px, 나머지는 150px 이 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: flex-shrink ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — flex-shrink, 모자랄 때 얼마나 양보할까</h2>
+      <p class="doc-desc">
+        <code>flex-shrink</code> 는 grow 의 반대입니다.
+        <strong>기본값이 1</strong> 이라, 아무것도 안 써도 아이템은 이미 줄어들 준비가 되어 있습니다.
+      </p>
+
+      <!--
+        개념02 섹션 4 에서 "150px 짜리 다섯 개가 120px 로 찌그러진다" 를 봤습니다.
+        그 범인이 flex-shrink 의 기본값 1 입니다.
+
+        이번에는 300px 짜리 셋을 600px 무대에 넣었습니다.
+
+            필요한 폭 = 300 × 3 = 900
+            모자란 폭 = 900 − 600 = 300
+            셋이 같은 비율로 양보 → 각각 100 씩 → 최종 200px
+
+        width: 300px 이라고 분명히 썼는데 화면에서는 200px 입니다.
+        CSS 에서 width 가 지켜지지 않는 흔치 않은 경우입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">width 300px 짜리 셋 (기본값 flex-shrink: 1)</p>
+        <div class="stage shrink-stage" id="shrinkStage">
+          <div class="tile" id="shrinkTile1">300px</div>
+          <div class="tile">300px</div>
+          <div class="tile">300px</div>
+        </div>
+        <!-- 화면: 상자 셋이 200px 씩으로 줄어 무대를 꽉 채웁니다 -->
+      </div>
+
+      <!--
+        가운데 상자만 양보를 거절하게 해 봅니다.
+
+            .shrink0 { flex-shrink: 0; }
+
+        양보하는 양은 "shrink 값 × 원래 폭" 에 비례해 나눕니다.
+
+            첫 상자  1 × 300 = 300
+            둘째 상자 0 × 300 = 0      ← 안 줄어듭니다
+            셋째 상자 1 × 300 = 300
+            합계 600
+
+            첫 상자가 줄일 양  = 300 × (300 ÷ 600) = 150  → 300 − 150 = 150
+            셋째 상자도 마찬가지 → 150
+            둘째 상자는 300 그대로
+
+            150 + 300 + 150 = 600 ✔
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">가운데만 flex-shrink: 0</p>
+        <div class="stage shrink-stage" id="shrinkZeroStage">
+          <div class="tile" id="shrinkZeroTile1">shrink 1</div>
+          <div class="tile shrink0" id="shrinkZeroTile2">shrink 0</div>
+          <div class="tile">shrink 1</div>
+        </div>
+        <!-- 화면: 가운데 상자만 300px 로 넓고 양옆은 150px 씩으로 줄었습니다 -->
+      </div>
+
+      <!--
+        셋 다 flex-shrink: 0 을 주면 어떻게 될까요.
+        아무도 양보하지 않으니 무대 밖으로 삐져나갑니다.
+
+            250 × 3 = 750  →  600 짜리 무대에서 150px 이 넘칩니다
+
+        아래 무대에서 빨간 상자가 옅은 파란 칸 오른쪽 밖으로 나와 있는 것이 보입니다.
+        진짜 웹페이지에서 이런 일이 생기면 화면 아래에 가로 스크롤바가 생깁니다.
+        "왜 옆으로 스크롤이 되지?" 의 흔한 원인 중 하나입니다.
+
+        고치는 방법은 두 가지입니다.
+            1) flex-shrink 를 원래대로 두어 줄어들게 한다
+            2) 개념02 에서 배운 flex-wrap: wrap 으로 아랫줄에 내려보낸다
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">셋 다 flex-shrink: 0 (넘칩니다)</p>
+        <div class="stage overflow-stage" id="overflowStage">
+          <div class="tile" id="overflowTile1">250px</div>
+          <div class="tile">250px</div>
+          <div class="tile" id="overflowTile3">250px</div>
+        </div>
+        <!-- 화면: 세 번째 빨간 상자가 옅은 파란 칸 오른쪽 밖으로 150px 삐져나와 있습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — <code>.overflow-stage</code> 에
+        <code>flex-wrap: wrap</code> 을 한 줄 더해 보세요.
+        세 번째 상자가 아랫줄로 내려가면서 삐져나온 부분이 사라집니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: flex-basis ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — flex-basis, 나눠 갖기 전의 기본 크기</h2>
+      <p class="doc-desc">
+        <code>flex-basis</code> 는 <strong>계산을 시작할 때의 크기</strong>입니다.
+        기본값은 <code>auto</code> 이고, auto 는 "width 를 보라" 는 뜻입니다.
+      </p>
+
+      <!--
+        지금까지 "원래 폭 100" 이라고 했던 그 값이 사실 flex-basis 였습니다.
+
+            flex-basis: auto  →  width 값을 쓴다 (width 도 없으면 내용 크기)
+            flex-basis: 200px →  width 가 뭐든 200px 로 시작한다
+            flex-basis: 0     →  아예 0 에서 시작한다
+
+        아래 무대의 상자에는 width: 100px 과 flex-basis: 200px 이 둘 다 있습니다.
+        주축이 가로일 때는 flex-basis 가 이깁니다. 그래서 200px 이 됩니다.
+
+            200 × 3 = 600  →  무대를 정확히 채웁니다
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">width: 100px 인데 flex-basis: 200px</p>
+        <div class="stage basis-stage" id="basisStage">
+          <div class="tile" id="basisTile1">basis 200</div>
+          <div class="tile">basis 200</div>
+          <div class="tile">basis 200</div>
+        </div>
+        <!-- 화면: 상자 셋이 200px 씩으로 무대를 정확히 채웁니다 -->
+      </div>
+
+      <!--
+        basis 가 auto 인지 0 인지에 따라 결과가 크게 달라집니다.
+        글자 길이가 서로 다른 상자 셋으로 비교해 봅니다.
+
+        [ flex-grow: 1, flex-basis: auto ]
+            먼저 각자 글자 길이만큼 자리를 잡습니다. 폭이 제각각입니다.
+            그다음 남는 공간만 똑같이 3 등분해서 더합니다.
+            → 원래 길었던 상자가 계속 더 넓습니다.
+            → 재어 보면 123 / 194 / 283 입니다. 셋을 더하면 600 입니다.
+
+        [ flex-grow: 1, flex-basis: 0 ]
+            셋 다 0 에서 시작합니다. 글자 길이를 아예 안 봅니다.
+            그래서 600 을 그냥 3 등분한 200px 씩이 됩니다.
+            → 글자 길이와 상관없이 똑같은 폭입니다.
+
+        "카드 폭을 똑같이 맞추고 싶다" 면 basis 를 0 으로 두어야 합니다.
+        이것이 다음 섹션의 flex: 1 이 하는 일입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">basis 에 따라 달라지는 결과</p>
+
+        <p class="stage-label">flex-grow: 1 + flex-basis: auto → 폭이 제각각</p>
+        <div class="stage basis-auto-stage" id="basisAutoStage">
+          <div class="word" id="basisAutoWord1">짧다</div>
+          <div class="word" id="basisAutoWord2">조금 더 긴 글자</div>
+          <div class="word" id="basisAutoWord3">아주 아주 많이 긴 글자입니다</div>
+        </div>
+
+        <p class="stage-label">flex-grow: 1 + flex-basis: 0 → 셋 다 200px</p>
+        <div class="stage basis-zero-stage" id="basisZeroStage">
+          <div class="word" id="basisZeroWord1">짧다</div>
+          <div class="word" id="basisZeroWord2">조금 더 긴 글자</div>
+          <div class="word" id="basisZeroWord3">아주 아주 많이 긴 글자입니다</div>
+        </div>
+        <!-- 화면: 위 무대는 상자 폭이 123 / 194 / 283 으로 제각각이고,
+                  아래 무대는 셋 다 정확히 200px 로 같습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>flex-basis</code> 는 <strong>주축 방향의 크기</strong>를 정합니다.
+        <code>flex-direction: column</code> 이면 폭이 아니라 <strong>높이</strong>가 됩니다.
+        여기서도 "가로"가 아니라 "주축"이라는 말이 그대로 쓰입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>.basis-zero-stage .word</code> 의
+        <code>flex-basis: 0</code> 을 <code>flex-basis: auto</code> 로 바꿔 보세요.
+        아래 무대가 위 무대와 똑같아집니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: flex 단축 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 단축 속성 flex, 그리고 flex: 1 의 정체</h2>
+      <p class="doc-desc">
+        실무에서는 셋을 따로 쓰지 않고 <code>flex</code> 한 줄로 씁니다.
+        그중에서도 <code>flex: 1</code> 이 압도적으로 많이 쓰입니다.
+      </p>
+
+      <!--
+        순서는 grow, shrink, basis 입니다.
+
+            flex: 1 1 0;
+                  │ │ └ flex-basis
+                  │ └ flex-shrink
+                  └ flex-grow
+
+        그런데 숫자 하나만 쓰는 경우가 대부분입니다.
+        숫자 하나만 쓰면 나머지가 이렇게 채워집니다.
+
+            flex: 1     →   flex-grow: 1;  flex-shrink: 1;  flex-basis: 0%;
+                                                            └ auto 가 아니라 0 입니다
+
+        이 마지막 줄이 핵심입니다. flex: 1 은 basis 를 0 으로 바꿔 버립니다.
+        그래서 flex: 1 을 붙인 아이템들은 글자 길이나 width 와 상관없이 폭이 같아집니다.
+
+        말로 풀면 이렇습니다.
+
+            "내 원래 크기는 잊고, 남는 공간을 똑같이 나눠 갖자"
+
+        자주 쓰는 값 네 가지만 알면 충분합니다.
+
+            flex: 1        1 1 0%     남는 공간을 똑같이 나눠 갖기 (가장 많이 씁니다)
+            flex: 2        2 1 0%     남보다 두 몫
+            flex: auto     1 1 auto   내 내용 크기는 지키면서 남는 공간도 나눠 갖기
+            flex: none     0 0 auto   늘지도 줄지도 않기 (개념06 의 로고에 씁니다)
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">셋 다 flex: 1</p>
+        <div class="stage flex1-stage" id="flex1Stage">
+          <div class="tile" id="flex1Tile1">flex: 1</div>
+          <div class="tile" id="flex1Tile2">flex: 1</div>
+          <div class="tile">flex: 1</div>
+        </div>
+        <!-- 화면: 상자 셋이 정확히 200px 씩 똑같이 나눠 가집니다 -->
+      </div>
+
+      <!--
+        비율을 주면 섹션 1 과 달리 깔끔하게 나뉩니다. basis 가 0 이기 때문입니다.
+
+            flex: 2 / flex: 1 / flex: 1
+
+            몫의 합 = 4, 나눌 공간 = 600 (basis 가 0 이라 전부 남는 공간입니다)
+            한 몫 = 150
+            첫 상자 = 300, 나머지 = 150 씩
+
+        섹션 1 에서 같은 2 : 1 : 1 이 250 : 175 : 175 였던 것과 비교해 보세요.
+        이번에는 정확히 두 배입니다. basis 를 0 으로 밀어 버린 덕분입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">flex: 2 / flex: 1 / flex: 1</p>
+        <div class="stage" id="flexRatioStage">
+          <div class="tile flex-ratio2" id="flexRatioTile1">flex: 2</div>
+          <div class="tile flex-ratio1" id="flexRatioTile2">flex: 1</div>
+          <div class="tile flex-ratio1">flex: 1</div>
+        </div>
+        <!-- 화면: 첫 상자가 300px, 나머지 둘이 150px 씩입니다. 정확히 두 배입니다 -->
+      </div>
+
+      <!--
+        하나만 고정하고 나머지를 늘리는 조합도 아주 많이 씁니다.
+
+            flex: none  →  이 상자는 내 크기 그대로 (100px)
+            flex: 1     →  남은 것 다 가져가기
+
+            첫 상자 100 고정, 남는 500 을 뒤의 둘이 250 씩
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">flex: none 하나 + flex: 1 둘</p>
+        <div class="stage" id="flexNoneStage">
+          <div class="tile flex-none-item" id="flexNoneTile1">none</div>
+          <div class="tile flex-ratio1" id="flexNoneTile2">flex: 1</div>
+          <div class="tile flex-ratio1">flex: 1</div>
+        </div>
+        <!-- 화면: 첫 상자는 100px 그대로, 뒤의 둘이 250px 씩으로 넓어집니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>.flex-ratio2</code> 를 <code>flex: 3</code> 으로 바꿔 보세요.
+        몫의 합이 5 가 되어 한 몫이 120 이 되고,
+        상자 폭이 360 / 120 / 120 이 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: order ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — order 로 보이는 순서 바꾸기</h2>
+      <p class="doc-desc">
+        <code>order</code> 는 <strong>HTML 을 고치지 않고</strong> 화면에 보이는 순서만 바꿉니다.
+        기본값은 0 이고, 숫자가 작을수록 앞에 옵니다.
+      </p>
+
+      <!--
+        아래 HTML 은 1번, 2번, 3번 순서 그대로입니다. CSS 만 이렇게 줬습니다.
+
+            .order-3 { order: 3; }   ← HTML 1번 상자
+            .order-1 { order: 1; }   ← HTML 2번 상자
+            .order-2 { order: 2; }   ← HTML 3번 상자
+
+        브라우저는 order 값이 작은 것부터 늘어놓습니다.
+        그래서 화면에는 2번, 3번, 1번 순서로 보입니다.
+
+        음수도 됩니다. 기본값이 0 이므로 order: -1 을 준 아이템 하나만
+        아무것도 안 건드린 다른 아이템들보다 앞으로 나옵니다.
+        아래 두 번째 무대가 그 예입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">order 로 순서 바꾸기</p>
+        <div class="stage order-stage" id="orderStage">
+          <div class="tile order-3" id="orderTileA">HTML 1번</div>
+          <div class="tile order-1" id="orderTileB">HTML 2번</div>
+          <div class="tile order-2" id="orderTileC">HTML 3번</div>
+        </div>
+        <!-- 화면: 왼쪽부터 "HTML 2번", "HTML 3번", "HTML 1번" 순서로 보입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">order: -1 하나만 앞으로</p>
+        <div class="stage order-stage" id="orderMinusStage">
+          <div class="tile" id="orderMinusA">HTML 1번</div>
+          <div class="tile" id="orderMinusB">HTML 2번</div>
+          <div class="tile order-first" id="orderMinusC">HTML 3번</div>
+        </div>
+        <!-- 화면: 왼쪽부터 "HTML 3번", "HTML 1번", "HTML 2번" 순서로 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>order</code> 는 <strong>보이는 순서만</strong> 바꿉니다. 개념02 의
+        <code>-reverse</code> 와 같은 주의사항이 그대로 적용됩니다.
+        코드 순서대로 읽어 주는 프로그램에는 여전히 1번, 2번, 3번으로 읽힙니다.
+        <strong>순서 자체가 중요하다면 HTML 을 고치세요.</strong>
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 두 번째 무대의 <code>order-first</code> 클래스를
+        가운데 상자(HTML 2번)로 옮겨 보세요.
+        "HTML 2번", "HTML 1번", "HTML 3번" 순서가 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        이 섹션의 속성들은 <strong>붙이는 자리를 특히 많이 틀립니다.</strong>
+        전부 아이템에 쓰는 속성이라는 것을 기억하세요.
+      </p>
+
+      <!-- [실수 1] flex-grow 를 컨테이너에 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — flex-grow 를 컨테이너에 씀</span>
+        <div class="doc-code">.grow-on-container { display: flex; flex-grow: 1; }</div>
+        <p>
+          아이템은 하나도 안 넓어집니다. <code>flex-grow</code> 는
+          <strong>아이템이 자기 몫을 주장하는 속성</strong>입니다.
+          컨테이너에 쓰면 "이 컨테이너가 자기 부모 안에서 늘어나겠다" 는 뜻이 되는데,
+          부모가 flex 컨테이너가 아니면 그마저도 무시됩니다.
+        </p>
+        <div class="stage bad-stage grow-on-container" id="growContainerStage">
+          <div class="tile" id="growContainerTile1">100px</div>
+          <div class="tile">100px</div>
+        </div>
+        <!-- 화면: 상자가 100px 그대로이고 오른쪽에 400px 이 빈 칸으로 남습니다 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">.grow-on-container .tile { flex-grow: 1; }  /* 아이템에 */</div>
+      </div>
+
+      <!-- [실수 2] flex: 1 이 width 를 덮어씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — flex: 1 을 써 놓고 width 가 안 먹는다고 함</span>
+        <div class="doc-code">.width-lost-stage .tile { width: 300px; flex: 1; }</div>
+        <p>
+          <code>width: 300px</code> 이 분명히 있는데 화면에서는 200px 씩입니다.
+          <code>flex: 1</code> 안에 <code>flex-basis: 0%</code> 가 숨어 있어서
+          <strong>width 를 덮어쓰기 때문</strong>입니다.
+          폭을 지키고 싶다면 <code>flex: none</code> 이나
+          <code>flex: 0 0 300px</code> 을 쓰세요.
+        </p>
+        <div class="stage bad-stage width-lost-stage" id="widthLostStage">
+          <div class="tile" id="widthLostTile1">width 300</div>
+          <div class="tile">width 300</div>
+          <div class="tile">width 300</div>
+        </div>
+        <!-- 화면: 상자 셋이 300px 이 아니라 200px 씩으로 똑같이 나뉘어 있습니다 -->
+      </div>
+
+      <!-- [실수 3] grow 를 백분율로 생각함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — flex-grow 값을 퍼센트라고 생각함</span>
+        <div class="doc-code">.percent-stage .tile { flex-grow: 50; }  /* 50% 라는 뜻이 아닙니다 */</div>
+        <p>
+          50 이든 1 이든 <strong>셋 다 같은 값이면 결과는 똑같습니다.</strong>
+          <code>flex-grow</code> 는 절대적인 크기가 아니라
+          <strong>다른 아이템과 비교한 몫의 수</strong>이기 때문입니다.
+          아래 무대는 값이 50 인데도 결과가 <code>flex-grow: 1</code> 일 때와 같습니다.
+        </p>
+        <div class="stage bad-stage percent-stage" id="percentStage">
+          <div class="tile" id="percentTile1">grow 50</div>
+          <div class="tile">grow 50</div>
+          <div class="tile">grow 50</div>
+        </div>
+        <!-- 화면: 상자 셋이 200px 씩입니다. flex-grow: 1 일 때와 완전히 같습니다 -->
+      </div>
+
+      <!-- [실수 4] width 를 줬는데 작아진다 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — width 를 줬는데 상자가 작아진다고 함</span>
+        <div class="doc-code">.card { width: 300px; }  /* flex-shrink 기본값 1 이 줄입니다 */</div>
+        <p>
+          아이템의 <code>width</code> 는 <strong>공간이 넉넉할 때만 지켜집니다.</strong>
+          모자라면 <code>flex-shrink</code> 의 기본값 1 때문에 알아서 줄어듭니다.
+          섹션 2 의 첫 무대가 그 예입니다. 폭을 꼭 지켜야 하면
+          <code>flex-shrink: 0</code> 을 주거나 <code>flex-wrap: wrap</code> 으로
+          아랫줄에 내려보내세요.
+        </p>
+      </div>
+
+      <!-- [실수 5] order 로 순서를 바꾸고 HTML 을 안 고침 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — order 로 내용 순서를 바꿈</span>
+        <div class="doc-code">.important { order: -1; }  /* 중요한 글을 맨 앞으로 */</div>
+        <p>
+          화면에서는 맨 앞으로 오지만 <strong>HTML 순서는 그대로</strong>입니다.
+          코드 순서대로 읽는 프로그램에는 여전히 원래 자리에서 읽히고,
+          키보드 탭 이동 순서도 화면과 어긋납니다.
+          <code>order</code> 는 화면 폭에 따라 잠깐 자리를 바꾸는 용도이지
+          내용의 순서를 정하는 도구가 아닙니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. 이 파일의 속성은 <strong>전부 아이템에 씁니다.</strong></p>
+      <p>2. <code>flex-grow</code> 기본값 0 — 남는 공간을 <strong>몫 단위</strong>로 나눠 갖습니다.</p>
+      <p>3. <code>flex-shrink</code> 기본값 1 — 모자라면 알아서 줄어듭니다. 그래서 width 가 안 지켜집니다.</p>
+      <p>4. <code>flex-basis</code> 기본값 auto — 나눠 갖기를 시작하는 크기이고, 주축 방향입니다.</p>
+      <p>5. <code>flex: 1</code> 은 <code>1 1 0%</code> 입니다. basis 가 0 이라
+        <strong>내용 길이와 상관없이 폭이 같아집니다.</strong></p>
+      <p>6. <code>flex: none</code> 은 <code>0 0 auto</code>, 늘지도 줄지도 않습니다.</p>
+      <p>7. <code>order</code> 는 보이는 순서만 바꿉니다. 내용 순서는 HTML 로 정하세요.</p>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════
+         ✏️ 직접 해보기 정답
+         ════════════════════════════════════════════════════════════
+
+         1) .grow2 를 이렇게 고칩니다.
+
+                .grow2 { flex-grow: 4; }
+
+            → 몫의 합이 4 + 1 + 1 = 6, 한 몫은 300 ÷ 6 = 50 입니다.
+              첫 상자 = 100 + 50 × 4 = 300, 나머지 = 100 + 50 = 150.
+              화면에서 첫 상자가 250px 에서 300px 로 더 넓어집니다.
+
+         2) .overflow-stage 에 한 줄 더합니다.
+
+                .overflow-stage { flex-wrap: wrap; }
+
+            → 250 × 2 = 500 까지만 한 줄에 들어가고 세 번째 상자가 아랫줄로 내려갑니다.
+              무대 밖으로 삐져나온 부분이 사라집니다.
+              flex-shrink: 0 은 그대로인데도 넘침이 해결됩니다.
+
+         3) .basis-zero-stage .word 를 이렇게 고칩니다.
+
+                .basis-zero-stage .word { flex-grow: 1; flex-basis: auto; }
+
+            → 아래 무대가 위 무대와 똑같아집니다. 글자가 긴 상자가 더 넓어집니다.
+              basis 하나가 결과를 완전히 바꾼다는 것을 확인하는 문제입니다.
+
+         4) .flex-ratio2 를 이렇게 고칩니다.
+
+                .flex-ratio2 { flex: 3; }
+
+            → 몫의 합이 3 + 1 + 1 = 5, 한 몫은 600 ÷ 5 = 120 입니다.
+              상자 폭이 360 / 120 / 120 이 됩니다.
+              basis 가 0 이라 600 을 통째로 나눈다는 점을 다시 확인하세요.
+
+         5) order-first 클래스를 가운데 상자로 옮깁니다.
+
+                <div class="tile" id="orderMinusA">HTML 1번</div>
+                <div class="tile order-first" id="orderMinusB">HTML 2번</div>
+                <div class="tile" id="orderMinusC">HTML 3번</div>
+
+            → 화면 순서가 "HTML 2번", "HTML 1번", "HTML 3번" 이 됩니다.
+              order 가 -1 인 것 하나만 앞으로 나오고,
+              나머지는 기본값 0 끼리 HTML 순서를 지킵니다.
+    ════════════════════════════════════════════════════════════ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #growNoneTile1 | ~width | 100
+      #growAllTile1 | ~width | 200
+      #growAllTile2 | ~x | 438
+      #growMixTile1 | ~width | 250
+      #growMixTile2 | ~width | 175
+      #growOneTile1 | ~width | 400
+      #growOneTile2 | ~width | 100
+      #shrinkTile1 | ~width | 200
+      #shrinkZeroTile1 | ~width | 150
+      #shrinkZeroTile2 | ~width | 300
+      #overflowTile1 | ~width | 250
+      #basisTile1 | ~width | 200
+      #basisZeroWord1 | ~width | 200
+      #basisZeroWord3 | ~width | 200
+      #flex1Tile1 | ~width | 200
+      #flexRatioTile1 | ~width | 300
+      #flexRatioTile2 | ~width | 150
+      #flexNoneTile1 | ~width | 100
+      #flexNoneTile2 | ~width | 250
+      #orderTileB | ~x | 238
+      #orderMinusC | ~x | 238
+      #growContainerTile1 | ~width | 100
+      #widthLostTile1 | ~width | 200
+      #percentTile1 | ~width | 200
+    -->
+  </body>
+</html>

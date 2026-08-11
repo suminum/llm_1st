@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>11단원 심화문제 정답 - 이벤트</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      input[type="text"] {
+        padding: 6px 8px;
+        font-size: 15px;
+        width: 220px;
+      }
+      button {
+        padding: 5px 10px;
+        font-size: 14px;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 4px 0;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      li .name {
+        flex: 1;
+      }
+      .count {
+        min-width: 28px;
+        text-align: center;
+        display: inline-block;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+        min-height: 22px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>11단원 심화문제 정답 — 이벤트</h1>
+
+    <p class="guide">
+      먼저 스스로 풀어 본 다음에 보세요. <strong>F12 → Console</strong> 을 함께 보세요.
+    </p>
+
+    <div class="demo">
+      <h3>심화 1 — 장바구니 (위임 하나로 세 가지 동작)</h3>
+      <ul id="cartList">
+        <li data-id="1">
+          <span class="name">아메리카노</span>
+          <button class="minus">-</button>
+          <span class="count">1</span>
+          <button class="plus">+</button>
+          <button class="remove">삭제</button>
+        </li>
+        <li data-id="2">
+          <span class="name">케이크</span>
+          <button class="minus">-</button>
+          <span class="count">2</span>
+          <button class="plus">+</button>
+          <button class="remove">삭제</button>
+        </li>
+      </ul>
+      <div class="output" id="cartInfo">담긴 상품 2종 / 총 3개</div>
+
+      <h3>심화 2 — 실시간 검증</h3>
+      <input type="text" id="idInput" placeholder="아이디 (영문 4자 이상)" />
+      <div class="error" id="idError"></div>
+      <button id="submitBtn" disabled>가입</button>
+
+      <h3>심화 3 — 키보드 단축키</h3>
+      <input type="text" id="memoInput" placeholder="입력 후 Enter / Escape" />
+      <div class="output" id="memoOut">대기 중</div>
+    </div>
+
+    <script>
+      // ============================================================
+      // 11단원 심화문제 정답 — 이벤트
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+
+      // ───── 심화 1 ─────
+      const cartList = document.querySelector("#cartList");
+      const cartInfo = document.querySelector("#cartInfo");
+
+      function updateCartInfo() {
+        const rows = cartList.querySelectorAll("li");
+        let totalCount = 0;
+
+        rows.forEach((li) => {
+          totalCount += Number(li.querySelector(".count").textContent);
+        });
+
+        cartInfo.textContent = `담긴 상품 ${rows.length}종 / 총 ${totalCount}개`;
+      }
+
+      cartList.addEventListener("click", (e) => {
+        const li = e.target.closest("li");
+        if (!li) {
+          return; // 빈 곳을 눌렀을 때
+        }
+
+        // [삭제]
+        if (e.target.classList.contains("remove")) {
+          li.remove();
+          updateCartInfo();
+          console.log("삭제:", li.dataset.id);
+          return;
+        }
+
+        // 여기부터는 수량을 다루므로 미리 꺼내 둡니다
+        const countEl = li.querySelector(".count");
+        const current = Number(countEl.textContent);
+
+        // [증가]
+        if (e.target.classList.contains("plus")) {
+          countEl.textContent = current + 1;
+          updateCartInfo();
+          return;
+        }
+
+        // [감소] 1 아래로는 안 내려갑니다
+        if (e.target.classList.contains("minus")) {
+          if (current <= 1) {
+            console.log("1개 아래로는 줄일 수 없습니다");
+            return;
+          }
+          countEl.textContent = current - 1;
+          updateCartInfo();
+        }
+      });
+      // 화면: + 를 두 번 누르면 수량이 3이 되고 정보도 함께 바뀝니다
+
+      // 콜백 하나로 세 가지를 처리하는 요령
+      //   ① 먼저 li 를 찾는다 (없으면 빠져나간다)
+      //   ② 어느 버튼인지 classList.contains 로 가른다
+      //   ③ 각 갈래 끝에 return 을 둔다 — 아래로 흘러내리지 않게
+      //
+      //   return 을 빼면 삭제한 다음에 수량 코드까지 실행되어
+      //   이미 사라진 요소를 만지려다 에러가 납니다.
+      //
+      // 왜 정보 갱신을 함수로 뺐나
+      //   세 곳에서 똑같이 불러야 하기 때문입니다.
+      //   한 곳이라도 빠뜨리면 "화면은 바뀌었는데 합계는 그대로" 가 됩니다.
+      //   13단원 종합03의 render 와 같은 생각입니다.
+      //
+      // 수량을 화면에서 읽는 것이 좋은가
+      //   지금은 데이터가 화면에만 있어서 이렇게 했습니다.
+      //   13단원처럼 배열을 진짜 데이터로 두고 화면은 그 그림자로 만드는 편이
+      //   훨씬 관리하기 쉽습니다. 화면에서 읽으면 문자열 변환도 매번 해야 하고요.
+
+      // ───── 심화 2 ─────
+      const idInput = document.querySelector("#idInput");
+      const idError = document.querySelector("#idError");
+      const submitBtn = document.querySelector("#submitBtn");
+
+      function isEnglishOnly(text) {
+        for (const ch of text) {
+          const isUpper = ch >= "A" && ch <= "Z";
+          const isLower = ch >= "a" && ch <= "z";
+          if (!isUpper && !isLower) {
+            return false;
+          }
+        }
+        return true;
+      }
+
+      idInput.addEventListener("input", () => {
+        const value = idInput.value.trim();
+
+        // 비어 있으면 안내도 없고 버튼도 잠급니다
+        if (!value) {
+          idError.textContent = "";
+          submitBtn.disabled = true;
+          return;
+        }
+
+        if (!isEnglishOnly(value)) {
+          idError.textContent = "영문만 쓸 수 있습니다";
+          submitBtn.disabled = true;
+          return;
+        }
+
+        if (value.length < 4) {
+          idError.textContent = "4자 이상 입력하세요";
+          submitBtn.disabled = true;
+          return;
+        }
+
+        idError.textContent = "";
+        submitBtn.disabled = false;
+      });
+      // 화면: "abc1" 이면 영문 안내, "abcd" 면 버튼이 눌립니다
+
+      // 검사 순서를 왜 이렇게 두나
+      //   "abc1" 을 쳤을 때 무엇을 먼저 알려 줘야 할까요?
+      //   길이부터 검사하면 "4자 이상 입력하세요" 가 뜹니다. 이미 4자인데요.
+      //   그래서 '무엇이 잘못됐는지' 를 먼저 보고 길이는 나중에 봅니다.
+      //
+      //   조건 순서가 곧 안내 문구의 우선순위입니다. 03단원 else if 와 같습니다.
+      //
+      // 빈 값을 따로 뺀 이유
+      //   빈 칸에 "4자 이상 입력하세요" 를 띄우면 아직 아무것도 안 쳤는데
+      //   혼나는 느낌이 듭니다. 처음에는 조용히 두는 것이 좋습니다.
+      //
+      // disabled 는 나중에도 씁니다
+      //   12단원에서 데이터를 불러오는 동안 버튼을 잠글 때 같은 방법을 씁니다.
+
+      // ───── 심화 3 ─────
+      const memoInput = document.querySelector("#memoInput");
+      const memoOut = document.querySelector("#memoOut");
+
+      memoInput.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          memoInput.value = "";
+          memoOut.textContent = "취소했습니다";
+          return;
+        }
+
+        if (e.key !== "Enter") {
+          return; // 나머지 키는 무시
+        }
+
+        const value = memoInput.value.trim();
+        if (!value) {
+          return; // 빈 값이면 아무 일도 안 함
+        }
+
+        memoOut.textContent = `저장: ${value}`;
+        memoInput.value = "";
+        console.log("저장됨:", value);
+      });
+      // 화면: Enter 면 "저장: ...", Escape 면 "취소했습니다"
+
+      // e.key 는 대소문자를 구분합니다
+      //   "enter" 나 "ESCAPE" 는 안 됩니다. "Enter", "Escape" 입니다.
+      //   무슨 값이 오는지 모르겠으면 console.log(e.key) 를 찍어 보세요.
+      //   키를 누른 채로 확인할 수 있습니다.
+      //
+      // Escape 를 먼저 검사한 이유
+      //   Enter 가 아니면 return 하는 줄이 위에 있으면
+      //   Escape 는 거기서 걸러져 아래로 못 갑니다.
+      //   "빠져나가는 조건" 은 항상 개별 처리보다 뒤에 둬야 합니다.
+      //
+      // keydown 과 keyup 중 무엇을 쓰나
+      //   keydown 은 누르는 순간, keyup 은 떼는 순간입니다.
+      //   Enter 로 제출하는 것은 보통 keydown 을 씁니다. 반응이 빠릅니다.
+      //
+      // [더 생각해 볼 것]
+      //   입력칸이 form 안에 있었다면 Enter 는 submit 이벤트로도 잡힙니다. (개념04)
+      //   form 이 있으면 submit 을, 입력칸 하나뿐이면 keydown 을 쓰는 편이 자연스럽습니다.
+    </script>
+  </body>
+</html>

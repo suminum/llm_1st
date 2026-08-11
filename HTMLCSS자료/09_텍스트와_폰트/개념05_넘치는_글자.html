@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>09단원 개념05 - 넘치는 글자</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* 이 파일에서 '가르치는' CSS 만 여기에 씁니다. */
+
+      /* ★ width 는 10단원에서 제대로 배웁니다.
+         지금은 '상자 폭을 정하는 것' 이라고만 알아 두세요.
+         글자가 넘치는 모습을 보려면 좁은 상자가 필요해서 미리 씁니다. */
+      .box {
+        width: 260px;
+        background-color: #fff8dc;
+      }
+      .box-narrow {
+        width: 180px;
+        background-color: #f0f7ff;
+      }
+
+      /* ── 섹션 2: nowrap ── */
+      #nw-on {
+        white-space: nowrap;
+      }
+      /* 화면: 줄이 바뀌지 않아서 글자가 노란 상자 오른쪽 밖으로 길게 삐져나갑니다 */
+
+      /* ── 섹션 3: overflow-wrap ── */
+      #wrap-on {
+        overflow-wrap: break-word;
+      }
+      /* 화면: 긴 주소가 상자 폭에 맞춰 잘려서 두 줄 모두 상자 안에 들어옵니다 */
+
+      /* ── 섹션 4: word-break ── */
+      #ba-word {
+        overflow-wrap: break-word;
+      }
+      #ba-all {
+        word-break: break-all;
+      }
+      /* 화면: break-word 는 긴 낱말을 통째로 다음 줄로 내리고,
+               break-all 은 줄 끝에서 낱말 중간을 그냥 잘라 버립니다 */
+
+      /* ── 섹션 5: 점 세 개 3종 세트 ── */
+      /* ★ overflow 도 10단원에서 제대로 배웁니다.
+         지금은 '상자 밖으로 나간 부분을 어떻게 할지 정하는 것' 이라고만 알아 두세요. */
+      #ell-1 {
+        text-overflow: ellipsis;
+      }
+      /* 화면: 아무 일도 일어나지 않습니다. 그냥 두 줄로 접힙니다 */
+
+      #ell-2 {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      /* 화면: 한 줄이 되었지만 점은 없고 글자가 상자 밖으로 삐져나갑니다 */
+
+      #ell-3 {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      /* 화면: 상자 밖으로 나간 부분이 안 보이지만, 글자가 뚝 잘려서 끝납니다 */
+
+      #ell-4 {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+      /* 화면: 상자 끝에서 글자가 끝나고 점 세 개가 붙습니다 */
+
+      /* ── 섹션 6: 자주 하는 실수 ── */
+      #miss-ell {
+        text-overflow: ellipsis;
+      }
+      /* 화면: 점이 안 생깁니다 */
+
+      #miss-hidden {
+        overflow: hidden;
+        white-space: nowrap;
+      }
+      /* 화면: 글자가 상자 끝에서 뚝 끊깁니다 */
+
+      #miss-breakall {
+        word-break: break-all;
+      }
+      /* 화면: beautiful 이 be 와 autiful 로 두 동강 나서 읽기 불편합니다 */
+
+      #miss-breakword {
+        overflow-wrap: break-word;
+      }
+      /* 화면: beautiful 이 통째로 다음 줄로 내려가서 읽기 편합니다 */
+
+      #miss-nowrap {
+        white-space: nowrap;
+      }
+      /* 화면: 줄이 아예 안 바뀝니다 */
+
+      #miss-multiline {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      /* 화면: 두 줄로 접히고 점 세 개는 나오지 않습니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         09단원 · 개념 05 — 넘치는 글자
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         지금까지는 글자를 예쁘게 만드는 이야기였습니다.
+         이번에는 글자가 말썽을 부릴 때 어떻게 하느냐는 이야기입니다.
+
+         상자는 좁은데 글자가 길면 무슨 일이 일어날까요.
+         브라우저는 보통 알아서 줄을 바꿔서 해결합니다.
+
+             ┌──────────────┐
+             │ 오늘 날씨가 참  │
+             │ 좋습니다       │
+             └──────────────┘
+
+         그런데 줄을 바꿀 자리가 없으면 그러지 못합니다.
+         띄어쓰기 없이 이어진 긴 영문 주소 같은 것이 그렇습니다.
+
+             ┌──────────────┐
+             │ https://www.example.com/...
+             └──────────────┘
+                            └ 상자를 뚫고 나갑니다
+
+         브라우저는 이때도 에러를 내지 않습니다. 그냥 삐져나온 채로 그립니다.
+         실제 서비스에서 화면이 깨지는 원인 중 아주 흔한 것이 이것입니다.
+
+         이 파일에서 배울 도구는 네 개입니다.
+
+             white-space: nowrap;         일부러 줄을 안 바꿉니다
+             overflow-wrap: break-word;   안 들어가는 낱말만 잘라서 넘깁니다
+             word-break: break-all;       줄 끝에 오면 무조건 잘라 넘깁니다
+             text-overflow: ellipsis;     넘친 부분을 점 세 개로 대신합니다
+
+         ★ 미리 알려 드립니다.
+           이 파일에는 width 와 overflow 라는 속성이 나옵니다.
+           둘 다 10단원에서 제대로 배웁니다.
+           지금은 width 는 '상자 폭을 정하는 것',
+           overflow 는 '상자 밖으로 나간 부분을 어떻게 할지 정하는 것'
+           이라고만 알아 두세요. 좁은 상자가 없으면 넘치는 모습을 볼 수 없어서
+           미리 빌려 쓰는 것입니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 05 — 넘치는 글자</h1>
+    <p class="doc-sub">09단원 · 텍스트와 폰트</p>
+
+    <p class="doc-guide">
+      이 파일의 상자들은 모두 <strong>폭이 좁게 고정</strong>되어 있습니다.
+      노란색과 파란색으로 칠해 둔 곳이 상자의 진짜 넓이입니다.
+      <strong>글자가 그 색 밖으로 나가는지</strong>를 계속 확인하면서 읽으세요.
+      마지막 섹션에서는 점 세 개(<code>...</code>)를 만드는 방법을 배웁니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: 글자가 상자를 뚫고 나갑니다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 글자가 상자를 뚫고 나가는 문제</h2>
+      <p class="doc-desc">
+        브라우저는 <strong>띄어쓰기 자리</strong>에서만 줄을 바꿉니다.
+        바꿀 자리가 없으면 그냥 넘칩니다.
+      </p>
+
+      <!--
+        먼저 상자를 좁게 만들어야 합니다.
+
+            .box { width: 260px; background-color: #fff8dc; }
+
+        width 는 10단원 내용이지만, 폭이 없으면 넘치는 모습을 볼 수 없어서 미리 씁니다.
+        지금은 "상자 가로 길이를 260px 로 못 박았다" 정도로만 알아 두세요.
+
+        아래 두 상자에는 완전히 같은 CSS 가 걸려 있고 글자만 다릅니다.
+
+            첫 상자 : 보통 한국어 문장 (띄어쓰기가 여러 군데 있습니다)
+            둘째 상자 : 긴 영문 주소 (띄어쓰기가 하나도 없습니다)
+
+        첫 상자는 멀쩡합니다. 브라우저가 띄어쓰기 자리에서 줄을 바꿔 줬습니다.
+        둘째 상자는 첫 줄이 노란 배경 밖으로 튀어나갑니다.
+        줄을 바꿀 만한 자리가 없어서 브라우저가 손을 쓰지 못한 것입니다.
+
+        여기서 꼭 짚고 갈 것이 있습니다.
+
+            에러가 나지 않습니다. 콘솔에도 아무것도 안 뜹니다.
+            화면이 깨진 것을 사람이 눈으로 발견해야 합니다.
+
+        참고로 한글은 이 문제가 잘 안 생깁니다.
+        한글은 글자 하나하나가 줄을 바꿀 수 있는 자리로 취급되기 때문입니다.
+        문제가 되는 것은 대개 긴 영문 주소, 이메일, 주문번호 같은 것들입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">폭 260px 짜리 상자 두 개</p>
+        <p class="box" id="ov-normal">오늘의 공지사항입니다 자세한 내용은 게시판을 확인해 주세요</p>
+        <p class="box" id="ov-plain">https://www.example.com/blog/2026/01/very-long-article-name</p>
+        <!-- 화면: 첫 상자는 두 줄로 얌전히 접혀서 노란 배경 안에 들어옵니다.
+                  둘째 상자는 첫 줄이 노란 배경 오른쪽 밖으로 길게 튀어나가고,
+                  둘째 줄만 배경 안에 들어옵니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>width</code> 와 뒤에 나올 <code>overflow</code> 는
+        <strong>10단원에서 제대로 배웁니다.</strong>
+        지금은 <code>width</code> 를 "상자 폭을 정하는 것" 이라고만 알아 두세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — <code>.box</code> 의 <code>width</code> 를
+        <code>400px</code> 로 늘려 보세요. 둘째 상자의 글자가 안으로 들어오는지 확인하고
+        다시 260px 로 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: white-space: nowrap ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — white-space: nowrap, 일부러 한 줄로</h2>
+      <p class="doc-desc">
+        <code>nowrap</code> 은 <strong>줄을 절대 바꾸지 말라</strong>는 뜻입니다.
+      </p>
+
+      <!--
+        개념03 섹션 6 에서 white-space 를 잠깐 봤습니다. 그때 미뤄 둔 값입니다.
+
+            white-space: nowrap;
+
+        no + wrap 입니다. wrap 은 '줄을 접다' 라는 뜻이니, 접지 말라는 말입니다.
+
+        아래 두 상자는 글자도 같고 폭도 같습니다. 둘째 상자에만 nowrap 을 걸었습니다.
+        첫 상자는 두 줄로 접히고, 둘째 상자는 한 줄로 쭉 뻗어 나갑니다.
+
+        일부러 이렇게 하는 이유가 있습니다.
+
+            버튼 글자가 두 줄로 접히면 보기 싫습니다
+            표의 날짜나 금액이 중간에서 끊기면 읽기 어렵습니다
+            메뉴 이름이 두 줄이 되면 줄이 어긋납니다
+
+        이런 곳에 nowrap 을 씁니다.
+
+        다만 이대로 두면 삐져나간 글자가 옆의 내용을 덮습니다.
+        그래서 nowrap 은 거의 항상 섹션 5 의 점 세 개와 함께 씁니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">같은 글, 같은 폭, nowrap 만 다름</p>
+        <p class="box" id="nw-off">오늘의 공지사항입니다 자세한 내용은 게시판을 확인해 주세요</p>
+        <p class="box" id="nw-on">오늘의 공지사항입니다 자세한 내용은 게시판을 확인해 주세요</p>
+        <!-- 화면: 첫 상자는 두 줄로 접혀 노란 배경 안에 들어옵니다.
+                  둘째 상자는 한 줄짜리 노란 띠가 되고, 글자가 그 오른쪽 밖으로
+                  한참 더 이어집니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — <code>#nw-off</code> 에도
+        <code>white-space: nowrap;</code> 을 걸어서 두 상자를 똑같이 만들어 보세요.
+        확인했으면 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: overflow-wrap: break-word ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — overflow-wrap: break-word, 긴 낱말 자르기</h2>
+      <p class="doc-desc">
+        <strong>한 줄에 도저히 안 들어가는 낱말</strong>만 잘라서 다음 줄로 넘깁니다.
+      </p>
+
+      <!--
+        섹션 1 의 문제를 푸는 가장 무난한 방법입니다.
+
+            overflow-wrap: break-word;
+
+        이름 그대로입니다. 넘칠 것 같으면(overflow) 줄을 접되(wrap),
+        필요하면 낱말(word) 을 잘라도(break) 좋다는 허락입니다.
+
+        핵심은 '필요하면' 입니다.
+
+            그 낱말이 한 줄에 통째로 들어갈 수 있으면 자르지 않습니다.
+            어떻게 해도 안 들어갈 때만 자릅니다.
+
+        그래서 보통 문장에는 아무 영향이 없고, 문제가 되는 긴 낱말만 처리됩니다.
+        본문에 걸어 두어도 부작용이 거의 없는 이유입니다.
+
+        게시판 제목, 댓글, 사용자가 직접 입력하는 칸처럼
+        무엇이 들어올지 모르는 자리에 미리 걸어 두면 화면이 깨지지 않습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">같은 주소, 같은 폭, break-word 만 다름</p>
+        <p class="box" id="wrap-off">https://www.example.com/blog/2026/01/very-long-article-name</p>
+        <p class="box" id="wrap-on">https://www.example.com/blog/2026/01/very-long-article-name</p>
+        <!-- 화면: 첫 상자는 첫 줄이 노란 배경 밖으로 튀어나갑니다.
+                  둘째 상자는 두 줄 모두 노란 배경 안에 얌전히 들어옵니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>#wrap-on</code> 의 글자를 여러분 이메일 주소처럼
+        긴 영문으로 바꿔 보세요. 여전히 상자 안에 들어오는지 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: word-break: break-all ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — word-break: break-all, 더 세게 자르기</h2>
+      <p class="doc-desc">
+        <code>break-all</code> 은 <strong>줄 끝에 오면 무조건</strong> 낱말 중간을 자릅니다.
+      </p>
+
+      <!--
+        두 속성이 비슷해 보여서 자주 헷갈립니다. 차이는 딱 하나입니다.
+
+            overflow-wrap: break-word;   한 줄에 도저히 안 들어갈 때만 자릅니다
+            word-break: break-all;       줄 끝에 오면 들어가든 말든 자릅니다
+
+        아래 세 상자로 확인해 봅시다. 폭은 180px 이고 글자는 셋 다 같습니다.
+
+            주문번호 orderNumber20260811 을 확인하세요
+
+        첫 상자(아무것도 안 걸음) 와 둘째 상자(break-word) 는 결과가 같습니다.
+        orderNumber20260811 이 한 줄에 통째로 들어가기 때문에
+        break-word 가 자를 이유를 찾지 못한 것입니다. 그래서 세 줄이 됩니다.
+
+            주문번호
+            orderNumber20260811
+            을 확인하세요
+
+        셋째 상자(break-all) 는 다릅니다. 줄 끝에 오자마자 잘라 버립니다.
+
+            주문번호 orderNumber2
+            0260811 을 확인하세요
+
+        두 줄로 줄어들어 공간은 아꼈지만, 주문번호가 중간에서 두 동강 났습니다.
+        읽는 사람 입장에서는 이쪽이 더 불편할 수 있습니다.
+
+        그래서 기본은 이렇습니다.
+
+            평소에는 overflow-wrap: break-word 를 씁니다.
+            빈틈 없이 꽉 채워야 하는 특별한 경우에만 word-break: break-all 을 씁니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">폭 180px, 같은 글자</p>
+        <p class="box-narrow" id="ba-none">주문번호 orderNumber20260811 을 확인하세요</p>
+        <p class="box-narrow" id="ba-word">주문번호 orderNumber20260811 을 확인하세요</p>
+        <p class="box-narrow" id="ba-all">주문번호 orderNumber20260811 을 확인하세요</p>
+        <!-- 화면: 첫 상자와 둘째 상자는 완전히 같은 세 줄 모양입니다.
+                  셋째 상자만 두 줄이 되고, 주문번호가 orderNumber2 와 0260811 로
+                  잘려 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        첫 상자와 둘째 상자가 같아 보이는 것이 <strong>실수가 아닙니다.</strong>
+        <code>break-word</code> 는 자를 필요가 없으면 자르지 않는다는 뜻이고,
+        그 성질을 보여 주려고 일부러 이렇게 만든 예입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>.box-narrow</code> 의 폭을 <code>120px</code> 로 줄여 보세요.
+        이제 주문번호가 한 줄에 안 들어가므로 둘째 상자(break-word) 도 낱말을 자릅니다.
+        확인했으면 180px 로 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 점 세 개 3종 세트 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 점 세 개는 세 가지를 다 써야 나옵니다</h2>
+      <p class="doc-desc">
+        <code>overflow: hidden</code> + <code>white-space: nowrap</code> +
+        <code>text-overflow: ellipsis</code> — <strong>셋 다</strong> 필요합니다.
+      </p>
+
+      <!--
+        긴 제목을 "오늘의 공지사항입니다 자세한 내..." 처럼 줄여 보여 주는 그 모양입니다.
+        ellipsis 는 '말줄임표' 라는 뜻입니다.
+
+        많은 사람이 text-overflow: ellipsis 한 줄만 쓰고 안 된다고 합니다.
+        왜 셋이 다 필요한지 하나씩 빼 가며 확인해 봅시다.
+
+            [1] text-overflow 만            → 아무 일도 안 일어납니다
+            [2] nowrap + text-overflow      → 한 줄은 되지만 점이 없습니다
+            [3] overflow + nowrap           → 잘리기는 하는데 점이 없습니다
+            [4] 셋 다                        → 드디어 점 세 개가 나옵니다
+
+        각각이 맡은 일이 다르기 때문입니다.
+
+            white-space: nowrap      한 줄로 만듭니다. 넘칠 상황을 만드는 역할
+            overflow: hidden         상자 밖으로 나간 부분을 감춥니다. 자를 자리를 만드는 역할
+            text-overflow: ellipsis  잘린 자리에 점 세 개를 대신 넣습니다
+
+        [1] 은 줄이 두 줄로 접혀서 애초에 넘치지 않습니다. 넘친 게 없으니 줄일 것도 없습니다.
+        [2] 는 넘치기는 하는데 삐져나온 채로 다 보입니다. 감춘 게 없으니 줄일 것도 없습니다.
+        [3] 은 감추기는 했는데 점을 넣으라고 시키지 않았습니다. 그래서 뚝 잘립니다.
+        [4] 에서야 세 조건이 다 맞습니다.
+
+        ★ overflow 는 10단원 내용입니다.
+          지금은 hidden 을 "상자 밖으로 나간 부분은 안 보이게 하라" 로만 알아 두세요.
+
+        마지막으로 한 가지. 이 방법은 한 줄에서만 됩니다.
+        두 줄까지 보여 주고 세 번째 줄부터 점으로 줄이는 것은
+        이 세 속성만으로는 안 됩니다. 다른 방법이 필요합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">1 — text-overflow 만 걸었을 때</p>
+        <p class="box" id="ell-1">오늘의 공지사항입니다 자세한 내용은 게시판을 확인해 주세요</p>
+        <!-- 화면: 그냥 두 줄로 접힙니다. 점은 없습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">2 — nowrap 을 더했을 때</p>
+        <p class="box" id="ell-2">오늘의 공지사항입니다 자세한 내용은 게시판을 확인해 주세요</p>
+        <!-- 화면: 한 줄이 되었지만 글자가 노란 배경 밖으로 그대로 다 보입니다. 점은 없습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">3 — overflow 와 nowrap 만 (text-overflow 없이)</p>
+        <p class="box" id="ell-3">오늘의 공지사항입니다 자세한 내용은 게시판을 확인해 주세요</p>
+        <!-- 화면: 노란 배경 끝에서 글자가 뚝 잘려 끝납니다. "내용" 의 오른쪽이
+                  글자 중간에서 끊겨 보이고, 점은 없습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">4 — 셋 다 걸었을 때</p>
+        <p class="box" id="ell-4">오늘의 공지사항입니다 자세한 내용은 게시판을 확인해 주세요</p>
+        <!-- 화면: "오늘의 공지사항입니다 자세한 내..." 까지만 보이고 점 세 개가 붙습니다 -->
+      </div>
+
+      <div class="doc-good">
+        <span class="doc-good-tag">외워 둘 세 줄</span>
+        <div class="doc-code">overflow: hidden;
+white-space: nowrap;
+text-overflow: ellipsis;</div>
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>#ell-4</code> 에서 <code>overflow: hidden;</code> 한 줄만
+        지워 보세요. 어떤 상자와 똑같아지는지 위 1~3 번과 비교해서 말해 보세요.
+        확인했으면 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        넘침 문제는 <strong>내 화면에서는 멀쩡해 보이다가</strong>
+        긴 글자가 들어오는 순간 터집니다. 그래서 미리 대비해 두는 것이 중요합니다.
+      </p>
+
+      <!-- [실수 1] ellipsis 만 쓰고 점이 안 나온다고 함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — text-overflow 만 쓰고 점이 안 나온다고 함</span>
+        <div class="doc-code">text-overflow: ellipsis;</div>
+        <p class="box" id="miss-ell">오늘의 공지사항입니다 자세한 내용은 게시판을 확인해 주세요</p>
+        <p>
+          <strong>아무 일도 일어나지 않습니다.</strong> 그냥 두 줄로 접힙니다.
+          줄이 접혀 버리면 넘치는 글자가 없고, 넘친 것이 없으면 줄일 것도 없습니다.
+          <code>white-space: nowrap</code> 과 <code>overflow: hidden</code> 을
+          같이 써야 합니다.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">overflow: hidden; white-space: nowrap; text-overflow: ellipsis;</div>
+      </div>
+
+      <!-- [실수 2] overflow 만 써서 뚝 잘림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — text-overflow 를 빠뜨려서 글자가 뚝 잘림</span>
+        <div class="doc-code">overflow: hidden; white-space: nowrap;</div>
+        <p class="box" id="miss-hidden">오늘의 공지사항입니다 자세한 내용은 게시판을 확인해 주세요</p>
+        <p>
+          <strong>글자가 상자 끝에서 그냥 끊깁니다.</strong> 마지막 글자가 반쯤 잘려서
+          이상해 보입니다. 읽는 사람은 글이 더 있는지 여기서 끝인지 알 수 없습니다.
+          점 세 개는 "뒤에 더 있습니다" 를 알려 주는 신호이기도 합니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] 본문에 break-all 을 검 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 본문 전체에 word-break: break-all 을 검</span>
+        <div class="doc-code">word-break: break-all;</div>
+        <p class="box" id="miss-breakall">우리 회사 홈페이지는 wonderful beautiful design 으로 유명합니다</p>
+        <p>
+          넘침은 확실히 막힙니다. 대신 <strong>멀쩡한 영어 낱말이 줄 끝에서 잘립니다.</strong>
+          <code>beautiful</code> 이 <code>be</code> 와 <code>autiful</code> 로 두 동강 났습니다.
+          읽기가 눈에 띄게 나빠집니다.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">overflow-wrap: break-word;</div>
+        <p class="box" id="miss-breakword">우리 회사 홈페이지는 wonderful beautiful design 으로 유명합니다</p>
+        <p>
+          <code>beautiful</code> 이 통째로 다음 줄로 내려갑니다. 낱말이 안 깨집니다.
+        </p>
+      </div>
+
+      <!-- [실수 4] nowrap 을 걸어 놓고 잊음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — nowrap 을 걸어 놓고 왜 줄이 안 바뀌냐고 함</span>
+        <div class="doc-code">white-space: nowrap;</div>
+        <p class="box" id="miss-nowrap">
+          이 글은 아무리 길어져도 줄이 바뀌지 않고 계속 옆으로 이어집니다
+        </p>
+        <p>
+          버튼 하나 때문에 걸어 둔 <code>nowrap</code> 이 상속되어
+          안쪽 글자까지 전부 한 줄이 되는 경우가 많습니다.
+          <code>white-space</code> 는 <strong>상속되는 속성</strong>입니다.
+          "왜 갑자기 줄이 안 바뀌지?" 싶으면 부모 쪽을 먼저 확인하세요.
+        </p>
+      </div>
+
+      <!-- [실수 5] 여러 줄에 ellipsis 를 기대함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 두 줄까지 보여 주고 점을 붙이려 함</span>
+        <div class="doc-code">overflow: hidden; text-overflow: ellipsis;   /* nowrap 없이 */</div>
+        <p class="box" id="miss-multiline">오늘의 공지사항입니다 자세한 내용은 게시판을 확인해 주세요</p>
+        <p>
+          <strong>점 세 개가 나오지 않습니다.</strong> 그냥 두 줄로 접힐 뿐입니다.
+          <code>text-overflow</code> 는 <strong>한 줄짜리 글에서만</strong> 동작합니다.
+          여러 줄을 보여 주고 그 아래를 줄이는 것은 이 세 속성만으로는 안 되고,
+          다른 방법이 필요합니다. 이 자료의 범위를 넘어갑니다.
+        </p>
+      </div>
+
+      <!-- [실수 6] 폭을 안 정하고 넘침을 걱정함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 6 — 폭을 정하지 않고 왜 안 잘리냐고 함</span>
+        <div class="doc-code">/* width 가 없는 상자에 */
+overflow: hidden; white-space: nowrap; text-overflow: ellipsis;</div>
+        <p>
+          폭이 정해져 있지 않으면 상자는 부모가 주는 만큼 넓어집니다.
+          <strong>넓으면 넘칠 일이 없고, 넘칠 일이 없으면 점도 안 나옵니다.</strong>
+          창을 아주 좁게 줄이면 그때서야 점이 나옵니다.
+          "왜 안 되지?" 하기 전에 <strong>상자에 폭이 있는지부터</strong> 확인하세요.
+          폭 이야기는 10단원에서 이어집니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. 브라우저는 <strong>띄어쓰기 자리</strong>에서만 줄을 바꿉니다. 없으면 넘칩니다.</p>
+      <p>2. <code>white-space: nowrap</code> 은 줄을 아예 안 바꿉니다.</p>
+      <p>3. <code>overflow-wrap: break-word</code> 는 <strong>안 들어갈 때만</strong> 낱말을 자릅니다.</p>
+      <p>4. <code>word-break: break-all</code> 은 줄 끝에 오면 <strong>무조건</strong> 자릅니다.</p>
+      <p>5. 점 세 개는 <code>overflow: hidden</code> + <code>white-space: nowrap</code> +
+        <code>text-overflow: ellipsis</code> <strong>세 개를 다</strong> 써야 나옵니다.</p>
+      <p>6. 점 세 개는 <strong>한 줄</strong>에서만 됩니다.</p>
+      <p>7. <code>width</code> 와 <code>overflow</code> 는 10단원에서 제대로 배웁니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) .box 를 이렇게 바꿉니다.
+
+                .box { width: 400px; background-color: #fff8dc; }
+
+            → 노란 상자들이 넓어지고, 긴 주소가 한 줄에 다 들어오면서
+              밖으로 튀어나가지 않습니다.
+              문제가 사라진 것처럼 보이지만, 주소가 더 길어지면 다시 넘칩니다.
+              폭을 넓히는 것은 근본 해결이 아니라는 점을 확인하세요.
+
+         2) 섹션 2 의 style 에 이렇게 한 덩어리를 더 넣습니다.
+
+                #nw-off { white-space: nowrap; }
+
+            → 두 상자가 똑같이 한 줄짜리가 되고 둘 다 오른쪽으로 삐져나갑니다.
+              비교할 대상이 없어지므로 확인 뒤에는 다시 지우세요.
+
+         3) 예를 들어 이렇게 바꿉니다.
+
+                <p class="box" id="wrap-on">mylongemailaddress2026@example.com</p>
+
+            → 여전히 노란 상자 안에서 두 줄로 접힙니다.
+              break-word 가 걸려 있어서 어떤 긴 글자가 와도 상자를 넘지 않습니다.
+
+         4) .box-narrow 를 이렇게 바꿉니다.
+
+                .box-narrow { width: 120px; background-color: #f0f7ff; }
+
+            → 이제 orderNumber20260811 이 120px 한 줄에 들어가지 못합니다.
+              그래서 둘째 상자(break-word) 도 낱말을 자르기 시작합니다.
+              첫 상자(아무것도 안 건 것) 만 여전히 밖으로 삐져나갑니다.
+              break-word 가 "필요할 때만 자른다" 는 말의 뜻이 여기서 분명해집니다.
+
+         5) #ell-4 에서 overflow: hidden; 을 지우면
+
+                #ell-4 { white-space: nowrap; text-overflow: ellipsis; }
+
+            → 위의 2번 상자와 똑같아집니다.
+              한 줄이 되기는 하지만 넘친 글자가 그대로 다 보이고 점은 없습니다.
+              감추는 역할을 하는 overflow 가 빠졌기 때문입니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #ov-normal | ~width | 260
+      #ov-normal | ~height | 54
+      #ov-plain | ~width | 260
+      #ov-plain | ~height | 54
+      #ov-plain | overflow-wrap | normal
+      #nw-off | white-space | normal
+      #nw-off | ~height | 54
+      #nw-on | white-space | nowrap
+      #nw-on | ~height | 27
+      #wrap-off | overflow-wrap | normal
+      #wrap-on | overflow-wrap | break-word
+      #ba-none | word-break | normal
+      #ba-none | ~height | 82
+      #ba-word | overflow-wrap | break-word
+      #ba-word | word-break | normal
+      #ba-word | ~height | 82
+      #ba-all | word-break | break-all
+      #ba-all | ~height | 54
+      #ell-1 | text-overflow | ellipsis
+      #ell-1 | white-space | normal
+      #ell-1 | ~height | 54
+      #ell-2 | white-space | nowrap
+      #ell-2 | overflow | visible
+      #ell-2 | ~height | 27
+      #ell-3 | overflow | hidden
+      #ell-3 | text-overflow | clip
+      #ell-3 | ~height | 27
+      #ell-4 | overflow | hidden
+      #ell-4 | white-space | nowrap
+      #ell-4 | text-overflow | ellipsis
+      #ell-4 | ~width | 260
+      #ell-4 | ~height | 27
+      #miss-ell | text-overflow | ellipsis
+      #miss-hidden | overflow | hidden
+      #miss-breakall | word-break | break-all
+      #miss-breakall | ~height | 54
+      #miss-breakword | overflow-wrap | break-word
+      #miss-breakword | ~height | 54
+      #miss-nowrap | white-space | nowrap
+      #miss-multiline | text-overflow | ellipsis
+      #miss-multiline | white-space | normal
+    -->
+  </body>
+</html>

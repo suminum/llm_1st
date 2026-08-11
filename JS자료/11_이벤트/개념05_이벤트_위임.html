@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>11단원 개념05 - 이벤트 위임</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      input[type="text"] {
+        padding: 6px 8px;
+        font-size: 15px;
+        width: 200px;
+      }
+      button {
+        padding: 6px 12px;
+        font-size: 14px;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+        margin-top: 8px;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 4px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      li.done .text {
+        color: #999;
+        text-decoration: line-through;
+      }
+      .text {
+        cursor: pointer;
+        flex: 1;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 05 — 이벤트 위임</h1>
+
+    <p class="guide">
+      브라우저로 열고 <strong>할 일을 추가</strong>한 뒤, 글자를 눌러 완료 처리하거나
+      삭제 버튼을 눌러 보세요. <strong>새로 추가한 항목도 똑같이 동작합니다.</strong>
+      그게 이 파일의 핵심입니다. <strong>F12 → Console</strong> 도 함께 보세요.
+    
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>할 일 목록</h3>
+      <input type="text" id="todoInput" placeholder="할 일을 입력하고 Enter" />
+      <button id="addBtn">추가</button>
+
+      <ul id="todoList">
+        <li data-id="1">
+          <span class="text">처음부터 있던 항목</span>
+          <button class="deleteBtn">삭제</button>
+        </li>
+      </ul>
+
+      <div class="output" id="status">항목 1개</div>
+    </div>
+
+    <script>
+      // ============================================================
+      // 11단원 · 개념 05 — 이벤트 위임
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 추가·완료·삭제를 해 보세요.
+      // ============================================================
+      //
+      // 문제 상황부터 이해해야 합니다.
+      //
+      //   목록의 삭제 버튼마다 addEventListener 를 붙였습니다.
+      //   그런데 나중에 새로 만든 항목의 버튼에는 이벤트가 안 붙어 있습니다.
+      //   그때는 이미 addEventListener 를 다 돌린 뒤니까요.
+      //
+      // 해결책: 자식마다 붙이지 말고 '부모 하나'에 붙이고,
+      //         e.target 으로 "무엇이 눌렸는지" 를 안에서 판단합니다.
+      //         이것을 이벤트 위임이라고 합니다.
+
+      const todoInput = document.querySelector("#todoInput");
+      const addBtn = document.querySelector("#addBtn");
+      const todoList = document.querySelector("#todoList");
+      const status = document.querySelector("#status");
+
+      let nextId = 2; // 처음 항목이 1번이므로 2부터
+
+      // ── 섹션 1: 안 되는 방법 (참고용) ──
+
+      // 이렇게 하면 '지금 있는' 삭제 버튼에만 붙습니다.
+      //
+      //   document.querySelectorAll(".deleteBtn").forEach((btn) => {
+      //     btn.addEventListener("click", () => btn.closest("li").remove());
+      //   });
+      //
+      // 처음 항목은 지워지지만, 새로 추가한 항목의 버튼은 눌러도 아무 일이 없습니다.
+      // 추가할 때마다 다시 붙이는 방법도 있지만 코드가 지저분해지고 느려집니다.
+
+      // ✏️ 직접 해보기 1 — 위 코드가 '지금 있는' 버튼에만 붙는 이유를 말해 보세요.
+      //                    (힌트: querySelectorAll 은 언제 실행되나요?)
+
+      // ── 섹션 2: 되는 방법 — 부모에 한 번만 ──
+
+      todoList.addEventListener("click", (e) => {
+        console.log("눌린 요소:", e.target.className || e.target.tagName);
+
+        // [삭제 버튼을 눌렀나?]
+        if (e.target.classList.contains("deleteBtn")) {
+          const li = e.target.closest("li");
+          console.log("삭제:", li.dataset.id);
+          li.remove();
+          updateStatus();
+          return;
+        }
+
+        // [할 일 글자를 눌렀나?]
+        if (e.target.classList.contains("text")) {
+          const li = e.target.closest("li");
+          li.classList.toggle("done");
+          console.log("완료 토글:", li.dataset.id);
+          return;
+        }
+
+        // 그 외(li 의 빈 공간 등)는 무시합니다
+      });
+
+      // 이벤트는 자식에서 부모로 올라옵니다(버블링, 개념02 섹션 2).
+      // 그래서 li 안의 버튼을 눌러도 ul 이 그 이벤트를 받을 수 있습니다.
+      //
+      // 그림으로 보면 이렇습니다.
+      //
+      //     <ul id="todoList">          ← ③ 콜백은 여기 하나만 붙어 있습니다
+      //       <li>                          (e.currentTarget)
+      //         <button>삭제</button>   ← ① 손가락이 실제로 닿은 곳
+      //       </li>                          (e.target)
+      //     </ul>
+      //                                 ② 클릭이 ①에서 ③으로 타고 올라갑니다
+      //
+      // 콜백은 ③에 하나뿐인데, ①이 무엇이었는지는 e.target 으로 알 수 있습니다.
+      // 그래서 "누가 눌렸는지" 를 잃지 않으면서도 콜백은 하나면 됩니다.
+      //
+      // ul 은 처음부터 화면에 있으므로 한 번만 붙이면 됩니다.
+      // 나중에 li 를 몇 개를 추가하든 전부 이 콜백 하나가 처리합니다.
+
+      // ✏️ 직접 해보기 2 — 첫 항목의 글자를 눌러 보고, 이어서 삭제 버튼도 눌러 보세요.
+      //                    "눌린 요소:" 뒤에 각각 무엇이 찍히나요?
+
+      // ── 섹션 3: closest — 가장 가까운 조상 찾기 ──
+
+      // e.target 은 '실제로 눌린 것' 입니다. 삭제 버튼을 누르면 button 입니다.
+      // 그런데 우리가 지우고 싶은 건 그 버튼이 속한 li 전체입니다.
+      //
+      //     e.target.closest("li")
+      //
+      // closest 는 자기 자신부터 시작해서 부모 쪽으로 올라가며
+      // 조건에 맞는 첫 요소를 찾아 줍니다.
+      //
+      //     button.closest("li")  →  그 버튼을 감싸고 있는 li
+      //
+      // 없으면 null 을 돌려줍니다.
+      console.log(addBtn.closest("li"));
+      // 콘솔: null
+      // addBtn 은 li 안에 있지 않으니까요.
+
+      // parentElement 를 여러 번 쓰는 것보다 훨씬 안전합니다.
+      //   e.target.parentElement.parentElement   ← 구조가 바뀌면 깨짐
+      //   e.target.closest("li")                 ← 구조가 바뀌어도 동작
+
+      // ✏️ 직접 해보기 3 — 첫 삭제 버튼을 고른 뒤 closest("li") 로 그 버튼을 감싼
+      //                    li 를 찾고, 그 li 의 dataset.id 를 콘솔에 찍어 보세요.
+
+      // ── 섹션 4: 항목 추가 ──
+
+      function addTodo() {
+        const text = todoInput.value.trim();
+        if (!text) {
+          console.log("빈 값이라 추가하지 않습니다");
+          return;
+        }
+
+        const li = document.createElement("li");
+        li.dataset.id = nextId; // data-id 속성이 됩니다
+        nextId++;
+
+        const span = document.createElement("span");
+        span.classList.add("text");
+        span.textContent = text; // 사용자 입력이므로 textContent (10단원 개념02)
+
+        const btn = document.createElement("button");
+        btn.classList.add("deleteBtn");
+        btn.textContent = "삭제";
+
+        // 붙이는 순서에 주의하세요. 10단원에서는 한 겹(li 를 ul 에 붙이기)만 했는데,
+        // 여기는 두 겹입니다. li 안을 먼저 다 채우고, 마지막에 li 를 화면에 붙입니다.
+        //   li 안에 span 과 btn 을 넣는다  →  다 채워진 li 를 ul 에 붙인다
+        // 반대로 하면(빈 li 를 먼저 붙이고 나중에 채우면) 화면을 여러 번 다시 그리게 됩니다.
+        li.appendChild(span);
+        li.appendChild(btn);
+        todoList.appendChild(li);
+
+        todoInput.value = "";
+        todoInput.focus();
+        updateStatus();
+
+        console.log("추가됨:", text, "/ id:", li.dataset.id);
+      }
+
+      addBtn.addEventListener("click", addTodo);
+
+      // Enter 로도 추가되게 (개념02 섹션 4)
+      todoInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          addTodo();
+        }
+      });
+
+      // 새로 만든 li 의 삭제 버튼에는 addEventListener 를 하지 않았습니다.
+      // 그런데도 삭제가 됩니다. 위임 덕분입니다. 이게 핵심입니다.
+
+      // ✏️ 직접 해보기 4 — 입력칸에 "운동하기" 를 넣고 추가 버튼을 누른 뒤,
+      //                    todoList.children.length 를 콘솔에 찍어 보세요.
+
+      // ── 섹션 5: 개수 갱신 ──
+
+      function updateStatus() {
+        const total = todoList.children.length;
+        const done = todoList.querySelectorAll("li.done").length;
+
+        status.textContent = `항목 ${total}개 (완료 ${done}개)`;
+        console.log("상태 갱신:", total, done);
+      }
+
+      updateStatus();
+      // 콘솔: 상태 갱신: 1 0
+
+      // 완료 토글 후에도 갱신하려면 섹션 2의 text 분기에서도 불러야 합니다.
+      // ✏️ 직접 해보기 5 — 완료 토글 뒤에도 updateStatus() 를 부르도록 고쳐 보세요.
+
+      // ✏️ 직접 해보기 6 — 지금은 글자(.text)를 정확히 눌러야 완료 처리가 됩니다.
+      //                    li 의 빈 공간을 눌러도 완료 처리가 되도록
+      //                    섹션 2의 콜백을 고쳐 보세요.
+      //                    (힌트: 삭제 버튼이 아니면 나머지는 전부 완료 토글로 처리)
+
+      // ✏️ 직접 해보기 7 — 항목을 몇 개 추가한 뒤 삭제해 보세요.
+      //                    새로 만든 항목의 버튼에는 addEventListener 를 한 번도
+      //                    하지 않았는데 왜 삭제가 되는지 설명해 보세요.
+
+      // ── 섹션 6: 위임이 좋은 이유 ──
+
+      // 1) 나중에 만들어지는 요소도 자동으로 처리된다  ← 가장 큰 이유
+      // 2) 이벤트를 한 번만 붙이니 메모리를 덜 쓴다
+      //    항목이 1000개면 리스너도 1000개가 붙습니다. 위임하면 1개입니다.
+      // 3) 요소를 지울 때 이벤트를 따로 뗄 필요가 없다
+      //
+      // 단점:
+      //   콜백 안에서 "무엇이 눌렸는지" 를 매번 판단해야 해서 if 가 늘어납니다.
+      //   목록처럼 같은 모양이 반복되는 곳에서 쓰고,
+      //   버튼 하나짜리는 그냥 그 버튼에 직접 붙이세요.
+
+      // ✏️ 직접 해보기 8 — 화면에 버튼이 딱 하나뿐이라면 위임을 써야 할까요?
+      //                    쓸지 말지 정하고 그 이유를 한 줄로 적어 보세요.
+
+      // ── 섹션 7: 자주 하는 실수 ──
+
+      // [실수 1] e.target 이 항상 버튼일 거라 생각
+      // 이 파일처럼 버튼 안에 글자만 있으면 classList.contains 로 충분합니다.
+      // 하지만 버튼 안에 <span> 이나 아이콘을 넣으면 e.target 이 그 안쪽 요소가 됩니다.
+      // 그러면 contains 로는 못 잡습니다. 그럴 때는 closest 를 쓰세요.
+      //   if (e.target.closest(".deleteBtn")) { ... }
+
+      // [실수 2] 판별 없이 처리
+      // todoList.addEventListener("click", (e) => e.target.remove());
+      // 실수: 어디를 눌러도 그것이 지워집니다. 글자를 누르면 글자가 사라집니다.
+
+      // [실수 3] 자식에 직접 붙이고 나중에 추가한 것이 안 된다고 하기 (섹션 1)
+
+      // [실수 4] closest 결과가 null 인데 바로 사용
+      // e.target.closest("li").remove();
+      // 실수: 목록의 빈 공간을 누르면 null 이라 TypeError 가 납니다.
+      //       먼저 판별하고 쓰거나 if (li) 로 확인하세요.
+
+      // [실수 5] dataset 값을 숫자로 착각
+      console.log(typeof todoList.children[0].dataset.id);
+      // 콘솔: string
+      // 계산하거나 === 로 비교할 때는 Number( ) 를 거치세요.
+
+      // ── 정리 ──
+
+      // 1. 자식마다 붙이지 말고 부모 하나에 붙인다 = 이벤트 위임
+      // 2. 버블링 덕분에 자식의 이벤트를 부모가 받을 수 있다.
+      // 3. 콜백 안에서 e.target 으로 무엇이 눌렸는지 판단한다.
+      // 4. e.target.closest("li") 로 처리할 대상 전체를 찾는다.
+      // 5. 나중에 만든 요소도 자동으로 동작한다 — 이게 가장 큰 장점.
+      // 6. data-id 로 각 항목을 구분한다. 값은 문자열이다.
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) querySelectorAll 은 그 줄이 실행되는 '그 순간' 화면에 있는 것만 골라 오기
+      //    때문입니다. 페이지를 열 때 딱 한 번 실행되므로, 그때 있던 버튼에만
+      //    콜백이 붙습니다. 나중에 만든 버튼은 그 목록에 없었으니 아무것도 안 붙습니다.
+      //    → 10단원 개념01 에서 "querySelectorAll 은 그때의 묶음" 이라고 한 것과 같습니다.
+      //
+      // 2) 글자를 누르면   → 눌린 요소: text
+      //    삭제 버튼을 누르면 → 눌린 요소: deleteBtn
+      //    → 콜백은 ul 하나에만 붙어 있는데도 무엇이 눌렸는지 구분됩니다.
+      //      className 이 비어 있으면 tagName 이 대신 나오도록 되어 있습니다(|| 사용).
+      //
+      // 3) const btn = document.querySelector(".deleteBtn");
+      //    const li = btn.closest("li");
+      //    console.log(li.dataset.id);
+      //    // 콘솔: 1
+      //    → 버튼에서 시작해 부모 쪽으로 올라가며 li 를 찾은 것입니다.
+      //      dataset.id 가 "1" 인 문자열이라는 점도 확인해 두세요. (섹션 7 실수 5)
+      //
+      // 4) todoInput.value = "운동하기";
+      //    addBtn.click();
+      //    console.log(todoList.children.length);
+      //    // 콘솔: 2
+      //    → 원래 1개였는데 2개가 되었습니다. 새로 만든 항목의 삭제 버튼에는
+      //      addEventListener 를 하지 않았는데도 눌러 보면 지워집니다.
+      //
+      // 5) 섹션 2의 text 분기에 updateStatus() 를 추가합니다.
+      //
+      //    if (e.target.classList.contains("text")) {
+      //      const li = e.target.closest("li");
+      //      li.classList.toggle("done");
+      //      updateStatus();          // ← 이 줄 추가
+      //      return;
+      //    }
+      //
+      // 6) 삭제 버튼 분기를 먼저 처리하고 return 한 뒤,
+      //    "그 외" 를 전부 완료 토글로 바꾸면 됩니다.
+      //
+      //    const li = e.target.closest("li");
+      //    if (!li) return;                       // 목록 바깥을 눌렀을 때
+      //
+      //    if (e.target.classList.contains("deleteBtn")) {
+      //      li.remove();
+      //      updateStatus();
+      //      return;
+      //    }
+      //
+      //    li.classList.toggle("done");           // 삭제 버튼이 아니면 전부 여기로
+      //    updateStatus();
+      //
+      // 7) 삭제 이벤트가 li 하나하나에 붙어 있는 게 아니라 부모인 ul 에 한 번만
+      //    붙어 있기 때문입니다. 자식에서 일어난 클릭이 부모로 올라오므로(버블링),
+      //    li 가 언제 만들어졌든 상관없이 ul 의 콜백이 그 클릭을 받습니다.
+      //
+      // 8) 쓰지 않는 편이 낫습니다.
+      //    → 위임의 가장 큰 장점은 "나중에 생기는 요소도 처리된다" 입니다.
+      //      버튼이 하나뿐이고 늘어나지 않는다면 그 장점을 쓸 일이 없습니다.
+      //      오히려 콜백 안에 "이게 그 버튼인가?" 를 판별하는 if 만 늘어나서
+      //      그냥 그 버튼에 직접 붙이는 것보다 읽기 어려워집니다.
+    </script>
+  </body>
+</html>

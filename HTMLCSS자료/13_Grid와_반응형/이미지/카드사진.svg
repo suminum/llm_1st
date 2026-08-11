@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 손으로 그린 SVG 그림입니다. 도형과 글자만 들어 있습니다. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="300" height="180" viewBox="0 0 300 180">
+  <rect x="0" y="0" width="300" height="180" fill="#f2e6d8" />
+  <circle cx="150" cy="82" r="46" fill="#e8a33d" />
+  <rect x="112" y="112" width="76" height="34" rx="6" fill="#c47a20" />
+  <rect x="24" y="24" width="40" height="40" rx="8" fill="#d8c4ac" />
+  <rect x="236" y="116" width="40" height="40" rx="8" fill="#d8c4ac" />
+  <text x="150" y="168" text-anchor="middle" font-size="14"
+        font-family="Malgun Gothic, sans-serif" fill="#7a5a2a">카드 사진</text>
+</svg>

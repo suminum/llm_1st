@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>02단원 연습문제 정답 - 텍스트 태그</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         02단원 연습문제 정답 — 텍스트 태그
+         ------------------------------------------------------------
+         이 파일은 연습문제.html 과 같은 뼈대에 답을 채운 것입니다.
+         문제 번호와 문장은 그대로 두었습니다.
+         ============================================================
+
+         답을 보기 전에 스스로 한 번 풀어 보세요.
+         답이 여러 개인 문제도 있습니다. 화면 결과가 같으면 맞은 것입니다.
+         각 답 아래에 왜 그렇게 되는지를 짧게 붙여 두었습니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">02단원 연습문제 정답 — 텍스트 태그</h1>
+    <p class="doc-sub">02단원 · 텍스트 태그</p>
+
+    <p class="doc-guide">
+      각 상자 안이 <strong>정답 코드가 실제로 그려진 결과</strong>입니다.
+      VS Code 에서 이 파일을 열어 상자 안의 코드를 확인하세요.
+      여러분이 쓴 코드와 글자가 달라도 <strong>화면 결과가 같으면 맞은 것</strong>입니다.
+    </p>
+
+    <!-- ───── 문제 1 ───── (개념01 섹션1) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 1</h2>
+      <p class="doc-desc">
+        제목 태그 <code>h2</code> 로 <strong>우리 동네 빵집</strong> 이라는 제목을 만드세요.
+      </p>
+      <div class="doc-demo" id="q1">
+        <p class="doc-demo-label">문제 1 — 정답</p>
+        <h2 id="a1">우리 동네 빵집</h2>
+        <!-- 화면: "우리 동네 빵집" 이 크고 굵은 글씨로 한 줄 보입니다 -->
+      </div>
+      <p class="doc-note">
+        <code>h2</code> 의 기본 글자 크기는 24px 이고 굵기는 700 입니다.
+        보통 문단이 16px, 굵기 400 이라서 눈에 띄게 커 보입니다.
+        크기가 커진 것은 덤이고, <code>h2</code> 를 쓴 진짜 이유는 이 줄이 제목이기 때문입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 2 ───── (개념01 섹션2) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 2</h2>
+      <p class="doc-desc">
+        <code>h2</code> 로 <strong>메뉴</strong> 를 쓰고, 그 아래에 <code>h3</code> 로
+        <strong>빵</strong> 과 <strong>음료</strong> 를 차례로 쓰세요.
+      </p>
+      <div class="doc-demo" id="q2">
+        <p class="doc-demo-label">문제 2 — 정답</p>
+        <h2 id="a2-h2">메뉴</h2>
+        <h3 id="a2-h3a">빵</h3>
+        <h3 id="a2-h3b">음료</h3>
+        <!-- 화면: 세 줄이 보입니다. "메뉴" 가 가장 크고,
+                  "빵" 과 "음료" 는 서로 같은 크기이면서 "메뉴" 보다 작습니다 -->
+      </div>
+      <p class="doc-note">
+        <code>h3</code> 두 개를 쓴 이유는 <strong>빵과 음료가 서로 같은 단계</strong>이기 때문입니다.
+        같은 단계면 같은 숫자를 씁니다. <code>h3</code> 다음에 <code>h4</code> 를 쓰면
+        음료가 빵에 속한다는 뜻이 되어 버립니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 3 ───── (개념02 섹션1) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 3</h2>
+      <p class="doc-desc">
+        문단 태그 <code>p</code> 로 두 문단을 만드세요. 내용은
+        <strong>아침 7시에 문을 엽니다.</strong> 와
+        <strong>저녁 9시에 문을 닫습니다.</strong> 입니다.
+      </p>
+      <div class="doc-demo" id="q3">
+        <p class="doc-demo-label">문제 3 — 정답</p>
+        <p id="a3-a">아침 7시에 문을 엽니다.</p>
+        <p id="a3-b">저녁 9시에 문을 닫습니다.</p>
+        <!-- 화면: 두 줄이 보이고 두 줄 사이가 눈에 띄게 벌어져 있습니다 -->
+      </div>
+      <p class="doc-note">
+        간격을 벌리라고 시킨 적이 없는데 벌어집니다.
+        <code>p</code> 에 위아래 16px 여백이 기본으로 붙어 있기 때문입니다.
+        <strong>문단이 두 개라는 뜻을 적었더니 간격은 브라우저가 알아서 준 것</strong>입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 4 ───── (개념02 섹션3) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 4</h2>
+      <p class="doc-desc">
+        문단 <strong>하나</strong> 안에서 주소를 두 줄로 나누세요. 내용은
+        <strong>서울시 강남구 테헤란로 123</strong> 과 <strong>2층 201호</strong> 입니다.
+      </p>
+      <div class="doc-demo" id="q4">
+        <p class="doc-demo-label">문제 4 — 정답</p>
+        <p id="a4">서울시 강남구 테헤란로 123<br />2층 201호</p>
+        <!-- 화면: 두 줄로 보이는데 두 줄 사이가 벌어지지 않고 바로 붙어 있습니다 -->
+      </div>
+      <p class="doc-note">
+        문제 3 과 화면을 비교해 보세요. 거기는 사이가 벌어졌고 여기는 붙어 있습니다.
+        <strong>문단이 두 개인 것과 한 문단 안에서 줄만 바뀐 것은 다릅니다.</strong>
+        주소는 한 덩어리이므로 문단 하나 안에서 <code>&lt;br /&gt;</code> 로 나눕니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 5 ───── (개념02 섹션5) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 5</h2>
+      <p class="doc-desc">
+        문단 <strong>오전 이야기입니다.</strong> 와 <strong>오후 이야기입니다.</strong> 를 쓰고,
+        그 사이에 가로줄을 하나 그으세요.
+      </p>
+      <div class="doc-demo" id="q5">
+        <p class="doc-demo-label">문제 5 — 정답</p>
+        <p>오전 이야기입니다.</p>
+        <hr id="a5" />
+        <p>오후 이야기입니다.</p>
+        <!-- 화면: 두 문단 사이에 상자 가로폭만큼 긴 회색 가로줄이 하나 보입니다 -->
+      </div>
+      <p class="doc-note">
+        <code>&lt;hr /&gt;</code> 는 빈 태그라 닫는 태그를 쓰지 않습니다.
+        높이는 2px, 색은 회색입니다.
+        선을 그으라는 뜻이 아니라 <strong>여기서 이야기가 바뀐다</strong>는 뜻입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 6 ───── (개념03 섹션1) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 6</h2>
+      <p class="doc-desc">
+        <strong>모임은 3시입니다.</strong> 라는 문단을 만들고,
+        <strong>3시</strong> 두 글자만 중요하다고 표시하세요.
+      </p>
+      <div class="doc-demo" id="q6">
+        <p class="doc-demo-label">문제 6 — 정답</p>
+        <p id="a6">모임은 <strong id="a6-s">3시</strong>입니다.</p>
+        <!-- 화면: 한 줄이 보이고 그중 "3시" 두 글자만 굵습니다 -->
+      </div>
+      <p class="doc-note">
+        <code>&lt;b&gt;</code> 를 써도 화면은 똑같이 나옵니다. 하지만
+        <strong>놓치면 안 되는 정보라서 굵게 한 것</strong>이므로 <code>strong</code> 이 맞습니다.
+        굵기 값은 둘 다 700 이라 눈으로는 구분할 수 없습니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 7 ───── (개념03 섹션2) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 7</h2>
+      <p class="doc-desc">
+        <strong>나는 오늘 간다.</strong> 라는 문단을 만들고,
+        <strong>오늘</strong> 두 글자를 힘주어 읽으라고 표시하세요.
+      </p>
+      <div class="doc-demo" id="q7">
+        <p class="doc-demo-label">문제 7 — 정답</p>
+        <p id="a7">나는 <em id="a7-e">오늘</em> 간다.</p>
+        <!-- 화면: 한 줄이 보이고 그중 "오늘" 두 글자만 오른쪽으로 비스듬히 기울어져 있습니다.
+                  굵어지지는 않았습니다 -->
+      </div>
+      <p class="doc-note">
+        소리 내어 읽어 보면 "내일이 아니라 오늘" 이라는 뜻이 들립니다.
+        <strong>말의 억양이 바뀌는 자리가 <code>em</code></strong> 입니다.
+        중요도가 높은 것은 <code>strong</code> 이고 둘은 종류가 다른 강조입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 8 ───── (개념03 섹션4) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 8</h2>
+      <p class="doc-desc">
+        <strong>오늘의 메뉴는 김치찌개 입니다 (1인분 기준)</strong> 라는 문단을 만들되,
+        <strong>김치찌개</strong> 에는 형광펜을, <strong>(1인분 기준)</strong> 에는
+        곁다리 말 표시를 하세요.
+      </p>
+      <div class="doc-demo" id="q8">
+        <p class="doc-demo-label">문제 8 — 정답</p>
+        <p id="a8">오늘의 메뉴는 <mark id="a8-m">김치찌개</mark> 입니다
+          <small id="a8-s">(1인분 기준)</small></p>
+        <!-- 화면: 한 줄이 보입니다. "김치찌개" 네 글자 뒤에만 노란 칠이 되어 있고,
+                  "(1인분 기준)" 은 나머지 글자보다 작습니다 -->
+      </div>
+      <p class="doc-note">
+        노란 칠이 줄 끝까지 가지 않고 <strong>글자 뒤에서 끝나는 것</strong>을 보세요.
+        <code>mark</code> 가 인라인 요소라 글자 길이만큼만 차지하기 때문입니다.
+        블록 요소였다면 줄 끝까지 칠해졌을 것입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 9 ───── (개념03 섹션5) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 9</h2>
+      <p class="doc-desc">
+        가격이 <strong>30,000원</strong> 에서 <strong>19,000원</strong> 으로 바뀌었습니다.
+        지운 값과 새로 넣은 값을 각각 표시해 한 문단으로 만드세요.
+      </p>
+      <div class="doc-demo" id="q9">
+        <p class="doc-demo-label">문제 9 — 정답</p>
+        <p id="a9">원래 가격 <del id="a9-d">30,000원</del>
+          할인가 <ins id="a9-i">19,000원</ins></p>
+        <!-- 화면: 한 줄이 보입니다. "30,000원" 글자 가운데를 가로지르는 줄이 그어져 있고,
+                  "19,000원" 아래에는 밑줄이 그어져 있습니다 -->
+      </div>
+      <p class="doc-note">
+        <code>del</code> 은 가운데 줄, <code>ins</code> 는 밑줄이 기본입니다.
+        <strong>줄을 그으려고 쓴 것이 아니라 지웠다는 뜻을 적은 것</strong>입니다.
+        줄만 긋고 싶다면 09단원의 <code>text-decoration</code> 을 씁니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 10 ───── (개념04 섹션1) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 10</h2>
+      <p class="doc-desc">
+        <strong>가격은 12,000원 입니다.</strong> 라는 문단을 만들고,
+        <strong>12,000원</strong> 만 <code>span</code> 으로 감싸세요.
+        나중에 CSS 로 그 부분만 꾸미려고 손잡이를 다는 것입니다.
+      </p>
+      <div class="doc-demo" id="q10">
+        <p class="doc-demo-label">문제 10 — 정답</p>
+        <p id="a10">가격은 <span id="a10-s">12,000원</span> 입니다.</p>
+        <!-- 화면: 한 줄이 보입니다. span 이 없을 때와 화면이 완전히 같습니다 -->
+      </div>
+      <p class="doc-note">
+        <code>span</code> 은 아무 뜻도 없고 화면도 바꾸지 않습니다.
+        <strong>07단원에서 CSS 를 배우기 전까지는 손잡이일 뿐</strong>입니다.
+        인라인 요소라서 줄도 끊지 않습니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 11 ───── (개념05 섹션1, 섹션2) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 11</h2>
+      <p class="doc-desc">
+        화면에 <strong>p 태그는 &lt;p&gt; 라고 씁니다</strong> 라는 한 줄이 보이도록
+        문단을 만드세요. 꺾쇠가 글자로 보여야 합니다.
+      </p>
+      <div class="doc-demo" id="q11">
+        <p class="doc-demo-label">문제 11 — 정답</p>
+        <p id="a11">p 태그는 &lt;p&gt; 라고 씁니다</p>
+        <!-- 화면: "p 태그는 <p> 라고 씁니다" 가 한 줄로 보입니다 -->
+      </div>
+      <p class="doc-note">
+        꺾쇠를 그대로 썼다면 브라우저가 가운데 <code>&lt;p&gt;</code> 를 진짜 태그로 읽어
+        <strong>문단이 두 개로 쪼개졌을 것</strong>입니다.
+        <code>&amp;lt;</code> 와 <code>&amp;gt;</code> 로 바꿔 쓰면 글자로 남습니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 12 ───── [응용] (개념03 섹션6) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 12 [응용]</h2>
+      <p class="doc-desc">
+        <strong>물은 H2O 이고, 3제곱수 32 는 9입니다.</strong> 라는 문단을 만들되,
+        <strong>H2O 의 2 는 아래첨자</strong>로, <strong>32 의 뒤쪽 2 는 위첨자</strong>로
+        만드세요. 화면에서 물 분자식과 거듭제곱이 제대로 보이면 됩니다.
+      </p>
+      <div class="doc-demo" id="q12">
+        <p class="doc-demo-label">문제 12 — 정답</p>
+        <p id="a12">물은 H<sub id="a12-sub">2</sub>O 이고,
+          3제곱수 3<sup id="a12-sup">2</sup> 는 9입니다.</p>
+        <!-- 화면: 한 줄이 보입니다. "H2O" 의 2 가 아래쪽에 작게 붙어 있고,
+                  "32" 의 뒤쪽 2 는 3 의 오른쪽 위에 작게 붙어 있습니다 -->
+      </div>
+      <p class="doc-note">
+        <code>sub</code> 와 <code>sup</code> 은 글자 크기를 13.3333px 로 줄이고
+        세로 위치를 바꿉니다. 첨자가 위아래로 삐져나오기 때문에
+        <strong>이 문단만 줄 높이가 27px 에서 33px 로 커집니다.</strong>
+      </p>
+    </section>
+
+    <!-- ───── 문제 13 ───── [응용] (개념05 섹션3, 섹션4) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 13 [응용]</h2>
+      <p class="doc-desc">
+        페이지 맨 아래에 넣을 저작권 한 줄을 만드세요. 화면에
+        <strong>© 2026 우리 동네 빵집 · 대표 홍 길동</strong> 이 보이면 됩니다.
+        <strong>홍</strong> 과 <strong>길동</strong> 사이는 줄이 갈라지지 않는 공백으로 쓰세요.
+      </p>
+      <div class="doc-demo" id="q13">
+        <p class="doc-demo-label">문제 13 — 정답</p>
+        <p id="a13">&copy; 2026 우리 동네 빵집 &middot; 대표 홍&nbsp;길동</p>
+        <!-- 화면: "© 2026 우리 동네 빵집 · 대표 홍 길동" 이 한 줄로 보입니다 -->
+      </div>
+      <p class="doc-note">
+        <code>&amp;copy;</code> 는 저작권 기호, <code>&amp;middot;</code> 는 가운뎃점입니다.
+        <code>&amp;nbsp;</code> 는 보통 공백처럼 보이지만
+        <strong>줄 끝에 닿아도 그 자리에서 갈라지지 않습니다.</strong>
+        이름이 두 줄로 찢어지는 것을 막아 줍니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 14 ───── [응용] (개념01 섹션2, 개념02 섹션1, 개념03 섹션1) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 14 [응용]</h2>
+      <p class="doc-desc">
+        간단한 요리법 한 덩어리를 만드세요. 필요한 것은 이렇습니다.
+        <code>h2</code> 로 <strong>김치찌개 만들기</strong>,
+        그 아래 <code>h3</code> 로 <strong>재료</strong> 와 <strong>순서</strong>,
+        각 <code>h3</code> 아래에 설명 문단 하나씩,
+        그리고 <strong>재료</strong> 설명 안의 <strong>김치 한 컵</strong> 을 중요 표시하세요.
+      </p>
+      <div class="doc-demo" id="q14">
+        <p class="doc-demo-label">문제 14 — 정답</p>
+        <h2 id="a14-h2">김치찌개 만들기</h2>
+        <h3 id="a14-h3a">재료</h3>
+        <p id="a14-p1">돼지고기 200g 과 <strong id="a14-s">김치 한 컵</strong>이 필요합니다.</p>
+        <h3 id="a14-h3b">순서</h3>
+        <p id="a14-p2">냄비에 김치를 볶다가 물을 붓고 끓입니다.</p>
+        <!-- 화면: 다섯 줄이 보입니다. "김치찌개 만들기" 가 가장 크고,
+                  "재료" 와 "순서" 가 같은 크기로 그보다 작습니다.
+                  각 소제목 아래에 보통 크기 문단이 한 줄씩 있고,
+                  첫 문단 안의 "김치 한 컵" 만 굵습니다 -->
+      </div>
+      <p class="doc-note">
+        <code>h2</code> 다음이 <code>h3</code> 인 것을 확인하세요.
+        <strong>단계를 건너뛰지 않았습니다.</strong>
+        재료와 순서가 서로 같은 단계라서 둘 다 <code>h3</code> 입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 15 ───── [도전] (개념01~05 종합) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 15 [도전]</h2>
+      <p class="doc-desc">
+        상품 소개 한 덩어리를 만드세요. 아래 여섯 가지를 모두 넣어야 합니다.
+      </p>
+      <p class="doc-desc">
+        1) <code>h2</code> 로 상품명 <strong>수제 단팥빵</strong> ·
+        2) 설명 문단 하나, 그 안에 <strong>당일 생산</strong> 을 중요 표시 ·
+        3) 값이 <strong>3,000원</strong> 에서 <strong>2,500원</strong> 으로 바뀐 표시 ·
+        4) <strong>(3개 이상 구매 시)</strong> 를 곁다리 말로 ·
+        5) 가로줄 하나 ·
+        6) 마지막 줄에 <strong>© 2026 우리 동네 빵집</strong> 을 곁다리 말로
+      </p>
+      <div class="doc-demo" id="q15">
+        <p class="doc-demo-label">문제 15 — 정답</p>
+        <h2 id="a15-h2">수제 단팥빵</h2>
+        <p id="a15-p">국산 팥으로 <strong id="a15-strong">당일 생산</strong>합니다.</p>
+        <p id="a15-price"><del id="a15-del">3,000원</del> <ins id="a15-ins">2,500원</ins>
+          <small id="a15-small">(3개 이상 구매 시)</small></p>
+        <hr id="a15-hr" />
+        <p><small id="a15-copy">&copy; 2026 우리 동네 빵집</small></p>
+        <!-- 화면: 위에서부터 "수제 단팥빵" 이 크고 굵게 한 줄,
+                  설명 문단 한 줄에서 "당일 생산" 만 굵고,
+                  가격 줄에서 "3,000원" 에 가운데 줄, "2,500원" 에 밑줄,
+                  "(3개 이상 구매 시)" 가 작게,
+                  회색 가로줄 하나,
+                  맨 아래 "© 2026 우리 동네 빵집" 이 작게 보입니다 -->
+      </div>
+      <p class="doc-note">
+        상품명을 <code>h2</code> 로 쓴 것이 핵심입니다.
+        <code>strong</code> 으로 써도 굵어지지만 <strong>제목이라는 뜻이 사라집니다.</strong>
+        가격 줄에서는 <code>del</code>, <code>ins</code>, <code>small</code> 세 인라인 요소가
+        한 줄에 나란히 이어집니다. 인라인이라 줄을 끊지 않기 때문입니다.
+      </p>
+    </section>
+
+    <!-- ───── 문제 16 ───── [확인] (개념02 섹션6, 개념03 섹션8, 개념05 섹션5) -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 16 [확인]</h2>
+      <p class="doc-desc">
+        아래 상자의 코드는 <strong>에러가 하나도 안 납니다.</strong>
+        그런데 만든 사람이 원한 화면과 다르게 나옵니다.
+        잘못된 곳 <strong>세 군데</strong>를 찾아 고치세요.
+      </p>
+      <!--
+        고치기 전 코드는 이랬습니다.
+
+            <p>모임은 <strng>오후 3시</strng>입니다.</p>
+            <p>회사 이름은 AT&copy 라는 회사 입니다.</p>
+            <p>자세한 내용은 <p>공지 게시판</p> 을 보세요.</p>
+
+        무슨 일이 일어났는지부터 정리합니다.
+
+            첫째 줄  strng 이라는 태그는 없습니다. 브라우저는 모르는 태그를
+                     없는 셈 치고 안의 글자만 그립니다. 그래서 안 굵어집니다.
+                     에러는 나지 않습니다.
+
+            둘째 줄  &copy 가 저작권 기호로 읽혔습니다.
+                     앰퍼샌드 뒤에 우연히 특수문자 이름이 붙어 있었기 때문입니다.
+                     화면에는 "AT© 라는 회사" 가 나옵니다.
+                     copy 라는 글자가 통째로 사라진 것입니다.
+
+            셋째 줄  p 안에 p 를 넣었습니다. 브라우저는 안쪽 p 를 만나는 순간
+                     바깥 p 를 강제로 닫아 버립니다. 그래서 한 줄이 세 줄로 쪼개집니다.
+
+        고친 코드가 아래 상자 안에 들어 있습니다.
+      -->
+      <div class="doc-demo" id="q16">
+        <p class="doc-demo-label">문제 16 — 정답 (고친 코드)</p>
+        <p id="a16-a">모임은 <strong id="a16-s">오후 3시</strong>입니다.</p>
+        <p id="a16-b">회사 이름은 AT&amp;copy 라는 회사 입니다.</p>
+        <p id="a16-c">자세한 내용은 <span id="a16-span">공지 게시판</span> 을 보세요.</p>
+        <!-- 화면: 세 줄이 보입니다.
+                  첫 줄의 "오후 3시" 만 굵고,
+                  둘째 줄에 "AT&copy 라는 회사 입니다." 가 글자 그대로 보이고,
+                  셋째 줄이 "자세한 내용은 공지 게시판 을 보세요." 한 줄로 이어집니다 -->
+      </div>
+      <p class="doc-note">
+        고친 곳은 셋입니다.
+        <code>strng</code> → <code>strong</code> (철자),
+        <code>AT&amp;amp;copy</code> (앰퍼샌드를 특수문자 표기로),
+        안쪽 <code>&lt;p&gt;</code> → <code>&lt;span&gt;</code> (블록을 인라인으로).
+        <strong>셋 다 고치기 전에도 에러는 나지 않았습니다.</strong>
+        화면을 눈으로 보고 이상한 것을 알아채는 것이 이 문제의 전부입니다.
+      </p>
+      <p class="doc-note">
+        셋째 줄은 안쪽 태그를 아예 지워도 화면 결과가 같습니다.
+        하지만 나중에 CSS 로 그 부분만 꾸밀 계획이 있다면
+        <code>&lt;span&gt;</code> 으로 남겨 두는 편이 좋습니다.
+      </p>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정답을 다 봤으면 ──</p>
+      <p>1. 여러분이 쓴 코드와 글자가 달라도 <strong>화면 결과가 같으면 맞은 것</strong>입니다.</p>
+      <p>2. 틀린 문제는 개념 파일의 해당 섹션을 다시 읽어 보세요.
+        문제 번호 옆에 어느 파일 어느 섹션인지 적어 두었습니다.</p>
+      <p>3. 이 단원에서 가장 중요한 한 줄은 이것입니다.
+        <strong>태그는 뜻으로 고르고, 모양은 CSS 로 바꿉니다.</strong></p>
+    </div>
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #a1 | font-size | 24px
+      #a1 | font-weight | 700
+      #a2-h2 | font-size | 24px
+      #a2-h3a | font-size | 18.72px
+      #a2-h3b | font-size | 18.72px
+      #a3-a | ~height | 27
+      #a3-b | ~height | 27
+      #a4 | ~height | 54
+      #a5 | ~height | 2
+      #a5 | display | block
+      #a6-s | font-weight | 700
+      #a7-e | font-style | italic
+      #a7-e | font-weight | 400
+      #a8-m | background-color | rgb(255, 255, 0)
+      #a8-s | font-size | 13.3333px
+      #a9-d | text-decoration-line | line-through
+      #a9-i | text-decoration-line | underline
+      #a10-s | display | inline
+      #a11 | text | p 태그는 <p> 라고 씁니다
+      #a12-sub | vertical-align | sub
+      #a12-sup | vertical-align | super
+      #a12 | ~height | 33
+      #a13 | text | © 2026 우리 동네 빵집 · 대표 홍 길동
+      #a14-h2 | font-size | 24px
+      #a14-h3a | font-size | 18.72px
+      #a14-s | font-weight | 700
+      #a15-h2 | font-size | 24px
+      #a15-strong | font-weight | 700
+      #a15-del | text-decoration-line | line-through
+      #a15-ins | text-decoration-line | underline
+      #a15-small | font-size | 13.3333px
+      #a15-hr | ~height | 2
+      #a16-s | font-weight | 700
+      #a16-b | text | 회사 이름은 AT&copy 라는 회사 입니다.
+      #a16-c | text | 자세한 내용은 공지 게시판 을 보세요.
+      #a16-span | display | inline
+    -->
+  </body>
+</html>

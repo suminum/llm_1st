@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>09단원 개념04 - 정렬과 꾸미기</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* 이 파일에서 '가르치는' CSS 만 여기에 씁니다. */
+
+      /* ── 섹션 1: text-align ── */
+      #ta-left {
+        text-align: left;
+        background-color: #eef2f7;
+      }
+      #ta-center {
+        text-align: center;
+        background-color: #eef2f7;
+      }
+      #ta-right {
+        text-align: right;
+        background-color: #eef2f7;
+      }
+      /* 화면: 같은 회색 상자 안에서 글자만 왼쪽·가운데·오른쪽으로 옮겨 붙습니다 */
+
+      #ta-normal {
+        background-color: #f4f4f4;
+      }
+      #ta-justify {
+        text-align: justify;
+        background-color: #f4f4f4;
+      }
+      /* 화면: 아래 상자는 오른쪽 끝이 자로 그은 듯 가지런합니다. 마지막 줄만 예외입니다 */
+
+      /* ── 섹션 2: 가운데 정렬은 글자만 옮깁니다 ── */
+      #box-plain {
+        background-color: #eef2f7;
+      }
+      #box-center {
+        text-align: center;
+        background-color: #ffe8e8;
+      }
+      /* 화면: 두 상자의 색칠된 넓이와 시작 위치가 똑같습니다. 글자 위치만 다릅니다 */
+
+      #inline-center {
+        text-align: center;
+        background-color: #fff3cd;
+      }
+      /* 화면: 아무 일도 일어나지 않습니다. span 은 글자만큼만 차지하는 요소입니다 */
+
+      /* ── 섹션 3: text-decoration ── */
+      #td-underline {
+        text-decoration: underline;
+      }
+      #td-line {
+        text-decoration: line-through;
+      }
+      #td-over {
+        text-decoration: overline;
+      }
+      #td-wavy {
+        text-decoration: underline wavy #c0392b;
+      }
+      /* 화면: 밑줄 / 가운데 취소선 / 윗줄 / 빨간 물결 밑줄이 차례로 보입니다 */
+
+      /* ── 섹션 4: 링크 밑줄 없애기 ── */
+      #link-clean {
+        text-decoration: none;
+        color: #2d6cdf;
+        font-weight: bold;
+      }
+      #link-clean:hover {
+        text-decoration: underline;
+      }
+      /* 화면: 밑줄이 없는 파란 굵은 글씨이고, 마우스를 올리면 밑줄이 생깁니다 */
+
+      /* ── 섹션 5: text-transform ── */
+      #tt-upper {
+        text-transform: uppercase;
+      }
+      #tt-lower {
+        text-transform: lowercase;
+      }
+      #tt-cap {
+        text-transform: capitalize;
+      }
+      /* 화면: 모두 대문자 / 모두 소문자 / 단어 첫 글자만 대문자로 보입니다 */
+
+      /* ── 섹션 6: text-shadow 와 color ── */
+      #sh-1 {
+        font-size: 28px;
+        font-weight: bold;
+        text-shadow: 2px 2px 3px #999999;
+      }
+      #sh-2 {
+        font-size: 28px;
+        font-weight: bold;
+        color: #888888;
+        text-shadow: 1px 1px 0 #ffffff;
+      }
+      #color-1 {
+        color: #c0392b;
+      }
+      /* 화면: 첫 줄 글자 오른쪽 아래에 흐린 회색 그림자가 깔립니다 */
+
+      /* ── 섹션 7: 자주 하는 실수 ── */
+      #miss-center-box {
+        text-align: center;
+        background-color: #fff6f6;
+      }
+      /* 화면: 글자만 가운데로 갑니다. 상자는 여전히 가로를 꽉 채웁니다 */
+
+      #miss-middle {
+        text-align: middle;
+        background-color: #fff6f6;
+      }
+      /* 화면: 아무 일도 일어나지 않습니다. 글자가 왼쪽에 그대로 있습니다 */
+
+      #miss-span {
+        text-align: center;
+        background-color: #fff3cd;
+      }
+      /* 화면: 아무 일도 일어나지 않습니다 */
+
+      #miss-td {
+        text-decoration: underlined;
+      }
+      /* 화면: 밑줄이 생기지 않습니다 */
+
+      #miss-han {
+        text-transform: uppercase;
+      }
+      /* 화면: 한글 부분은 그대로이고 영어 부분만 대문자가 됩니다 */
+
+      #miss-link {
+        text-decoration: none;
+        color: #222222;
+      }
+      /* 화면: 밑줄도 없고 색도 본문과 같아서 링크인지 알아볼 수 없습니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         09단원 · 개념 04 — 정렬과 꾸미기
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         이제 글자를 '어디에 붙일지' 와 '어떻게 꾸밀지' 를 배웁니다.
+
+             text-align        글자를 왼쪽·가운데·오른쪽 중 어디에 붙일까
+             text-decoration   밑줄·취소선을 그을까
+             text-transform    영어를 대문자로 바꿀까
+             text-shadow       글자에 그림자를 넣을까
+             color             글자색 (07단원 복습)
+
+         이 파일에는 이 단원 전체에서 가장 자주 오해받는 내용이 하나 들어 있습니다.
+
+             text-align: center 는 글자를 가운데로 보냅니다.
+             상자를 가운데로 보내지 않습니다.
+
+         이 둘은 완전히 다른 일입니다. 그림으로 보면 이렇습니다.
+
+             [ text-align: center 를 걸었을 때 ]
+
+             ┌───────────────────────────────────┐  ← 상자는 그대로 넓습니다
+             │            안녕하세요                │  ← 글자만 가운데로 갔습니다
+             └───────────────────────────────────┘
+
+             [ 사람들이 기대한 것 ]
+
+                       ┌──────────┐               ← 상자 자체가 가운데로
+                       │ 안녕하세요  │
+                       └──────────┘
+
+         아래쪽을 하려면 상자에 폭을 정하고 좌우 여백을 auto 로 줘야 합니다.
+         그것은 10단원(margin: auto) 의 내용입니다. 여기서는 하지 않습니다.
+         지금은 "정렬 속성으로는 상자가 안 움직인다" 만 확실히 해 두면 됩니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 04 — 정렬과 꾸미기</h1>
+    <p class="doc-sub">09단원 · 텍스트와 폰트</p>
+
+    <p class="doc-guide">
+      이 파일은 <strong>글자를 어디에 붙이고 어떻게 꾸미는지</strong>를 다룹니다.
+      상자마다 배경색을 깔아 두었습니다. <strong>색칠된 넓이</strong>를 함께 보세요.
+      섹션 2 에서 "상자는 그대로인데 글자만 움직인다" 는 것을 눈으로 확인하게 됩니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: text-align ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — text-align, 글자를 어느 쪽에 붙일까</h2>
+      <p class="doc-desc">
+        값은 네 가지입니다. <code>left</code> <code>center</code> <code>right</code>
+        <code>justify</code>.
+      </p>
+
+      <!--
+            text-align: left;      왼쪽에 붙입니다 (한국어·영어의 기본)
+            text-align: center;    가운데에 놓습니다
+            text-align: right;     오른쪽에 붙입니다
+            text-align: justify;   양쪽 끝을 다 맞춥니다
+
+        아래 첫 상자 세 개는 같은 글을 서로 다르게 붙인 것입니다.
+        배경색을 보면 상자 자체는 셋 다 똑같은 넓이라는 것을 알 수 있습니다.
+
+        justify(양쪽 맞춤) 는 조금 다릅니다.
+        낱말 사이를 미세하게 늘려서 오른쪽 끝을 자로 그은 듯 맞춥니다.
+        신문이나 책에서 많이 보던 모양입니다.
+
+        한 가지 알아 둘 것이 있습니다.
+
+            마지막 줄은 늘리지 않습니다.
+
+        마지막 줄까지 늘리면 낱말 사이가 이상하게 벌어지기 때문입니다.
+        그래서 양쪽 맞춤을 걸어도 마지막 줄은 왼쪽에 붙은 채로 끝납니다.
+
+        ★ 아래 비교용 문단을 영어로 쓴 이유가 있습니다.
+          한글은 글자 하나하나가 줄을 바꿀 수 있는 자리라서, 아무것도 안 걸어도
+          줄이 오른쪽 끝까지 거의 꽉 찹니다. 그래서 양쪽 맞춤을 걸어도 달라지는 것이
+          거의 없습니다. 영어는 낱말 단위로만 줄이 바뀌어서 줄 끝에 빈칸이 크게 남고,
+          그 빈칸을 나눠 넣는 양쪽 맞춤의 효과가 눈에 확 들어옵니다.
+          한글 본문에 justify 를 걸어도 대개 티가 안 난다는 뜻이기도 합니다.
+
+        참고로 text-align 은 상속되는 속성입니다.
+        부모에 걸면 그 안의 글자가 전부 따라갑니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p id="ta-left">left — 왼쪽에 붙습니다.</p>
+        <p id="ta-center">center — 가운데에 놓입니다.</p>
+        <p id="ta-right">right — 오른쪽에 붙습니다.</p>
+        <!-- 화면: 회색 상자 세 개의 넓이는 똑같고, 그 안의 글자만 좌·중앙·우로 옮겨 다닙니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">양쪽 맞춤 비교 (위: 안 걸었을 때 / 아래: justify)</p>
+        <p id="ta-normal">
+          Justify stretches the spaces between words so that both edges of the paragraph
+          line up neatly, just like a newspaper column does. The very last line is never
+          stretched, because stretching it would leave huge gaps between the words.
+          Compare the right edge of this paragraph with the one below it.
+        </p>
+        <p id="ta-justify">
+          Justify stretches the spaces between words so that both edges of the paragraph
+          line up neatly, just like a newspaper column does. The very last line is never
+          stretched, because stretching it would leave huge gaps between the words.
+          Compare the right edge of this paragraph with the one below it.
+        </p>
+        <!-- 화면: 두 문단 모두 첫 줄이 just like a 에서, 둘째 줄이 huge gaps 에서 끝납니다.
+                  위 문단은 그 두 줄의 오른쪽 끝이 서로 조금씩 어긋나 있고,
+                  아래 문단은 두 줄 다 회색 상자 오른쪽 끝에 딱 맞습니다.
+                  대신 아래 문단은 낱말 사이가 눈에 띄게 벌어져 있습니다.
+                  마지막 줄은 두 문단이 똑같습니다 -->
+      </div>
+
+      <p class="doc-note">
+        비교용 문단만 영어인 이유가 있습니다. 한글은 <strong>글자마다 줄을 바꿀 수 있어서</strong>
+        아무것도 안 걸어도 오른쪽 끝이 거의 꽉 찹니다. 그래서 한글에 양쪽 맞춤을 걸면
+        <strong>티가 거의 안 납니다.</strong> 영어는 낱말 단위로만 줄이 바뀌어 빈칸이 크게 남고,
+        그 빈칸을 나눠 넣는 양쪽 맞춤의 효과가 뚜렷하게 보입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — <code>#ta-right</code> 를 <code>justify</code> 로 바꿔 보세요.
+        한 줄짜리 짧은 글에서는 아무 변화가 없습니다. 왜 그런지 생각해 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 가운데 정렬은 글자만 옮깁니다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — center 는 글자를 옮기지, 상자를 옮기지 않습니다</h2>
+      <p class="doc-desc">
+        이 단원에서 <strong>가장 자주 오해받는 내용</strong>입니다. 배경색을 잘 보세요.
+      </p>
+
+      <!--
+        아래 두 상자에는 이렇게 썼습니다.
+
+            #box-plain  { background-color: #eef2f7; }
+            #box-center { text-align: center; background-color: #ffe8e8; }
+
+        p 요소는 가로를 꽉 채우는 요소입니다(블록 요소, 11단원에서 이름을 제대로 배웁니다).
+        배경색을 깔면 그 요소가 실제로 차지한 넓이가 눈에 보입니다.
+
+        결과를 보세요. 두 상자의 색칠된 넓이가 똑같습니다.
+        시작 위치도 똑같습니다. 달라진 것은 그 안에서 글자가 앉은 자리뿐입니다.
+
+            text-align 은 '상자 안에서 글자를 어디에 놓을까' 를 정합니다.
+            '상자를 화면 어디에 놓을까' 는 정하지 않습니다.
+
+        이 둘을 헷갈리면 이런 일이 벌어집니다.
+        카드나 버튼을 화면 가운데에 놓고 싶어서 text-align: center 를 걸어 보고,
+        글자만 움직이는 것을 보고 "왜 안 되지?" 하며 몇 시간을 쓰게 됩니다.
+
+        상자 자체를 가운데로 옮기려면 두 가지가 필요합니다.
+
+            1) 상자에 폭을 정해 줍니다        width
+            2) 좌우 여백을 auto 로 줍니다     margin: 0 auto
+
+        둘 다 10단원 내용입니다. 지금은 이름만 알아 두세요.
+
+        그리고 한 가지 더. 아래 세 번째 줄은 span 에 가운데 정렬을 건 것입니다.
+        span 은 글자만큼만 차지하는 요소라서(인라인 요소) 안에 남는 공간이 없습니다.
+        그래서 가운데로 보낼 자리 자체가 없고, 아무 일도 일어나지 않습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">두 상자의 색칠된 넓이를 비교하세요</p>
+        <p id="box-plain">정렬을 안 건 문단입니다.</p>
+        <p id="box-center">가운데 정렬을 건 문단입니다.</p>
+        <!-- 화면: 회색 상자와 분홍 상자의 가로 길이가 똑같고, 왼쪽 시작 위치도 같습니다.
+                  분홍 상자 안의 글자만 가운데로 옮겨져 있습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">span 에 가운데 정렬을 걸면</p>
+        <p>앞 글자 <span id="inline-center">가운데로 보내려 한 span</span> 뒤 글자</p>
+        <!-- 화면: 노란 배경이 글자 길이만큼만 칠해져 있고, 글자는 그대로 제자리입니다 -->
+      </div>
+
+      <p class="doc-note">
+        정리하면 이렇습니다. <strong>글자를 옮기는 것은 text-align</strong>,
+        <strong>상자를 옮기는 것은 10단원의 여백</strong>입니다.
+        "가운데로 안 가요" 라는 질문의 절반은 이 구분에서 나옵니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — <code>#box-center</code> 에서
+        <code>text-align: center;</code> 를 잠시 지워 보세요.
+        분홍 상자의 넓이가 바뀌는지, 글자 위치만 바뀌는지 확인하고 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: text-decoration ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — text-decoration, 글자에 줄 긋기</h2>
+      <p class="doc-desc">
+        밑줄·취소선·윗줄을 긋는 속성입니다. 한 줄로 여러 값을 함께 쓸 수도 있습니다.
+      </p>
+
+      <!--
+            text-decoration: none;           줄을 없앱니다
+            text-decoration: underline;      밑줄
+            text-decoration: line-through;   가운데 취소선
+            text-decoration: overline;       윗줄
+
+        줄의 모양과 색까지 한 줄에 같이 적을 수 있습니다.
+
+            text-decoration: underline wavy #c0392b;
+                             └───┬───┘ └┬─┘ └──┬──┘
+                                 │      │      └ 줄 색
+                                 │      └ 줄 모양 (solid, dashed, dotted, wavy)
+                                 └ 어디에 그을지
+
+        순서는 바뀌어도 됩니다. 브라우저가 알아서 구분합니다.
+
+        실무에서 가장 많이 쓰는 값은 사실 none 입니다.
+        링크에 자동으로 붙는 밑줄을 없애는 용도입니다. 다음 섹션에서 봅니다.
+
+        line-through 는 "품절", "할인 전 가격" 처럼 취소된 값을 보여 줄 때 씁니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p id="td-underline">underline — 밑줄이 그어집니다.</p>
+        <p id="td-line">line-through — 가운데에 줄이 그어집니다. 12,000원</p>
+        <p id="td-over">overline — 글자 위에 줄이 그어집니다.</p>
+        <p id="td-wavy">underline wavy 빨강 — 물결 모양 밑줄입니다.</p>
+        <!-- 화면: 위에서부터 밑줄, 가운데 취소선, 윗줄, 빨간 물결 밑줄이 보입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>#td-over</code> 를
+        <code>text-decoration: line-through dashed #2d6cdf;</code> 로 바꿔 보세요.
+        점선 파란 취소선이 나옵니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 링크 밑줄 없애기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 링크의 밑줄 없애기 (04단원과 이어집니다)</h2>
+      <p class="doc-desc">
+        <code>a</code> 태그에는 브라우저가 <strong>미리 밑줄과 파란색</strong>을 걸어 둡니다.
+      </p>
+
+      <!--
+        04단원에서 만든 링크는 아무것도 안 했는데 파랗고 밑줄이 있었습니다.
+        브라우저가 a 요소에 이런 규칙을 기본으로 갖고 있기 때문입니다.
+
+            a { color: rgb(0, 0, 238); text-decoration: underline; }
+
+        웹사이트 메뉴처럼 링크가 여러 개 나란히 있으면 밑줄이 지저분해 보입니다.
+        그래서 이렇게 끕니다.
+
+            #link-clean { text-decoration: none; color: #2d6cdf; font-weight: bold; }
+
+        여기서 중요한 원칙이 하나 있습니다.
+
+            밑줄을 없앨 거면, 대신 링크임을 알려 줄 다른 표시를 남기세요.
+
+        밑줄도 없고 색도 본문과 같으면 사용자는 그것이 눌리는 글자인지 알 수 없습니다.
+        색을 다르게 하거나 굵게 하는 것으로 충분합니다.
+
+        그리고 08단원에서 배운 :hover 를 함께 쓰면 더 좋습니다.
+        평소에는 깔끔하게 두고, 마우스를 올렸을 때만 밑줄을 보여 주는 방식입니다.
+
+            #link-clean:hover { text-decoration: underline; }
+
+        아래 두 링크는 진짜로 눌리는 링크입니다. 같은 폴더의 다른 파일로 갑니다.
+        눌러 보고 브라우저의 뒤로 가기로 돌아오세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 (마우스를 올려 보세요)</p>
+        <p>
+          <a id="link-default" href="개념01_글자_크기와_단위.html">기본 링크 — 개념01 로 갑니다</a>
+        </p>
+        <p>
+          <a id="link-clean" href="개념03_줄과_간격.html">밑줄을 없앤 링크 — 개념03 으로 갑니다</a>
+        </p>
+        <!-- 화면: 첫 줄은 파란 밑줄 글씨, 둘째 줄은 밑줄 없는 진한 파란 굵은 글씨입니다.
+                  둘째 줄에 마우스를 올리면 밑줄이 나타납니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>#link-clean:hover</code> 안에
+        <code>color: #c0392b;</code> 를 한 줄 더 넣어 보세요.
+        마우스를 올렸을 때 밑줄과 함께 색까지 바뀝니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: text-transform ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — text-transform, 대문자와 소문자</h2>
+      <p class="doc-desc">
+        <strong>영어의</strong> 대소문자를 화면에서만 바꿔 주는 속성입니다.
+      </p>
+
+      <!--
+            text-transform: uppercase;    모두 대문자
+            text-transform: lowercase;    모두 소문자
+            text-transform: capitalize;   단어마다 첫 글자만 대문자
+            text-transform: none;         그대로 (기본)
+
+        중요한 것은 이 부분입니다.
+
+            바뀌는 것은 '보이는 모습' 뿐이고, HTML 에 쓴 글자는 그대로입니다.
+
+        화면에서는 HELLO 로 보여도 소스에는 hello 라고 적혀 있습니다.
+        그래서 나중에 그 글자를 검색하거나 복사할 때 원래 글자가 나옵니다.
+
+        한글에는 대문자·소문자라는 구분이 아예 없습니다.
+        그래서 한글에 걸면 아무 변화도 없습니다. 고장이 아닙니다.
+
+        어디에 쓸까요. 버튼이나 메뉴의 영어 라벨을 항상 대문자로 보이게 할 때 씁니다.
+        HTML 을 고치지 않고도 화면 표기 규칙을 CSS 한 줄로 바꿀 수 있어서 편리합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 (원본은 넷 다 hello world 입니다)</p>
+        <p id="tt-none">hello world</p>
+        <p id="tt-upper">hello world</p>
+        <p id="tt-lower">hello world</p>
+        <p id="tt-cap">hello world</p>
+        <!-- 화면: 차례로 hello world / HELLO WORLD / hello world / Hello World 로 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        두 번째 줄을 마우스로 긁어서 복사한 뒤 메모장에 붙여 보세요.
+        <strong>HELLO WORLD 가 아니라 hello world 가 붙습니다.</strong>
+        화면 표시만 바뀐 것이라는 뜻입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>#tt-cap</code> 의 글자를
+        <code>hello world of css</code> 로 늘려 보세요. 몇 개의 첫 글자가 대문자가 될까요?
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: text-shadow 와 color ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — text-shadow 맛보기와 color 복습</h2>
+      <p class="doc-desc">
+        <code>text-shadow</code> 는 글자 뒤에 그림자를 깝니다. 값이 네 덩어리입니다.
+      </p>
+
+      <!--
+            text-shadow: 2px 2px 3px #999999;
+                         └┬┘ └┬┘ └┬┘ └──┬──┘
+                          │   │   │      └ 그림자 색
+                          │   │   └ 번짐 정도 (클수록 흐려집니다)
+                          │   └ 아래로 얼마나
+                          └ 오른쪽으로 얼마나
+
+        가로와 세로는 음수도 됩니다. 음수면 왼쪽·위로 갑니다.
+        번짐을 0 으로 두면 흐려지지 않고 또렷한 그림자가 생깁니다.
+
+        주의할 점이 있습니다. 본문 글자에 그림자를 넣으면 읽기가 나빠집니다.
+        큰 제목처럼 짧고 굵은 글자에만 살짝 쓰는 것이 좋습니다.
+
+        color 는 07단원에서 배운 그대로입니다. 글자색을 정합니다.
+        여기서 다시 꺼내는 이유는, 꾸미기의 시작이자 끝이 결국 색이기 때문입니다.
+        그림자를 넣기 전에 색부터 바꿔 보세요. 대부분은 그것으로 충분합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p id="sh-1">오른쪽 아래로 흐린 그림자</p>
+        <p id="sh-2">회색 글자에 흰 그림자</p>
+        <p id="color-1">그림자 없이 색만 바꾼 글자입니다. 대부분은 이걸로 충분합니다.</p>
+        <!-- 화면: 첫 줄은 글자 오른쪽 아래에 흐린 회색 그림자가 있고,
+                  둘째 줄은 회색 글자가 살짝 파인 것처럼 보이며,
+                  셋째 줄은 붉은색 글자입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — <code>#sh-1</code> 의 그림자를
+        <code>text-shadow: -2px -2px 3px #999999;</code> 로 바꿔 보세요.
+        그림자가 어느 쪽으로 옮겨 가는지 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        여기 있는 여섯 가지는 모두 <strong>에러 없이 조용히</strong> 벌어지는 일들입니다.
+      </p>
+
+      <!-- [실수 1] text-align 으로 상자를 가운데 보내려 함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — text-align: center 로 상자를 가운데 보내려 함</span>
+        <div class="doc-code">#card { text-align: center; }   /* 상자가 가운데로 갈 것이라 기대함 */</div>
+        <p id="miss-center-box">이 상자에 text-align: center 를 걸었습니다.</p>
+        <p>
+          <strong>글자만 가운데로 갔고 상자는 그대로 가로를 꽉 채웁니다.</strong>
+          배경색이 왼쪽 끝부터 오른쪽 끝까지 칠해진 것을 보세요.
+          상자 자체를 옮기려면 10단원의 <code>width</code> 와
+          <code>margin: 0 auto</code> 가 필요합니다.
+        </p>
+      </div>
+
+      <!-- [실수 2] 없는 값 middle 을 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — text-align: middle 이라고 씀</span>
+        <div class="doc-code">text-align: middle;</div>
+        <p id="miss-middle">이 상자에는 text-align: middle 이 걸려 있습니다.</p>
+        <p>
+          <strong>아무 일도 일어나지 않습니다.</strong> 글자가 왼쪽에 그대로 있습니다.
+          가로 가운데는 <code>center</code> 입니다. <code>middle</code> 이라는 낱말은
+          세로 정렬에서 쓰는 다른 속성의 값이라 여기서는 통하지 않습니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] 인라인 요소에 정렬을 검 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — span 에 text-align 을 검</span>
+        <div class="doc-code">span { text-align: center; }</div>
+        <p>앞 글자 <span id="miss-span">가운데로 가라</span> 뒤 글자</p>
+        <p>
+          <strong>아무 일도 일어나지 않습니다.</strong>
+          <code>span</code> 은 글자 길이만큼만 차지해서 안에 남는 공간이 없습니다.
+          남는 공간이 없으면 가운데로 보낼 자리도 없습니다.
+          정렬은 <strong>가로를 채우는 요소</strong>에 걸어야 뜻이 있습니다.
+        </p>
+      </div>
+
+      <!-- [실수 4] 값 이름 오타 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — text-decoration: underlined 라고 씀</span>
+        <div class="doc-code">text-decoration: underlined;</div>
+        <p id="miss-td">이 줄에는 text-decoration: underlined; 가 걸려 있습니다.</p>
+        <p>
+          밑줄이 없습니다. 올바른 값은 <code>underline</code> 입니다. 뒤에 d 가 없습니다.
+          <strong>값 이름을 틀리면 그 선언만 조용히 버려집니다.</strong>
+          영어 낱말을 자연스럽게 쓰다 보면 자꾸 d 를 붙이게 되는 실수입니다.
+        </p>
+      </div>
+
+      <!-- [실수 5] 한글에 uppercase 를 검 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 한글에 uppercase 를 걸고 왜 안 되냐고 함</span>
+        <div class="doc-code">text-transform: uppercase;</div>
+        <p id="miss-han">한글은 그대로이고 english 만 바뀝니다</p>
+        <p>
+          <strong>한글 부분은 하나도 안 바뀝니다.</strong> 고장이 아닙니다.
+          한글에는 대문자·소문자라는 구분 자체가 없습니다.
+          바뀌는 것은 알파벳뿐입니다.
+        </p>
+      </div>
+
+      <!-- [실수 6] 링크 표시를 다 지움 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 6 — 링크에서 밑줄과 색을 둘 다 없앰</span>
+        <div class="doc-code">a { text-decoration: none; color: #222222; }</div>
+        <p>
+          아래 문장 안에 링크가 하나 숨어 있습니다. 어디인지 찾아보세요.
+        </p>
+        <p>
+          공지사항은 <a id="miss-link" href="개념05_넘치는_글자.html">여기</a> 를 눌러
+          확인하실 수 있습니다.
+        </p>
+        <p>
+          <strong>눌리는 글자인지 전혀 알 수 없습니다.</strong> 코드는 멀쩡합니다.
+          잘못된 것은 사람이 못 알아본다는 점입니다.
+          밑줄을 없앨 거면 색이나 굵기 중 하나는 반드시 남겨 두세요.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>text-align</code> 값은 left / center / right / justify 입니다.</p>
+      <p>2. <strong>center 는 글자를 옮기지 상자를 옮기지 않습니다.</strong> 상자는 10단원입니다.</p>
+      <p>3. <code>text-decoration</code> 으로 밑줄·취소선을 긋고, <code>none</code> 으로 없앱니다.</p>
+      <p>4. 링크 밑줄을 없앨 때는 <strong>색이나 굵기로 링크임을 남겨</strong> 두세요.</p>
+      <p>5. <code>text-transform</code> 은 <strong>보이는 모습만</strong> 바꿉니다. 한글에는 효과가 없습니다.</p>
+      <p>6. <code>text-shadow</code> 는 가로·세로·번짐·색 네 덩어리이고, 제목에만 조금 씁니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) #ta-right 를 이렇게 바꿉니다.
+
+                #ta-right { text-align: justify; background-color: #eef2f7; }
+
+            → 화면이 바뀌지 않고 글자가 왼쪽에 그대로 있습니다.
+              양쪽 맞춤은 '줄 사이를 늘려서 오른쪽 끝을 맞추는' 일인데,
+              한 줄짜리 글은 그 한 줄이 곧 마지막 줄이라 늘리지 않기 때문입니다.
+
+         2) #box-center 에서 text-align: center; 를 지우면 이렇게 됩니다.
+
+                #box-center { background-color: #ffe8e8; }
+
+            → 분홍 상자의 가로 길이는 조금도 바뀌지 않고, 글자만 왼쪽으로 돌아옵니다.
+              이것이 "상자는 안 움직인다" 의 증거입니다.
+
+         3) #td-over 를 이렇게 바꿉니다.
+
+                #td-over { text-decoration: line-through dashed #2d6cdf; }
+
+            → 글자 가운데에 파란 점선이 그어집니다.
+              어디에(line-through), 어떤 모양으로(dashed), 무슨 색으로(#2d6cdf)
+              세 가지를 한 줄에 적은 것입니다.
+
+         4) #link-clean:hover 를 이렇게 바꿉니다.
+
+                #link-clean:hover { text-decoration: underline; color: #c0392b; }
+
+            → 마우스를 올리면 밑줄이 생기면서 글자색도 붉게 바뀝니다.
+              마우스를 치우면 원래대로 돌아옵니다.
+
+         5) #tt-cap 의 글자를 hello world of css 로 바꾸면
+
+                Hello World Of Css
+
+            → 네 단어 전부의 첫 글자가 대문자가 됩니다.
+              capitalize 는 띄어쓰기로 나뉜 모든 낱말에 적용되기 때문에
+              of 같은 짧은 낱말까지 대문자가 됩니다.
+
+         6) #sh-1 을 이렇게 바꿉니다.
+
+                #sh-1 { font-size: 28px; font-weight: bold;
+                        text-shadow: -2px -2px 3px #999999; }
+
+            → 그림자가 글자의 왼쪽 위로 옮겨 갑니다.
+              첫 번째 숫자가 가로, 두 번째 숫자가 세로이고, 음수면 반대 방향입니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #ta-left | text-align | left
+      #ta-center | text-align | center
+      #ta-right | text-align | right
+      #ta-justify | text-align | justify
+      #ta-normal | text-align | start
+      #box-plain | ~width | 824
+      #box-center | ~width | 824
+      #box-plain | ~x | 228
+      #box-center | ~x | 228
+      #box-center | text-align | center
+      #td-underline | text-decoration-line | underline
+      #td-line | text-decoration-line | line-through
+      #td-over | text-decoration-line | overline
+      #td-wavy | text-decoration-style | wavy
+      #td-wavy | text-decoration-color | rgb(192, 57, 43)
+      #link-default | text-decoration-line | underline
+      #link-default | color | rgb(0, 0, 238)
+      #link-clean | text-decoration-line | none
+      #link-clean | color | rgb(45, 108, 223)
+      #link-clean | font-weight | 700
+      #tt-none | text-transform | none
+      #tt-upper | text-transform | uppercase
+      #tt-upper | text | hello world
+      #tt-lower | text-transform | lowercase
+      #tt-cap | text-transform | capitalize
+      #sh-1 | text-shadow | rgb(153, 153, 153) 2px 2px 3px
+      #sh-2 | color | rgb(136, 136, 136)
+      #color-1 | color | rgb(192, 57, 43)
+      #miss-center-box | text-align | center
+      #miss-middle | text-align | start
+      #miss-span | text-align | center
+      #miss-td | text-decoration-line | none
+      #miss-han | text-transform | uppercase
+      #miss-link | text-decoration-line | none
+      #miss-link | color | rgb(34, 34, 34)
+    -->
+  </body>
+</html>

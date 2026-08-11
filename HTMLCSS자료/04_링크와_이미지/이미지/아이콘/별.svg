@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 손으로 그린 SVG 그림입니다. 도형만 들어 있습니다. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60">
+  <rect x="0" y="0" width="60" height="60" rx="8" fill="#fffbe8" />
+  <polygon points="30,4 36.5,21.1 54.7,22 40.5,33.4 45.3,51 30,41 14.7,51 19.5,33.4 5.3,22 23.5,21.1"
+           fill="#f4b400" />
+</svg>

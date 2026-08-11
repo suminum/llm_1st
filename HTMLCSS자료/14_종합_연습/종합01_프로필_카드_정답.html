@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>14단원 종합01 정답 - 프로필 카드</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ============================================================
+         종합 01 정답 — 프로필 카드
+         단계 번호는 문제 파일과 똑같습니다. 나란히 열어 놓고 비교하세요.
+         ============================================================ */
+
+      /* 카드가 놓이는 무대입니다. 문제 파일에 미리 들어 있던 규칙입니다. */
+      .card-stage {
+        background-color: #eef2f7;
+        padding: 30px 0;
+      }
+
+      /* ───── 단계 3 · 4 · 5 는 이 규칙 하나를 함께 채웁니다 ───── */
+      .profile-card {
+        background-color: #ffffff; /* 단계 3 */
+        color: #333333; /* 단계 3 */
+        width: 320px; /* 단계 4 */
+        margin: 0 auto; /* 단계 4 */
+        padding: 24px; /* 단계 5 */
+        border: 1px solid #d8dee8; /* 단계 5 */
+        border-radius: 14px; /* 단계 5 */
+      }
+      /* 화면: 회색 무대 한가운데에 흰 카드 한 장이 놓입니다. 바깥 폭은 370px 입니다 */
+
+      /* ───── 단계 6 ───── 사진 */
+      .profile-photo-box {
+        text-align: center;
+        margin: 0 0 14px;
+      }
+      .profile-photo {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid #2d6cdf;
+      }
+      /* 화면: 네모였던 사진이 동그래지고 파란 테를 두른 채 카드 가운데에 놓입니다 */
+
+      /* ───── 단계 7 ───── 이름과 직함 */
+      .profile-name {
+        margin: 0 0 4px;
+        font-size: 1.75rem;
+        text-align: center;
+        letter-spacing: 1px;
+      }
+      .profile-job {
+        margin: 0 0 16px;
+        font-size: 0.875rem;
+        color: #6b7280;
+        text-align: center;
+      }
+      /* 화면: 이름이 28px 로 커지고 바로 아래 붙습니다. 직함은 14px 회색으로 작아집니다 */
+
+      /* ───── 단계 8 ───── 한 줄 소개 */
+      .profile-intro {
+        margin: 0 0 18px;
+        padding: 8px 0 8px 12px;
+        border-left: 4px solid #f0a830;
+        background-color: #fff8e8;
+        font-size: 0.9375rem;
+        line-height: 1.6;
+      }
+      /* 화면: 소개 문단 왼쪽에 주황 세로 띠가 생기고 연노랑 배경이 깔립니다 */
+
+      /* ───── 단계 9 ───── 정보 목록 */
+      .profile-info {
+        margin: 0 0 18px;
+        padding-left: 20px;
+        font-size: 0.9375rem;
+      }
+      .profile-info li {
+        padding: 6px 0;
+        border-bottom: 1px dashed #e0e0e0;
+      }
+      .profile-info strong {
+        color: #2d6cdf;
+      }
+      /* 화면: 목록 세 줄 각각의 아래에 연회색 점선이 그어지고 항목 이름만 파랗습니다 */
+
+      /* ───── 단계 10 ───── 연락 띠 */
+      .profile-contact {
+        margin: 0;
+        padding: 12px 0;
+        text-align: center;
+        background-color: #2d6cdf;
+        border-radius: 8px;
+      }
+      .profile-link {
+        color: #ffffff;
+        text-decoration: none;
+        font-weight: bold;
+        letter-spacing: 1px;
+      }
+      .profile-link:hover {
+        text-decoration: underline;
+      }
+      /* 화면: 카드 맨 아래에 파란 띠가 깔리고 그 위에 흰 글자 "메일 보내기" 가 놓입니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         14단원 · 종합 01 정답 — 프로필 카드
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              여러분이 만든 종합01_프로필_카드.html 과 나란히 열어 대조하세요.
+         ============================================================
+
+         답이 글자 하나까지 같을 필요는 없습니다.
+         화면이 같고 F12 로 잰 숫자가 같으면 맞은 것입니다.
+         예를 들어 단계 5 의 padding: 24px 은 padding: 24px 24px 24px 24px 라고 써도 같습니다.
+
+         이 카드에는 display 도 position 도 flex 도 grid 도 쓰이지 않았습니다.
+         블록 요소가 위에서 아래로 쌓이는 기본 흐름 + 박스 모델 + 색과 글자,
+         10단원까지 배운 것만으로 여기까지 만들 수 있습니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">종합 01 정답 — 프로필 카드</h1>
+    <p class="doc-sub">14단원 · 종합 연습 · 01~10단원</p>
+
+    <p class="doc-guide">
+      아래가 완성된 모습입니다. 각 단계의 <strong>답과 해설</strong>은
+      이 파일을 VS Code 로 열면 <code>&lt;style&gt;</code> 안과 각 단계 주석에 있습니다.
+      답이 달라도 <strong>결과가 같으면 맞은 것</strong>입니다.
+    </p>
+
+    <!-- 완성된 카드입니다. 단계 1·2 에서 만든 HTML 이 이 모양입니다. -->
+    <div class="doc-demo">
+      <p class="doc-demo-label">완성된 카드</p>
+      <div class="card-stage">
+        <article class="profile-card">
+          <p class="profile-photo-box">
+            <img class="profile-photo" src="이미지/프로필.svg" alt="김하늘 프로필 사진" />
+          </p>
+          <h2 class="profile-name">김하늘</h2>
+          <p class="profile-job">웹 페이지를 만드는 사람</p>
+          <p class="profile-intro">
+            HTML 과 CSS 로 작은 페이지를 하나씩 만들고 있습니다. 오늘은 프로필 카드를 만들었습니다.
+          </p>
+          <ul class="profile-info">
+            <li><strong>사는 곳</strong> 서울 마포구</li>
+            <li><strong>좋아하는 것</strong> 산책, 라면, 지도 보기</li>
+            <li><strong>배우는 것</strong> HTML · CSS</li>
+          </ul>
+          <p class="profile-contact">
+            <a class="profile-link" href="mailto:haneul@example.com">메일 보내기</a>
+          </p>
+        </article>
+      </div>
+      <!-- 화면: 연회색 무대 한가운데에 흰 카드가 한 장 놓입니다.
+                위에서부터 동그란 파란 테 사진 → 이름 → 회색 직함 → 주황 띠가 붙은 소개 →
+                점선으로 나뉜 정보 세 줄 → 파란 연락 띠 순서로 쌓여 있습니다 -->
+    </div>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 단계 목록 ──</p>
+      <p>단계 1 — 카드의 뼈대를 만듭니다 (HTML)</p>
+      <p>단계 2 — 사진 · 소개 · 정보 목록 · 연락 링크를 채웁니다 (HTML)</p>
+      <p>단계 3 — 카드에 배경색과 글자색을 줍니다</p>
+      <p>단계 4 — 카드에 폭을 주고 가운데로 보냅니다</p>
+      <p>단계 5 — 안쪽 여백 · 테두리 · 둥근 모서리를 줍니다</p>
+      <p>단계 6 — 사진을 동그랗게 만들고 가운데로 보냅니다</p>
+      <p>단계 7 — 이름과 직함의 글자를 다듬습니다</p>
+      <p>단계 8 — 한 줄 소개에 왼쪽 강조 띠를 붙입니다</p>
+      <p>단계 9 — [도전] 정보 목록에 구분선을 긋습니다</p>
+      <p>단계 10 — [도전] 연락 띠를 만듭니다</p>
+    </div>
+
+    <!-- ───── 단계 1 ───── (06단원 개념04 본문 구획 태그 · 02단원 개념01 제목) -->
+    <!--
+      카드 한 장은 그 자체로 뜻이 통하는 덩어리입니다. 그래서 div 대신 article 로 감쌉니다.
+      무대 상자(card-stage) 안에 아래를 씁니다.
+
+      답:
+          <article class="profile-card">
+            <h2 class="profile-name">김하늘</h2>
+            <p class="profile-job">웹 페이지를 만드는 사람</p>
+          </article>
+
+      해설: article 도 h2 도 p 도 전부 블록 요소입니다.
+            블록 요소는 한 줄을 통째로 차지하고 위에서 아래로 쌓입니다. 이것이 문서 흐름입니다.
+            그래서 아무 CSS 를 안 줘도 이름이 먼저, 직함이 그다음 줄에 놓입니다.
+    -->
+
+    <!-- ───── 단계 2 ───── (04단원 개념04 img · 03단원 개념01 ul · 04단원 개념03 mailto) -->
+    <!--
+      답:
+          <p class="profile-photo-box">
+            <img class="profile-photo" src="이미지/프로필.svg" alt="김하늘 프로필 사진" />
+          </p>
+          ... 이름과 직함 ...
+          <p class="profile-intro">HTML 과 CSS 로 ...</p>
+          <ul class="profile-info">
+            <li><strong>사는 곳</strong> 서울 마포구</li>
+            <li><strong>좋아하는 것</strong> 산책, 라면, 지도 보기</li>
+            <li><strong>배우는 것</strong> HTML · CSS</li>
+          </ul>
+          <p class="profile-contact">
+            <a class="profile-link" href="mailto:haneul@example.com">메일 보내기</a>
+          </p>
+
+      해설: 사진을 p 로 한 번 감싼 이유가 단계 6 에 있습니다. img 는 인라인이라
+            자기 혼자서는 가운데로 못 갑니다. 감싼 블록에 부탁해야 합니다.
+            링크도 인라인이라 같은 이유로 p 로 감쌌습니다.
+            alt 는 그림이 안 보일 때 대신 읽히는 글이므로 반드시 씁니다.
+            mailto 뒤에는 쌍점(:) 만 옵니다. 빗금 두 개를 붙이지 않습니다.
+    -->
+
+    <!-- ───── 단계 3 ───── (07단원 개념04 색 표기법) -->
+    <!--
+      답:  background-color: #ffffff;
+           color: #333333;
+
+      해설: 배경이 흰색이면 회색 무대 위에서 카드의 자리가 눈에 보이기 시작합니다.
+            color 는 글자색이고 자식에게 상속되므로 카드 안 글자가 모두 진회색이 됩니다.
+            #ffffff 는 #fff 로, #333333 은 #333 으로 줄여 써도 같습니다.
+    -->
+
+    <!-- ───── 단계 4 ───── (10단원 개념05 width · 10단원 개념04 margin) -->
+    <!--
+      답:  width: 320px;
+           margin: 0 auto;
+
+      해설: margin 의 좌우를 auto 로 두면 남는 자리를 왼쪽과 오른쪽이 똑같이 나눠 가집니다.
+            그래서 상자가 가운데로 갑니다. 이때 width 가 반드시 있어야 합니다.
+            폭이 없으면 블록 요소는 한 줄을 다 채우므로 남는 자리가 없어 auto 가 할 일이 없습니다.
+            text-align: center 는 글자만 옮깁니다. 상자를 옮기는 것은 margin 의 일입니다.
+    -->
+
+    <!-- ───── 단계 5 ───── (10단원 개념02 padding · 개념03 border) -->
+    <!--
+      답:  padding: 24px;
+           border: 1px solid #d8dee8;
+           border-radius: 14px;
+
+      해설: width 는 콘텐츠 영역만 가리킵니다. 그래서 카드의 실제 바깥 폭은
+            320 + 24 + 24 + 1 + 1 = 370px 이 됩니다. 폭이 320px 그대로라면
+            어디선가 box-sizing: border-box 가 켜진 것입니다.
+            border 는 두께 → 모양 → 색 순서이고, 모양(solid) 을 빠뜨리면 선이 아예 안 보입니다.
+    -->
+
+    <!-- ───── 단계 6 ───── (10단원 개념03 border-radius · 09단원 개념04 text-align) -->
+    <!--
+      답:  .profile-photo-box { text-align: center; margin: 0 0 14px; }
+           .profile-photo { width: 120px; height: 120px;
+                            border-radius: 50%; border: 4px solid #2d6cdf; }
+
+      해설: 가로와 세로가 같아야 50% 가 완전한 동그라미가 됩니다. 세로를 빠뜨리면 타원이 됩니다.
+            img 는 인라인이라 margin: 0 auto 가 안 먹습니다. 대신 감싼 p 에 text-align: center 를
+            주면 안쪽 인라인 요소인 img 가 가운데로 갑니다.
+            테두리 4px 이 양옆에 붙어 사진이 차지하는 폭은 128px 이 됩니다.
+    -->
+
+    <!-- ───── 단계 7 ───── (09단원 개념01 font-size · 개념03 letter-spacing · 개념04 정렬) -->
+    <!--
+      답:  .profile-name { margin: 0 0 4px; font-size: 1.75rem;
+                           text-align: center; letter-spacing: 1px; }
+           .profile-job { margin: 0 0 16px; font-size: 0.875rem;
+                          color: #6b7280; text-align: center; }
+
+      해설: h2 와 p 는 브라우저가 미리 위아래 margin 을 넣어 둡니다. 그대로 두면 이름과 직함이
+            멀찍이 떨어집니다. margin 을 0 으로 눌러야 한 덩어리로 보입니다.
+            1rem 은 16px 이므로 1.75rem 은 28px, 0.875rem 은 14px 입니다.
+            글자 크기에 rem 을 쓰면 여러 겹 중첩돼도 값이 곱해지지 않습니다.
+    -->
+
+    <!-- ───── 단계 8 ───── (10단원 개념03 border-left · 개념02 padding) -->
+    <!--
+      답:  margin: 0 0 18px;
+           padding: 8px 0 8px 12px;
+           border-left: 4px solid #f0a830;
+           background-color: #fff8e8;
+           font-size: 0.9375rem;
+           line-height: 1.6;
+
+      해설: 테두리는 네 방향을 따로 그을 수 있습니다. 왼쪽만 그으면 강조 띠가 됩니다.
+            띠와 글자가 붙지 않도록 padding-left 를 같이 줍니다. 띠는 padding 바깥에 그어지므로
+            padding 이 없으면 글자가 띠에 달라붙습니다.
+            padding 값 네 개는 위 → 오른쪽 → 아래 → 왼쪽 시계 방향입니다.
+    -->
+
+    <!-- ───── 단계 9 ───── [도전] (08단원 개념03 자손 선택자 · 10단원 개념03 border-bottom) -->
+    <!--
+      답:  .profile-info { margin: 0 0 18px; padding-left: 20px; font-size: 0.9375rem; }
+           .profile-info li { padding: 6px 0; border-bottom: 1px dashed #e0e0e0; }
+           .profile-info strong { color: #2d6cdf; }
+
+      해설: ul 은 브라우저가 padding-left 를 40px 이나 넣어 둡니다. 그대로 두면 목록만 안쪽으로
+            푹 들어가 보이므로 20px 로 줄입니다. 글머리 기호는 이 안쪽 여백 자리에 그려지므로
+            0 으로 만들면 기호가 카드 왼쪽 벽에 바짝 붙어 위 문단들과 어긋나 보입니다.
+            .profile-info li 는 "profile-info 안에 있는 li" 를 고르는 자손 선택자입니다.
+            공백 하나가 "안에 있는" 이라는 뜻입니다. 붙여 쓰면 뜻이 완전히 달라집니다.
+    -->
+
+    <!-- ───── 단계 10 ───── [도전] (08단원 개념04 :hover · 09단원 개념04 text-decoration) -->
+    <!--
+      답:  .profile-contact { margin: 0; padding: 12px 0; text-align: center;
+                              background-color: #2d6cdf; border-radius: 8px; }
+           .profile-link { color: #ffffff; text-decoration: none;
+                           font-weight: bold; letter-spacing: 1px; }
+           .profile-link:hover { text-decoration: underline; }
+
+      해설: 띠를 만든 것은 a 가 아니라 a 를 감싼 p 입니다. a 는 인라인이라 글자만큼만 차지해서
+            위아래 padding 을 줘도 줄 높이가 늘어나지 않습니다. 그래서 배경을 블록인 p 에 줍니다.
+            대신 눌리는 범위는 글자뿐입니다. 띠 전체를 누를 수 있게 만드는 방법은
+            11단원의 display 에서 배웁니다.
+            밑줄을 없앴으면 무엇으로든 링크임을 남겨야 합니다. 여기서는 굵기와 색으로 남기고,
+            마우스를 올렸을 때 :hover 로 밑줄을 되살렸습니다.
+    -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      .profile-card | background-color | rgb(255, 255, 255)
+      .profile-card | color | rgb(51, 51, 51)
+      .profile-card | ~width | 370
+      .profile-card | padding-top | 24px
+      .profile-card | border-radius | 14px
+      .profile-photo | ~width | 128
+      .profile-photo | border-radius | 50%
+      .profile-photo-box | text-align | center
+      .profile-name | font-size | 28px
+      .profile-name | margin-bottom | 4px
+      .profile-job | font-size | 14px
+      .profile-job | color | rgb(107, 114, 128)
+      .profile-intro | border-left-width | 4px
+      .profile-intro | border-left-color | rgb(240, 168, 48)
+      .profile-info | padding-left | 20px
+      .profile-info li | border-bottom-style | dashed
+      .profile-info strong | color | rgb(45, 108, 223)
+      .profile-contact | background-color | rgb(45, 108, 223)
+      .profile-link | color | rgb(255, 255, 255)
+      .profile-link | text-decoration-line | none
+      .card-stage | background-color | rgb(238, 242, 247)
+    -->
+  </body>
+</html>

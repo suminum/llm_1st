@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>12단원 심화문제 정답 - 비동기</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 720px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 6px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 6px;
+      }
+      button:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+        min-height: 24px;
+        white-space: pre-line;
+      }
+      .output.error {
+        color: #c00;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>12단원 심화문제 정답 — 비동기</h1>
+
+    <p class="guide">
+      먼저 스스로 풀어 본 다음에 보세요. <strong>F12 → Console</strong> 을 함께 보세요.
+
+      <br /><br />
+      <strong>인터넷이 막혀 있어 안 된다면</strong> 이 파일 아래쪽
+      <code>&lt;script&gt;</code> 바로 위에 있는 <code>오프라인_대체.js</code> 줄에서
+      주석 기호를 지우세요. (심화 3만 인터넷을 씁니다)
+    </p>
+
+    <div class="demo">
+      <h3>심화 1 — 순서대로 vs 동시에</h3>
+      <button id="seqBtn">순서대로 (느림)</button>
+      <button id="allBtn">동시에 (빠름)</button>
+      <div class="output" id="out1">버튼을 눌러 보세요</div>
+
+      <h3>심화 2 — 실패하면 다시 시도</h3>
+      <button id="retryBtn">불안정한 작업 실행</button>
+      <div class="output" id="out2">대기 중</div>
+
+      <h3>심화 3 — 중복 요청 막기</h3>
+      <button id="loadBtn">불러오기 (연타해 보세요)</button>
+      <div class="output" id="out3">대기 중</div>
+    </div>
+
+    <!-- 인터넷이 막혀 이 파일이 동작하지 않으면, 바로 아래 줄을 감싼 주석 기호를 지워서 켜세요. 설명은 오프라인_대체.js 맨 위에 있습니다. -->
+    <!-- <script src="오프라인_대체.js"></script> -->
+    <script>
+      // ============================================================
+      // 12단원 심화문제 정답 — 비동기
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+
+      const BASE_URL = "https://jsonplaceholder.typicode.com";
+
+      function delay(ms, value) {
+        return new Promise((resolve) => {
+          setTimeout(() => resolve(value), ms);
+        });
+      }
+
+      function unstableTask() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (Math.random() < 0.5) {
+              resolve("작업 성공");
+            } else {
+              reject(new Error("일시적 오류"));
+            }
+          }, 300);
+        });
+      }
+
+      const out1 = document.querySelector("#out1");
+      const out2 = document.querySelector("#out2");
+      const out3 = document.querySelector("#out3");
+
+      // ───── 심화 1 ─────
+      document.querySelector("#seqBtn").addEventListener("click", async () => {
+        out1.textContent = "진행 중...";
+        const start = Date.now();
+
+        const a = await delay(500, "A");
+        const b = await delay(500, "B");
+        const c = await delay(500, "C");
+
+        const took = Date.now() - start;
+        out1.textContent = `순서대로: ${a} ${b} ${c} (약 ${took}ms)`;
+        console.log("순서대로 걸린 시간:", took);
+      });
+
+      document.querySelector("#allBtn").addEventListener("click", async () => {
+        out1.textContent = "진행 중...";
+        const start = Date.now();
+
+        const [a, b, c] = await Promise.all([
+          delay(500, "A"),
+          delay(500, "B"),
+          delay(500, "C"),
+        ]);
+
+        const took = Date.now() - start;
+        out1.textContent = `동시에: ${a} ${b} ${c} (약 ${took}ms)`;
+        console.log("동시에 걸린 시간:", took);
+      });
+      // 화면: 순서대로는 약 1500ms, 동시에는 약 500ms
+
+      // 왜 세 배 차이가 나나
+      //   순서대로 : 첫 500 을 기다리고 → 그다음 500 → 그다음 500 = 1500
+      //   동시에   : 셋을 한꺼번에 시작시켜 놓고, 제일 늦게 끝나는 것만 기다림 = 500
+      //
+      // 언제 무엇을 쓰나
+      //   앞의 결과가 있어야 다음을 할 수 있으면 → 순서대로 (개념04 섹션 3)
+      //   서로 상관없으면                      → Promise.all
+      //
+      //   개념04에서 글을 가져와 userId 로 작성자를 찾은 것은 순서대로여야 했습니다.
+      //   글 세 개를 각각 가져오는 것은 서로 상관없으니 Promise.all 입니다.
+      //
+      // 구조분해로 받는 것에 주의
+      //   const [a, b, c] = await Promise.all([...])
+      //   Promise.all 은 '넣은 순서 그대로' 배열을 돌려줍니다.
+      //   먼저 끝난 순서가 아닙니다. 그래서 순서를 믿고 구조분해할 수 있습니다.
+
+      // ───── 심화 2 ─────
+      async function runWithRetry(maxTry) {
+        for (let i = 1; i <= maxTry; i++) {
+          try {
+            const result = await unstableTask();
+            return `${result} (${i}번째 시도)`; // 성공하면 여기서 끝
+          } catch (error) {
+            console.log(`${i}번째 실패, 다시 시도 —`, error.message);
+
+            if (i === maxTry) {
+              return null; // 마지막까지 실패
+            }
+          }
+        }
+      }
+
+      document.querySelector("#retryBtn").addEventListener("click", async () => {
+        out2.className = "output";
+        out2.textContent = "시도 중...";
+
+        const result = await runWithRetry(3);
+
+        if (result) {
+          out2.textContent = result;
+        } else {
+          out2.textContent = "3번 시도했지만 실패했습니다";
+          out2.className = "output error";
+        }
+      });
+      // 화면: 대부분 "작업 성공 (1번째 시도)" 또는 "(2번째 시도)" 가 나옵니다
+
+      // 반복문 + try/catch 가 재시도의 기본 형태입니다
+      //   try 에서 성공하면 return 으로 함수를 통째로 빠져나옵니다.
+      //   반복문도 같이 끝납니다. break 를 따로 안 써도 됩니다.
+      //
+      //   실패하면 catch 가 잡아 주고, 반복문이 다음 바퀴로 넘어갑니다.
+      //   catch 가 없으면 첫 실패에서 함수가 통째로 멈춥니다.
+      //
+      // 마지막 실패를 어떻게 아나
+      //   i === maxTry 인지 봅니다. 마지막 바퀴에서 실패한 것이니까요.
+      //   여기서 null 을 돌려주고, 부르는 쪽이 그걸 보고 에러 화면을 만듭니다.
+      //
+      // 세 번 다 실패할 확률
+      //   한 번 실패할 확률이 1/2 이니 세 번 연속은 1/2 × 1/2 × 1/2 = 1/8 입니다.
+      //   여덟 번쯤 눌러 보면 한 번은 빨간 글씨를 볼 수 있습니다.
+      //
+      // 실무에서는 여기에 하나를 더합니다
+      //   실패할 때마다 조금씩 더 기다렸다 시도합니다. (0.5초 → 1초 → 2초)
+      //   서버가 힘들어서 실패한 건데 곧바로 다시 찌르면 더 힘들어지니까요.
+      //     await delay(500 * i);   ← 반복문 안에 이 한 줄을 넣으면 됩니다
+
+      // ───── 심화 3 ─────
+      const loadBtn = document.querySelector("#loadBtn");
+      let isLoading = false; // ② 변수로 막기
+
+      loadBtn.addEventListener("click", async () => {
+        if (isLoading) {
+          console.log("이미 요청 중입니다. 무시합니다");
+          return;
+        }
+
+        isLoading = true;
+        loadBtn.disabled = true; // ① 버튼으로 막기
+        out3.className = "output";
+        out3.textContent = "불러오는 중...";
+        console.log("요청 시작");
+
+        try {
+          const res = await fetch(`${BASE_URL}/posts/1`);
+
+          if (!res.ok) {
+            throw new Error(`서버 오류 ${res.status}`);
+          }
+
+          const data = await res.json();
+          out3.textContent = data.title;
+        } catch (error) {
+          out3.textContent = "불러오지 못했습니다";
+          out3.className = "output error";
+          console.log("에러:", error.message);
+        } finally {
+          // ★ 성공하든 실패하든 반드시 풀어 줍니다
+          isLoading = false;
+          loadBtn.disabled = false;
+        }
+      });
+      // 콘솔: 연타해도 "요청 시작" 이 한 번만 찍힙니다
+
+      // 왜 두 가지를 같이 쓰나
+      //   disabled 는 사용자에게 보입니다. 버튼이 흐려져서 "지금은 안 되는구나" 를 압니다.
+      //   그런데 버튼이 아닌 곳에서 이 함수를 부르면 disabled 는 소용이 없습니다.
+      //   isLoading 변수는 어디서 불러도 막아 줍니다.
+      //
+      //   보이는 방어(disabled) + 확실한 방어(변수) 를 같이 쓰는 것이 안전합니다.
+      //
+      // finally 가 없으면 무슨 일이 생기나
+      //   에러가 나면 isLoading 이 true 인 채로 남습니다.
+      //   그러면 버튼이 영영 안 눌립니다. 새로고침 말고는 방법이 없습니다.
+      //   "잠갔으면 반드시 푼다" 를 finally 로 보장하는 것입니다.
+      //
+      // 연타가 왜 문제인가
+      //   요청이 다섯 번 나가면 서버도 다섯 번 일하고,
+      //   응답이 도착하는 순서도 보장되지 않습니다.
+      //   먼저 보낸 요청의 응답이 나중에 도착해서 화면이 옛날 값으로 덮이기도 합니다.
+      //   13단원 종합04의 loadUsers 가 버튼을 잠근 이유가 이것입니다.
+    </script>
+  </body>
+</html>

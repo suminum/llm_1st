@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 손으로 그린 SVG 그림입니다. 도형과 글자만 들어 있습니다. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" viewBox="0 0 200 200">
+  <rect x="0" y="0" width="200" height="200" fill="#fff7f2" />
+  <rect x="96" y="46" width="8" height="32" rx="4" fill="#7b4a2d" />
+  <ellipse cx="128" cy="56" rx="24" ry="11" fill="#3f9d4a"
+           transform="rotate(-18 128 56)" />
+  <ellipse cx="82" cy="118" rx="46" ry="49" fill="#e34b3a" />
+  <ellipse cx="118" cy="118" rx="46" ry="49" fill="#e34b3a" />
+  <ellipse cx="80" cy="98" rx="13" ry="8" fill="#ff8b7a"
+           transform="rotate(-25 80 98)" />
+  <text x="100" y="190" text-anchor="middle" font-size="18"
+        font-family="Malgun Gothic, sans-serif" fill="#7b4a2d">사과</text>
+</svg>

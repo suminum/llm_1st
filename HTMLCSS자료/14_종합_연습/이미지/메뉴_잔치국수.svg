@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- 손으로 그린 SVG 그림입니다. 도형만 들어 있습니다. 인터넷이 없어도 보입니다. -->
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="100" viewBox="0 0 160 100">
+  <rect x="0" y="0" width="160" height="100" fill="#eaf1f6" />
+  <ellipse cx="80" cy="64" rx="52" ry="28" fill="#cfd8e2" />
+  <ellipse cx="80" cy="58" rx="45" ry="22" fill="#f3e3bd" />
+  <path d="M46 58 Q60 50 74 58 Q88 66 102 58" stroke="#fbf6e4" stroke-width="4"
+        fill="none" stroke-linecap="round" />
+  <path d="M52 66 Q66 58 80 66 Q94 74 110 64" stroke="#fbf6e4" stroke-width="4"
+        fill="none" stroke-linecap="round" />
+  <ellipse cx="102" cy="52" rx="11" ry="6" fill="#4f9a4f" />
+  <rect x="56" y="44" width="20" height="6" rx="3" fill="#e8b93f" />
+</svg>

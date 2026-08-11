@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>05단원 개념04 - 선택과 긴 글</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         05단원 · 개념 04 — select 로 고르기, textarea 로 긴 글 받기
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              목록을 펼쳐 보고, 긴 글 칸에 여러 줄을 쳐 보세요.
+         ============================================================
+
+         지금까지 만든 칸은 전부 input 이었습니다.
+         그런데 input 으로는 잘 안 되는 일이 두 가지 있습니다.
+
+             1) 고를 것이 스무 개쯤 될 때
+                라디오 버튼 스무 개를 늘어놓으면 화면이 감당이 안 됩니다.
+                접었다 펼치는 목록이 필요합니다.  → select
+
+             2) 여러 줄짜리 긴 글을 받을 때
+                input 은 한 줄짜리라 엔터를 쳐도 줄이 안 바뀝니다.
+                자기소개나 배송 요청 사항을 받을 칸이 필요합니다.  → textarea
+
+         이 둘은 input 과 태그 이름부터 다릅니다.
+         그리고 둘 다 빈 태그가 아니라서 닫는 태그가 있습니다.
+
+             <input type="text" />                 빈 태그. 닫지 않습니다.
+             <select> ... </select>                안에 option 들이 들어갑니다.
+             <textarea> ... </textarea>            안에 처음 값이 들어갑니다.
+
+         여기서 textarea 의 유명한 함정이 나옵니다.
+         "안에 들어가는 것이 처음 값" 이라는 말은
+         여는 태그와 닫는 태그 사이의 공백과 줄바꿈까지 전부 값이 된다는 뜻입니다.
+         섹션 5 에서 눈으로 확인합니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 04 — select 로 고르기, textarea 로 긴 글 받기</h1>
+    <p class="doc-sub">05단원 · 폼</p>
+
+    <p class="doc-guide">
+      이 파일에는 접히는 목록과 여러 줄 입력칸이 살아 있는 채로 들어 있습니다.
+      <strong>목록을 펼쳐 보고, 긴 글 칸에 엔터를 쳐 가며 여러 줄을 써 보세요.</strong>
+      섹션 5 의 "공백이 값이 된다" 는 이 단원에서 두 번째로 큰 함정입니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: select 와 option ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — select 와 option: 접히는 목록</h2>
+      <p class="doc-desc">
+        <code>&lt;select&gt;</code> 가 목록 상자이고,
+        그 안의 <code>&lt;option&gt;</code> 하나하나가 <strong>고를 수 있는 항목</strong>입니다.
+      </p>
+
+      <!--
+        생김새는 이렇습니다.
+
+            <select name="city">
+              <option>서울</option>
+              <option>부산</option>
+              <option>대구</option>
+            </select>
+
+        select 는 상자이고 option 은 그 안에 들어가는 항목입니다.
+        03단원의 ul 과 li 관계를 떠올리면 쉽습니다. 바깥 태그 하나에 안쪽 태그 여러 개입니다.
+
+        name 은 select 에 붙입니다. option 에 붙이지 않습니다.
+        어차피 고른 것은 하나뿐이니 이름표도 하나면 됩니다.
+
+        화면에는 접힌 상태로 나옵니다.
+        아무것도 안 골랐을 때 보이는 것은 맨 위 option 입니다.
+        즉 select 는 "비어 있는 상태" 가 없습니다. 항상 무언가 골라져 있습니다.
+
+        이 성질 때문에 실무에서는 맨 위에 안내용 항목을 하나 넣는 일이 많습니다.
+
+            <option value="">고르세요</option>
+
+        value 를 빈 값으로 두면 "아직 안 골랐다" 를 표현할 수 있습니다.
+        개념06 의 required 와 같이 쓰면 "고르세요" 인 채로는 제출이 막힙니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 상자를 눌러 펼쳐 보세요</p>
+        <p>
+          <label for="citySelect">사는 곳</label>
+          <select id="citySelect" name="city">
+            <option>서울</option>
+            <option>부산</option>
+            <option>대구</option>
+          </select>
+        </p>
+        <!-- 화면: "사는 곳" 글자 오른쪽에 "서울" 과 아래쪽 화살표가 든 작은 상자가 있습니다.
+                  상자를 누르면 서울·부산·대구 세 줄이 아래로 펼쳐지고,
+                  하나를 고르면 다시 접히면서 상자 안 글자가 고른 것으로 바뀝니다 -->
+      </div>
+
+      <p class="doc-note">
+        상자의 가로 크기는 <strong>가장 긴 항목 글자에 맞춰 저절로 정해집니다.</strong>
+        그래서 항목 이름이 짧으면 상자도 아주 작아집니다.
+        크기를 직접 정하는 방법은 10단원에서 배웁니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 목록 맨 위에
+        <code>&lt;option value=""&gt;고르세요&lt;/option&gt;</code> 를 한 줄 넣어 보세요.
+        새로고침하면 처음 보이는 글자가 "서울" 에서 "고르세요" 로 바뀝니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: value 와 selected ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 보이는 글자와 보내는 값은 다를 수 있습니다</h2>
+      <p class="doc-desc">
+        <code>option</code> 의 <code>value</code> 가 <strong>실제로 보내지는 값</strong>이고,
+        태그 사이의 글자는 <strong>화면에 보여 주는 글자</strong>입니다.
+      </p>
+
+      <!--
+            <option value="seoul">서울</option>
+                          │          └ 화면에 보이는 글자
+                          └ 보내지는 값
+
+        이렇게 나눠 놓으면 좋은 점이 두 가지입니다.
+
+            · 받는 쪽은 짧은 영어 값만 다루면 됩니다.
+            · 나중에 화면 글자를 "서울" 에서 "서울특별시" 로 바꿔도
+              보내는 값은 seoul 그대로라 받는 쪽을 안 고쳐도 됩니다.
+
+        value 를 안 쓰면 어떻게 될까요?
+        화면에 보이는 글자가 그대로 값이 됩니다. 섹션 1 의 목록이 그런 경우였습니다.
+        동작은 합니다. 다만 나중에 글자를 바꾸는 순간 값도 같이 바뀌어 버립니다.
+
+        selected 는 "처음부터 이걸 골라 둬라" 입니다.
+        개념03 의 checked 와 똑같이 이름만 쓰면 됩니다.
+
+            <option value="busan" selected>부산</option>
+
+        한 select 안에 selected 를 두 개 이상 쓰면 마지막 것 하나만 골라집니다.
+        조용히 그렇게 됩니다. 에러는 없습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 처음부터 "부산" 이 골라져 있습니다</p>
+        <p>
+          <label for="valueSelect">배송 지역</label>
+          <select id="valueSelect" name="area">
+            <option value="seoul">서울</option>
+            <option value="busan" selected>부산</option>
+            <option value="daegu">대구</option>
+          </select>
+        </p>
+        <!-- 화면: 상자 안에 처음부터 "부산" 이 보입니다.
+                  펼치면 부산 줄이 파란 바탕으로 칠해져 있어 지금 골라진 것임을 알 수 있습니다.
+                  화면 어디에도 seoul, busan 같은 영어는 보이지 않습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위 목록에서 <code>selected</code> 를
+        "대구" 줄로 옮겨 보세요. 새로고침하면 처음 보이는 글자가 "대구" 가 됩니다.
+        <code>value</code> 는 그대로 두세요. 화면 글자만 바뀌는 것을 확인하는 것이 목적입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: optgroup, multiple, size ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — optgroup 으로 묶기, multiple 과 size</h2>
+      <p class="doc-desc">
+        항목이 많아지면 <code>optgroup</code> 으로 묶고,
+        여러 개를 고르게 하려면 <code>multiple</code> 을 붙입니다.
+      </p>
+
+      <!--
+        optgroup
+            항목이 스무 개쯤 되면 그냥 늘어놓는 것으로는 못 찾습니다.
+            비슷한 것끼리 묶고 제목을 답니다.
+
+                <select>
+                  <optgroup label="수도권">
+                    <option>서울</option>
+                    <option>인천</option>
+                  </optgroup>
+                  <optgroup label="영남">
+                    <option>부산</option>
+                  </optgroup>
+                </select>
+
+            label 속성에 쓴 글자가 묶음 제목으로 나옵니다.
+            제목은 회색 굵은 글씨로 보이고 고를 수 없습니다. 눌러도 반응이 없습니다.
+            제목 아래 항목들은 한 칸 들여쓰여 보입니다.
+
+        multiple
+            여러 개를 고를 수 있게 만듭니다.
+            붙이는 순간 접히는 상자가 아니라 펼쳐진 목록판으로 바뀝니다.
+
+                컴퓨터에서 여러 개 고르기 : Ctrl 키를 누른 채 클릭
+                연달아 여러 개 고르기     : 첫 항목 클릭 후 Shift 키를 누른 채 마지막 항목 클릭
+
+            솔직히 말하면 쓰기가 불편해서 실무에서는 잘 안 씁니다.
+            여러 개를 고르게 하려면 보통 체크박스를 씁니다.
+            그래도 이런 것이 있다는 것은 알아 두세요.
+
+        size
+            몇 줄을 펼쳐 놓을지 정합니다. size="3" 이면 세 줄이 보이는 목록판이 됩니다.
+            multiple 없이 size 만 써도 접히지 않은 목록판이 됩니다.
+            이때도 고를 수 있는 것은 하나뿐입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 셋을 비교해 보세요</p>
+        <p>
+          <label for="groupSelect">묶은 목록</label>
+          <select id="groupSelect" name="area2">
+            <optgroup label="수도권">
+              <option value="seoul">서울</option>
+              <option value="incheon">인천</option>
+            </optgroup>
+            <optgroup label="영남">
+              <option value="busan">부산</option>
+              <option value="daegu">대구</option>
+            </optgroup>
+          </select>
+        </p>
+        <p>
+          <label for="multiSelect">여러 개 고르기</label>
+          <select id="multiSelect" name="hobby" multiple size="4">
+            <option value="movie">영화</option>
+            <option value="music">음악</option>
+            <option value="game">게임</option>
+            <option value="book">독서</option>
+          </select>
+        </p>
+        <p>
+          <label for="sizeSelect">펼쳐 둔 목록</label>
+          <select id="sizeSelect" name="area3" size="3">
+            <option value="seoul">서울</option>
+            <option value="busan">부산</option>
+            <option value="daegu">대구</option>
+          </select>
+        </p>
+        <!-- 화면: 첫째는 접힌 상자입니다. 펼치면 "수도권" 과 "영남" 이 회색 굵은 글씨로 보이고
+                  그 아래 지역 이름들이 한 칸 안으로 들여쓰여 있습니다.
+                  둘째와 셋째는 접히지 않고 테두리 안에 항목이 세로로 나열된 목록판입니다.
+                  둘째는 Ctrl 을 누른 채 누르면 여러 줄이 파랗게 칠해집니다.
+                  셋째는 아무리 눌러도 한 줄만 파랗게 칠해집니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — "여러 개 고르기" 목록에서 <code>multiple</code> 만 지워 보세요.
+        새로고침하면 목록판 모양은 그대로인데 이제 한 줄만 골라집니다.
+        <code>size</code> 는 모양을, <code>multiple</code> 은 개수를 정한다는 뜻입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: textarea ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — textarea: 여러 줄짜리 긴 글</h2>
+      <p class="doc-desc">
+        <code>rows</code> 는 <strong>보이는 줄 수</strong>,
+        <code>cols</code> 는 <strong>보이는 가로 글자 수</strong>입니다.
+      </p>
+
+      <!--
+            <textarea name="memo" rows="4" cols="40"></textarea>
+
+        rows="4"   네 줄이 보이는 높이로 만듭니다.
+        cols="40"  영어 소문자 기준 마흔 글자쯤 들어가는 너비로 만듭니다.
+
+        둘 다 안 쓰면 두 줄, 스무 글자짜리 작은 칸이 나옵니다.
+
+        여기서 오해하기 쉬운 점이 두 가지 있습니다.
+
+            1) rows 는 "최대 줄 수" 가 아닙니다. 보이는 높이일 뿐입니다.
+               네 줄을 넘겨 쓰면 칸 안에 세로 스크롤 막대가 생기고 계속 쓸 수 있습니다.
+
+            2) cols 는 정확한 픽셀 크기가 아닙니다.
+               한글은 영어보다 넓어서 마흔 글자가 안 들어갑니다.
+               크기를 정확히 정하려면 10단원의 width, height 를 써야 합니다.
+
+        오른쪽 아래 모서리에 빗금 친 작은 삼각형이 보일 겁니다.
+        그걸 끌면 사용자가 칸 크기를 직접 늘릴 수 있습니다. 브라우저가 그냥 주는 기능입니다.
+
+        그리고 input 과 크게 다른 점이 하나 더 있습니다.
+        textarea 에는 value 속성이 없습니다.
+        처음 값은 여는 태그와 닫는 태그 사이에 씁니다. 그래서 섹션 5 의 함정이 생깁니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 엔터를 쳐 가며 여러 줄을 써 보세요</p>
+        <p><label for="memoArea">배송 요청 사항</label></p>
+        <p><textarea id="memoArea" name="memo" rows="4" cols="40"></textarea></p>
+        <p><label for="smallArea">크기를 안 정한 칸</label></p>
+        <p><textarea id="smallArea" name="memo2"></textarea></p>
+        <!-- 화면: 위쪽에 가로로 긴 빈 네모 칸이 있고 네 줄 높이입니다.
+                  아래쪽 칸은 눈에 띄게 작아서 두 줄 높이이고, 가로는 위 칸의 절반쯤입니다.
+                  재 보면 위 칸이 301px, 아래 칸이 161px 입니다.
+                  두 칸 모두 오른쪽 아래 모서리에 작은 빗금 삼각형이 있고,
+                  그것을 마우스로 끌면 칸이 커집니다.
+                  네 줄을 넘겨 쓰면 칸 오른쪽에 세로 스크롤 막대가 생깁니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 칸의 <code>rows="4"</code> 를 <code>rows="10"</code> 으로
+        바꿔 보세요. 새로고침하면 칸이 세로로 길어집니다.
+        <code>cols</code> 도 <code>60</code> 으로 바꿔 가로 길이를 늘려 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 공백 함정 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 함정: 태그 사이의 공백이 그대로 값이 됩니다</h2>
+      <p class="doc-desc">
+        <code>textarea</code> 는 <strong>여는 태그와 닫는 태그 사이의 모든 글자</strong>를
+        처음 값으로 삼습니다. 눈에 안 보이는 띄어쓰기와 줄바꿈까지 포함해서입니다.
+      </p>
+
+      <!--
+        HTML 을 쓰다 보면 안쪽 태그를 들여쓰는 것이 습관이 됩니다.
+        01단원에서 그렇게 배웠고, 그래야 읽기 좋으니까요.
+
+        그런데 textarea 에서만은 그 습관이 사고를 냅니다.
+        이렇게 쓴다고 해 봅시다.
+
+            <textarea name="memo" rows="3" cols="30">
+            </textarea>
+
+        보기에는 빈 칸입니다. 실제로는 빈 칸이 아닙니다.
+        줄바꿈과 들여쓰기 공백이 값으로 들어가 있습니다.
+
+        규칙은 딱 하나입니다.
+
+            여는 태그 바로 뒤에 오는 줄바꿈 하나만 버려집니다.
+            그 뒤의 공백과 줄바꿈은 전부 값이 됩니다.
+
+        그림으로 보면 이렇습니다.
+
+            <textarea>↵␣␣␣␣안녕하세요↵␣␣</textarea>
+                      │└───┬──┘        └┬┘
+                      │    │            └ 이 줄바꿈과 공백도 값입니다
+                      │    └ 이 공백 네 칸이 값의 앞에 붙습니다
+                      └ 이 줄바꿈 하나만 버려집니다
+
+        결과가 어떻게 될까요? 칸 안의 글자가 오른쪽으로 밀려서 보입니다.
+        그리고 사용자가 아무것도 안 쳐도 그 공백들이 그대로 보내집니다.
+
+        더 나쁜 것은 "글자를 안 썼는지" 를 검사할 때입니다.
+        개념06 의 required 는 "비었는지" 를 봅니다.
+        공백이라도 들어 있으면 비어 있지 않으므로 검사를 그냥 통과해 버립니다.
+
+        해결은 아주 간단합니다.
+
+            <textarea name="memo" rows="3" cols="30"></textarea>
+                                                    └ 여는 태그와 닫는 태그를 딱 붙입니다
+
+        보기에는 답답해도 이렇게 써야 합니다.
+        아래 두 칸을 비교해 보세요. 글자가 시작하는 자리가 다릅니다.
+      -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">잘못된 예 — 보기 좋게 들여씀</span>
+        <div class="doc-code">&lt;textarea rows="3" cols="30"&gt;
+    안녕하세요
+  &lt;/textarea&gt;</div>
+        <p>
+          <strong>글자가 오른쪽으로 밀려서 시작합니다.</strong>
+          앞에 공백 네 칸이 값으로 들어가 있기 때문입니다.
+          칸 안을 눌러 커서를 맨 앞으로 옮긴 뒤 백스페이스를 눌러 보면 공백이 하나씩 지워집니다.
+        </p>
+        <p><textarea id="trapArea" rows="3" cols="30">
+    안녕하세요
+  </textarea></p>
+        <!-- 화면: 칸 안의 "안녕하세요" 가 왼쪽 벽에 붙지 않고 네 칸쯤 오른쪽에서 시작합니다 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">올바른 예 — 딱 붙여서 씀</span>
+        <div class="doc-code">&lt;textarea rows="3" cols="30"&gt;안녕하세요&lt;/textarea&gt;</div>
+        <p>
+          <strong>글자가 왼쪽 벽에 딱 붙어서 시작합니다.</strong>
+          값이 정확히 "안녕하세요" 다섯 글자뿐입니다.
+        </p>
+        <p><textarea id="tightArea" rows="3" cols="30">안녕하세요</textarea></p>
+        <!-- 화면: 칸 안의 "안녕하세요" 가 왼쪽 위 모서리에 붙어서 시작합니다.
+                  위 칸과 나란히 놓고 보면 글자 시작 위치가 확실히 다릅니다 -->
+      </div>
+
+      <p class="doc-note">
+        진짜로 빈 칸을 만들고 싶으면
+        <code>&lt;textarea&gt;&lt;/textarea&gt;</code> 처럼 사이에 아무것도 넣지 마세요.
+        엔터 한 번, 스페이스 한 칸도 안 됩니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 잘못된 예의 <code>&lt;textarea&gt;</code> 안에서
+        줄바꿈과 공백을 전부 지워 <code>&lt;textarea id="trapArea" rows="3"
+        cols="30"&gt;안녕하세요&lt;/textarea&gt;</code> 로 만들어 보세요.
+        새로고침하면 글자가 왼쪽 벽에 붙습니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: datalist ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — datalist 맛보기: 추천 목록이 뜨는 글자 칸</h2>
+      <p class="doc-desc">
+        <code>datalist</code> 는 <strong>글자 칸에 추천 목록을 붙이는</strong> 태그입니다.
+        목록에 없는 값을 직접 쳐 넣어도 됩니다.
+      </p>
+
+      <!--
+        select 와 헷갈리기 쉬우니 차이부터 봅시다.
+
+            select     목록 안에서만 고를 수 있습니다. 직접 쳐 넣을 수 없습니다.
+            datalist   추천만 해 줍니다. 목록에 없는 값을 쳐 넣어도 됩니다.
+
+        쓰는 방법은 두 부분으로 나뉩니다.
+
+            <input type="text" name="city" list="cityList" />
+            <datalist id="cityList">
+              <option value="서울"></option>
+              <option value="부산"></option>
+            </datalist>
+
+        input 의 list 값과 datalist 의 id 값을 같게 맞춥니다.
+        label 의 for 와 id 를 맞추던 것과 똑같은 방식입니다.
+
+        datalist 자체는 화면에 안 보입니다. 자리도 차지하지 않습니다.
+        칸을 누르거나 글자를 치기 시작할 때만 아래로 추천이 펼쳐집니다.
+
+        여기서 option 의 생김새가 select 때와 다릅니다.
+
+            select 안       <option value="seoul">서울</option>   태그 사이에 보이는 글자
+            datalist 안     <option value="서울"></option>        value 만 씁니다
+
+        datalist 는 "칸에 넣을 값" 을 추천하는 것이라 value 만 있으면 됩니다.
+
+        브라우저마다 생김새가 조금씩 다르고, 오래된 브라우저에서는 추천이 안 뜹니다.
+        그래도 안 뜰 뿐 칸은 멀쩡히 동작합니다. 그래서 부담 없이 쓸 수 있습니다.
+        이 자료에서는 맛만 봅니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 칸을 누르거나 "서" 를 쳐 보세요</p>
+        <p>
+          <label for="cityInput">사는 곳</label>
+          <input id="cityInput" type="text" name="city2" list="cityList" />
+        </p>
+        <datalist id="cityList">
+          <option value="서울"></option>
+          <option value="부산"></option>
+          <option value="대구"></option>
+          <option value="광주"></option>
+        </datalist>
+        <!-- 화면: 평범한 글자 칸 하나만 보입니다. datalist 는 어디에도 안 보입니다.
+                  칸을 누르면 아래로 서울·부산·대구·광주 네 줄이 펼쳐집니다.
+                  "서" 를 치면 "서울" 한 줄만 남습니다.
+                  목록에 없는 "제주" 를 쳐 넣어도 그대로 받아들여집니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — 위 <code>datalist</code> 안에
+        <code>&lt;option value="대전"&gt;&lt;/option&gt;</code> 을 한 줄 넣어 보세요.
+        새로고침하고 칸을 누르면 추천이 다섯 줄로 늘어납니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        <code>textarea</code> 관련 실수는 <strong>값이 조용히 오염되는</strong> 종류입니다.
+        화면만 슬쩍 봐서는 잘 모릅니다.
+      </p>
+
+      <!-- [실수 1] textarea 안 공백 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — textarea 안을 보기 좋게 들여씀</span>
+        <div class="doc-code">&lt;textarea name="memo" rows="3" cols="30"&gt;
+&lt;/textarea&gt;</div>
+        <p>
+          빈 칸을 만들려던 것인데 <strong>줄바꿈과 공백이 값으로 들어갑니다.</strong>
+          사용자가 아무것도 안 써도 빈 값이 아니게 되고,
+          개념06 의 <code>required</code> 검사도 그냥 통과해 버립니다.
+          아래 칸을 누른 뒤 Ctrl+A 로 전체 선택을 해 보세요. 숨어 있던 공백이 드러납니다.
+        </p>
+        <p><textarea id="emptyTrap" name="memo3" rows="3" cols="30">
+        </textarea></p>
+        <!-- 화면: 겉보기에는 그냥 빈 칸입니다. 칸을 누르고 Ctrl+A 를 누르면
+                  첫 줄 왼쪽에 파란 선택 표시가 여덟 칸쯤 나타납니다.
+                  진짜 빈 칸이었다면 선택될 것이 없어 아무 표시도 안 생깁니다 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">&lt;textarea name="memo" rows="3" cols="30"&gt;&lt;/textarea&gt;</div>
+        <p><textarea id="emptyGood" name="memo4" rows="3" cols="30"></textarea></p>
+        <!-- 화면: 빈 칸입니다. 누르고 Ctrl+A 를 눌러도 선택 표시가 전혀 생기지 않습니다.
+                  안에 아무 글자도 없다는 뜻입니다 -->
+      </div>
+
+      <!-- [실수 2] textarea 를 빈 태그처럼 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — textarea 를 input 처럼 빗금으로 닫음</span>
+        <div class="doc-code">&lt;textarea rows="2" cols="30" /&gt;그다음에 쓴 글자</div>
+        <p>
+          textarea 는 빈 태그가 아닙니다. 끝의 빗금은 무시되고 태그가 열린 채로 남습니다.
+          그래서 <strong>뒤에 오는 글자가 전부 칸 안으로 빨려 들어갑니다.</strong>
+          닫는 태그를 만날 때까지 계속 먹습니다. 페이지 절반이 칸 안에 들어가기도 합니다.
+        </p>
+        <p>
+          아래 살아 있는 예에는 <code>&lt;/textarea&gt;</code> 를 한 문장 뒤에 일부러 붙여 두었습니다.
+          안 붙이면 <strong>이 페이지의 나머지가 전부 칸 안으로 빨려 들어가</strong>
+          아래 내용을 하나도 못 보게 되기 때문입니다.
+          그래서 여기서는 한 문장만 삼켜진 모습을 보여 줍니다.
+        </p>
+        <p><textarea id="selfCloseArea" rows="2" cols="30" />그다음에 쓴 글자</textarea></p>
+        <!-- 화면: 칸 밖에 있어야 할 "그다음에 쓴 글자" 가 칸 안에 들어가 있습니다 -->
+      </div>
+
+      <!-- [실수 3] textarea 에 value -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — textarea 에 value 를 씀</span>
+        <div class="doc-code">&lt;textarea rows="2" cols="30" value="안녕하세요"&gt;
+&lt;/textarea&gt;</div>
+        <p>
+          input 버릇대로 쓴 것입니다. <strong>아무 일도 안 일어납니다.</strong>
+          칸은 빈 채로 나오고 경고도 없습니다. textarea 에는 value 속성이 아예 없습니다.
+          처음 값은 태그 사이에 씁니다.
+        </p>
+        <p><textarea id="valueArea" rows="2" cols="30" value="안녕하세요"></textarea></p>
+        <!-- 화면: 완전히 빈 칸입니다. "안녕하세요" 는 어디에도 안 보입니다 -->
+      </div>
+
+      <!-- [실수 4] select 안에 option 을 안 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — select 안에 option 없이 글자만 씀</span>
+        <div class="doc-code">&lt;select name="city"&gt;서울 부산 대구&lt;/select&gt;</div>
+        <p>
+          <strong>아무 항목도 없는 아주 작은 빈 상자가 나옵니다.</strong>
+          눌러도 펼쳐지지 않습니다. 글자는 화면에 나오지도 않습니다.
+          select 는 <code>option</code> 만 항목으로 인정하기 때문입니다.
+        </p>
+        <p id="noOptionRow"><select id="noOption" name="city3">서울 부산 대구</select></p>
+        <!-- 화면: 화살표만 있는 손톱만 한 빈 상자 하나가 보입니다.
+                  "서울 부산 대구" 라는 글자는 화면에 나타나지 않습니다 -->
+      </div>
+
+      <!-- [실수 5] selected 를 여러 개 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 한 select 안에 selected 를 여러 개 씀</span>
+        <div class="doc-code">&lt;option value="a" selected&gt;가&lt;/option&gt;
+&lt;option value="b" selected&gt;나&lt;/option&gt;</div>
+        <p>
+          둘 다 골라지지 않습니다. <strong>마지막 것 하나만 골라집니다.</strong>
+          여러 개를 고르게 하려면 <code>multiple</code> 을 붙여야 하고,
+          그때는 목록판 모양으로 바뀝니다.
+        </p>
+        <p id="doubleRow"><select id="doubleSel" name="pick">
+          <option value="a" selected>가</option>
+          <option value="b" selected>나</option>
+        </select></p>
+        <!-- 화면: 상자 안에 "나" 가 보입니다. 첫 번째로 쓴 "가" 가 아닙니다 -->
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>&lt;select&gt;</code> 안에 <code>&lt;option&gt;</code> 을 넣습니다.
+        <code>name</code> 은 select 에 붙입니다.</p>
+      <p>2. <code>option</code> 의 <code>value</code> 가 보내는 값, 태그 사이 글자가 보이는 글자입니다.</p>
+      <p>3. <code>selected</code> 는 처음 고를 항목, <code>optgroup</code> 은 묶음 제목입니다.</p>
+      <p>4. <code>multiple</code> 은 여러 개 고르기, <code>size</code> 는 펼쳐 보일 줄 수입니다.</p>
+      <p>5. <code>&lt;textarea&gt;</code> 는 <code>rows</code> 와 <code>cols</code> 로 크기를 잡습니다.</p>
+      <p>6. <strong>textarea 는 태그 사이의 공백과 줄바꿈까지 값이 됩니다.</strong> 딱 붙여 쓰세요.</p>
+      <p>7. <code>datalist</code> 는 추천만 해 줍니다. 목록 밖의 값도 쳐 넣을 수 있습니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 섹션 1 의 select 안 맨 위에 이렇게 넣습니다.
+
+                <option value="">고르세요</option>
+
+            → 접힌 상자에 처음 보이는 글자가 "고르세요" 로 바뀝니다.
+              펼치면 항목이 네 줄이 되고 맨 위가 "고르세요" 입니다.
+
+         2) 섹션 2 에서 selected 를 옮깁니다.
+
+                <option value="seoul">서울</option>
+                <option value="busan">부산</option>
+                <option value="daegu" selected>대구</option>
+
+            → 처음 보이는 글자가 "부산" 에서 "대구" 로 바뀝니다.
+              value 는 그대로이므로 보내지는 값만 daegu 로 달라집니다.
+
+         3) 섹션 3 의 두 번째 select 에서 multiple 을 지웁니다.
+
+                <select id="multiSelect" name="hobby" size="4">
+
+            → 네 줄이 보이는 목록판 모양은 그대로입니다.
+              그런데 이제 Ctrl 을 눌러도 한 줄만 파랗게 칠해집니다.
+
+         4) 섹션 4 의 첫 칸을 이렇게 바꿉니다.
+
+                <textarea id="memoArea" name="memo" rows="10" cols="60"></textarea>
+
+            → 칸이 세로로 두 배 넘게 길어지고 가로로도 넓어집니다.
+              한글로 예순 글자가 다 안 들어가는 것도 같이 확인해 보세요.
+
+         5) 섹션 5 잘못된 예의 textarea 를 한 줄로 붙여 씁니다.
+
+                <p><textarea id="trapArea" rows="3" cols="30">안녕하세요</textarea></p>
+
+            → 밀려 있던 "안녕하세요" 가 칸의 왼쪽 위 모서리에 딱 붙습니다.
+              아래 올바른 예와 똑같은 모양이 됩니다.
+
+         6) 섹션 6 의 datalist 안에 이렇게 넣습니다.
+
+                <option value="대전"></option>
+
+            → 칸을 눌렀을 때 펼쳐지는 추천이 네 줄에서 다섯 줄로 늘어납니다.
+              "대" 를 치면 대구와 대전 두 줄만 남습니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #citySelect | display | inline-block
+      #citySelect | text | 서울 부산 대구
+      #valueSelect | text | 서울 부산 대구
+      #groupSelect | text | 서울 인천 부산 대구
+      #multiSelect | ~height | 82
+      #sizeSelect | ~height | 62
+      #memoArea | ~width | 301
+      #memoArea | ~height | 66
+      #smallArea | ~width | 161
+      #trapArea | white-space | pre-wrap
+      #tightArea | ~height | 51
+      #cityList | ?visible | no
+      #selfCloseArea | text | 그다음에 쓴 글자
+      .doc-head | ?visible | yes
+    -->
+  </body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>10단원 개념04 - 요소 만들고 붙이기</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 4px 0;
+        font-size: 15px;
+        color: #555;
+      }
+      ul {
+        padding-left: 22px;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 6px 0;
+      }
+      .sold {
+        color: #c00;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 04 — 요소 만들고 붙이기</h1>
+
+    <p class="guide">
+      브라우저로 열고 <strong>F12 → Console</strong> 을 함께 보세요. 아래 목록들은
+      HTML 에 적혀 있던 게 아니라 자바스크립트가 만들어 붙인 것입니다.
+    
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>① createElement 로 하나씩</h3>
+      <ul id="list1"></ul>
+
+      <h3>② 반복문으로 여러 개</h3>
+      <ul id="list2"></ul>
+
+      <h3>③ 객체 배열로 카드 만들기</h3>
+      <div id="cardArea"></div>
+
+      <h3>④ 지우기 연습</h3>
+      <ul id="list3">
+        <li id="willRemove">이 항목은 사라집니다</li>
+        <li>이 항목은 남습니다</li>
+      </ul>
+    </div>
+
+    <script>
+      // ============================================================
+      // 10단원 · 개념 04 — 요소 만들고 붙이기
+      // ------------------------------------------------------------
+      // 실행: 이 파일을 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+      //
+      // 개념02 에서는 이미 있는 태그의 '내용'만 바꿨습니다.
+      // 이번에는 태그 자체를 새로 만들어 화면에 붙입니다.
+      //
+      //     1) document.createElement("li")   만들고
+      //     2) el.textContent = "글자"         내용을 채우고
+      //     3) 부모.appendChild(el)            붙인다
+
+      // ── 섹션 1: 세 단계 ──
+
+      const list1 = document.querySelector("#list1");
+
+      // 1) 만들기 — 아직 화면에 없습니다. 메모리에만 있습니다.
+      const li1 = document.createElement("li");
+      console.log(li1);
+      // 콘솔: <li></li>
+      // 비어 있습니다. 화면에도 아직 안 보입니다.
+
+      // 2) 채우기
+      li1.textContent = "첫 번째 항목";
+
+      // 3) 붙이기 — 이 줄이 실행되는 순간 화면에 나타납니다
+      list1.appendChild(li1);
+      // 화면: 목록 ① 에 "첫 번째 항목" 이 생깁니다
+
+      // 하나 더 만들어 봅시다.
+      const li2 = document.createElement("li");
+      li2.textContent = "두 번째 항목";
+      list1.appendChild(li2);
+      // 화면: 아래에 "두 번째 항목" 이 추가됩니다
+
+      // appendChild 는 '맨 뒤에' 붙입니다.
+
+      // ✏️ 직접 해보기 1 — "세 번째 항목" 을 만들어 list1 에 붙여 보세요.
+
+      // ── 섹션 2: append 와 prepend ──
+
+      // append 는 appendChild 와 거의 같은데 더 편합니다.
+      const li3 = document.createElement("li");
+      li3.textContent = "세 번째 항목 (append)";
+      list1.append(li3);
+      // 화면: 맨 뒤에 추가됩니다
+
+      // append 는 글자를 바로 넣을 수도 있고, 여러 개를 한 번에 넣을 수도 있습니다.
+      // appendChild 는 요소 하나만 받습니다.
+
+      // prepend 는 '맨 앞에' 붙입니다.
+      const li0 = document.createElement("li");
+      li0.textContent = "0번 항목 (맨 앞)";
+      list1.prepend(li0);
+      // 화면: 목록 맨 위에 추가됩니다
+
+      console.log(list1.children.length);
+      // 콘솔: 4
+      // children 은 그 요소가 품고 있는 자식 요소들의 묶음입니다.
+      // NodeList 처럼 length 로 개수를 세고 [0] 으로 하나씩 꺼낼 수 있습니다. (개념01 섹션 4)
+
+      // ✏️ 직접 해보기 2 — "맨 앞 새 항목" 이라는 li 를 만들어 prepend 로 붙이고,
+      //                   정말 맨 앞에 갔는지 list1.children[0] 으로 확인해 보세요.
+
+      // ── 섹션 3: 반복문으로 여러 개 만들기 ──
+
+      const fruits = ["사과", "바나나", "포도", "귤"];
+      const list2 = document.querySelector("#list2");
+
+      fruits.forEach((fruit, index) => {
+        const li = document.createElement("li");
+        li.textContent = `${index + 1}. ${fruit}`;
+        list2.appendChild(li);
+      });
+      // 화면: 목록 ② 에 과일 네 개가 번호와 함께 나타납니다
+
+      console.log(list2.children.length);
+      // 콘솔: 4
+
+      // 배열 하나만 고치면 화면이 통째로 바뀝니다.
+      // 이것이 "데이터로 화면을 만든다" 는 개념의 시작입니다.
+
+      // ✏️ 직접 해보기 3 — 좋아하는 색 세 개를 배열로 만들어 목록으로 붙여 보세요.
+
+      // ── 섹션 4: 클래스와 속성도 함께 ──
+
+      const products = [
+        { name: "아메리카노", price: 4000, stock: 10 },
+        { name: "라떼", price: 4500, stock: 0 },
+        { name: "케이크", price: 6000, stock: 3 },
+      ];
+
+      const cardArea = document.querySelector("#cardArea");
+
+      products.forEach((product) => {
+        const div = document.createElement("div");
+
+        // 클래스 붙이기 (개념03)
+        div.classList.add("card");
+        if (product.stock === 0) {
+          div.classList.add("sold");
+        }
+
+        // 내용 채우기 — 삼항 연산자로 글자를 정합니다 (03단원)
+        const stockText = product.stock === 0 ? "품절" : `재고 ${product.stock}개`;
+        div.textContent = `${product.name} ${product.price}원 — ${stockText}`;
+
+        // 나중에 찾기 쉽도록 데이터도 붙여 둘 수 있습니다
+        div.dataset.name = product.name;
+
+        cardArea.appendChild(div);
+      });
+      // 화면: 카드 세 개가 생기고, 라떼 카드만 빨간 글씨로 "품절" 이라고 나옵니다
+
+      console.log(document.querySelectorAll(".card").length);
+      // 콘솔: 3
+      console.log(document.querySelector(".sold").textContent);
+      // 콘솔: 라떼 4500원 — 품절
+
+      // dataset 은 data-이름 속성으로 들어갑니다. 11단원에서 다시 씁니다.
+      console.log(document.querySelector(".card").dataset.name);
+      // 콘솔: 아메리카노
+
+      // ✏️ 직접 해보기 4 — 카드 세 개의 dataset.name 을 forEach 로 전부 찍어 보세요.
+
+      // ── 섹션 5: 지우기 ──
+
+      const willRemove = document.querySelector("#willRemove");
+      willRemove.remove();
+      // 화면: 목록 ④ 의 첫 항목이 사라집니다
+
+      console.log(document.querySelector("#willRemove"));
+      // 콘솔: null
+      // 화면에서도 DOM 에서도 완전히 사라졌습니다.
+
+      // 안의 내용을 전부 비우려면
+      // 요소.innerHTML = "";
+      //
+      // 목록을 새로 그릴 때 이 방법을 자주 씁니다.
+      //   1) 비우고  2) 데이터로 다시 만든다
+
+      const list3 = document.querySelector("#list3");
+      console.log(list3.children.length);
+      // 콘솔: 1
+
+      // ✏️ 직접 해보기 5 — list1 의 첫 항목을 지워 보세요.
+
+      // ── 섹션 6: createElement vs innerHTML ──
+
+      // 개념02 에서는 innerHTML 로 목록을 만들었습니다. 둘을 비교해 봅시다.
+      //
+      // [innerHTML]
+      //   list.innerHTML = items.map((i) => `<li>${i}</li>`).join("");
+      //   + 짧다. 한눈에 모양이 보인다.
+      //   - 사용자 입력을 넣으면 위험하다 (XSS)
+      //   - 통째로 다시 그려서 기존 요소가 전부 새것이 된다
+      //
+      // [createElement]
+      //   + 안전하다. textContent 로 넣으니 태그가 실행되지 않는다
+      //   + 필요한 것만 골라 붙이고 뗄 수 있다
+      //   - 줄이 길다
+      //
+      // 기준:
+      //   내가 만든 고정된 마크업        → innerHTML 도 괜찮다
+      //   사용자가 입력한 값이 섞인다    → createElement + textContent
+
+      // ✏️ 직접 해보기 6 — 사용자가 쓴 댓글로 목록을 만든다면 둘 중 어느 쪽을
+      //                   써야 할까요? 이유도 한 줄로 적어 보세요.
+
+      // ── 섹션 7: 자주 하는 실수 ──
+
+      // [실수 1] 만들기만 하고 안 붙임
+      const lonely = document.createElement("li");
+      lonely.textContent = "화면에 안 보입니다";
+      console.log(lonely.textContent);
+      // 콘솔: 화면에 안 보입니다
+      // 실수: 값은 들어 있는데 화면에는 없습니다. appendChild 를 빠뜨린 것입니다.
+      //       "코드는 맞는데 화면에 안 나와요" 의 1순위 원인입니다.
+
+      // [실수 2] createElement 에 태그 기호를 넣음
+      // document.createElement("<li>");
+      // 실수: 태그 '이름' 만 씁니다. 꺾쇠는 넣지 않습니다.
+
+      // [실수 3] 반복문 밖에서 요소를 한 번만 만들기
+      const wrongList = document.querySelector("#list2");
+      const oneLi = document.createElement("li");
+      ["A", "B", "C"].forEach((t) => {
+        oneLi.textContent = t;
+        wrongList.appendChild(oneLi);
+      });
+      console.log(wrongList.children.length);
+      // 콘솔: 5
+      // 실수: 4개였는데 1개만 늘었습니다. 같은 요소를 세 번 붙이면
+      //       복사되는 게 아니라 '자리를 옮길' 뿐입니다.
+      //       요소는 반복문 '안'에서 매번 새로 만들어야 합니다.
+      oneLi.remove();
+
+      // [실수 4] appendChild 에 문자열을 넣음
+      // list1.appendChild("안녕");
+      // 실수: TypeError. appendChild 는 요소만 받습니다.
+      //       글자를 붙이려면 append("안녕") 을 쓰거나 textContent 를 쓰세요.
+
+      // ── 정리 ──
+
+      // 1. createElement("태그이름") → textContent 채우기 → appendChild 로 붙이기
+      // 2. append 는 더 편하고, prepend 는 맨 앞에 붙인다.
+      // 3. 반복문 안에서 매번 새로 만들어야 한다.
+      // 4. classList.add, dataset 으로 클래스와 데이터도 함께 붙인다.
+      // 5. 요소.remove() 로 지우고, innerHTML = "" 로 안을 비운다.
+      // 6. 사용자 입력이 섞이면 innerHTML 대신 createElement + textContent.
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) const li = document.createElement("li");
+      //    li.textContent = "세 번째 항목";
+      //    list1.appendChild(li);
+      //
+      // 2) const newLi = document.createElement("li");
+      //    newLi.textContent = "맨 앞 새 항목";
+      //    list1.prepend(newLi);
+      //    console.log(list1.children[0].textContent);
+      //    // 콘솔: 맨 앞 새 항목
+      //    → appendChild 로 붙였다면 맨 뒤로 갔을 것입니다.
+      //
+      // 3) const colors = ["빨강", "파랑", "노랑"];
+      //    colors.forEach((c) => {
+      //      const li = document.createElement("li");
+      //      li.textContent = c;
+      //      list2.appendChild(li);
+      //    });
+      //
+      // 4) document.querySelectorAll(".card").forEach((card) => {
+      //      console.log(card.dataset.name);
+      //    });
+      //    // 콘솔: 아메리카노 / 라떼 / 케이크
+      //    → 화면에 보이는 글자가 아니라, 붙여 둔 데이터만 따로 꺼낸 것입니다.
+      //      화면 글자는 "아메리카노 4000원 — 재고 10개" 처럼 섞여 있어서
+      //      이름만 필요할 때는 dataset 쪽이 훨씬 편합니다.
+      //
+      // 5) list1.children[0].remove();
+      //    또는 list1.firstElementChild.remove();
+      //
+      // 6) createElement + textContent 를 써야 합니다.
+      //    → 댓글은 사용자가 쓴 글입니다. innerHTML 로 넣으면 누군가 태그를
+      //      적어 넣었을 때 그게 진짜 태그로 실행됩니다. (개념02 섹션 5의 XSS)
+      //      textContent 로 넣으면 무엇을 적든 글자로만 보입니다.
+    </script>
+  </body>
+</html>

@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- ↓ 13단원부터 새로 붙는 줄입니다. 개념03 섹션2 에서 배웁니다.
+         지금은 "휴대폰에서 화면 폭을 제대로 잡아 주는 줄" 정도로만 보세요. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>13단원 개념01 - grid 시작하기</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* 이 파일에서 '가르치는' CSS 만 여기에 씁니다. */
+
+      /* 모든 데모의 칸에 공통으로 쓸 모양입니다.
+         grid 와는 상관없는, 그냥 눈에 보이라고 넣은 색입니다. */
+      .cell {
+        background: #dbe7fb;
+        border: 1px solid #9ab8e8;
+        padding: 10px;
+        text-align: center;
+      }
+
+      /* ── 섹션 1 : display: grid 를 켜기만 한 상태 ── */
+      .step1-grid {
+        display: grid;
+      }
+      /* 화면: 칸 세 개가 위에서 아래로 한 줄씩 쌓입니다 (폭은 각각 824px) */
+
+      /* ── 섹션 2 : grid-template-columns 로 세로 칸 만들기 ── */
+      .px-frame {
+        overflow-x: auto;
+      }
+      /* 화면: 폭 1280 에서는 아무 변화가 없습니다.
+               창을 폭 700px 아래로 좁히면 그때부터 이 상자 안에 가로 스크롤 막대가 생깁니다 */
+
+      .step2-grid {
+        display: grid;
+        grid-template-columns: 200px 200px 200px;
+        gap: 10px;
+      }
+      /* 화면: 200px 짜리 칸 세 개가 가로로 놓이고, 네 번째부터는 아랫줄로 내려갑니다 */
+
+      /* ── 섹션 3 : fr 단위 ── */
+      .step3-even {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+      }
+      /* 화면: 세 칸이 268px 씩 똑같이 나뉘어 상자를 꽉 채웁니다 */
+
+      .step3-ratio {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 20px;
+      }
+      /* 화면: 왼쪽 칸 536px, 오른쪽 칸 268px. 왼쪽이 정확히 두 배입니다 */
+
+      .step3-mix {
+        display: grid;
+        grid-template-columns: 200px 1fr;
+        gap: 10px;
+      }
+      /* 화면: 왼쪽은 200px 로 고정, 오른쪽은 남은 614px 를 전부 차지합니다 */
+
+      /* ── 섹션 4 : gap ── */
+      .step4-small {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 4px;
+      }
+      /* 화면: 칸 사이가 4px 만 벌어져 거의 붙어 보입니다 (칸 폭 272px) */
+
+      .step4-big {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 28px;
+      }
+      /* 화면: 칸 사이가 28px 벌어지고, 그만큼 칸이 좁아집니다 (칸 폭 256px) */
+
+      .step4-two {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 30px 10px;
+      }
+      /* 화면: 위아래 줄 사이는 30px, 좌우 칸 사이는 10px 벌어집니다 */
+
+      /* ── 섹션 5 : grid-template-rows ── */
+      .step5-rows {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 60px 100px;
+        gap: 10px;
+      }
+      /* 화면: 윗줄 두 칸은 높이 60px, 아랫줄 두 칸은 높이 100px 로 그려집니다 */
+
+      /* ── 섹션 6 : flex 와 grid 비교 ── */
+      .cmp-flex {
+        display: flex;
+        gap: 10px;
+      }
+      /* 화면: 세 칸의 폭이 글자 길이만큼씩 제각각입니다 (38px / 86px / 129px) */
+
+      .cmp-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 10px;
+      }
+      /* 화면: 글자 길이와 상관없이 세 칸이 모두 268px 로 똑같습니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         13단원 · 개념 01 — grid 시작하기
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         12단원에서 flex 를 배웠습니다. flex 는 상자들을 한 줄로 세우는 도구였습니다.
+         가로로 한 줄, 또는 세로로 한 줄. 어느 쪽이든 방향은 하나였습니다.
+
+         13단원에서 배우는 grid 는 다릅니다.
+         grid 는 화면에 모눈종이 같은 격자(grid) 를 미리 그려 놓고,
+         그 칸에 상자를 하나씩 넣는 방식입니다.
+
+             flex (12단원)  ─ 한 방향으로 줄을 세웁니다
+                 ┌─────┬─────┬─────┐
+                 │  1  │  2  │  3  │     가로 한 줄
+                 └─────┴─────┴─────┘
+
+             grid (13단원)  ─ 가로와 세로를 동시에 정합니다
+                 ┌─────┬─────┬─────┐
+                 │  1  │  2  │  3  │
+                 ├─────┼─────┼─────┤     가로 3칸 × 세로 2줄
+                 │  4  │  5  │  6  │
+                 └─────┴─────┴─────┘
+
+         용어를 먼저 정해 둡니다. 이 단원 내내 씁니다.
+
+             격자        가로 칸과 세로 줄로 나눈 판 전체
+             칸(cell)    격자에서 네모 하나
+             열(column)  세로로 선 칸 묶음. 왼쪽에서 오른쪽으로 셉니다
+             행(row)     가로로 누운 칸 묶음. 위에서 아래로 셉니다
+             격자 부모   display: grid 를 쓴 요소. 격자를 그리는 쪽입니다
+             격자 자식   그 요소의 바로 아래 자식들. 칸에 들어가는 쪽입니다
+
+         한 가지만 미리 기억하세요.
+         flex 도 grid 도 부모에 쓰는 속성입니다. 자식에 쓰는 게 아닙니다.
+         부모가 "나는 이제 격자다" 라고 선언하면, 자식들이 저절로 칸에 들어갑니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 01 — grid 시작하기</h1>
+    <p class="doc-sub">13단원 · Grid 와 반응형</p>
+
+    <p class="doc-guide">
+      이 파일에서는 <strong>격자를 만드는 법</strong>을 배웁니다.
+      <code>display: grid</code> 로 격자를 켜고, <code>grid-template-columns</code> 로 칸을 나누고,
+      <code>fr</code> 로 비율을 정하고, <code>gap</code> 으로 사이를 띄웁니다.
+      마지막 섹션에서 <strong>flex 와 grid 중 무엇을 쓸지</strong> 판단하는 기준을 정리합니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: 격자를 켭니다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — display: grid 로 격자를 켭니다</h2>
+      <p class="doc-desc">
+        먼저 부모에게 <strong>격자가 되라</strong>고 말합니다. 그런데 이것만으로는
+        화면이 거의 안 바뀝니다. 왜 그런지가 이 섹션의 내용입니다.
+      </p>
+
+      <!--
+        아래 상자 안에는 div 세 개가 들어 있고, 그 부모에 이렇게 썼습니다.
+
+            .step1-grid {
+              display: grid;
+            }
+
+        display 는 11단원에서 배운 속성입니다. 요소를 어떤 방식으로 배치할지 정합니다.
+        block, inline, flex 를 이미 봤습니다. 여기에 grid 가 하나 더 늘어난 것입니다.
+
+        결과를 보면 칸 세 개가 위에서 아래로 쌓여 있습니다.
+        display: block 일 때와 거의 같아 보입니다. 실패한 걸까요? 아닙니다.
+
+        grid 는 "칸을 몇 개로 나눌지" 를 아직 못 들었습니다.
+        그래서 열을 하나만 만들고, 자식을 위에서부터 한 줄에 하나씩 넣었습니다.
+
+            ┌───────────────┐   ← 열이 하나뿐이므로
+            │      1        │
+            ├───────────────┤
+            │      2        │
+            ├───────────────┤
+            │      3        │
+            └───────────────┘
+
+        즉 지금 이 격자는 "1열 3행" 입니다. 격자는 맞습니다. 칸이 세로로만 있을 뿐입니다.
+        칸을 가로로 나누려면 다음 섹션의 grid-template-columns 가 필요합니다.
+
+        참고로 display: block 과 완전히 같지는 않습니다.
+        블록 요소였다면 문단 사이 여백(margin) 이 서로 겹쳐지지만,
+        격자 칸이 되면 그런 겹침이 일어나지 않습니다. 지금은 넘어가도 됩니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <div class="step1-grid">
+          <div class="cell">칸 1</div>
+          <div class="cell">칸 2</div>
+          <div class="cell">칸 3</div>
+        </div>
+        <!-- 화면: 파란 칸 세 개가 위에서 아래로 붙어서 쌓입니다.
+                  각 칸의 폭은 상자 안쪽을 꽉 채운 824px 입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>display: grid</code> 는 <strong>부모</strong>에 씁니다.
+        칸이 될 자식에게 쓰는 것이 아닙니다. 이것을 바꿔 쓰는 실수가 가장 많습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 <code>&lt;style&gt;</code> 의 <code>.step1-grid</code> 에서
+        <code>display: grid;</code> 를 잠시 지우고 저장(Ctrl+S) 한 뒤 새로고침(F5) 해 보세요.
+        화면이 거의 그대로인 것을 확인하고 다시 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 세로 칸 만들기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — grid-template-columns 로 칸을 나눕니다</h2>
+      <p class="doc-desc">
+        <strong>몇 칸으로 나눌지, 각 칸을 얼마나 넓게 할지</strong>를 한 줄로 정합니다.
+        값을 쓴 개수가 곧 칸의 개수입니다.
+      </p>
+
+      <!--
+        속성 이름이 깁니다. 뜻으로 끊어 읽으면 외우지 않아도 됩니다.
+
+            grid  template  columns
+            격자    틀        열
+            "격자의 열을 이런 틀로 만들어라"
+
+        아래 상자에는 이렇게 썼습니다.
+
+            .step2-grid {
+              display: grid;
+              grid-template-columns: 200px 200px 200px;
+              gap: 10px;
+            }
+
+        값이 200px 200px 200px 세 개입니다. 그래서 열이 세 개 생깁니다.
+        띄어쓰기로 구분합니다. 쉼표가 아닙니다.
+
+        여기서 초보자가 가장 놀라는 점이 하나 있습니다.
+        상자 안에는 칸이 다섯 개인데 열은 세 개뿐입니다. 나머지 두 개는 어디로 갈까요?
+
+            ┌───────┬───────┬───────┐
+            │   1   │   2   │   3   │   ← 열이 셋이므로 여기까지가 첫 줄
+            ├───────┼───────┼───────┤
+            │   4   │   5   │       │   ← 넘친 칸은 자동으로 아랫줄로 내려갑니다
+            └───────┴───────┴───────┘
+
+        칸이 넘쳐도 옆으로 삐져나가지 않습니다. 저절로 다음 줄이 하나 더 생깁니다.
+        이렇게 자동으로 생긴 줄을 암시적 행이라고 부릅니다.
+        "열 개수만 정하면 행은 알아서 늘어난다" 로 기억하면 충분합니다.
+
+        칸 세 개가 200px 씩 = 600px, 사이 간격 10px 두 개 = 20px. 합쳐서 620px 입니다.
+        상자 안쪽은 824px 이므로 오른쪽에 204px 가 남습니다. 그 자리는 비어 있습니다.
+        px 로 못을 박아 두면 남는 자리를 쓰지 못합니다. 이것을 해결하는 것이 다음 섹션입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 열 3개에 칸 5개</p>
+        <div class="px-frame">
+          <div class="step2-grid">
+            <div class="cell">칸 1</div>
+            <div class="cell">칸 2</div>
+            <div class="cell">칸 3</div>
+            <div class="cell">칸 4</div>
+            <div class="cell">칸 5</div>
+          </div>
+        </div>
+        <!-- 화면: 200px 칸 세 개가 윗줄에, 나머지 두 개가 아랫줄에 놓입니다.
+                  오른쪽 204px 는 비어 있고, 아랫줄 세 번째 자리도 비어 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        이 상자만 <code>.px-frame</code> 이라는 껍데기로 한 번 더 감싸고
+        <code>overflow-x: auto</code> 를 걸어 두었습니다(10단원).
+        칸을 <code>px</code> 로 못 박아 두면 창을 좁혔을 때 620px 이 그대로 남아
+        밖으로 삐져나가는데, 그때 <strong>페이지 전체가 아니라 이 상자 안에서만</strong>
+        가로로 스크롤되게 하려는 것입니다. 왜 이런 일이 생기는지는 개념03 에서 봅니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — <code>.step2-grid</code> 의
+        <code>grid-template-columns</code> 값을 <code>200px 200px</code> 두 개로 줄여 보세요.
+        칸이 몇 줄이 되는지 세어 보고, 확인했으면 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: fr 단위 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — fr 단위, 남는 공간을 비율로 나눕니다</h2>
+      <p class="doc-desc">
+        <code>fr</code> 은 <strong>남는 공간을 몇 조각으로 나눠 가질지</strong>를 뜻하는
+        grid 전용 단위입니다. <code>px</code> 처럼 고정된 길이가 아닙니다.
+      </p>
+
+      <!--
+        fr 은 fraction(조각, 비율) 의 줄임말입니다. 계산 순서가 정해져 있습니다.
+
+            1) 전체 폭에서 gap 과 px 로 못 박은 칸을 먼저 뺍니다  → 이것이 '남는 공간'
+            2) 남는 공간을 fr 숫자의 합으로 나눕니다              → 이것이 '한 조각'
+            3) 각 칸은 자기 fr 숫자만큼 조각을 가져갑니다
+
+        [예시 1] 1fr 1fr 1fr, gap 10px, 상자 안쪽 824px
+
+            남는 공간 = 824 − (10 × 2) = 804
+            조각 합계 = 1 + 1 + 1 = 3
+            한 조각   = 804 ÷ 3 = 268
+            → 세 칸이 모두 268px
+
+        [예시 2] 2fr 1fr, gap 20px, 상자 안쪽 824px
+
+            남는 공간 = 824 − 20 = 804
+            조각 합계 = 2 + 1 = 3
+            한 조각   = 804 ÷ 3 = 268
+            → 왼쪽 = 268 × 2 = 536px, 오른쪽 = 268 × 1 = 268px
+
+        [예시 3] 200px 1fr, gap 10px, 상자 안쪽 824px
+
+            남는 공간 = 824 − 200 − 10 = 614
+            조각 합계 = 1
+            → 왼쪽은 200px 로 고정, 오른쪽은 614px
+
+        예시 3 이 실제 화면에서 가장 자주 쓰는 모양입니다.
+        "옆 메뉴는 200px 로 고정하고 본문은 남는 만큼" 이 그대로 이 한 줄입니다.
+
+        그리고 fr 에는 아주 중요한 성질이 있습니다.
+        브라우저 창을 좁히면 824 라는 숫자 자체가 줄어들기 때문에,
+        fr 로 만든 칸은 창 크기를 따라 저절로 줄어듭니다.
+        px 로 만든 칸은 창을 아무리 좁혀도 그대로입니다.
+
+        실제로 재 보면 이렇습니다. 창 폭을 480px 으로 줄이면 상자 안쪽이 404px 이 됩니다.
+
+            1fr 1fr 1fr    268px 씩 → 128px 씩으로 줄어듭니다
+            200px 1fr      왼쪽은 200px 그대로, 오른쪽만 614px → 194px 로 줄어듭니다
+            섹션 2 의 200px 200px 200px   셋 다 200px 그대로. 상자 밖으로 나갑니다
+
+        px 로 못 박은 칸만 화면을 무시하고 버팁니다.
+        이 차이가 13단원 전체의 주제인 반응형의 출발점입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 1 — 1fr 1fr 1fr (똑같이 나누기)</p>
+        <div class="step3-even">
+          <div class="cell" id="evenCell1">1fr</div>
+          <div class="cell">1fr</div>
+          <div class="cell">1fr</div>
+        </div>
+        <!-- 화면: 세 칸이 268px 씩 똑같은 폭으로 상자를 꽉 채웁니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 2 — 2fr 1fr (2 대 1 로 나누기)</p>
+        <div class="step3-ratio">
+          <div class="cell" id="ratioLeft">2fr — 넓은 쪽</div>
+          <div class="cell" id="ratioRight">1fr</div>
+        </div>
+        <!-- 화면: 왼쪽 칸이 536px, 오른쪽 칸이 268px 입니다. 왼쪽이 정확히 두 배입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 3 — 200px 1fr (고정 + 나머지 전부)</p>
+        <div class="step3-mix">
+          <div class="cell" id="mixLeft">200px 고정</div>
+          <div class="cell" id="mixRight">1fr — 남는 만큼</div>
+        </div>
+        <!-- 화면: 왼쪽은 200px 그대로, 오른쪽은 남은 614px 를 전부 차지합니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>fr</code> 은 <strong>grid 의 칸을 정할 때만</strong> 쓸 수 있습니다.
+        <code>width: 1fr</code> 처럼 다른 자리에 쓰면 그 줄은 조용히 무시됩니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>.step3-ratio</code> 의 값을 <code>3fr 1fr</code> 로 바꾸고,
+        왼쪽 칸이 오른쪽의 몇 배가 되는지 눈으로 확인해 보세요.
+        위 계산 순서대로 직접 숫자를 구해 본 뒤 화면과 맞춰 보면 더 좋습니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: gap ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — gap 으로 칸 사이를 띄웁니다</h2>
+      <p class="doc-desc">
+        <code>gap</code> 은 <strong>칸과 칸 사이</strong>에만 간격을 넣습니다.
+        격자 바깥쪽에는 넣지 않습니다. 이것이 <code>margin</code> 과 결정적으로 다른 점입니다.
+      </p>
+
+      <!--
+        12단원 flex 에서 이미 gap 을 썼습니다. grid 에서도 이름과 뜻이 똑같습니다.
+
+            gap: 10px;        가로 사이도 10px, 세로 사이도 10px
+            gap: 30px 10px;   앞이 행 사이(위아래), 뒤가 열 사이(좌우)
+
+        순서가 헷갈리면 이렇게 외우지 말고 이렇게 읽으세요.
+        CSS 에서 두 값을 쓰는 속성은 거의 항상 "세로 먼저, 가로 나중" 입니다.
+        margin: 10px 20px 도 위아래 10px, 좌우 20px 였습니다. 같은 규칙입니다.
+
+        gap 과 margin 의 차이도 그대로입니다. 12단원 개념03 섹션5 에서 본 그 이야기입니다.
+        그림으로 다시 보면 이렇습니다.
+
+            gap 을 쓰면                    자식에 margin 을 쓰면
+            ┌───┐ ┌───┐ ┌───┐            여백 ┌───┐ 여백 ┌───┐ 여백
+            │ 1 │ │ 2 │ │ 3 │                 │ 1 │      │ 2 │
+            └───┘ └───┘ └───┘                 └───┘      └───┘
+            바깥쪽에는 여백이 없습니다        바깥쪽에도 여백이 생깁니다
+
+        격자 안쪽만 띄우고 싶을 때는 gap 이 훨씬 편합니다.
+        칸 개수가 몇 개든 바깥 여백이 생기지 않기 때문입니다.
+
+        아래 세 상자는 gap 값만 다릅니다. 열은 셋 다 1fr 1fr 1fr 로 같습니다.
+        gap 이 커질수록 칸이 좁아진다는 점을 확인하세요.
+        전체 폭은 그대로인데 사이 간격이 커졌으니 칸이 그만큼 양보한 것입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 1 — gap: 4px</p>
+        <div class="step4-small">
+          <div class="cell">1</div>
+          <div class="cell">2</div>
+          <div class="cell">3</div>
+        </div>
+        <!-- 화면: 칸 사이가 4px 만 벌어져 거의 붙어 보입니다. 칸 하나는 272px 입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 2 — gap: 28px</p>
+        <div class="step4-big">
+          <div class="cell">1</div>
+          <div class="cell">2</div>
+          <div class="cell">3</div>
+        </div>
+        <!-- 화면: 칸 사이가 28px 벌어지고 칸은 256px 로 좁아집니다.
+                  격자 맨 왼쪽과 맨 오른쪽에는 여백이 없습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 3 — gap: 30px 10px (행 30, 열 10)</p>
+        <div class="step4-two">
+          <div class="cell">1</div>
+          <div class="cell">2</div>
+          <div class="cell">3</div>
+          <div class="cell">4</div>
+          <div class="cell">5</div>
+          <div class="cell">6</div>
+        </div>
+        <!-- 화면: 좌우 사이는 좁고(10px) 위아래 두 줄 사이는 넓게(30px) 벌어집니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>.step4-two</code> 의 <code>gap: 30px 10px;</code> 를
+        <code>gap: 10px 30px;</code> 로 앞뒤만 바꿔 보세요.
+        어느 쪽 간격이 넓어지는지 확인하면 순서를 다시는 헷갈리지 않습니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 행의 높이 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — grid-template-rows 로 줄 높이를 정합니다</h2>
+      <p class="doc-desc">
+        열을 정하는 속성이 <code>grid-template-columns</code> 였다면,
+        행을 정하는 속성은 <code>grid-template-rows</code> 입니다. 쓰는 법은 똑같습니다.
+      </p>
+
+      <!--
+        아래 상자에는 이렇게 썼습니다.
+
+            .step5-rows {
+              display: grid;
+              grid-template-columns: 1fr 1fr;   열 2개
+              grid-template-rows: 60px 100px;   행 2개, 높이는 60px 과 100px
+              gap: 10px;
+            }
+
+        칸 네 개가 이렇게 들어갑니다.
+
+            ┌──────────┬──────────┐
+            │    1     │    2     │  높이 60px
+            ├──────────┼──────────┤
+            │    3     │    4     │  높이 100px
+            └──────────┴──────────┘
+
+        칸 안의 글자는 한 줄뿐인데도 칸 높이가 60px, 100px 로 맞춰집니다.
+        내용이 아니라 격자가 높이를 정하기 때문입니다.
+
+        행 높이는 대부분 안 정하고 그냥 둡니다.
+        안 정하면 그 줄에서 가장 키가 큰 칸에 맞춰 높이가 저절로 결정됩니다.
+        섹션 1~4 의 데모들이 전부 그런 상태였습니다.
+
+        높이를 정할 때 주의할 점이 하나 있습니다.
+        내용이 정한 높이보다 길면 칸 밖으로 삐져나옵니다.
+        높이는 꼭 필요할 때만 정하고, 되도록 내용에 맡기는 편이 안전합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <div class="step5-rows">
+          <div class="cell" id="rowCell1">1</div>
+          <div class="cell">2</div>
+          <div class="cell" id="rowCell3">3</div>
+          <div class="cell">4</div>
+        </div>
+        <!-- 화면: 윗줄 두 칸은 높이 60px, 아랫줄 두 칸은 높이 100px 입니다.
+                  칸 폭은 네 칸 모두 407px 입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>.step5-rows</code> 의
+        <code>grid-template-rows</code> 값을 <code>100px 60px</code> 으로 앞뒤를 바꿔 보세요.
+        어느 줄이 두꺼워지는지 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: flex 와 grid ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — flex 와 grid, 언제 무엇을 쓰나</h2>
+      <p class="doc-desc">
+        한 줄로 정리하면 이렇습니다.
+        <strong>flex 는 한 방향(줄), grid 는 두 방향(격자)</strong> 입니다.
+      </p>
+
+      <!--
+        아래 두 상자에는 글자 길이가 서로 다른 칸 세 개가 똑같이 들어 있습니다.
+        부모의 display 값만 다릅니다.
+
+            .cmp-flex { display: flex; gap: 10px; }
+            .cmp-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+
+        결과가 확실히 갈립니다.
+
+            flex → 칸의 폭이 글자 길이만큼 제각각입니다 (38px / 86px / 129px)
+            grid → 글자 길이와 상관없이 세 칸 모두 268px 로 같습니다
+
+        이유는 두 도구가 보는 기준이 다르기 때문입니다.
+
+            flex 는 내용을 먼저 봅니다.  "이 글자를 담으려면 이만큼 필요하겠군"
+            grid 는 칸을 먼저 봅니다.    "칸이 268px 이니 글자는 여기에 맞춰"
+
+        그래서 판단 기준은 이렇게 잡으면 거의 맞습니다.
+
+            메뉴 한 줄, 버튼 두세 개, 아이콘 옆에 글자          → flex
+            줄이 하나뿐이고, 내용 길이에 맞춰 늘었다 줄었다      → flex
+
+            카드 목록, 사진 목록, 표처럼 칸이 딱 맞아야 하는 것  → grid
+            머리말·본문·옆칸·바닥글 같은 페이지 전체 뼈대         → grid
+            가로와 세로를 동시에 맞춰야 하는 것                  → grid
+
+        둘 중 하나만 골라야 하는 것도 아닙니다.
+        페이지 전체 뼈대는 grid 로 잡고, 그 안의 메뉴 한 줄은 flex 로 하는 식으로
+        섞어 쓰는 것이 보통입니다. 개념05 에서 실제로 그렇게 만들어 봅니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 1 — display: flex</p>
+        <div class="cmp-flex">
+          <div class="cell" id="flexItem1">홈</div>
+          <div class="cell" id="flexItem2">공지사항</div>
+          <div class="cell" id="flexItem3">자주 묻는 질문</div>
+        </div>
+        <!-- 화면: 세 칸의 폭이 글자 길이만큼 다릅니다. 왼쪽부터 38px, 86px, 129px 이고
+                  오른쪽에는 빈 자리가 남습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 2 — display: grid (칸은 1fr 1fr 1fr)</p>
+        <div class="cmp-grid">
+          <div class="cell" id="gridItem1">홈</div>
+          <div class="cell" id="gridItem2">공지사항</div>
+          <div class="cell" id="gridItem3">자주 묻는 질문</div>
+        </div>
+        <!-- 화면: 글자 길이가 달라도 세 칸이 모두 268px 로 똑같고 상자를 꽉 채웁니다 -->
+      </div>
+
+      <table class="doc-demo">
+        <thead>
+          <tr>
+            <th>비교</th>
+            <th>flex (12단원)</th>
+            <th>grid (13단원)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>방향</td>
+            <td>한 방향(가로 줄 또는 세로 줄)</td>
+            <td>두 방향(열과 행을 동시에)</td>
+          </tr>
+          <tr>
+            <td>크기를 정하는 기준</td>
+            <td>내용 길이</td>
+            <td>미리 정한 칸</td>
+          </tr>
+          <tr>
+            <td>잘 맞는 곳</td>
+            <td>메뉴, 버튼 줄, 가운데 정렬</td>
+            <td>카드 목록, 페이지 뼈대</td>
+          </tr>
+          <tr>
+            <td>어울리는 말</td>
+            <td>"한 줄로 세워 줘"</td>
+            <td>"3칸짜리 판을 깔아 줘"</td>
+          </tr>
+        </tbody>
+      </table>
+      <!-- 화면: 네 줄짜리 비교 표가 점선 상자 안에 그려집니다 -->
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — <code>.cmp-grid</code> 의 값을
+        <code>grid-template-columns: 1fr 2fr 1fr;</code> 로 바꿔 보세요.
+        가운데 칸만 넓어집니다. flex 로는 이렇게 "가운데를 정확히 2배" 로 만들기가 번거롭습니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        다시 강조합니다. <strong>CSS 는 틀려도 에러가 나지 않습니다.</strong>
+        틀린 줄은 그냥 없는 셈 치고 넘어갑니다. 그래서 "아무 일도 안 일어나는" 것이
+        가장 흔한 증상입니다.
+      </p>
+
+      <!-- [실수 1] display: grid 를 자식에 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — display: grid 를 자식에 씀</span>
+        <div class="doc-code">.cell {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 칸들이 여전히 위아래로 쌓입니다.
+          자식 하나하나가 각자 "속이 3칸인 격자" 가 됐을 뿐, 자식들끼리는 아무 관계가 없습니다.
+          격자로 만들 대상은 <strong>자식들을 담고 있는 부모</strong>입니다.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">.step2-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}</div>
+      </div>
+
+      <!-- [실수 2] 칸 개수만 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 칸 개수만 씀</span>
+        <div class="doc-code">grid-template-columns: 3;</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 아무 일도 안 일어납니다.
+          칸이 나뉘지 않고 한 줄에 하나씩 그대로 쌓입니다.
+          이 속성은 <strong>칸의 개수가 아니라 각 칸의 크기를 하나씩</strong> 적는 자리입니다.
+          3칸으로 나누고 싶으면 <code>1fr 1fr 1fr</code> 처럼 값을 세 개 씁니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] 값을 쉼표로 구분 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 값을 쉼표로 구분함</span>
+        <div class="doc-code">grid-template-columns: 1fr, 1fr, 1fr;</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 역시 아무 일도 안 일어납니다.
+          칸이 하나도 안 나뉩니다. CSS 에서 여러 값을 나열할 때는 <strong>띄어쓰기</strong>로
+          구분합니다. 쉼표를 쓰는 속성은 <code>font-family</code> 처럼 따로 정해져 있습니다.
+        </p>
+      </div>
+
+      <!-- [실수 4] fr 을 아무 데나 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — fr 을 width 에 씀</span>
+        <div class="doc-code">.cell {
+  width: 1fr;
+}</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 그 줄이 통째로 무시되고 폭이 안 바뀝니다.
+          <code>fr</code> 은 <code>grid-template-columns</code> 와
+          <code>grid-template-rows</code> 안에서만 쓰는 단위입니다.
+          일반 폭을 비율로 주고 싶으면 <code>%</code> 를 씁니다(개념04).
+        </p>
+      </div>
+
+      <!-- [실수 5] 칸이 넘치면 잘린다고 생각함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 칸이 열 개수보다 많으면 잘린다고 생각함</span>
+        <div class="doc-code">grid-template-columns: 200px 200px 200px;
+(자식은 7개)</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 잘리지 않습니다. 아랫줄이 저절로 생겨서
+          7개가 3 + 3 + 1 로 놓입니다. "왜 갑자기 두 줄이 됐지?" 하고 당황하는 경우가
+          많은데, 격자가 정상 동작한 것입니다. 한 줄에 다 넣고 싶으면
+          <strong>열 개수를 자식 수에 맞춰 늘려야</strong> 합니다.
+        </p>
+      </div>
+
+      <!-- [실수 6] gap 대신 margin -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 6 — 간격을 자식의 margin 으로 냄</span>
+        <div class="doc-code">.cell {
+  margin: 5px;
+}</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 칸 사이는 벌어지지만
+          <strong>격자 바깥쪽에도 5px 씩 여백이 생깁니다.</strong> 옆 요소와 줄이 안 맞아서
+          "왜 여기만 살짝 밀렸지?" 하게 됩니다. 게다가 칸 안쪽 폭이 margin 만큼 줄어들어
+          fr 계산도 어긋납니다. 격자 안쪽 간격은 <code>gap</code> 으로 내세요.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>display: grid</code> 는 <strong>부모</strong>에 씁니다. 자식은 저절로 칸이 됩니다.</p>
+      <p>
+        2. <code>grid-template-columns</code> 에 적은 <strong>값의 개수 = 열의 개수</strong>,
+        값 하나가 칸 하나의 크기입니다. 구분은 띄어쓰기입니다.
+      </p>
+      <p>
+        3. <code>fr</code> 은 남는 공간을 나눠 가지는 비율입니다.
+        <code>200px 1fr</code> 처럼 고정과 섞어 쓸 수 있습니다.
+      </p>
+      <p>4. <code>gap</code> 은 칸 사이에만 여백을 넣습니다. 바깥쪽에는 안 넣습니다.</p>
+      <p>5. <code>grid-template-rows</code> 로 줄 높이를 정합니다. 안 정하면 내용에 맞춰집니다.</p>
+      <p>6. 자식이 열 개수보다 많으면 <strong>아랫줄이 저절로 생깁니다.</strong> 잘리지 않습니다.</p>
+      <p>7. <strong>한 줄이면 flex, 격자면 grid.</strong> 섞어 쓰는 것이 보통입니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) .step1-grid 에서 display: grid; 를 지우면
+
+                .step1-grid {
+                }
+
+            → 화면이 거의 그대로입니다. 칸 세 개가 여전히 위아래로 쌓입니다.
+              div 는 원래 블록 요소라서 한 줄씩 쌓이기 때문입니다.
+              display: grid 만으로는 눈에 보이는 변화가 거의 없다는 뜻입니다.
+              확인했으면 display: grid; 를 다시 넣으세요.
+
+         2) .step2-grid 를 이렇게 바꿉니다.
+
+                grid-template-columns: 200px 200px;
+
+            → 열이 두 개가 되어 칸 다섯 개가 2 + 2 + 1 로 세 줄이 됩니다.
+              열 개수를 줄이면 행이 그만큼 늘어납니다.
+              확인했으면 200px 200px 200px 로 되돌리세요.
+
+         3) .step3-ratio 를 이렇게 바꿉니다.
+
+                grid-template-columns: 3fr 1fr;
+
+            → 왼쪽이 오른쪽의 3배가 됩니다.
+              계산: 남는 공간 824 − 20(gap) = 804, 조각 합계 3 + 1 = 4,
+              한 조각 804 ÷ 4 = 201. 왼쪽 603px, 오른쪽 201px 입니다.
+
+         4) .step4-two 를 이렇게 바꿉니다.
+
+                gap: 10px 30px;
+
+            → 위아래 줄 사이가 좁아지고(10px) 좌우 칸 사이가 넓어집니다(30px).
+              앞의 값이 행 사이, 뒤의 값이 열 사이입니다.
+
+         5) .step5-rows 를 이렇게 바꿉니다.
+
+                grid-template-rows: 100px 60px;
+
+            → 윗줄이 100px 로 두꺼워지고 아랫줄이 60px 로 얇아집니다.
+              적은 순서대로 첫째 줄, 둘째 줄에 그대로 들어갑니다.
+
+         6) .cmp-grid 를 이렇게 바꿉니다.
+
+                grid-template-columns: 1fr 2fr 1fr;
+
+            → 조각 합계가 4가 되어 한 조각은 (824 − 20) ÷ 4 = 201px 입니다.
+              양옆이 201px, 가운데가 402px 이 됩니다.
+              글자 길이와 상관없이 가운데만 정확히 두 배가 된다는 점이 grid 의 힘입니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      .step1-grid | display | grid
+      .step1-grid | grid-template-columns | 824px
+      .step2-grid | grid-template-columns | 200px 200px 200px
+      .step3-even | grid-template-columns | 268px 268px 268px
+      #ratioLeft | ~width | 536
+      #ratioRight | ~width | 268
+      #mixLeft | ~width | 200
+      #mixRight | ~width | 614
+      .step4-small | ~gap-x | 4
+      .step4-big | ~gap-x | 28
+      .step4-two | row-gap | 30px
+      .step4-two | column-gap | 10px
+      .step5-rows | grid-template-rows | 60px 100px
+      #rowCell1 | ~height | 60
+      #rowCell3 | ~height | 100
+      #flexItem1 | ~width | 38
+      #flexItem3 | ~width | 129
+      #gridItem1 | ~width | 268
+      #gridItem3 | ~width | 268
+      @폭 480
+      .step2-grid | grid-template-columns | 200px 200px 200px
+      .step3-even | grid-template-columns | 128px 128px 128px
+      #mixLeft | ~width | 200
+      #mixRight | ~width | 194
+      #gridItem1 | ~width | 128
+    -->
+  </body>
+</html>

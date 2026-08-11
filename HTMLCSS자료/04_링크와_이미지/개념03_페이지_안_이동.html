@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>04단원 개념03 - 페이지 안 이동</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body id="pageTop">
+    <!-- ============================================================
+         04단원 · 개념 03 — 페이지 안 이동
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              창을 작게 만들어 스크롤이 생기게 해 두면 효과를 잘 볼 수 있습니다.
+         ============================================================
+
+         지금까지 링크는 항상 "다른 파일" 로 갔습니다.
+         그런데 링크가 갈 수 있는 곳은 다른 파일만이 아닙니다.
+
+             [1] 같은 문서 안의 다른 자리   ← 이 파일에서 배웁니다
+             [2] 메일 쓰기 창
+             [3] 전화 걸기 화면
+
+         [1] 을 문서 안 이동 또는 앵커 이동이라고 부릅니다.
+         긴 문서 맨 위에 있는 목차를 눌렀더니 그 부분으로 쓱 내려간 경험이 있을 것입니다.
+         또 글 맨 아래의 "맨 위로" 버튼도 이것입니다.
+         새 파일을 여는 것이 아니라 같은 문서 안에서 화면만 움직입니다.
+
+         만드는 법은 두 걸음입니다.
+
+             1) 가고 싶은 자리에 이름표를 붙인다      → id="이름"
+             2) 그 이름 앞에 우물 정(#) 을 붙여 링크한다 → href="#이름"
+
+             <h2 id="menu">메뉴</h2>          ← 도착지에 이름표를 붙이고
+             <a href="#menu">메뉴 보기</a>     ← 그 이름 앞에 # 을 붙여 부릅니다
+
+         여기서 id 라는 새 속성이 나옵니다.
+         id 는 identity(신원) 의 줄임말이고, "이 요소의 고유한 이름" 이라는 뜻입니다.
+
+             ★ id 는 한 문서 안에서 단 하나만 있어야 합니다.
+
+         주민등록번호 같은 것이라고 생각하세요. 같은 번호를 가진 사람이 둘이면 안 됩니다.
+         id 는 08단원에서 CSS 로 특정 요소만 꾸밀 때 또 나옵니다.
+         지금은 "이름표를 붙이는 속성" 으로만 알아 두면 충분합니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 03 — 페이지 안 이동</h1>
+    <p class="doc-sub">04단원 · 링크와 이미지</p>
+
+    <p class="doc-guide">
+      이 파일의 링크는 <strong>다른 파일로 가지 않습니다.</strong>
+      같은 문서 안에서 화면만 움직입니다. 아래 목차를 눌러 보고,
+      주소창 끝에 <code>#</code> 이 붙는 것도 같이 확인하세요.
+    </p>
+
+    <!-- ══════════ 섹션 1: id 로 이름표 붙이기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — id 로 이름표 붙이기</h2>
+      <p class="doc-desc">
+        도착하고 싶은 자리에 먼저 <strong>id 라는 이름표</strong>를 붙입니다.
+      </p>
+
+      <!--
+        아래 상자 안에는 이렇게 썼습니다.
+
+            <p id="noticeBox">여기가 도착지입니다.</p>
+
+        id 는 어떤 태그에도 붙일 수 있습니다. p 에도, h2 에도, section 에도 붙습니다.
+
+        이름 짓는 규칙이 있습니다.
+
+            1) 한 문서 안에서 단 하나여야 합니다
+            2) 띄어쓰기를 넣을 수 없습니다
+            3) 영어 소문자로 시작하는 것이 안전합니다 (menuList, noticeBox 처럼)
+            4) 대소문자를 구분합니다. menuList 와 menulist 는 다른 이름입니다
+
+        한글로 id 를 지어도 요즘 브라우저에서는 동작합니다.
+        하지만 다른 프로그램과 주고받을 때 깨지는 일이 있어서 영어로 씁니다.
+        우리 자료는 낱말을 이어 쓸 때 두 번째 낱말의 첫 글자를 대문자로 올립니다.
+        이 방식을 카멜 표기법이라고 부릅니다. 낙타 등처럼 중간이 볼록해서 붙은 이름입니다.
+
+            noticeBox      menuList      pageTop
+
+        id 를 붙였다고 화면이 바뀌지는 않습니다. 눈에 보이는 변화는 하나도 없습니다.
+        아래 상자를 보면 그냥 평범한 문단 두 줄입니다.
+        이름표는 "나중에 부르기 위한 준비" 일 뿐입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 (id 를 붙여도 화면은 그대로입니다)</p>
+        <p id="noticeBox">여기가 도착지입니다. id 는 noticeBox 입니다.</p>
+        <p>이 줄에는 id 가 없습니다. 두 줄이 똑같이 생겼습니다.</p>
+        <!-- 화면: 평범한 검은 글씨 두 줄이 보입니다. id 를 붙인 쪽도 겉모습이 같습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 상자의 두 번째 문단에도
+        <code>id="secondBox"</code> 를 붙여 보세요. 저장하고 새로고침해도
+        화면이 하나도 안 바뀌는 것을 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: # 으로 그 자리로 점프 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — # 으로 그 자리로 점프</h2>
+      <p class="doc-desc">
+        <code>href="#이름"</code> 처럼 <strong>우물 정(#) 뒤에 id 이름</strong>을 적으면 그 자리로 갑니다.
+      </p>
+
+      <!--
+        아래 상자 안에는 이렇게 썼습니다.
+
+            <a href="#recipeStep">만드는 방법 부분으로 가기</a>
+
+        그리고 이 파일 아래쪽 어딘가에 이런 요소가 있습니다.
+
+            <h3 id="recipeStep">만드는 방법</h3>
+
+        누르면 새 페이지가 열리지 않습니다. 화면이 그 자리로 스르륵 움직입니다.
+        주소창을 보면 파일 이름 뒤에 #recipeStep 이 붙습니다.
+
+            ... /개념03_페이지_안_이동.html#recipeStep
+
+        이 # 뒤의 부분을 조각(fragment) 이라고 부릅니다.
+        "이 문서의 어느 조각을 보여 달라" 는 뜻입니다.
+
+        # 을 붙이는 자리를 헷갈리지 마세요.
+
+            도착지 쪽 : id="recipeStep"    ← # 을 붙이지 않습니다
+            부르는 쪽 : href="#recipeStep" ← # 을 붙입니다
+
+        이 문서 안 이동은 뒤로 가기도 됩니다.
+        점프한 다음 Alt + ← 를 누르면 원래 보던 자리로 돌아옵니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">목차 (눌러 보세요. 화면이 그 자리로 움직입니다)</p>
+        <p><a id="jumpRecipe" href="#recipeStep">만드는 방법 부분으로 가기</a></p>
+        <p><a id="jumpTip" href="#recipeTip">잘 만드는 요령 부분으로 가기</a></p>
+        <!-- 화면: 파란 밑줄 링크 두 줄입니다. 누르면 페이지가 아래쪽으로 움직이고
+                  주소창 끝에 #recipeStep 이 붙습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">도착지들</p>
+        <h3 id="recipeStep">만드는 방법</h3>
+        <p>재료를 씻고, 썰고, 끓입니다.</p>
+        <h3 id="recipeTip">잘 만드는 요령</h3>
+        <p>불을 약하게 하고 오래 기다립니다.</p>
+        <!-- 화면: "만드는 방법" 과 "잘 만드는 요령" 이 굵은 제목으로 보이고
+                  각각 아래에 설명 한 줄씩 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        지금은 문서가 짧아서 점프해도 화면이 조금밖에 안 움직일 수 있습니다.
+        브라우저 창의 세로 크기를 줄여 스크롤 막대가 생기게 한 뒤 눌러 보세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 섹션 1 에 있는 <code>noticeBox</code> 로 가는 링크를
+        위 목차 상자에 한 줄 추가해 보세요.
+        <code>&lt;p&gt;&lt;a href="#noticeBox"&gt;도착지로&lt;/a&gt;&lt;/p&gt;</code>
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 맨 위로 가기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 맨 위로 가기</h2>
+      <p class="doc-desc">
+        긴 글 아래쪽에 붙이는 <strong>맨 위로 가기</strong> 링크도 같은 방법으로 만듭니다.
+      </p>
+
+      <!--
+        방법이 두 가지 있습니다.
+
+        [1] 문서 맨 위 요소에 id 를 붙이고 그 이름으로 부르기
+
+            <body id="pageTop">          ← 이 파일이 실제로 이렇게 되어 있습니다
+            <a href="#pageTop">맨 위로</a>
+
+        [2] # 하나만 쓰기
+
+            <a href="#">맨 위로</a>
+
+            # 뒤에 아무 이름도 없으면 "이 문서의 맨 위" 라는 약속된 뜻이 됩니다.
+            짧아서 편하지만, 주소창에 # 만 덜렁 남아서 보기에 좋지 않습니다.
+            이 자료에서는 [1] 방식을 권합니다.
+
+        아래 두 링크는 둘 다 진짜로 동작합니다.
+        창을 작게 만들어 스크롤이 생긴 상태에서 눌러 보세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 (눌러 보세요)</p>
+        <p><a id="topLink" href="#pageTop">맨 위로 가기</a></p>
+        <p><a id="topLinkShort" href="#">맨 위로 가기 (# 하나만 쓴 방식)</a></p>
+        <!-- 화면: 파란 밑줄 링크 두 줄입니다. 누르면 화면이 문서 맨 위로 올라갑니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 이 파일 맨 아래 정리 상자 바로 위에
+        <code>&lt;p&gt;&lt;a href="#pageTop"&gt;처음으로&lt;/a&gt;&lt;/p&gt;</code> 를 넣고
+        눌러 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: mailto — 메일 보내기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — mailto 로 메일 보내기</h2>
+      <p class="doc-desc">
+        <code>href="mailto:주소"</code> 를 쓰면 누를 때 <strong>메일 쓰기 창</strong>이 열립니다.
+      </p>
+
+      <!--
+        아래 상자 안에는 이렇게 썼습니다.
+
+            <a href="mailto:hong@example.com">도서관에 메일 보내기</a>
+
+        mailto 뒤에는 반드시 쌍점(:) 이 옵니다. 빗금(/) 은 없습니다.
+        http 처럼 // 를 붙이는 실수를 많이 합니다. mailto 에는 // 가 없습니다.
+
+        제목과 내용을 미리 채워 둘 수도 있습니다.
+
+            mailto:hong@example.com?subject=책 문의&amp;body=안녕하세요
+
+            ?subject=  물음표 뒤에 제목
+            &amp;body=      앰퍼샌드(&) 로 이어 붙여 본문
+
+        여기서 02단원에서 배운 특수문자가 다시 나옵니다.
+        HTML 안에서 & 는 특별한 뜻을 가진 글자라서 그대로 쓰면 안 됩니다.
+        &amp; 라고 써야 브라우저가 & 하나로 읽습니다.
+
+        주의 : 메일 프로그램이 설치되어 있지 않은 컴퓨터에서는 아무 일도 안 일어나거나
+              "이 링크를 열 앱을 선택하세요" 창이 뜹니다. 여러분 잘못이 아닙니다.
+              example.com 은 예제용으로 남겨 둔 주소라 실제로 메일이 가지는 않습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 (누르면 메일 쓰기 창이 열립니다)</p>
+        <p><a id="mailLink" href="mailto:hong@example.com">도서관에 메일 보내기</a></p>
+        <p>
+          <a id="mailSubject"
+             href="mailto:hong@example.com?subject=책 문의&amp;body=안녕하세요">제목과 내용을 미리 채워서 보내기</a>
+        </p>
+        <!-- 화면: 파란 밑줄 링크 두 줄입니다. 누르면 컴퓨터에 설치된 메일 프로그램이 열립니다 -->
+      </div>
+
+      <p class="doc-note">
+        메일 주소를 이렇게 페이지에 그대로 적어 두면 광고 메일을 보내는 프로그램이
+        주소를 긁어 갑니다. 실제 사이트에서는 05단원에서 배울 <strong>문의 폼</strong>을
+        쓰는 경우가 더 많습니다. mailto 는 간단한 개인 페이지에서 주로 씁니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 첫 링크의 메일 주소를 여러분 주소로 바꾸고,
+        링크 글자도 <code>저에게 메일 보내기</code> 로 바꿔 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: tel — 전화 걸기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — tel 로 전화 걸기</h2>
+      <p class="doc-desc">
+        <code>href="tel:번호"</code> 는 <strong>휴대폰에서 누르면 바로 전화가 걸리는</strong> 링크입니다.
+      </p>
+
+      <!--
+        아래 상자 안에는 이렇게 썼습니다.
+
+            <a href="tel:02-1234-5678">02-1234-5678</a>
+
+        가게 홈페이지에서 전화번호를 눌렀더니 바로 통화 화면이 뜨는 것이 이것입니다.
+        휴대폰에서 손가락으로 번호를 다시 옮겨 적지 않아도 되니 아주 편합니다.
+
+        번호를 쓸 때 규칙이 있습니다.
+
+            숫자와 붙임표(-) 만 씁니다. 괄호나 띄어쓰기는 넣지 않는 것이 안전합니다
+            tel:021234-5678  처럼 붙여 써도 동작합니다
+            국제번호까지 쓰려면 tel:+82-2-1234-5678 처럼 씁니다
+
+        링크 글자는 전화번호 그대로 쓰는 것이 좋습니다.
+        컴퓨터로 보는 사람은 눌러도 전화가 안 걸리기 때문에,
+        번호가 화면에 보여야 손으로 옮겨 적을 수 있습니다.
+
+        컴퓨터에서 누르면 대개 아무 일도 안 일어나거나
+        "이 링크를 열 앱을 선택하세요" 창이 뜹니다. 정상입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 (휴대폰에서 누르면 전화가 걸립니다)</p>
+        <p>문의 전화: <a id="telLink" href="tel:02-1234-5678">02-1234-5678</a></p>
+        <!-- 화면: "문의 전화: " 뒤에 파란 밑줄로 02-1234-5678 이 보입니다 -->
+      </div>
+
+      <p><a href="#pageTop">맨 위로 가기</a></p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 위 전화번호를 <code>031-987-6543</code> 으로 바꾸세요.
+        <code>href</code> 안의 번호와 화면에 보이는 글자를 <strong>둘 다</strong> 고쳐야 합니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        문서 안 이동은 <strong>안 되어도 아무 표시가 없습니다.</strong> 눌러도 그냥 가만히 있습니다.
+      </p>
+
+      <!-- [실수 1] # 을 빠뜨림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — href 에서 # 을 빠뜨림</span>
+        <div class="doc-code">&lt;a href="recipeStep"&gt;만드는 방법으로&lt;/a&gt;</div>
+        <p>
+          <code>#</code> 이 없으면 브라우저는 이것을 <strong>파일 이름으로 읽습니다.</strong>
+          그래서 같은 폴더에서 <code>recipeStep</code> 이라는 파일을 찾다가 실패하고,
+          <strong>파일을 찾을 수 없다는 하얀 화면</strong>이 뜹니다.
+        </p>
+        <p><a id="missHash" href="recipeStep">만드는 방법으로 (눌러 보세요)</a></p>
+        <!-- 화면: 파란 밑줄 링크로 보입니다. 눌러야만 잘못된 것을 알 수 있습니다 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">&lt;a href="#recipeStep"&gt;만드는 방법으로&lt;/a&gt;</div>
+      </div>
+
+      <!-- [실수 2] 도착지 쪽에도 # 을 붙임 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — id 값에 # 을 붙임</span>
+        <div class="doc-code">&lt;h3 id="#recipeStep"&gt;만드는 방법&lt;/h3&gt;</div>
+        <p>
+          <code>#</code> 은 <strong>부르는 쪽에만</strong> 붙입니다.
+          이름표 자체에 <code>#</code> 을 넣으면 이름이 <code>#recipeStep</code> 이 되어 버려서
+          <code>href="#recipeStep"</code> 이 찾는 <code>recipeStep</code> 과 다른 이름이 됩니다.
+          <strong>눌러도 아무 일이 일어나지 않습니다.</strong>
+        </p>
+      </div>
+
+      <!-- [실수 3] id 이름이 다름 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 대소문자가 다름</span>
+        <div class="doc-code">&lt;h3 id="recipeStep"&gt; 인데 &lt;a href="#recipestep"&gt; 이라고 씀</div>
+        <p>
+          <code>S</code> 하나가 소문자로 바뀌었을 뿐인데 <strong>완전히 다른 이름</strong>입니다.
+          <strong>눌러도 화면이 그대로입니다.</strong> 에러도 없고 표시도 없어서 찾기 어렵습니다.
+          이름표를 만들 때 <strong>복사해서 붙여 넣는</strong> 습관을 들이면 이 실수가 사라집니다.
+        </p>
+        <p><a id="wrongCase" href="#recipestep">만드는 방법으로 (눌러도 안 움직입니다)</a></p>
+        <!-- 화면: 파란 밑줄 링크입니다. 눌러도 화면이 움직이지 않습니다 -->
+      </div>
+
+      <!-- [실수 4] id 를 두 군데에 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 같은 id 를 두 군데에 붙임</span>
+        <div class="doc-code">&lt;p id="notice"&gt;첫 번째&lt;/p&gt;
+&lt;p id="notice"&gt;두 번째&lt;/p&gt;</div>
+        <p>
+          <strong>브라우저는 첫 번째 것만 찾아갑니다.</strong> 두 번째는 영원히 못 갑니다.
+          역시 에러는 나지 않습니다. id 는 한 문서에 하나뿐이어야 한다는 규칙을 지키세요.
+          여러 요소를 한꺼번에 묶고 싶을 때 쓰는 것은 08단원에서 배울 class 입니다.
+        </p>
+      </div>
+
+      <!-- [실수 5] mailto 에 // 를 붙임 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — mailto 뒤에 // 를 붙임</span>
+        <div class="doc-code">&lt;a href="mailto://hong@example.com"&gt;메일 보내기&lt;/a&gt;</div>
+        <p>
+          <code>https://</code> 가 눈에 익어서 습관처럼 <code>//</code> 를 붙이는 실수입니다.
+          <strong>메일 창이 열리기는 하는데 받는 사람 칸이 이상하게 채워집니다.</strong>
+          <code>mailto:</code> 뒤에는 곧바로 메일 주소만 씁니다.
+        </p>
+      </div>
+
+      <!-- [실수 6] id 에 띄어쓰기를 넣음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 6 — id 이름에 띄어쓰기를 넣음</span>
+        <div class="doc-code">&lt;h3 id="recipe step"&gt;만드는 방법&lt;/h3&gt;</div>
+        <p>
+          이름 안에 띄어쓰기가 있으면 <code>href="#recipe step"</code> 으로 부를 수 없습니다.
+          주소에서 띄어쓰기는 값의 끝으로 취급되기 때문입니다.
+          <strong>눌러도 아무 일이 일어나지 않습니다.</strong>
+          낱말을 이어 붙일 때는 <code>recipeStep</code> 처럼 붙여 쓰세요.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. 도착지에 <code>id="이름"</code> 을 붙이고, <code>href="#이름"</code> 으로 부릅니다.</p>
+      <p>2. <code>#</code> 은 <strong>부르는 쪽에만</strong> 붙입니다. id 값에는 붙이지 않습니다.</p>
+      <p>3. <code>id</code> 는 한 문서 안에서 <strong>단 하나</strong>여야 하고, 대소문자를 구분합니다.</p>
+      <p>4. <code>href="#"</code> 은 문서 맨 위로 갑니다.</p>
+      <p>5. <code>mailto:주소</code> 는 메일 쓰기 창, <code>tel:번호</code> 는 전화 걸기입니다.</p>
+      <p>6. <code>mailto</code> 와 <code>tel</code> 뒤에는 <code>//</code> 를 붙이지 않습니다.</p>
+      <p>7. 문서 안 이동이 안 될 때는 <strong>에러가 나지 않고 그냥 가만히 있습니다.</strong></p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 섹션 1 의 두 번째 문단을 이렇게 바꿉니다.
+
+                <p id="secondBox">이 줄에는 id 가 없습니다. 두 줄이 똑같이 생겼습니다.</p>
+
+            → 화면은 하나도 바뀌지 않습니다. id 는 눈에 보이지 않는 이름표이기 때문입니다.
+              (글자는 그대로 두고 속성만 붙였습니다)
+
+         2) 섹션 2 의 목차 상자 안, 두 번째 p 아래에 이렇게 넣습니다.
+
+                <p><a href="#noticeBox">도착지로</a></p>
+
+            → 파란 밑줄 링크가 한 줄 늘어납니다. 누르면 화면이 위쪽 섹션 1 로 올라가고
+              주소창 끝에 #noticeBox 가 붙습니다.
+
+         3) 정리 상자 바로 위에 이렇게 넣습니다.
+
+                <p><a href="#pageTop">처음으로</a></p>
+
+            → 문서 맨 아래에 파란 밑줄 링크가 생깁니다.
+              누르면 화면이 문서 맨 위 제목으로 올라갑니다.
+
+         4) 섹션 4 의 첫 링크를 이렇게 바꿉니다. (주소는 여러분 것으로)
+
+                <a href="mailto:mystudent@example.com">저에게 메일 보내기</a>
+
+            → 화면의 글자가 "저에게 메일 보내기" 로 바뀝니다.
+              누르면 받는 사람 칸에 새 주소가 채워진 메일 쓰기 창이 열립니다.
+
+         5) 섹션 5 의 링크를 이렇게 바꿉니다.
+
+                <a id="telLink" href="tel:031-987-6543">031-987-6543</a>
+
+            → 화면에 보이는 번호도 031-987-6543 으로 바뀝니다.
+              href 만 고치고 글자를 안 고치면, 보이는 번호와 걸리는 번호가 달라집니다.
+              이것이 실제 가게 홈페이지에서 자주 나는 사고입니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #noticeBox | color | rgb(34, 34, 34)
+      #jumpRecipe | color | rgb(0, 0, 238)
+      #jumpRecipe | text-decoration-line | underline
+      #recipeStep | text | 만드는 방법
+      #topLink | text | 맨 위로 가기
+      #topLinkShort | cursor | pointer
+      #mailLink | text | 도서관에 메일 보내기
+      #telLink | text | 02-1234-5678
+      #telLink | color | rgb(0, 0, 238)
+      #wrongCase | color | rgb(0, 0, 238)
+      #pageTop | ?visible | yes
+    -->
+  </body>
+</html>

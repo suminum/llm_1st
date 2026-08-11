@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>06단원 개념04 - 본문 구획 태그</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         06단원 · 개념 04 — 본문 구획 태그
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         개념03 에서 페이지를 네 덩어리로 나눴습니다.
+         header, nav, main, footer 입니다.
+
+         그런데 main 안이 넓습니다. 글이 다섯 편 들어갈 수도 있고
+         "소개 / 이용 안내 / 오시는 길" 처럼 주제가 여러 개일 수도 있습니다.
+         그 안을 또 나눠야 합니다.
+
+         그때 쓰는 태그가 셋입니다.
+
+             <section>   주제로 묶은 덩어리
+             <article>   떼어 내도 말이 되는 덩어리
+             <aside>     곁다리
+
+         셋 다 화면을 안 바꿉니다. 셋 다 div 와 똑같이 생겼습니다.
+         그래서 "언제 무엇을 쓰나" 만 배우면 됩니다. 그게 이 파일의 전부입니다.
+
+         미리 한 줄로 답을 말해 두면 이렇습니다.
+
+             떼어 내도 말이 되면      → article
+             곁다리라 빼도 되면       → aside
+             제목을 붙일 주제 묶음이면 → section
+             아무 뜻도 없으면          → div
+
+         이 네 줄을 섹션 5 에서 흐름도로 다시 정리합니다.
+         그 전에 하나씩 봅니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 04 — 본문 구획 태그</h1>
+    <p class="doc-sub">06단원 · 시맨틱 구조</p>
+
+    <p class="doc-guide">
+      <code>section</code>, <code>article</code>, <code>aside</code> 는
+      <strong>생김새가 완전히 같습니다</strong>. 화면으로는 절대 구별할 수 없습니다.
+      그러니 결과 상자에서 차이를 찾으려 하지 마세요.
+      <strong>"이 덩어리는 어떤 성격인가"</strong> 를 판단하는 연습을 하는 파일입니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: main 안을 또 나눠야 할 때 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — main 안을 또 나눠야 할 때</h2>
+      <p class="doc-desc">
+        내용이 길어지면 <code>&lt;main&gt;</code> 안을 다시 나눕니다.
+        나누는 방법이 세 가지 있고, <strong>뜻이 각각 다릅니다</strong>.
+      </p>
+
+      <!--
+        도서관 사이트의 첫 화면을 생각해 봅시다. main 안에 이런 것들이 들어갑니다.
+
+            · 공지 글 세 편
+            · 이용 안내 (여는 시간, 대출 규칙)
+            · 오른쪽에 붙는 "이번 주 인기 도서" 목록
+
+        이걸 전부 div 로 감싸도 화면은 잘 나옵니다.
+        하지만 셋의 성격이 완전히 다릅니다.
+
+            공지 글 한 편   → 이것만 잘라서 다른 페이지에 붙여도 말이 됩니다.
+            이용 안내      → 잘라내면 뜬금없습니다. 이 페이지의 한 부분입니다.
+            인기 도서 목록  → 없어도 페이지가 멀쩡합니다. 곁다리입니다.
+
+        이 성격 차이를 코드에 적어 두는 것이 section, article, aside 입니다.
+
+        지금부터 셋을 하나씩 봅니다. 순서는 판단하기 쉬운 것부터입니다.
+        article → section → aside 순서로 갑니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">전부 div 로 감쌌을 때</p>
+        <div id="allDiv">
+          <div><h4>공지 : 휴관일 안내</h4><p>매월 첫째 월요일은 쉽니다.</p></div>
+          <div><h4>이용 안내</h4><p>평일은 9시부터 18시까지입니다.</p></div>
+          <div><h4>이번 주 인기 도서</h4><p>1위 어린 왕자</p></div>
+        </div>
+        <!-- 화면: 굵은 소제목과 문단이 번갈아 여섯 줄로 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        화면만 보면 세 덩어리가 다 똑같아 보입니다.
+        <strong>성격이 다르다는 사실이 코드 어디에도 안 적혀 있기 때문</strong>입니다.
+        이 파일이 끝나면 이 세 덩어리를 각각 다른 태그로 바꾸게 됩니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 세 덩어리를 보고, 각각 어떤 성격인지 종이에 적어 보세요.
+        "떼어 내도 되는 것 / 이 페이지의 한 부분 / 없어도 되는 곁다리" 중에서 고르세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: article ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — article, 떼어 내도 말이 되는 덩어리</h2>
+      <p class="doc-desc">
+        <code>&lt;article&gt;</code> 은 <strong>통째로 잘라내서 다른 곳에 붙여도
+        그 자체로 말이 되는</strong> 덩어리입니다.
+      </p>
+
+      <!--
+        판단하는 방법이 아주 간단합니다. 이렇게 물어보세요.
+
+            "이 덩어리만 잘라서 다른 사이트에 올려도 말이 되나?"
+
+        말이 되면 article 입니다. 이걸 '떼어 내기 검사' 라고 부르겠습니다.
+
+        article 이 되는 것들
+            블로그 글 한 편        → 잘라서 다른 데 올려도 글 한 편입니다.
+            신문 기사 하나         → 그렇습니다.
+            상품 목록의 상품 카드   → 상품 하나의 정보라 그 자체로 완결입니다.
+            댓글 하나              → 누가 언제 무슨 말을 했는지 다 들어 있습니다.
+            제품 후기 하나         → 그렇습니다.
+
+        article 이 아닌 것들
+            "이용 안내" 구역       → 잘라내면 무엇에 대한 안내인지 알 수 없습니다.
+            페이지 소개 문단       → 이 페이지 안에서만 뜻이 있습니다.
+            레이아웃용 껍데기      → 아무 내용도 아닙니다. div 입니다.
+
+        article 은 이름 때문에 오해를 많이 삽니다.
+        article 은 '기사' 라는 뜻이지만, 신문 기사에만 쓰는 태그가 아닙니다.
+        댓글 하나에도, 상품 카드 하나에도 씁니다.
+
+        article 안에는 제목을 넣는 것이 좋습니다.
+        떼어 냈을 때 무엇인지 알려면 제목이 있어야 하니까요.
+        머리말과 꼬리말이 있으면 개념03 에서 본 대로 header, footer 를 안에 넣습니다.
+
+        article 을 여러 개 나란히 쓰는 것도 아주 흔합니다.
+        블로그 목록 페이지가 그렇습니다. 글 한 편이 article 하나입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">글 두 편이 나란히 있는 목록</p>
+        <article id="postA">
+          <header>
+            <h3>고구마 맛탕 만들기</h3>
+            <p>2026년 8월 3일</p>
+          </header>
+          <p>고구마를 깍둑 썰어 기름에 튀깁니다.</p>
+          <footer><p>글쓴이 : 김민준</p></footer>
+        </article>
+        <article id="postB">
+          <header>
+            <h3>여름 이불 세탁법</h3>
+            <p>2026년 8월 9일</p>
+          </header>
+          <p>미지근한 물에 30분 담근 뒤 헹굽니다.</p>
+          <footer><p>글쓴이 : 이서연</p></footer>
+        </article>
+        <!-- 화면: 굵은 제목 · 날짜 · 본문 · 글쓴이 순서의 덩어리가 두 벌 보입니다.
+                  두 덩어리 사이에 특별한 구분선은 없습니다 -->
+      </div>
+
+      <p class="doc-note">
+        두 글 사이에 선이 없어 어디까지가 첫 글인지 눈으로는 모릅니다.
+        <strong>그게 정상입니다.</strong> 선을 긋는 것은 10단원 CSS 의 일입니다.
+        지금은 코드에서 <code>&lt;/article&gt;</code> 이 어디인지 찾아보세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위 상자 아래에 세 번째 <code>&lt;article&gt;</code> 을 만들어
+        제목 "선풍기 청소하기", 날짜 "2026년 8월 10일", 본문 한 줄을 넣어 보세요.
+        <code>header</code> 와 <code>footer</code> 도 같이 넣으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: section ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — section, 주제로 묶은 덩어리</h2>
+      <p class="doc-desc">
+        <code>&lt;section&gt;</code> 은 <strong>하나의 주제로 묶인 부분</strong>입니다.
+        떼어 내면 말이 안 되지만, 페이지 안에서는 한 덩어리입니다.
+      </p>
+
+      <!--
+        section 은 책의 '장(章)' 이라고 생각하면 쉽습니다.
+        3장만 뜯어내면 뜬금없지만, 책 안에서는 분명히 한 덩어리입니다.
+
+        section 에는 지켜야 하는 관례가 하나 있습니다.
+
+            ★ section 에는 제목을 붙입니다.
+
+        h1~h6 중 하나를 section 안 맨 앞에 넣습니다.
+        왜냐하면 section 은 "주제로 묶은 덩어리" 인데,
+        그 주제가 무엇인지 적지 않으면 묶은 의미가 없기 때문입니다.
+
+            <section>
+              <h2>이용 안내</h2>       ← 이 줄이 이 구역의 이름표입니다
+              <p>평일은 9시부터 18시까지입니다.</p>
+            </section>
+
+        제목을 붙이면 좋은 점이 하나 더 있습니다.
+        낭독기가 페이지의 목차를 만들어 줄 수 있게 됩니다.
+        제목이 없는 section 은 이름 없는 칸으로 남습니다.
+
+        ★ "제목을 붙일 수 없다면?"
+          그건 section 이 아니라는 신호입니다. div 를 쓰세요.
+          이게 section 과 div 를 가르는 가장 쉬운 기준입니다.
+
+        section 을 여러 개 쓰는 것도 정상입니다.
+        한 페이지가 "소개 / 이용 안내 / 오시는 길" 세 주제로 되어 있으면
+        section 세 개를 나란히 씁니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">주제가 둘인 페이지</p>
+        <section id="useSection">
+          <h3>이용 안내</h3>
+          <p>평일은 9시부터 18시까지입니다.</p>
+          <p>대출은 한 번에 다섯 권까지입니다.</p>
+        </section>
+        <section id="waySection">
+          <h3>오시는 길</h3>
+          <p>2호선 어딘가역 3번 출구에서 걸어서 5분입니다.</p>
+        </section>
+        <!-- 화면: "이용 안내" 아래 문단 두 줄, "오시는 길" 아래 문단 한 줄이
+                  차례로 보입니다. 두 구역 사이에 선은 없습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>&lt;section&gt;</code> 을 <code>&lt;div&gt;</code> 로 바꿔도 화면은 똑같습니다.
+        달라지는 것은 <strong>"이 두 덩어리가 각각 하나의 주제다" 라는 정보</strong>뿐입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 상자에 세 번째 <code>&lt;section&gt;</code> 을 만들어
+        제목 "주차 안내" 와 문단 한 줄을 넣어 보세요. 제목은 <code>&lt;h3&gt;</code> 로 쓰세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: aside ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — aside, 곁다리</h2>
+      <p class="doc-desc">
+        <code>&lt;aside&gt;</code> 는 <strong>빼도 본문이 멀쩡한 곁다리</strong>입니다.
+        본문과 관련은 있지만 본문의 일부는 아닙니다.
+      </p>
+
+      <!--
+        판단하는 방법입니다.
+
+            "이걸 통째로 지워도 본문을 읽는 데 지장이 없나?"
+
+        지장이 없으면 aside 입니다.
+
+        aside 가 되는 것들
+            관련 글 목록          없어도 본문은 읽힙니다.
+            광고                  그렇습니다.
+            용어 풀이 상자        본문 이해에 도움은 되지만 없어도 됩니다.
+            글쓴이 소개 상자      그렇습니다.
+            인기 글 순위          그렇습니다.
+
+        aside 가 아닌 것들
+            본문 문단             빼면 글이 안 됩니다.
+            글 제목               빼면 무슨 글인지 모릅니다.
+            상품 가격             상품 정보의 핵심입니다.
+
+        ★ 가장 흔한 오해
+
+        aside 는 '옆' 이라는 뜻이라, 오른쪽에 붙는 사이드바 전용이라고 오해합니다.
+        아닙니다. aside 는 위치가 아니라 관계를 나타냅니다.
+
+            본문 위에 있어도 aside 일 수 있습니다.
+            본문 아래에 있어도 aside 일 수 있습니다.
+            문단 사이에 끼어 있어도 aside 일 수 있습니다.
+
+        그리고 aside 를 써도 오른쪽으로 안 갑니다. 그냥 아래에 쌓입니다.
+        오른쪽으로 보내는 것은 12단원 Flexbox 의 일입니다.
+
+        aside 에도 제목을 붙이면 좋습니다. 무엇에 대한 곁다리인지 알려 주니까요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">본문 옆에 붙는 곁다리</p>
+        <article id="mainPost">
+          <h3>여름에 읽기 좋은 책</h3>
+          <p>더운 날에는 짧은 소설이 잘 읽힙니다.</p>
+        </article>
+        <aside id="sidePart">
+          <h4>같이 보면 좋은 글</h4>
+          <ul>
+            <li>겨울에 읽기 좋은 책</li>
+            <li>비 오는 날의 책</li>
+          </ul>
+        </aside>
+        <!-- 화면: 제목과 문단이 나온 뒤, 그 아래에 "같이 보면 좋은 글" 과
+                  점(•) 목록 두 줄이 이어집니다. 옆으로 가지 않고 아래에 쌓입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>&lt;aside&gt;</code> 가 오른쪽으로 가지 않고 <strong>아래에 쌓였습니다</strong>.
+        aside 도 블록이기 때문입니다. 이름이 '옆' 이라고 옆으로 가지는 않습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 <code>&lt;aside&gt;</code> 를
+        <code>&lt;article id="mainPost"&gt;</code> 위로 옮겨 보세요.
+        곁다리가 본문 위에 와도 여전히 aside 라는 것을 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 고르는 순서 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 무엇을 쓸지 고르는 순서</h2>
+      <p class="doc-desc">
+        헷갈릴 때는 아래 <strong>네 개의 질문</strong>을 위에서부터 차례로 던지세요.
+        처음 "예" 가 나오는 곳에서 멈추면 됩니다.
+      </p>
+
+      <!--
+        이 순서에는 이유가 있습니다.
+        판단이 가장 확실한 것부터 물어보게 되어 있습니다.
+
+            article 은 '떼어 내기 검사' 라는 분명한 기준이 있습니다.  → 1번
+            aside 는 '지워도 되는가' 라는 분명한 기준이 있습니다.      → 2번
+            section 은 '제목을 붙일 수 있는가' 로 판단합니다.          → 3번
+            셋 다 아니면 남는 것은 div 입니다.                        → 4번
+
+        헷갈리는 경우를 몇 개 미리 풀어 둡니다.
+
+            블로그 글 한 편 안의 "재료" 부분
+                떼어 내면 무슨 요리의 재료인지 모릅니다 → article 아님
+                지워도 되나? 아니요, 본문의 일부입니다 → aside 아님
+                제목 "재료" 를 붙일 수 있나? 예       → section 입니다
+
+            상품 목록 페이지의 상품 카드 하나
+                떼어 내도 상품 정보 하나로 말이 됩니다 → article 입니다
+
+            페이지 맨 아래 "이 글을 SNS 에 공유하기" 버튼 묶음
+                떼어 내면 무엇을 공유하는지 모릅니다   → article 아님
+                지워도 본문은 멀쩡합니다              → aside 입니다
+                (그 글의 꼬리말로 보고 footer 를 써도 됩니다)
+
+            제목을 붙일 수 없는 그냥 껍데기
+                셋 다 아닙니다                        → div 입니다
+
+        마지막 줄이 중요합니다. div 로 끝나는 것이 실패가 아닙니다.
+        정확한 판단입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">태그 고르는 흐름도</p>
+        <div class="doc-code">1. 통째로 잘라내 다른 곳에 붙여도 말이 되는가?
+     예 → &lt;article&gt;    (블로그 글, 상품 카드, 댓글 하나)
+     아니오 → 2번으로
+
+2. 지워도 본문을 읽는 데 지장이 없는 곁다리인가?
+     예 → &lt;aside&gt;      (관련 글, 광고, 용어 풀이)
+     아니오 → 3번으로
+
+3. 제목을 하나 붙일 수 있는 주제 묶음인가?
+     예 → &lt;section&gt;    (이용 안내, 오시는 길, 소개)
+     아니오 → 4번으로
+
+4. 뜻은 없고 그냥 묶기만 하면 되는가?
+     예 → &lt;div&gt;        (여기서 끝나는 것도 정답입니다)</div>
+        <!-- 화면: 검은 상자 안에 흰 글씨로 번호 매긴 질문 네 개와
+                  화살표가 붙은 답이 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        이 흐름도를 외우려 하지 마세요. 헷갈릴 때마다 돌아와서 보면 됩니다.
+        몇 번 하다 보면 1번 질문만으로 대부분 갈립니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 아래 네 가지에 무엇을 쓸지 흐름도로 판단해 보세요.
+        (가) 쇼핑몰의 상품 후기 하나 &nbsp;(나) 회사 소개 페이지의 "연혁" 부분
+        &nbsp;(다) 글 옆에 붙는 광고 배너 &nbsp;(라) 두 문단을 그냥 한 번 묶는 껍데기
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: div 와 갈라지는 지점 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — div 와 갈라지는 지점</h2>
+      <p class="doc-desc">
+        <strong>제목을 붙일 수 있으면 section, 못 붙이면 div</strong> 입니다.
+        이 한 줄이 실전에서 가장 많이 쓰입니다.
+      </p>
+
+      <!--
+        아래 두 상자는 코드가 딱 한 글자만 다릅니다.
+        하나는 section, 하나는 div 입니다. 결과는 완전히 같습니다.
+
+            <section>                    <div>
+              <h4>대출 규칙</h4>            <h4>대출 규칙</h4>
+              <p>다섯 권까지입니다.</p>      <p>다섯 권까지입니다.</p>
+            </section>                   </div>
+
+        여기서는 제목이 있으니 section 이 맞습니다.
+        그런데 아래 같은 경우라면 div 가 맞습니다.
+
+            <div>
+              <p>왼쪽에 놓을 것들</p>
+              <p>이 두 문단을 나란히 두려고 한 번 묶었을 뿐</p>
+            </div>
+
+        붙일 제목이 떠오르지 않습니다. 주제가 있는 묶음이 아니라
+        배치를 위해 한 번 감싼 것뿐입니다. 이럴 때 section 을 쓰면
+        "여기 주제가 하나 있습니다" 라고 거짓말을 하는 셈이 됩니다.
+
+        ★ 정리하면 이렇습니다.
+
+            뜻이 있는 묶음  → section / article / aside
+            뜻이 없는 묶음  → div
+
+        div 를 쓰는 것을 부끄러워하지 마세요.
+        잘 만든 웹페이지에도 div 는 아주 많습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">section 으로 감쌌을 때</p>
+        <section id="ruleSection">
+          <h4>대출 규칙</h4>
+          <p>한 번에 다섯 권까지입니다.</p>
+        </section>
+        <!-- 화면: 굵은 소제목 "대출 규칙" 아래 문단 한 줄이 보입니다 -->
+      </div>
+      <div class="doc-demo">
+        <p class="doc-demo-label">div 로 감쌌을 때</p>
+        <div id="ruleDiv">
+          <h4>대출 규칙</h4>
+          <p>한 번에 다섯 권까지입니다.</p>
+        </div>
+        <!-- 화면: 위 상자와 완전히 똑같이 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        두 상자의 높이가 같습니다. 화면으로는 영원히 구별할 수 없습니다.
+        그래서 <strong>고르는 기준을 머리에 넣어 두는 것</strong> 말고는 방법이 없습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — 섹션 1 의 <code>id="allDiv"</code> 상자로 돌아가서
+        안쪽 <code>&lt;div&gt;</code> 세 개를 각각 알맞은 태그로 바꿔 보세요.
+        공지 글, 이용 안내, 인기 도서 순서입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        셋 다 화면을 안 바꾸기 때문에 <strong>잘못 골라도 티가 안 납니다</strong>.
+        그래서 아래 다섯 가지가 아주 오래 살아남습니다.
+      </p>
+
+      <!-- [실수 1] 제목 없는 section -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 제목 없이 section 만 씀</span>
+        <div class="doc-code">&lt;section&gt;
+  &lt;p&gt;평일은 9시부터 18시까지입니다.&lt;/p&gt;
+  &lt;p&gt;주말은 10시부터 17시까지입니다.&lt;/p&gt;
+&lt;/section&gt;</div>
+        <p>
+          화면은 멀쩡합니다. 그런데 <strong>무슨 주제의 구역인지 아무 데도 안 적혀 있습니다.</strong>
+          낭독기가 목차를 만들 때 이름 없는 칸이 하나 생깁니다.
+          제목을 붙이거나, 붙일 제목이 없으면 <code>&lt;div&gt;</code> 로 바꾸세요.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">&lt;section&gt;
+  &lt;h2&gt;여는 시간&lt;/h2&gt;
+  &lt;p&gt;평일은 9시부터 18시까지입니다.&lt;/p&gt;
+&lt;/section&gt;</div>
+      </div>
+
+      <!-- [실수 2] 아무 데나 section -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 묶기만 하면 될 자리에 section 을 씀</span>
+        <div class="doc-code">&lt;section&gt;
+  &lt;section&gt;
+    &lt;section&gt;&lt;p&gt;가격 7,000원&lt;/p&gt;&lt;/section&gt;
+  &lt;/section&gt;
+&lt;/section&gt;</div>
+        <p>
+          "div 보다 있어 보여서" section 을 쓰는 경우입니다.
+          <strong>주제가 셋이라고 말한 셈</strong>인데 실제로는 문단 하나뿐입니다.
+          코드가 사실과 다른 말을 하고 있습니다. 이럴 때는 div 가 정답입니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] aside 를 위치로 이해 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — aside 를 쓰면 오른쪽으로 갈 거라 기대함</span>
+        <div class="doc-code">&lt;aside&gt;인기 도서&lt;/aside&gt;</div>
+        <aside id="expectAside">인기 도서</aside>
+        <p>
+          <strong>오른쪽으로 안 갑니다. 그냥 그 자리에 한 줄로 놓입니다.</strong>
+          aside 는 위치를 정하는 태그가 아니라 <strong>관계</strong>를 적는 태그입니다.
+          "본문의 곁다리" 라는 뜻일 뿐입니다.
+          오른쪽에 놓는 것은 12단원 Flexbox 에서 합니다.
+        </p>
+        <!-- 화면: 검은 코드 상자 아래에 보통 글씨로 "인기 도서" 한 줄이
+                  왼쪽 끝에 붙어서 보입니다 -->
+      </div>
+
+      <!-- [실수 4] article 을 기사에만 쓴다고 생각 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — article 은 신문 기사에만 쓰는 줄 앎</span>
+        <div class="doc-code">&lt;div class="review"&gt;
+  &lt;h4&gt;배송이 빨라요&lt;/h4&gt;
+  &lt;p&gt;주문 다음 날 왔습니다.&lt;/p&gt;
+&lt;/div&gt;</div>
+        <p>
+          후기 하나는 <strong>떼어 내도 그 자체로 말이 되는 완결된 덩어리</strong>입니다.
+          article 이 맞습니다. 댓글 하나, 상품 카드 하나도 마찬가지입니다.
+          article 을 '기사' 라고만 새기면 이런 자리를 전부 놓칩니다.
+        </p>
+      </div>
+
+      <!-- [실수 5] 태그를 바꾸면 화면이 바뀔 거라 생각 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 태그를 바꿨는데 화면이 그대로라 잘못한 줄 앎</span>
+        <div class="doc-code">&lt;div&gt; → &lt;section&gt; 으로 바꿈</div>
+        <p>
+          바꾸고 새로고침했는데 아무 변화가 없어서
+          "안 먹혔나?" 하고 되돌리는 경우가 정말 많습니다.
+          <strong>변화가 없는 것이 성공입니다.</strong>
+          개념02 에서 본 그대로입니다. 되돌리지 마세요.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>&lt;article&gt;</code> — 떼어 내도 말이 되면 씁니다. 글, 상품 카드, 댓글, 후기.</p>
+      <p>2. <code>&lt;aside&gt;</code> — 지워도 본문이 멀쩡한 곁다리에 씁니다. 위치가 아니라 관계입니다.</p>
+      <p>3. <code>&lt;section&gt;</code> — 제목을 붙일 수 있는 주제 묶음에 씁니다.</p>
+      <p>4. <code>&lt;section&gt;</code> 에는 <strong>제목을 같이 넣습니다</strong>. 못 넣으면 section 이 아닙니다.</p>
+      <p>5. 셋 다 아니면 <code>&lt;div&gt;</code> 입니다. div 로 끝나는 것도 정답입니다.</p>
+      <p>6. 순서대로 물으세요. 떼어 낼 수 있나 → 지워도 되나 → 제목이 있나 → 아니면 div.</p>
+      <p>7. 셋 다 <strong>화면을 안 바꿉니다</strong>. 바꿔도 그대로면 잘한 것입니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 세 덩어리의 성격은 이렇습니다.
+
+                공지 : 휴관일 안내   → 떼어 내도 되는 것 (글 한 편)
+                이용 안내           → 이 페이지의 한 부분
+                이번 주 인기 도서    → 없어도 되는 곁다리
+
+            → 종이에 적는 문제라 화면은 안 바뀝니다.
+              섹션 6 의 ✏️ 6 에서 이걸 실제 태그로 바꿉니다.
+
+         2) 섹션 2 상자의 두 번째 article 아래에 넣습니다.
+
+                <article>
+                  <header>
+                    <h3>선풍기 청소하기</h3>
+                    <p>2026년 8월 10일</p>
+                  </header>
+                  <p>날개를 빼서 미지근한 물로 닦습니다.</p>
+                  <footer><p>글쓴이 : 박지훈</p></footer>
+                </article>
+
+            → 같은 모양의 덩어리가 세 벌이 됩니다.
+              여전히 구분선은 없습니다. 코드로만 경계를 알 수 있습니다.
+
+         3) 섹션 3 상자의 두 번째 section 아래에 넣습니다.
+
+                <section>
+                  <h3>주차 안내</h3>
+                  <p>건물 뒤편에 스무 자리가 있습니다.</p>
+                </section>
+
+            → 굵은 소제목 "주차 안내" 와 문단 한 줄이 아래에 더 붙습니다.
+
+         4) 섹션 4 상자에서 aside 덩어리를 article 위로 옮깁니다.
+
+                <aside id="sidePart"> ... </aside>
+                <article id="mainPost"> ... </article>
+
+            → "같이 보면 좋은 글" 과 목록이 맨 위로 올라옵니다.
+              위에 있어도 aside 입니다. 지워도 본문이 멀쩡하니까요.
+
+         5) 흐름도로 판단한 결과입니다.
+
+                (가) 상품 후기 하나   → article
+                     후기 하나만 떼어 내도 말이 됩니다. 1번에서 멈춥니다.
+
+                (나) 회사 연혁 부분   → section
+                     떼어 내면 어느 회사 연혁인지 모릅니다(1번 아니오).
+                     지우면 소개가 허전합니다(2번 아니오).
+                     "연혁" 이라는 제목을 붙일 수 있습니다(3번 예).
+
+                (다) 광고 배너       → aside
+                     지워도 본문이 멀쩡합니다. 2번에서 멈춥니다.
+
+                (라) 그냥 묶는 껍데기 → div
+                     넷째 질문까지 내려옵니다. 이게 정답입니다.
+
+         6) 섹션 1 의 상자를 이렇게 바꿉니다.
+
+                <div id="allDiv">
+                  <article><h4>공지 : 휴관일 안내</h4><p>매월 첫째 월요일은 쉽니다.</p></article>
+                  <section><h4>이용 안내</h4><p>평일은 9시부터 18시까지입니다.</p></section>
+                  <aside><h4>이번 주 인기 도서</h4><p>1위 어린 왕자</p></aside>
+                </div>
+
+            → 화면은 하나도 안 바뀝니다. 여섯 줄 그대로입니다.
+              바뀐 것은 코드가 세 덩어리의 성격을 말해 주게 되었다는 점입니다.
+              바깥의 div 는 그대로 두는 것이 맞습니다. 그냥 묶는 껍데기니까요.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #allDiv | display | block
+      #postA | display | block
+      #postA | ~width | 824
+      #postB | display | block
+      #useSection | display | block
+      #useSection | font-size | 16px
+      #waySection | display | block
+      #mainPost | display | block
+      #sidePart | display | block
+      #sidePart | ~width | 824
+      #ruleSection | display | block
+      #ruleDiv | display | block
+      .doc-code | white-space | pre
+      #ruleSection | ~height | 74
+      #ruleDiv | ~height | 74
+      #expectAside | display | block
+      #expectAside | text | 인기 도서
+    -->
+  </body>
+</html>

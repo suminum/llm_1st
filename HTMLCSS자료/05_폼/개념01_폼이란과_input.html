@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>05단원 개념01 - 폼이란과 input</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         05단원 · 개념 01 — 폼이란 무엇인가, 그리고 input
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         04단원까지 만든 화면에는 공통점이 하나 있었습니다.
+         제목, 문단, 목록, 표, 링크, 그림 전부
+         "우리가 미리 써 둔 것을 사람이 읽기만 하는" 화면이었습니다.
+
+         이번 단원에서 처음으로 방향이 반대가 됩니다.
+         사람이 글자를 쳐 넣고, 그 값을 우리가 받습니다.
+         로그인 화면, 회원가입 화면, 검색창, 배달 주문서, 설문지가 전부 이것입니다.
+
+         이렇게 값을 받아 내는 화면 부품 묶음을 폼(form) 이라고 부릅니다.
+         폼이 하는 일은 두 가지입니다.
+
+             1) 값을 넣을 칸을 화면에 그린다
+             2) 사용자가 채운 값을 한 덩어리로 묶어 서버로 보낸다
+
+         여기서 서버(server) 라는 말이 처음 나옵니다.
+         서버는 우리가 보낸 값을 받아서 저장하거나 처리하는 다른 컴퓨터의 프로그램입니다.
+         회원가입 값을 회원 명단에 적어 두는 쪽이라고 생각하면 됩니다.
+
+         ★ 이 자료는 1) 까지만 다룹니다.
+           2) 를 진짜로 하려면 값을 받아 줄 서버 프로그램이 따로 있어야 하는데,
+           그것을 만드는 일은 HTML 의 몫이 아닙니다.
+           그래서 이 단원에서는 "값을 넣을 칸을 제대로 그리는 법" 만 배웁니다.
+           보내는 이야기는 개념05 에서 개념만 짧게 봅니다.
+
+         그리고 미리 말해 둡니다.
+         이 단원에서 만드는 입력칸들은 하나같이 밋밋하고 못생겼습니다.
+         그게 정상입니다. 브라우저가 기본으로 그려 주는 모양 그대로이기 때문입니다.
+         꾸미는 것은 09~10단원에서 CSS 로 합니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 01 — 폼이란 무엇인가, 그리고 input</h1>
+    <p class="doc-sub">05단원 · 폼</p>
+
+    <p class="doc-guide">
+      이 파일에서는 <strong>값을 넣을 칸</strong>을 처음 만들어 봅니다.
+      화면에 네모난 칸이 나오면 진짜로 마우스로 눌러서 글자를 쳐 보세요.
+      칸이 작고 밋밋하게 보이는 것은 정상입니다. <strong>꾸미는 것은 09~10단원</strong>입니다.
+      지금은 모양이 아니라 "이 칸이 무엇을 받는 칸인지" 를 적는 연습만 합니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: 폼은 입력칸을 묶는 상자 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 폼은 입력칸을 묶는 상자입니다</h2>
+      <p class="doc-desc">
+        <code>&lt;form&gt;</code> 은 <strong>여러 입력칸을 하나의 묶음</strong>으로 만드는 태그입니다.
+        자기 자신은 화면에 아무것도 그리지 않습니다.
+      </p>
+
+      <!--
+        아래 상자 안에는 이렇게 썼습니다.
+
+            <form>
+              <p>이름 <input type="text" name="userName" /></p>
+              <p>사는 곳 <input type="text" name="userCity" /></p>
+            </form>
+
+        form 요소는 눈에 보이는 것이 하나도 없습니다.
+        테두리도 없고 배경색도 없습니다. 그러면 왜 씁니까?
+
+        "이 칸들은 한 세트다" 라고 묶어 두는 것이 form 의 일이기 때문입니다.
+        나중에 보내기 버튼을 누르면 브라우저는 그 버튼이 들어 있는 form 을 찾고,
+        그 form 안에 있는 칸들의 값만 모아서 한 덩어리로 보냅니다.
+        form 밖에 있는 칸은 아무리 옆에 붙어 있어도 같이 가지 않습니다.
+
+        한 페이지에 form 이 여러 개 있어도 됩니다.
+        예를 들어 맨 위의 검색창이 form 하나, 아래의 회원가입이 form 하나입니다.
+        검색 버튼을 눌렀을 때 회원가입 칸의 값까지 딸려 가면 곤란하니까요.
+
+        form 은 문단(p) 처럼 한 줄을 통째로 차지하는 블록 요소입니다.
+        (블록 요소는 02단원 개념04 에서 배웠습니다. 한 줄을 통째로 차지하는 성질입니다)
+        그래서 form 앞뒤로 줄이 바뀝니다.
+
+        참고로 아래에서 input 을 p 로 한 번씩 감쌌습니다.
+        그래야 칸마다 줄이 바뀌기 때문입니다.
+        input 자체는 글자처럼 옆으로 나란히 놓이는 성질이라 그냥 두면 한 줄에 다 붙습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <form id="introForm">
+          <p>이름 <input type="text" name="userName" /></p>
+          <p>사는 곳 <input type="text" name="userCity" /></p>
+        </form>
+        <!-- 화면: "이름" 과 "사는 곳" 이 각각 한 줄씩 보이고, 글자 오른쪽에
+                  흰 바탕에 가는 회색 테두리인 납작한 네모 칸이 하나씩 있습니다.
+                  form 때문에 생긴 테두리나 배경은 전혀 없습니다.
+                  칸을 마우스로 누르면 안에서 커서가 깜빡이고 글자를 칠 수 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>&lt;form&gt;</code> 에는 <code>action</code> 과 <code>method</code> 라는 속성이
+        더 있습니다. "어디로 보낼지" 와 "어떻게 보낼지" 를 정하는 속성인데,
+        이 자료에서는 실제로 보내지 않으므로 일부러 비워 두었습니다.
+        개념05 에서 뜻만 짚어 봅니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 상자 안 <code>&lt;form&gt;</code> 안에
+        <code>&lt;p&gt;나이 &lt;input type="text" name="userAge" /&gt;&lt;/p&gt;</code> 를
+        한 줄 더 넣어 보세요. 저장하고(Ctrl+S) 새로고침(F5) 하면 칸이 세 줄이 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: input 태그 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 한 줄 입력칸 만들기: input</h2>
+      <p class="doc-desc">
+        <code>&lt;input /&gt;</code> 은 <strong>닫는 태그가 없는 빈 태그</strong>입니다.
+        <code>type</code> 속성이 이 칸이 어떤 종류인지를 정합니다.
+      </p>
+
+      <!--
+        01단원에서 배운 빈 태그를 기억하세요. br 과 hr 처럼 감쌀 내용이 없는 태그입니다.
+        input 도 같습니다. 칸 자체가 하나의 부품이라 안에 넣을 글자가 없습니다.
+
+            <input type="text" />
+            └┬───┘└─────┬────┘
+             │          └ 속성 : 이 칸의 종류를 정합니다
+             └ 태그 이름 : 닫는 태그가 없습니다
+
+        type 값이 text 이면 "한 줄짜리 글자 칸" 입니다.
+        password, checkbox, date 처럼 다른 값도 많습니다. 그건 개념03 에서 전부 봅니다.
+
+        여기서 HTML 의 조용한 성질이 또 나옵니다.
+
+            type 을 아예 안 쓰면        → text 로 그려집니다 (기본값)
+            type 에 없는 이름을 쓰면    → 역시 text 로 그려집니다
+
+        둘 다 에러가 나지 않습니다. 빨간 글씨도 없습니다.
+        그래서 type="txet" 처럼 오타를 내면 화면은 멀쩡한데 뜻만 틀린 상태가 됩니다.
+        예를 들어 type="passwrod" 라고 잘못 쓰면 비밀번호가 그대로 다 보입니다.
+        아래 세 칸이 똑같이 생긴 것을 직접 확인하세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 세 칸 모두 똑같이 생겼습니다</p>
+        <p>제대로 쓴 것 <input id="plainText" type="text" /></p>
+        <p>type 을 안 쓴 것 <input id="noType" /></p>
+        <p>type 에 오타를 낸 것 <input id="badType" type="txet" /></p>
+        <!-- 화면: 세 줄 모두 설명 글자 오른쪽에 똑같이 생긴 네모 칸이 있습니다.
+                  셋 중 어느 것이 오타인지 화면만 봐서는 절대 구별할 수 없습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>&lt;input&gt;&lt;/input&gt;</code> 처럼 닫으려고 하지 마세요.
+        빈 태그라서 닫는 태그가 필요 없습니다. 브라우저는 그 닫는 태그를 조용히 버립니다.
+        이 자료에서는 빈 태그라는 것이 눈에 띄도록 <code>&lt;input /&gt;</code> 로 씁니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위 상자의 <code>type="txet"</code> 를
+        <code>type="password"</code> 로 고쳐 보세요. 새로고침한 뒤 그 칸에 글자를 쳐 보면
+        글자 대신 점이 찍힙니다. type 하나가 칸의 성격을 바꾼다는 것을 확인하는 것이 목적입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: name ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — name: 값에 붙이는 이름표</h2>
+      <p class="doc-desc">
+        <code>name</code> 이 없는 칸의 값은 <strong>아무 데도 가지 않습니다.</strong>
+        그런데 화면은 멀쩡합니다. 그래서 가장 알아채기 어려운 실수입니다.
+      </p>
+
+      <!--
+        택배 상자를 열 개 보낸다고 생각해 보세요.
+        상자에 이름표를 안 붙이면, 받는 쪽은 상자 안의 물건이 무엇인지는 알아도
+        "이게 누구의 무엇인지" 를 모릅니다.
+
+        폼도 똑같습니다. 사용자가 "김민준" 이라고 쳤을 때
+        받는 쪽에 도착하는 것은 글자 하나가 아니라 이런 한 쌍입니다.
+
+            userName=김민준
+
+        여기서 왼쪽의 userName 이 우리가 코드에 적어 준 name 값입니다.
+        오른쪽이 사용자가 친 값입니다.
+        칸이 여러 개면 이 쌍이 여러 개 만들어져 이렇게 이어 붙습니다.
+
+            userName=김민준&amp;userCity=부산&amp;userAge=20
+
+        이제 왜 name 이 필요한지 분명해집니다.
+        이름표가 없으면 받는 쪽은 그 값이 이름인지 도시인지 나이인지 알 방법이 없습니다.
+        그래서 브라우저는 아예 처음부터 name 없는 칸의 값을 보내지 않습니다.
+        빼먹은 것이 아니라 규칙대로 버리는 것입니다.
+
+        이름은 영어 소문자로, 뜻이 드러나게 붙이세요.
+        a, b, x1 처럼 지으면 나중에 받는 쪽에서 아무도 못 알아봅니다.
+
+        아래 두 칸을 보세요. 하나는 name 이 있고 하나는 없습니다.
+        화면에서 둘을 구별할 수 있습니까? 없습니다. 그것이 이 실수의 무서운 점입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 이름표가 있는 칸과 없는 칸</p>
+        <p id="nameRow">이름표 있음 <input id="hasName" type="text" name="userName" /></p>
+        <p>이름표 없음 <input id="noName" type="text" /></p>
+        <!-- 화면: 두 칸이 완전히 똑같이 생겼습니다. 크기도 색도 같습니다.
+                  둘 다 글자를 칠 수 있습니다. 차이는 코드에만 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>name</code> 은 <strong>보낼 때 쓰는 이름표</strong>입니다.
+        개념02 에서 <code>id</code> 라는 비슷하게 생긴 속성이 나오는데,
+        그것은 <strong>페이지 안에서 이 칸 하나를 가리키는 이름표</strong>라 쓰임새가 다릅니다.
+        두 개를 같이 쓰는 일이 아주 많으니 지금 구분해 두세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 상자의 "이름표 없음" 칸에
+        <code>name="userNick"</code> 을 넣어 보세요. 새로고침해도 화면은 하나도 안 바뀝니다.
+        <strong>화면이 안 바뀌는 것을 눈으로 확인하는 것</strong>이 이 문제의 목적입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: value ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — value: 칸에 미리 넣어 두는 값</h2>
+      <p class="doc-desc">
+        <code>value</code> 는 페이지가 열리자마자 칸에 <strong>이미 들어가 있는 값</strong>입니다.
+        사용자가 지우거나 고칠 수 있습니다.
+      </p>
+
+      <!--
+        회원 정보 수정 화면을 떠올려 보세요.
+        내 이름 칸이 처음부터 비어 있으면 곤란합니다. 지금 저장된 이름이 보여야 합니다.
+        그때 쓰는 것이 value 입니다.
+
+            <input type="text" name="userName" value="김민준" />
+
+        이렇게 쓰면 칸 안에 김민준 이 검은 글씨로 들어간 채로 화면이 열립니다.
+        그 상태에서 그냥 보내면 김민준 이 그대로 보내집니다.
+        사용자가 지우고 다른 이름을 치면 그 값이 대신 보내집니다.
+
+        중요한 것은 value 가 "진짜 값" 이라는 점입니다.
+        사용자가 아무것도 안 해도 이 값은 이미 칸에 들어 있는 값입니다.
+
+        아래 상자에서 두 번째 칸의 글자를 지워 보세요. 지워집니다.
+        그것이 value 가 안내문이 아니라 값이라는 증거입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p>빈 칸 <input id="emptyBox" type="text" name="empty" /></p>
+        <p>미리 채운 칸 <input id="valueBox" type="text" name="filled" value="김민준" /></p>
+        <!-- 화면: 위 칸은 비어 있고, 아래 칸에는 검은 글씨로 "김민준" 이 들어가 있습니다.
+                  아래 칸을 눌러 백스페이스로 지우면 글자가 지워집니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 상자의 <code>value="김민준"</code> 을
+        여러분 이름으로 바꿔 보세요. 새로고침하면 칸 안의 글자가 바뀝니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: placeholder 와 value ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — placeholder 와 value 는 완전히 다릅니다</h2>
+      <p class="doc-desc">
+        <code>placeholder</code> 는 <strong>값이 아니라 안내문</strong>입니다.
+        회색으로 보였다가 글자를 치는 순간 사라집니다.
+      </p>
+
+      <!--
+        입력칸에 회색 글씨로 "이메일을 입력하세요" 같은 안내가 떠 있는 것을 본 적이 있을 겁니다.
+        그것이 placeholder 입니다. 자리(place) 를 잡아 두는(holder) 임시 글자라는 뜻입니다.
+
+            <input type="text" placeholder="예) hong@mail.com" />
+
+        value 와 나란히 놓고 비교하면 이렇습니다.
+
+            value        진짜 값입니다.          검은 글씨.  지워야 없어집니다.
+                         아무것도 안 해도 이 값이 보내집니다.
+
+            placeholder  안내문일 뿐입니다.      회색 글씨.  글자를 치면 저절로 숨습니다.
+                         이 글자는 절대 보내지지 않습니다.
+
+        여기서 초보자가 크게 데이는 지점이 하나 있습니다.
+        placeholder 만 써 놓고 "칸에 값이 들어 있네" 라고 생각하는 것입니다.
+        그 칸은 사실 비어 있습니다. 그냥 보내면 빈 값이 갑니다.
+
+        그리고 placeholder 를 이름표 대신 쓰면 안 됩니다.
+        글자를 치기 시작하면 안내문이 사라져 버려서
+        "여기가 무슨 칸이었지?" 하게 됩니다. 그래서 설명은 개념02 의 label 로 따로 답니다.
+
+        아래 세 번째 칸처럼 value 와 placeholder 를 같이 쓰면
+        value 가 이미 값을 채우고 있으므로 placeholder 는 아예 보이지 않습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 세 칸을 비교해 보세요</p>
+        <p>value 만 <input id="onlyValue" type="text" value="김민준" /></p>
+        <p>placeholder 만 <input id="onlyPh" type="text" placeholder="이름을 입력하세요" /></p>
+        <p>둘 다 <input id="bothBox" type="text" value="김민준" placeholder="이름을 입력하세요" /></p>
+        <!-- 화면: 첫째 칸에는 검은 글씨 "김민준", 둘째 칸에는 옅은 회색 글씨로
+                  "이름을 입력하세요", 셋째 칸에는 검은 글씨 "김민준" 만 보입니다.
+                  셋째 칸의 안내문은 값에 가려 보이지 않습니다.
+                  둘째 칸을 눌러 아무 글자나 치면 회색 글씨가 즉시 사라집니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 위 상자의 셋째 칸에서 <code>value="김민준"</code> 만 지우고
+        새로고침해 보세요. 가려져 있던 회색 안내문이 나타납니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        폼의 실수는 <strong>화면이 멀쩡해서 더 위험합니다.</strong>
+        아래 다섯 가지는 전부 에러가 나지 않고, 눈으로도 거의 티가 나지 않습니다.
+      </p>
+
+      <!-- [실수 1] name 을 빠뜨림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — name 을 빠뜨림</span>
+        <div class="doc-code">&lt;input type="text" value="김민준" /&gt;</div>
+        <p>
+          칸은 잘 그려지고 글자도 잘 쳐집니다. 그런데 <strong>이 칸의 값만 쏙 빠진 채</strong>
+          나머지 값들이 보내집니다. 받는 쪽에서는 이름이 안 왔다고 나옵니다.
+          "다 채웠는데 왜 안 들어갔지?" 의 1등 원인입니다.
+        </p>
+        <p id="badNameDemo">이름표 없는 칸 <input type="text" value="김민준" /></p>
+        <!-- 화면: 검은 글씨 "김민준" 이 든 평범한 칸이 보입니다. 이상한 점이 하나도 없습니다 -->
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">&lt;input type="text" name="userName" value="김민준" /&gt;</div>
+        <p id="goodNameDemo">이름표 있는 칸 <input type="text" name="userName" value="김민준" /></p>
+        <!-- 화면: 위와 완전히 똑같이 생긴 칸이 보입니다. 화면으로는 구별이 안 됩니다 -->
+      </div>
+
+      <!-- [실수 2] placeholder 를 값으로 착각 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — placeholder 를 값이라고 생각함</span>
+        <div class="doc-code">&lt;input type="text" name="city" placeholder="부산" /&gt;</div>
+        <p>
+          회색으로 "부산" 이 보이니 값이 들어 있는 것처럼 착각합니다.
+          <strong>그 칸은 비어 있습니다.</strong> 사용자가 그냥 넘어가면 도시 값이 빈 채로 갑니다.
+          기본값을 진짜로 넣고 싶으면 <code>value="부산"</code> 을 써야 합니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] input 을 닫으려고 함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — input 을 닫는 태그로 닫음</span>
+        <div class="doc-code">&lt;input type="text"&gt;여기 글자&lt;/input&gt;</div>
+        <p>
+          input 은 빈 태그라 안에 글자를 넣을 수 없습니다.
+          "여기 글자" 는 칸 안이 아니라 <strong>칸 바깥에 그냥 떠 있는 글자</strong>가 되고,
+          <code>&lt;/input&gt;</code> 은 조용히 버려집니다. 에러는 없습니다.
+        </p>
+        <p id="badCloseDemo"><input type="text">여기 글자</input></p>
+        <!-- 화면: 빈 칸 오른쪽에 "여기 글자" 가 칸 밖에 붙어서 보입니다 -->
+      </div>
+
+      <!-- [실수 4] 여러 칸에 같은 name -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 서로 다른 칸에 같은 name 을 붙임</span>
+        <div class="doc-code">&lt;input name="user" /&gt;
+&lt;input name="user" /&gt;</div>
+        <p>
+          이름표가 똑같은 상자 두 개를 보내는 셈입니다. 두 값이 다 가기는 하는데
+          <strong>받는 쪽에서 어느 것이 이름이고 어느 것이 도시인지 구분할 수 없습니다.</strong>
+          칸마다 다른 이름을 붙이세요. (다만 개념03 의 라디오 버튼만은
+          <strong>일부러 같은 name 을 씁니다.</strong> 그건 이유가 따로 있습니다)
+        </p>
+      </div>
+
+      <!-- [실수 5] 따옴표를 빠뜨림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 속성 값의 따옴표를 빠뜨림</span>
+        <div class="doc-code">&lt;input type="text" placeholder=이름을 입력하세요 /&gt;</div>
+        <p>
+          띄어쓰기가 있는 값에서 따옴표를 빼면, 브라우저는 첫 칸까지만 값으로 읽습니다.
+          <strong>안내문이 "이름을" 까지만 나오고</strong> 뒤의 "입력하세요" 는
+          <code>입력하세요</code> 라는 이름의 속성으로 잘못 읽힙니다. 역시 에러는 없습니다.
+        </p>
+        <p id="badQuoteDemo"><input type="text" placeholder=이름을 입력하세요 /></p>
+        <!-- 화면: 회색 안내문이 "이름을" 세 글자까지만 보입니다 -->
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>&lt;form&gt;</code> 은 입력칸들을 한 묶음으로 만드는 상자입니다. 자기는 안 보입니다.</p>
+      <p>2. <code>&lt;input /&gt;</code> 은 빈 태그이고, <code>type</code> 이 칸의 종류를 정합니다.</p>
+      <p>3. <code>type</code> 을 안 쓰거나 오타를 내면 조용히 <code>text</code> 로 그려집니다.</p>
+      <p>4. <code>name</code> 은 값에 붙이는 이름표입니다. <strong>없으면 그 값은 보내지지 않습니다.</strong></p>
+      <p>5. <code>value</code> 는 미리 들어 있는 진짜 값, <code>placeholder</code> 는 회색 안내문입니다.</p>
+      <p>6. 폼의 실수는 화면이 멀쩡해서 안 보입니다. 코드를 눈으로 확인하는 습관이 필요합니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 섹션 1 의 form 안, 두 번째 p 아래에 이렇게 넣습니다.
+
+                <p>나이 <input type="text" name="userAge" /></p>
+
+            → 상자 안이 두 줄에서 세 줄로 늘어나고, 새 칸에도 글자를 칠 수 있습니다.
+
+         2) 섹션 2 의 셋째 칸을 이렇게 고칩니다.
+
+                <p>type 에 오타를 낸 것 <input id="badType" type="password" /></p>
+
+            → 그 칸에 글자를 치면 글자 대신 까만 점이 하나씩 찍힙니다.
+              앞의 두 칸은 그대로 글자가 보입니다.
+
+         3) 섹션 3 의 둘째 칸을 이렇게 고칩니다.
+
+                <p>이름표 없음 <input id="noName" type="text" name="userNick" /></p>
+
+            → 화면은 조금도 바뀌지 않습니다. 크기도 색도 위치도 그대로입니다.
+              name 은 화면이 아니라 "보낼 때" 만 쓰이는 속성이기 때문입니다.
+
+         4) 섹션 4 의 둘째 칸에서 value 값을 바꿉니다. 예를 들어
+
+                <input id="valueBox" type="text" name="filled" value="이서연" />
+
+            → 칸 안의 검은 글씨가 "김민준" 에서 "이서연" 으로 바뀝니다.
+
+         5) 섹션 5 의 셋째 칸에서 value 속성을 통째로 지웁니다.
+
+                <input id="bothBox" type="text" placeholder="이름을 입력하세요" />
+
+            → 검은 글씨 "김민준" 이 사라지고, 그 자리에 옅은 회색 글씨로
+              "이름을 입력하세요" 가 나타납니다. 셋째 칸이 둘째 칸과 똑같아집니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #introForm | display | block
+      #introForm | text | 이름 사는 곳
+      #plainText | display | inline-block
+      #badType | ~width | 177
+      #hasName | ~width | 177
+      #noName | ~width | 177
+      #valueBox | background-color | rgb(255, 255, 255)
+      #bothBox | color | rgb(0, 0, 0)
+      #badCloseDemo | text | 여기 글자
+      .doc-head | ?visible | yes
+    -->
+  </body>
+</html>

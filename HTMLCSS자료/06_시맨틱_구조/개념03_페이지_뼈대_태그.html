@@ -1,0 +1,597 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>06단원 개념03 - 페이지 뼈대 태그</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         06단원 · 개념 03 — 페이지 뼈대 태그
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         개념02 에서 시맨틱 태그가 무엇인지 봤습니다.
+         이제 실제로 쓰는 법을 배웁니다. 먼저 페이지 전체의 뼈대부터입니다.
+
+         여러분이 오늘 들어가 본 웹사이트를 떠올려 보세요.
+         거의 모든 사이트가 이 네 덩어리로 되어 있습니다.
+
+             맨 위      사이트 이름과 로고
+             그 아래    메뉴 줄
+             가운데     이 페이지에만 있는 내용
+             맨 아래    연락처, 저작권 표시
+
+         이 네 덩어리에 이름을 붙이는 태그가 있습니다.
+
+             <header>   머리말
+             <nav>      길 안내
+             <main>     알맹이
+             <footer>   꼬리말
+
+         네 개 다 div 와 똑같이 생겼습니다. 화면도 안 바뀝니다.
+         달라지는 것은 "이 구역이 무엇인지" 를 브라우저가 알게 된다는 점뿐입니다.
+
+         한 가지만 미리 못 박아 둡니다. 이 단원에서 제일 많이 틀리는 곳입니다.
+
+             main 은 페이지에 딱 하나입니다.
+             header 와 footer 는 여러 번 나와도 됩니다.
+
+         왜 그런지는 섹션 4 와 섹션 6 에서 설명합니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 03 — 페이지 뼈대 태그</h1>
+    <p class="doc-sub">06단원 · 시맨틱 구조</p>
+
+    <p class="doc-guide">
+      이 파일에서 만드는 결과 상자들은 전부 <strong>밋밋한 글 덩어리</strong>로 보입니다.
+      네 태그가 화면을 안 바꾸기 때문입니다.
+      그러니 <strong>화면보다 코드를 보세요.</strong> 어느 글자가 어느 태그 안에 들어 있는지
+      VS Code 에서 짚어 가며 읽는 것이 오늘 할 일입니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: 페이지를 네 덩어리로 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 페이지를 네 덩어리로 나눕니다</h2>
+      <p class="doc-desc">
+        먼저 뼈대 그림을 눈에 익히세요. 앞으로 만드는 모든 페이지가 이 모양입니다.
+      </p>
+
+      <!--
+        아래 그림은 위에서 아래로 쌓인 네 개의 가로 띠입니다.
+        네 태그 모두 블록이라, 그냥 순서대로 쓰면 이렇게 위아래로 쌓입니다.
+        좌우로 나누거나 겹치는 것은 11~13단원에서 CSS 로 합니다.
+
+        각 덩어리의 이름과 역할을 한 줄로 정리하면 이렇습니다.
+
+            header  이 구역의 머리말.        무엇에 대한 곳인지 알려 줍니다.
+            nav     길 안내.                다른 페이지로 가는 주요 링크 묶음입니다.
+            main    이 페이지만의 알맹이.    페이지마다 내용이 다릅니다. 하나만 씁니다.
+            footer  이 구역의 꼬리말.        연락처, 저작권 같은 마무리입니다.
+
+        여기서 header, nav, footer 는 사이트의 모든 페이지에 똑같이 들어갑니다.
+        main 만 페이지마다 다릅니다. 그래서 이름이 main 입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">페이지 뼈대 그림</p>
+        <div class="doc-code">+-----------------------------+
+|           header            |   사이트 이름, 로고
++-----------------------------+
+|             nav             |   메뉴 링크 묶음
++-----------------------------+
+|                             |
+|            main             |   이 페이지에만 있는 알맹이
+|                             |
++-----------------------------+
+|           footer            |   연락처, 저작권</div>
+        <!-- 화면: 검은 상자 안에 흰 글씨로 네모 그림이 보입니다.
+                  네모 오른쪽에 한글 설명이 붙어 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        이 그림은 <strong>글자로 그린 것</strong>이지 진짜 테두리가 아닙니다.
+        지금 코드를 그대로 쓰면 테두리 없이 글자만 위아래로 쌓입니다.
+        테두리는 10단원에서 CSS 로 그립니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 오늘 본 웹사이트를 하나 떠올려서
+        그 페이지의 header, nav, main, footer 가 각각 어디였는지 종이에 그려 보세요.
+        네 개가 다 있었나요? 없는 것도 있었을 것입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: header ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — header, 그 구역의 머리말</h2>
+      <p class="doc-desc">
+        <code>&lt;header&gt;</code> 는 <strong>어떤 구역의 시작을 알리는 소개 부분</strong>입니다.
+      </p>
+
+      <!--
+        header 안에 보통 들어가는 것들입니다.
+
+            · 사이트 이름이나 글 제목 (h1 ~ h6)
+            · 로고 그림
+            · 한 줄 설명
+            · 때로는 검색창이나 메뉴
+
+        중요한 것은 header 가 "페이지 맨 위" 를 뜻하는 태그가 아니라는 점입니다.
+        header 는 자기가 들어 있는 구역의 머리말입니다.
+
+            body 바로 안에 있으면    → 사이트 전체의 머리말
+            article 안에 있으면      → 그 글 하나의 머리말
+
+        이건 섹션 6 에서 다시 자세히 봅니다. 초보자가 가장 많이 오해하는 곳입니다.
+
+        header 를 썼다고 글자가 커지지 않습니다.
+        제목을 크게 만드는 것은 h1~h6 입니다. 그래서 둘을 같이 씁니다.
+
+            <header>
+              <h1>동네 도서관</h1>       ← 크게 보이는 것은 h1 덕분
+              <p>책과 사람이 만나는 곳</p>
+            </header>
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <header id="siteHeader">
+          <h2>동네 도서관</h2>
+          <p>책과 사람이 만나는 곳</p>
+        </header>
+        <!-- 화면: 굵고 큰 글씨로 "동네 도서관", 그 아래 보통 글씨로
+                  "책과 사람이 만나는 곳" 이 한 줄 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        위 상자에서 <code>&lt;header&gt;</code> 를 <code>&lt;div&gt;</code> 로 바꿔도
+        화면은 똑같습니다. 큰 글씨는 <code>&lt;h2&gt;</code> 가 만든 것이지
+        <code>&lt;header&gt;</code> 가 만든 것이 아닙니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위 상자의 <code>&lt;header&gt;</code> 안에
+        <code>&lt;p&gt;오늘도 문을 엽니다.&lt;/p&gt;</code> 를 한 줄 더 넣어 보세요.
+        머리말 안에 문단이 두 개가 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: nav ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — nav, 주요 길 안내</h2>
+      <p class="doc-desc">
+        <code>&lt;nav&gt;</code> 는 <strong>다른 곳으로 가는 주요 링크 묶음</strong>입니다.
+        navigation(길 안내) 의 줄임말입니다.
+      </p>
+
+      <!--
+        nav 안에는 보통 목록과 링크를 같이 씁니다. 03단원과 04단원의 복습입니다.
+
+            <nav>
+              <ul>
+                <li><a href="...">공지</a></li>
+                <li><a href="...">자료실</a></li>
+              </ul>
+            </nav>
+
+        왜 ul 을 쓰냐면, 메뉴는 실제로 "항목이 여러 개인 목록" 이기 때문입니다.
+        낭독기도 "목록, 항목 3개" 라고 읽어 줍니다. 몇 개인지 미리 알 수 있습니다.
+
+        ★ 여기서 제일 중요한 규칙입니다.
+          링크가 있다고 해서 다 nav 가 아닙니다.
+
+            nav 를 씁니다   사이트 위쪽 메뉴 줄
+                            옆에 붙는 카테고리 목록
+                            페이지 아래쪽의 사이트맵 링크 묶음
+
+            nav 를 안 씁니다  본문 문장 속에 끼어 있는 링크 한두 개
+                              "자세히 보기" 버튼 하나
+                              footer 맨 아래 개인정보처리방침 링크 하나
+
+        기준은 "이게 이 페이지의 주요 길 안내인가" 입니다.
+        모든 링크에 nav 를 씌우면 낭독기의 구역 목록이 nav 로만 가득 차서
+        오히려 아무 도움이 안 됩니다. 이정표가 스무 개면 이정표가 없는 것과 같습니다.
+
+        아래 데모의 링크는 같은 폴더의 다른 자료 파일로 갑니다.
+        눌러 보면 진짜로 이동합니다. 돌아올 때는 브라우저 뒤로 가기를 쓰세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <nav id="siteNav">
+          <ul id="navList">
+            <li><a href="개념01_div와_span.html">div 와 span</a></li>
+            <li><a href="개념02_시맨틱_태그란.html">시맨틱 태그란</a></li>
+            <li><a href="개념04_본문_구획_태그.html">본문 구획 태그</a></li>
+          </ul>
+        </nav>
+        <!-- 화면: 점(•) 이 붙은 목록 세 줄이 보이고, 글자는 파란색 밑줄 링크입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>&lt;nav&gt;</code> 를 씌워도 목록 모양은 그대로입니다.
+        메뉴를 가로로 눕히는 것은 12단원 Flexbox 에서 합니다.
+        지금 세로로 쌓여 있는 것이 정상입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 목록에 <code>&lt;li&gt;</code> 를 하나 더 넣어
+        <code>개념05_전체_구조_만들기.html</code> 로 가는 링크를 만들어 보세요.
+        글자는 "전체 구조 만들기" 로 하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: main ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — main, 이 페이지만의 알맹이 (하나만)</h2>
+      <p class="doc-desc">
+        <code>&lt;main&gt;</code> 은 <strong>이 페이지에만 있는 내용</strong>을 감쌉니다.
+        한 페이지에 <strong>딱 하나</strong>만 씁니다.
+      </p>
+
+      <!--
+        main 에 넣을 것과 넣지 말 것을 가르는 기준은 하나입니다.
+
+            "옆 페이지에도 똑같이 있는가?"
+
+            똑같이 있다  → main 밖 (header, nav, footer 로 갑니다)
+            여기만 있다  → main 안
+
+        예를 들어 도서관 사이트라면
+
+            사이트 로고        모든 페이지에 있음    → main 밖
+            상단 메뉴 줄       모든 페이지에 있음    → main 밖
+            "새 열람실" 기사   이 페이지에만 있음    → main 안
+            아래 연락처        모든 페이지에 있음    → main 밖
+
+        ★ main 이 하나뿐이어야 하는 이유
+
+        개념02 에서 본 "본문으로 건너뛰기" 때문입니다.
+        낭독기 사용자가 그 기능을 누르면 브라우저는 main 으로 데려다줍니다.
+        main 이 셋이면 어디로 데려가야 할지 정할 수 없습니다.
+        그래서 규칙으로 하나만 쓰기로 정해져 있습니다.
+
+        ★ 이 자료 파일 이야기
+
+        이 파일에도 살아 있는 main 은 지금 이 섹션의 상자 하나뿐입니다.
+        섹션마다 main 데모를 넣고 싶었지만, 그러면 이 파일이 방금 배운 규칙을
+        어기게 됩니다. 그래서 뒤 섹션에서는 코드만 글자로 보여 줍니다.
+
+        ★ main 을 넣으면 안 되는 자리
+
+        main 은 header, footer, nav, article, aside 안에 들어가면 안 됩니다.
+        "본문" 이 "머리말" 안에 들어 있다는 말이 되니까요. 앞뒤가 안 맞습니다.
+        main 은 보통 body 바로 아래에 둡니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 (이 파일에서 살아 있는 유일한 main 입니다)</p>
+        <main id="pageMain">
+          <h2>새 열람실이 열렸습니다</h2>
+          <p>3층에 조용한 열람실이 새로 생겼습니다.</p>
+          <p>토요일에도 밤 9시까지 이용할 수 있습니다.</p>
+        </main>
+        <!-- 화면: 굵고 큰 글씨로 "새 열람실이 열렸습니다",
+                  그 아래 문단 두 줄이 차례로 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>&lt;main&gt;</code> 은 화면에 아무 표시도 남기지 않습니다.
+        위 상자만 봐서는 main 이 있는지 없는지 알 수 없습니다.
+        코드를 봐야 압니다. 그게 이 태그가 하는 일의 전부입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 <code>&lt;main&gt;</code> 안에
+        <code>&lt;p&gt;문의는 1층 안내데스크로 오세요.&lt;/p&gt;</code> 를 한 줄 더 넣어 보세요.
+        문단이 세 줄이 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: footer ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — footer, 그 구역의 꼬리말</h2>
+      <p class="doc-desc">
+        <code>&lt;footer&gt;</code> 는 <strong>어떤 구역의 마무리 부분</strong>입니다.
+      </p>
+
+      <!--
+        footer 에 보통 들어가는 것들입니다.
+
+            · 연락처, 주소
+            · 저작권 표시
+            · 만든 사람, 쓴 날짜
+            · 관련 문서 링크 묶음
+
+        header 와 마찬가지로 footer 도 "페이지 맨 아래" 를 뜻하는 태그가 아닙니다.
+        자기가 들어 있는 구역의 꼬리말입니다.
+
+        ★ 가장 흔한 오해
+
+        "footer 를 쓰면 화면 맨 아래에 착 달라붙나요?"
+        아닙니다. 아무 일도 안 일어납니다.
+        footer 는 코드에 적힌 그 자리에 그냥 놓입니다.
+        코드 한가운데에 footer 를 쓰면 화면 한가운데에 나옵니다.
+
+        화면 맨 아래에 붙이는 것은 11단원의 position 이나 12단원의 flex 가 하는 일입니다.
+        태그는 뜻만 정하고, 위치는 CSS 가 정합니다. 개념02 에서 본 그 구분 그대로입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <footer id="siteFooter">
+          <p>동네 도서관 · 서울시 어딘가 12길 3</p>
+          <p>문의 02-000-0000</p>
+        </footer>
+        <p id="afterFooter">이 줄은 footer 뒤에 쓴 문단입니다.</p>
+        <!-- 화면: 문단 두 줄이 보이고, 그 아래에
+                  "이 줄은 footer 뒤에 쓴 문단입니다." 가 한 줄 더 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        footer 뒤에 쓴 문단이 <strong>footer 아래에 그대로 나옵니다</strong>.
+        footer 가 화면 맨 아래로 내려가지 않는다는 증거입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 위 상자에서 <code>&lt;footer&gt;</code> 덩어리를
+        <code>&lt;p id="afterFooter"&gt;</code> 아래로 옮겨 보세요.
+        코드 순서를 바꾼 대로 화면 순서도 바뀝니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: header 와 footer 는 여러 번 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — header 와 footer 는 여러 번 나올 수 있습니다</h2>
+      <p class="doc-desc">
+        <code>&lt;header&gt;</code> 는 <strong>페이지 맨 위 전용 태그가 아닙니다</strong>.
+        글 하나하나에도 자기만의 머리말과 꼬리말이 있습니다.
+      </p>
+
+      <!--
+        신문을 떠올리면 쉽습니다.
+
+            신문 1면 맨 위      신문 이름            → 신문 전체의 머리말
+            기사 하나의 맨 위   기사 제목, 기자 이름  → 그 기사의 머리말
+            기사 하나의 맨 끝   "이 기사 공유하기"    → 그 기사의 꼬리말
+            신문 맨 뒷장        발행처, 연락처        → 신문 전체의 꼬리말
+
+        웹페이지도 똑같습니다. 그래서 이런 코드가 완전히 정상입니다.
+
+            <body>
+              <header>          ← 사이트 머리말
+                <h1>동네 도서관</h1>
+              </header>
+
+              <main>
+                <article>
+                  <header>      ← 이 글 하나의 머리말
+                    <h2>새 열람실이 열렸습니다</h2>
+                    <p>2026년 8월 11일</p>
+                  </header>
+                  <p>3층에 조용한 열람실이 생겼습니다.</p>
+                  <footer>      ← 이 글 하나의 꼬리말
+                    <p>글쓴이 : 편집실</p>
+                  </footer>
+                </article>
+              </main>
+
+              <footer>          ← 사이트 꼬리말
+                <p>문의 02</p>
+              </footer>
+            </body>
+
+        header 가 두 번, footer 가 두 번 나왔습니다. 전혀 문제없습니다.
+        main 만 하나입니다.
+
+        article 이 무엇인지는 개념04 에서 배웁니다.
+        지금은 "글 한 편을 감싸는 상자" 라고만 알아 두세요.
+
+        아래 상자에서는 위 코드 중 article 부분만 살아 있는 요소로 만들어 봤습니다.
+        (main 은 이 파일에 이미 하나 있으므로 여기서는 뺐습니다)
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">글 하나가 자기 머리말과 꼬리말을 가진 모습</p>
+        <article id="postBox">
+          <header id="postHeader">
+            <h3>새 열람실이 열렸습니다</h3>
+            <p>2026년 8월 11일</p>
+          </header>
+          <p>3층에 조용한 열람실이 생겼습니다.</p>
+          <footer id="postFooter">
+            <p>글쓴이 : 편집실</p>
+          </footer>
+        </article>
+        <!-- 화면: 굵고 조금 큰 글씨 "새 열람실이 열렸습니다" 아래에
+                  날짜 한 줄, 본문 한 줄, "글쓴이 : 편집실" 한 줄이 차례로 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        이 상자 안의 <code>&lt;header&gt;</code> 는 섹션 2 의 것과 <strong>다른 header</strong> 입니다.
+        하나는 사이트의 머리말이고 하나는 글 한 편의 머리말입니다.
+        태그는 같지만 어디에 들어 있느냐에 따라 뜻이 달라집니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — 위 <code>&lt;footer id="postFooter"&gt;</code> 안에
+        <code>&lt;p&gt;조회 128회&lt;/p&gt;</code> 를 한 줄 더 넣어 보세요.
+        글 하나의 꼬리말에 정보가 두 줄이 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        아래 다섯 가지 <strong>모두 에러가 나지 않습니다</strong>.
+        화면도 멀쩡합니다. 그래서 알아채기가 어렵습니다.
+      </p>
+
+      <!-- [실수 1] main 을 여러 개 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — main 을 여러 개 씀</span>
+        <div class="doc-code">&lt;main&gt;
+  &lt;h2&gt;공지&lt;/h2&gt;
+&lt;/main&gt;
+&lt;main&gt;
+  &lt;h2&gt;자료실&lt;/h2&gt;
+&lt;/main&gt;</div>
+        <p>
+          화면은 아무 문제 없이 잘 나옵니다. 빨간 글씨도 안 뜹니다.
+          그런데 <strong>"본문" 이 둘이 되어 버립니다.</strong>
+          낭독기가 "본문으로 건너뛰기" 를 할 때 어디로 가야 할지 정할 수 없고,
+          검사 도구를 돌리면 "문서에 main 이 둘 이상" 이라는 경고가 나옵니다.
+          두 덩어리를 나누고 싶으면 main 안에서 <code>&lt;section&gt;</code> 두 개로 나누세요.
+        </p>
+      </div>
+
+      <!-- [실수 2] header 를 맨 위 전용으로 오해 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — header 는 페이지에 하나뿐이라고 생각함</span>
+        <div class="doc-code">&lt;article&gt;
+  &lt;div&gt;
+    &lt;h3&gt;새 열람실이 열렸습니다&lt;/h3&gt;
+    &lt;p&gt;2026년 8월 11일&lt;/p&gt;
+  &lt;/div&gt;
+&lt;/article&gt;</div>
+        <p>
+          "header 는 이미 위에 썼으니까 여기는 div 로" 라고 생각한 코드입니다.
+          <strong>이 글의 제목과 날짜가 그냥 글자로 취급됩니다.</strong>
+          header 는 페이지의 맨 위가 아니라 <strong>그 구역의 머리말</strong>입니다.
+          article 안에도, section 안에도 각각 하나씩 있어도 됩니다.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">&lt;article&gt;
+  &lt;header&gt;
+    &lt;h3&gt;새 열람실이 열렸습니다&lt;/h3&gt;
+    &lt;p&gt;2026년 8월 11일&lt;/p&gt;
+  &lt;/header&gt;
+&lt;/article&gt;</div>
+      </div>
+
+      <!-- [실수 3] 모든 링크에 nav -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 링크만 보이면 nav 로 감쌈</span>
+        <div class="doc-code">&lt;p&gt;자세한 내용은
+  &lt;nav&gt;&lt;a href="안내.html"&gt;안내문&lt;/a&gt;&lt;/nav&gt;
+을 보세요.&lt;/p&gt;</div>
+        <p>
+          문장 속 링크 하나는 <strong>길 안내가 아니라 그냥 링크</strong>입니다.
+          이렇게 쓰면 낭독기의 구역 목록에 "내비게이션" 이 잔뜩 쌓여서
+          <strong>정작 진짜 메뉴를 못 찾게 됩니다.</strong> 이정표가 스무 개면 없는 것과 같습니다.
+          게다가 nav 는 블록이라 문장이 세 줄로 쪼개집니다.
+        </p>
+      </div>
+
+      <!-- [실수 4] footer 가 화면 아래에 붙는다고 생각 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — footer 를 쓰면 화면 맨 아래로 갈 거라 기대함</span>
+        <div class="doc-code">&lt;footer&gt;연락처&lt;/footer&gt;
+&lt;p&gt;아직 할 말이 남았습니다.&lt;/p&gt;</div>
+        <p>
+          <strong>footer 는 코드에 적힌 자리에 그대로 놓입니다.</strong>
+          아래로 내려가지도, 착 달라붙지도 않습니다.
+          섹션 5 의 상자에서 이미 확인했습니다.
+          화면 맨 아래에 붙이는 일은 11단원과 12단원에서 CSS 로 합니다.
+        </p>
+      </div>
+
+      <!-- [실수 5] main 안에 공통 메뉴를 넣음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 모든 페이지에 있는 것을 main 안에 넣음</span>
+        <div class="doc-code">&lt;main&gt;
+  &lt;nav&gt;공지 · 자료실 · 오시는 길&lt;/nav&gt;
+  &lt;h2&gt;새 열람실&lt;/h2&gt;
+&lt;/main&gt;</div>
+        <p>
+          메뉴는 모든 페이지에 똑같이 있습니다. 그러면 <strong>이 페이지만의 알맹이가 아닙니다.</strong>
+          main 안에 넣으면 "이 페이지의 본문은 메뉴부터입니다" 라고 말한 셈이 되어,
+          건너뛰기를 해도 또 메뉴부터 듣게 됩니다.
+          공통으로 들어가는 것은 main 밖에 두세요.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. 페이지 뼈대는 <code>header</code> · <code>nav</code> ·
+        <code>main</code> · <code>footer</code> 네 덩어리입니다.</p>
+      <p>2. 네 태그 모두 블록이고 <strong>화면을 바꾸지 않습니다</strong>. 위아래로 쌓일 뿐입니다.</p>
+      <p>3. <code>&lt;main&gt;</code> 은 <strong>페이지에 하나</strong>입니다. 옆 페이지에도 있는 것은 main 밖에 둡니다.</p>
+      <p>4. <code>&lt;main&gt;</code> 은 header · footer · nav · article · aside 안에 넣지 않습니다.</p>
+      <p>5. <code>&lt;header&gt;</code> 와 <code>&lt;footer&gt;</code> 는
+        <strong>여러 번</strong> 나와도 됩니다. 글 하나에도 붙습니다.</p>
+      <p>6. <code>&lt;nav&gt;</code> 는 <strong>주요 길 안내에만</strong> 씁니다. 문장 속 링크에는 쓰지 않습니다.</p>
+      <p>7. <code>&lt;footer&gt;</code> 는 화면 맨 아래로 내려가지 않습니다. 적힌 자리에 그대로 놓입니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 정답이 하나로 정해지지 않는 문제입니다. 예를 들어 이렇게 나옵니다.
+
+                네이버   header 있음(로고) · nav 있음(메뉴) · main 있음 · footer 있음
+                블로그 글 페이지   header 있음 · nav 있음 · main 있음 · footer 있음
+                시험 결과 화면     header 있음 · nav 없음 · main 있음 · footer 없음
+
+            → 네 개가 전부 있어야 하는 것은 아닙니다.
+              메뉴가 없는 페이지에는 nav 를 안 쓰는 것이 맞습니다.
+
+         2) 섹션 2 의 header 안, p 아래에 넣습니다.
+
+                <p>오늘도 문을 엽니다.</p>
+
+            → 머리말 안에 문단이 두 줄이 됩니다. 큰 글씨는 여전히 h2 한 줄뿐입니다.
+
+         3) 섹션 3 의 ul 안, 마지막 li 아래에 넣습니다.
+
+                <li><a href="개념05_전체_구조_만들기.html">전체 구조 만들기</a></li>
+
+            → 목록이 네 줄이 되고, 네 번째 줄도 파란 밑줄 링크로 보입니다.
+              눌러 보면 개념05 파일로 이동합니다.
+
+         4) 섹션 4 의 main 안, 마지막 p 아래에 넣습니다.
+
+                <p>문의는 1층 안내데스크로 오세요.</p>
+
+            → 문단이 세 줄이 됩니다. main 이 있다는 표시는 여전히 화면에 없습니다.
+
+         5) 섹션 5 의 상자를 이렇게 바꿉니다.
+
+                <p id="afterFooter">이 줄은 footer 뒤에 쓴 문단입니다.</p>
+                <footer id="siteFooter">
+                  <p>동네 도서관 · 서울시 어딘가 12길 3</p>
+                  <p>문의 02-000-0000</p>
+                </footer>
+
+            → "이 줄은 footer 뒤에 쓴 문단입니다." 가 맨 위로 올라오고
+              연락처 두 줄이 그 아래로 갑니다. 코드 순서가 곧 화면 순서입니다.
+
+         6) 섹션 6 의 postFooter 안, p 아래에 넣습니다.
+
+                <p>조회 128회</p>
+
+            → 글 꼬리말이 "글쓴이 : 편집실" 과 "조회 128회" 두 줄이 됩니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #siteHeader | display | block
+      #siteHeader | ~width | 824
+      #siteHeader | font-size | 16px
+      #siteNav | display | block
+      #navList | display | block
+      #navList | ~width | 824
+      #pageMain | display | block
+      #pageMain | ~width | 824
+      #siteFooter | display | block
+      #afterFooter | text | 이 줄은 footer 뒤에 쓴 문단입니다.
+      #postBox | display | block
+      #postHeader | display | block
+      #postFooter | display | block
+      #postFooter | text | 글쓴이 : 편집실
+      .doc-code | white-space | pre
+    -->
+  </body>
+</html>

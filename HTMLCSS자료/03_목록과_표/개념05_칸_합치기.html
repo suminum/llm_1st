@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>03단원 개념05 - 칸 합치기</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ════════════════════════════════════════════════════════════
+         03단원 · 개념 05 — 칸 합치기
+         ────────────────────────────────────────────────────────────
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ════════════════════════════════════════════════════════════
+
+         앞 파일에서 만든 표는 칸이 반듯한 격자였습니다.
+         그런데 실제 시간표를 보면 이런 칸이 있습니다.
+
+             교시   월       화
+             1      국어     영어
+             2      ←─ 체육 대회 ─→        한 칸이 두 칸 자리를 차지합니다
+
+         가로로 두 칸을 하나로 합친 것입니다. 이런 것을 만드는 속성이 두 개 있습니다.
+
+             colspan   가로로 몇 칸을 차지할지   col 은 column(열)
+             rowspan   세로로 몇 줄을 차지할지   row 는 행
+
+         둘 다 td 나 th 에 붙이고, 값은 "몇 칸인지" 를 숫자로 씁니다.
+
+             <td colspan="2">체육 대회</td>
+                  └ 이 칸 하나가 가로로 두 칸 자리를 먹습니다
+
+         쓰는 법 자체는 간단합니다. 그런데 이 단원에서 학생들이 가장 많이 헤매는 곳이 여깁니다.
+         이유는 딱 하나입니다.
+
+             합친 만큼 그 행의 td 개수를 줄여야 합니다.
+
+         두 칸을 하나로 합쳤으면 그 행에는 칸이 하나 줄어야 합니다.
+         원래 있던 td 를 안 지우면 칸이 넘쳐서 표 오른쪽으로 삐져나갑니다.
+         이 규칙 하나만 몸에 익히면 나머지는 어렵지 않습니다.
+
+         머릿속에 이런 그림을 두고 세면 편합니다.
+
+             한 행의 칸 수 = 보통 td 개수 + (colspan 값들의 합)
+                            여기서 colspan 이 붙은 td 는 1개가 아니라 그 값만큼 셉니다
+    ════════════════════════════════════════════════════════════ -->
+
+    <h1 class="doc-head">개념 05 — 칸 합치기</h1>
+    <p class="doc-sub">03단원 · 목록과 표</p>
+
+    <p class="doc-guide">
+      이 파일에서는 <code>colspan</code> 과 <code>rowspan</code> 으로 칸을 합칩니다.
+      태그는 하나도 새로 배우지 않습니다. 속성 두 개가 전부입니다.
+      대신 <strong>합친 뒤에 칸 개수를 다시 세는 연습</strong>을 많이 합니다.
+      잘못된 표와 올바른 표를 나란히 놓아 두었으니 두 표의 오른쪽 끝을 비교해 보세요.
+    </p>
+
+    <!-- ══════════ 섹션 1: colspan 으로 가로로 합치기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — colspan 으로 가로로 합치기</h2>
+      <p class="doc-desc">
+        <code>colspan="2"</code> 를 붙이면 그 칸이 <strong>가로로 두 칸 자리</strong>를 차지합니다.
+      </p>
+
+      <!--
+        먼저 합치지 않은 표를 보고, 그다음 합친 표를 봅니다.
+
+            합치기 전
+                <tr><th>교시</th><th>월</th><th>화</th></tr>
+                <tr><td>1</td><td>국어</td><td>영어</td></tr>
+                <tr><td>2</td><td>체육</td><td>체육</td></tr>
+                                    └ "체육" 이 두 번 나옵니다. 사실은 한 시간짜리 행사인데요.
+
+            합친 뒤
+                <tr><td>2</td><td colspan="2">체육 대회</td></tr>
+                                     └ 두 칸을 하나로 합쳤습니다
+
+        합친 뒤의 행을 보세요. td 가 세 개에서 두 개로 줄었습니다.
+        "체육" 을 두 번 쓰던 것을 한 번만 쓰게 되었으니 당연합니다.
+        이 "줄이는 일" 이 이 파일의 핵심입니다. 섹션 2 에서 자세히 봅니다.
+
+        값은 2 말고 다른 숫자도 됩니다. colspan="3" 이면 세 칸을 먹습니다.
+        열이 세 개인 표에서 <td colspan="3"> 을 쓰면 그 행 전체가 한 칸이 됩니다.
+        표 중간에 소제목 줄을 넣을 때 이 방법을 씁니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">합치기 전 — "체육" 이 두 칸에 따로 들어 있습니다</p>
+        <table border="1" id="before-merge">
+          <tr>
+            <th>교시</th>
+            <th>월</th>
+            <th>화</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>국어</td>
+            <td>영어</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>체육</td>
+            <td>체육</td>
+          </tr>
+        </table>
+        <!-- 화면: 3행 3열 표가 보입니다. 맨 아랫줄에 "체육" 이 나란히 두 칸에 들어 있고
+                  두 칸 사이에 세로 테두리가 그어져 있습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">colspan="2" 로 합친 뒤</p>
+        <table border="1" id="colspan-basic">
+          <tr>
+            <th>교시</th>
+            <th>월</th>
+            <th>화</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>국어</td>
+            <td>영어</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td colspan="2">체육 대회</td>
+          </tr>
+        </table>
+        <!-- 화면: 맨 아랫줄의 두 칸 사이 세로 테두리가 사라지고
+                  "체육 대회" 가 넓어진 한 칸 안에 들어가 있습니다. 표 전체 폭은 그대로입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">colspan="3" 으로 한 행을 통째로 합친 것</p>
+        <table border="1" id="colspan-full">
+          <tr>
+            <th>교시</th>
+            <th>월</th>
+            <th>화</th>
+          </tr>
+          <tr>
+            <td colspan="3">이번 주는 시험 기간입니다</td>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>국어</td>
+            <td>영어</td>
+          </tr>
+        </table>
+        <!-- 화면: 가운데 줄에 세로 테두리가 하나도 없는 긴 칸이 생기고
+                  그 안에 안내 문장이 들어가 있습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 "합치기 전" 표에서 <code>&lt;td&gt;체육&lt;/td&gt;</code> 두 개를
+        직접 <code>&lt;td colspan="2"&gt;체육 대회&lt;/td&gt;</code> 한 개로 고쳐 보세요.
+        <strong>td 하나를 지워야 한다</strong>는 점을 잊지 마세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 합치면 칸 개수를 줄여야 합니다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 합쳤으면 그 행의 td 개수를 줄여야 합니다</h2>
+      <p class="doc-desc">
+        <strong>이 섹션이 이 파일에서 제일 중요합니다.</strong>
+        안 줄이면 칸이 표 밖으로 삐져나갑니다.
+      </p>
+
+      <!--
+        실제로 학생들이 하는 일은 보통 이렇습니다.
+
+            원래 코드
+                <tr><td>2</td><td>체육</td><td>영어</td></tr>
+
+            "월·화를 합쳐야지" 하고 colspan 만 붙임
+                <tr><td>2</td><td colspan="2">체육 대회</td><td>영어</td></tr>
+                                                            └ 이걸 안 지웠습니다
+
+        칸을 세어 보겠습니다. 이 표는 열이 세 개(교시·월·화) 입니다.
+
+            <td>2</td>                  →  1칸
+            <td colspan="2">체육 대회   →  2칸
+            <td>영어</td>               →  1칸
+                                          ─────
+                                           4칸  ← 세 칸짜리 표에 네 칸을 넣었습니다
+
+        한 칸이 남습니다. 브라우저는 이 칸을 버리지 않습니다.
+        표를 한 칸 더 넓혀서 오른쪽에 붙여 버립니다.
+        그래서 그 줄만 다른 줄보다 오른쪽으로 튀어나옵니다.
+
+        아래에 잘못된 표와 올바른 표를 나란히 두었습니다.
+        두 표의 오른쪽 끝을 손가락으로 짚어 비교해 보세요. 폭이 다릅니다.
+
+        고치는 방법은 간단합니다. 남는 td 를 지우면 됩니다.
+
+            <tr><td>2</td><td colspan="2">체육 대회</td></tr>
+                                            └ 1 + 2 = 3칸. 딱 맞습니다.
+
+        표를 고칠 때마다 이렇게 하세요.
+
+            1) 이 표는 열이 몇 개인가? (제목 줄의 칸 수를 셉니다)
+            2) 이 행의 칸 수는? (colspan 붙은 것은 그 값만큼 셉니다)
+            3) 두 숫자가 같은가?
+      -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">잘못된 예 — colspan 만 붙이고 td 를 안 지움</span>
+        <div class="doc-code">열이 세 개(교시 · 월 · 화) 인 표의 마지막 행입니다.
+
+&lt;tr&gt;
+  &lt;td&gt;2&lt;/td&gt;
+  &lt;td colspan="2"&gt;체육 대회&lt;/td&gt;
+  &lt;td&gt;영어&lt;/td&gt;      ← 이 칸이 남습니다
+&lt;/tr&gt;
+                    1 + 2 + 1 = 4칸</div>
+        <table border="1" id="colspan-bad">
+          <tr>
+            <th>교시</th>
+            <th>월</th>
+            <th>화</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>국어</td>
+            <td>영어</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td colspan="2">체육 대회</td>
+            <td>영어</td>
+          </tr>
+        </table>
+        <p>
+          <strong>표 전체가 한 칸만큼 넓어지고, 위 두 줄의 오른쪽 끝에 빈 자리가 생깁니다.</strong>
+          제목 줄은 세 칸인데 아랫줄은 네 칸이라 오른쪽이 어긋납니다.
+          에러는 나지 않습니다. 그냥 이상하게 그려질 뿐입니다.
+        </p>
+        <!-- 화면: 표가 4열이 되어 오른쪽으로 넓어집니다. 제목 줄과 첫 자료 줄의
+                  오른쪽 끝에는 테두리 없는 빈 공간이 남고, 맨 아랫줄만 끝까지 채워집니다 -->
+      </div>
+
+      <div class="doc-good">
+        <span class="doc-good-tag">올바른 예 — 남는 td 를 지움</span>
+        <div class="doc-code">열이 세 개(교시 · 월 · 화) 인 표의 마지막 행입니다.
+
+&lt;tr&gt;
+  &lt;td&gt;2&lt;/td&gt;
+  &lt;td colspan="2"&gt;체육 대회&lt;/td&gt;
+&lt;/tr&gt;
+                    1 + 2 = 3칸</div>
+        <table border="1" id="colspan-good">
+          <tr>
+            <th>교시</th>
+            <th>월</th>
+            <th>화</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>국어</td>
+            <td>영어</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td colspan="2">체육 대회</td>
+          </tr>
+        </table>
+        <p>
+          모든 줄이 세 칸으로 맞아서 오른쪽 끝이 가지런합니다.
+          위 잘못된 표보다 <strong>표 전체 폭이 좁아진 것</strong>도 확인하세요.
+        </p>
+        <!-- 화면: 3열 표의 오른쪽 끝이 세 줄 모두 같은 자리에서 끝납니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위 잘못된 표에서 남는 <code>&lt;td&gt;영어&lt;/td&gt;</code> 를 지워
+        올바른 표와 같은 폭이 되게 고쳐 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: rowspan 으로 세로로 합치기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — rowspan 으로 세로로 합치기</h2>
+      <p class="doc-desc">
+        <code>rowspan="2"</code> 를 붙이면 그 칸이 <strong>아래 줄까지 내려와</strong> 두 줄 자리를
+        차지합니다.
+      </p>
+
+      <!--
+        같은 값이 세로로 반복될 때 씁니다.
+
+            합치기 전
+                시간   과목
+                오전   국어
+                오전   영어      ← "오전" 이 두 번
+
+            합친 뒤
+                시간   과목
+                오전   국어
+                 │     영어      ← 위 칸이 아래로 내려와 두 줄을 덮습니다
+
+        코드는 이렇습니다.
+
+            <tr><td rowspan="2">오전</td><td>국어</td></tr>
+            <tr><td>영어</td></tr>
+                 └ 이 행에는 td 가 하나뿐입니다
+
+        여기서 헷갈리는 점이 나옵니다.
+        rowspan 은 아래 행에 영향을 줍니다. colspan 은 자기 행 안에서 끝났는데
+        rowspan 은 다음 행의 왼쪽 첫 자리를 미리 차지해 버립니다.
+        그래서 다음 행은 td 를 하나 적게 씁니다. 섹션 4 에서 세는 법을 정리합니다.
+
+        rowspan 을 쓸 때 자주 나오는 물음이 있습니다.
+        "합쳐진 칸의 글자는 위에 붙나요, 가운데 오나요?"
+        기본은 세로 가운데입니다. 아래 결과에서 "오전" 이 두 줄 높이의 한가운데에
+        놓여 있는 것을 확인하세요. 이 위치를 바꾸는 것도 CSS 일입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">합치기 전 — "오전" 이 두 번</p>
+        <table border="1" id="before-rowspan">
+          <tr>
+            <th>시간</th>
+            <th>과목</th>
+          </tr>
+          <tr>
+            <td>오전</td>
+            <td>국어</td>
+          </tr>
+          <tr>
+            <td>오전</td>
+            <td>영어</td>
+          </tr>
+        </table>
+        <!-- 화면: 3행 2열 표에서 왼쪽 칸에 "오전" 이 두 번 적혀 있고
+                  두 칸 사이에 가로 테두리가 그어져 있습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">rowspan="2" 로 합친 뒤</p>
+        <table border="1" id="rowspan-basic">
+          <tr>
+            <th>시간</th>
+            <th>과목</th>
+          </tr>
+          <tr>
+            <td rowspan="2">오전</td>
+            <td>국어</td>
+          </tr>
+          <tr>
+            <td>영어</td>
+          </tr>
+        </table>
+        <!-- 화면: 왼쪽 "오전" 칸이 아래 두 줄에 걸친 큰 칸 하나가 되고
+                  그 사이 가로 테두리가 사라집니다. "오전" 글자는 그 큰 칸의 세로 가운데에 있습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 표에 "오후 · 수학" 과 "오후 · 과학" 두 줄을 더 만들고,
+        "오후" 도 <code>rowspan="2"</code> 로 합쳐 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: rowspan 다음 행에서 칸 세기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — rowspan 이 걸린 다음 행에서 칸 세기</h2>
+      <p class="doc-desc">
+        <code>rowspan</code> 도 마찬가지입니다.
+        <strong>내려온 칸이 자리를 먹으니 그만큼 <code>td</code> 를 줄입니다.</strong>
+      </p>
+
+      <!--
+        섹션 2 는 가로 방향이었고, 이번에는 세로 방향입니다. 원리는 같습니다.
+
+        아래 격자를 보세요. o 는 칸이 있는 자리, ↓ 는 위에서 내려온 칸이 차지한 자리입니다.
+
+                     1열   2열
+            1행       o     o        td 두 개를 씁니다
+            2행       o     o        위 칸이 rowspan="2" 라면
+            3행       ↓     o        1열은 이미 찼으니 td 는 하나만 씁니다
+
+        3행에서 td 를 두 개 쓰면 어떻게 될까요?
+        1열 자리는 이미 위에서 내려온 칸이 차지하고 있으니 갈 곳이 없습니다.
+        브라우저는 열을 하나 더 만들어 오른쪽에 붙입니다. 섹션 2 와 똑같은 일이 벌어집니다.
+
+        아래 두 표를 비교해 보세요.
+      -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">잘못된 예 — 다음 행에서 "오전" 을 또 씀</span>
+        <div class="doc-code">&lt;tr&gt;
+  &lt;td rowspan="2"&gt;오전&lt;/td&gt;
+  &lt;td&gt;국어&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;오전&lt;/td&gt;      ← 위에서 칸이 내려왔는데 또 썼습니다
+  &lt;td&gt;영어&lt;/td&gt;
+&lt;/tr&gt;</div>
+        <table border="1" id="rowspan-bad">
+          <tr>
+            <th>시간</th>
+            <th>과목</th>
+          </tr>
+          <tr>
+            <td rowspan="2">오전</td>
+            <td>국어</td>
+          </tr>
+          <tr>
+            <td>오전</td>
+            <td>영어</td>
+          </tr>
+        </table>
+        <p>
+          <strong>표에 없던 세 번째 열이 생기고 맨 아랫줄만 오른쪽으로 삐져나갑니다.</strong>
+          "오전" 이 두 군데에 보이는 것도 이상합니다. 합치려던 목적과 정반대가 되었습니다.
+        </p>
+        <!-- 화면: 표가 3열이 됩니다. 맨 아랫줄에만 "오전"·"영어" 두 칸이 오른쪽에 더 붙고,
+                  위 두 줄의 오른쪽 끝에는 테두리 없는 빈 공간이 남습니다 -->
+      </div>
+
+      <div class="doc-good">
+        <span class="doc-good-tag">올바른 예 — 다음 행은 td 하나만</span>
+        <div class="doc-code">&lt;tr&gt;
+  &lt;td rowspan="2"&gt;오전&lt;/td&gt;
+  &lt;td&gt;국어&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+  &lt;td&gt;영어&lt;/td&gt;      ← td 가 하나뿐입니다
+&lt;/tr&gt;</div>
+        <table border="1" id="rowspan-good">
+          <tr>
+            <th>시간</th>
+            <th>과목</th>
+          </tr>
+          <tr>
+            <td rowspan="2">오전</td>
+            <td>국어</td>
+          </tr>
+          <tr>
+            <td>영어</td>
+          </tr>
+        </table>
+        <p>
+          두 열이 그대로 유지되고 "오전" 칸이 아래 줄까지 이어집니다.
+          잘못된 표보다 <strong>폭이 좁아진 것</strong>을 확인하세요.
+        </p>
+        <!-- 화면: 2열 표가 유지되고 왼쪽 "오전" 칸이 아래 두 줄에 걸쳐 있습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 잘못된 표에서 남는 <code>&lt;td&gt;오전&lt;/td&gt;</code> 을 지워
+        올바른 표와 같은 모양으로 고쳐 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 둘을 같이 쓰기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — colspan 과 rowspan 을 같이 쓰기</h2>
+      <p class="doc-desc">
+        제목이 두 줄인 표를 만들 때 둘을 함께 씁니다. 실제 시간표가 이런 모양입니다.
+      </p>
+
+      <!--
+        만들 표는 이렇게 생겼습니다.
+
+            ┌──────┬──────────────┐
+            │      │     오전      │      "오전" 이 가로로 두 칸  → colspan="2"
+            │ 교시 ├──────┬───────┤
+            │      │  월  │  화   │      "교시" 가 세로로 두 줄  → rowspan="2"
+            ├──────┼──────┼───────┤
+            │  1   │ 국어 │ 영어  │
+            └──────┴──────┴───────┘
+
+        코드로 옮기면 이렇습니다. 행마다 칸을 세면서 읽어 보세요.
+
+            <tr>
+              <th rowspan="2">교시</th>      1칸 (아래 줄까지 내려감)
+              <th colspan="2">오전</th>      2칸
+            </tr>                            합 3칸 ✓
+
+            <tr>
+              <th>월</th>                    1칸  (첫 자리는 "교시" 가 차지)
+              <th>화</th>                    1칸
+            </tr>                            합 2칸 + 내려온 1칸 = 3칸 ✓
+
+            <tr>
+              <td>1</td><td>국어</td><td>영어</td>
+            </tr>                            합 3칸 ✓
+
+        둘째 행에 th 가 두 개뿐인 것이 처음에는 이상해 보입니다.
+        왼쪽 첫 자리는 위에서 "교시" 가 내려와 이미 차지하고 있기 때문입니다.
+        표를 그릴 때는 항상 격자를 먼저 그려 놓고, 이미 찬 자리에 X 표를 하면서 세면 실수가 없습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">제목이 두 줄인 시간표</p>
+        <table border="1" id="both-table">
+          <caption>주간 시간표</caption>
+          <tr>
+            <th rowspan="2">교시</th>
+            <th colspan="2">오전</th>
+          </tr>
+          <tr>
+            <th>월</th>
+            <th>화</th>
+          </tr>
+          <tr>
+            <td>1</td>
+            <td>국어</td>
+            <td>영어</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td colspan="2">체육 대회</td>
+          </tr>
+        </table>
+        <!-- 화면: 표 위에 "주간 시간표" 가 보입니다.
+                  왼쪽 "교시" 칸이 위 두 줄에 걸쳐 있고, 그 오른쪽 위에 "오전" 이 두 칸 폭으로,
+                  그 아래에 "월" 과 "화" 가 한 칸씩 있습니다.
+                  맨 아랫줄의 "체육 대회" 는 두 칸 폭을 차지합니다 -->
+      </div>
+
+      <p class="doc-note">
+        칸이 많아질수록 세기가 어려워집니다.
+        <strong>종이에 격자를 먼저 그리고 코드를 쓰세요.</strong>
+        머릿속으로만 세다가 한 칸씩 어긋나는 일이 아주 흔합니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 위 표의 <code>&lt;th rowspan="2"&gt;교시&lt;/th&gt;</code> 를
+        <code>rowspan="3"</code> 으로 바꿔 보세요. 표가 어떻게 어긋나는지 확인한 뒤 되돌리세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        표가 어긋나 보이면 <strong>거의 다 칸 개수 문제</strong>입니다. 세는 것부터 하세요.
+      </p>
+
+      <!-- [실수 1] 합치고 td 를 안 지움 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 합치고 남는 칸을 안 지움</span>
+        <p>
+          섹션 2 와 섹션 4 에서 본 그것입니다. <strong>가장 많이 나는 실수</strong>라 다시 적습니다.
+          표 한쪽이 튀어나오거나 오른쪽에 빈 자리가 생기면 이것부터 의심하세요.
+          <code>colspan="2"</code> 를 붙였으면 그 행의 <code>td</code> 를 하나 지우고,
+          <code>rowspan="2"</code> 를 붙였으면 <strong>다음 행</strong>의 <code>td</code> 를 하나 지웁니다.
+        </p>
+      </div>
+
+      <!-- [실수 2] colspan="1" 을 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — colspan="1" 을 씀</span>
+        <div class="doc-code">&lt;td colspan="1"&gt;국어&lt;/td&gt;</div>
+        <table border="1" id="colspan-one">
+          <tr>
+            <td colspan="1">국어</td>
+            <td>영어</td>
+          </tr>
+        </table>
+        <p>
+          <strong>아무 일도 일어나지 않습니다.</strong> 1칸을 차지하라는 뜻인데,
+          원래 모든 칸이 1칸을 차지합니다. 쓰나 마나 같습니다.
+          "합치려면 2 이상" 이라고 기억하세요. 값이 1 이면 지우는 편이 낫습니다.
+        </p>
+        <!-- 화면: "국어" 와 "영어" 가 각각 한 칸씩인 평범한 1행 2열 표가 보입니다 -->
+      </div>
+
+      <!-- [실수 3] 표 밖으로 넘치게 합침 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 열 개수보다 큰 값을 씀</span>
+        <div class="doc-code">&lt;tr&gt;&lt;th&gt;월&lt;/th&gt;&lt;th&gt;화&lt;/th&gt;&lt;/tr&gt;
+&lt;tr&gt;&lt;td colspan="5"&gt;체육 대회&lt;/td&gt;&lt;/tr&gt;</div>
+        <table border="1" id="colspan-over">
+          <tr>
+            <th>월</th>
+            <th>화</th>
+          </tr>
+          <tr>
+            <td colspan="5">체육 대회</td>
+          </tr>
+        </table>
+        <p>
+          열이 두 개인 표에 5칸짜리 칸을 넣었습니다.
+          <strong>경고는 없고, 브라우저가 남는 만큼을 그냥 무시합니다.</strong>
+          결과는 <code>colspan="2"</code> 를 쓴 것과 같아집니다.
+          그래서 "값을 크게 주면 알아서 되겠지" 하고 아무 숫자나 넣는 습관이 생기는데,
+          다른 사람이 코드를 읽을 때 몇 칸짜리인지 알 수 없게 됩니다. 정확한 값을 쓰세요.
+        </p>
+        <!-- 화면: 2열 표의 아랫줄이 위 두 칸을 합친 만큼만 넓어져 있습니다.
+                  표가 오른쪽으로 더 늘어나지는 않습니다 -->
+      </div>
+
+      <!-- [실수 4] 합쳐진 자리에 td 를 또 넣음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — rowspan 이 내려온 자리에 td 를 또 넣음</span>
+        <p>
+          섹션 4 에서 본 경우입니다. <code>rowspan</code> 은 <strong>다음 행</strong>에 영향을 줍니다.
+          <code>colspan</code> 은 자기 행에서 끝나기 때문에 세기 쉬운데,
+          <code>rowspan</code> 은 몇 줄 아래까지 내려가는지 눈에 안 보여서 놓치기 쉽습니다.
+          <code>rowspan="3"</code> 이면 <strong>아래 두 행</strong>이 각각 한 칸씩 줄어야 합니다.
+        </p>
+      </div>
+
+      <!-- [실수 5] 값에 따옴표를 안 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 값을 따옴표 없이 씀</span>
+        <div class="doc-code">&lt;td colspan=2&gt;체육 대회&lt;/td&gt;</div>
+        <table border="1" id="no-quote">
+          <tr>
+            <th>월</th>
+            <th>화</th>
+          </tr>
+          <tr>
+            <td colspan=2>체육 대회</td>
+          </tr>
+        </table>
+        <p>
+          <strong>이건 실제로 잘 동작합니다.</strong> 값에 빈칸이 없으면 따옴표를 빼도 브라우저가
+          알아듣습니다. 그런데 값에 빈칸이 하나라도 들어가는 순간 뒷부분이 잘려 나갑니다.
+          예외를 외우는 것보다 <strong>항상 큰따옴표로 감싸는 것</strong>이 안전합니다.
+        </p>
+        <!-- 화면: 아랫줄이 두 칸을 합친 넓은 칸 하나로 잘 나옵니다 -->
+      </div>
+
+      <!-- [실수 6] 눈으로만 세다가 어긋남 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 6 — 칸을 세지 않고 눈대중으로 씀</span>
+        <p>
+          표가 커지면 머릿속으로 세는 것이 불가능해집니다.
+          <strong>표가 이상하면 코드를 노려보지 말고 칸부터 세세요.</strong>
+          제목 줄의 칸 수를 적어 두고, 행마다
+          "보통 칸 개수 + <code>colspan</code> 값들 + 위에서 내려온 칸" 을 더해 비교하면
+          어느 행이 범인인지 한 번에 나옵니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>colspan="2"</code> 는 가로로 두 칸, <code>rowspan="2"</code> 는 세로로 두 줄을 차지합니다.</p>
+      <p>2. 둘 다 <code>td</code> 나 <code>th</code> 에 붙입니다. 값은 <strong>2 이상의 숫자</strong>입니다.</p>
+      <p>3. <strong><code>colspan</code> 을 쓰면 그 행의 <code>td</code> 를 그만큼 줄입니다.</strong></p>
+      <p>4. <strong><code>rowspan</code> 을 쓰면 아래 행들의 <code>td</code> 를 그만큼 줄입니다.</strong></p>
+      <p>5. 안 줄이면 표가 한 칸 넓어지고 그 줄만 오른쪽으로 삐져나갑니다. 에러는 안 납니다.</p>
+      <p>6. 한 행의 칸 수 = 보통 칸 개수 + <code>colspan</code> 값들 + 위에서 내려온 칸 수입니다.</p>
+      <p>7. 표가 어긋나면 <strong>노려보지 말고 세세요.</strong> 종이에 격자를 그리면 더 빠릅니다.</p>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════
+         ✏️ 직접 해보기 정답
+         ════════════════════════════════════════════════════════════
+
+         1) 섹션 1 의 "합치기 전" 표, 마지막 행을 이렇게 바꿉니다.
+
+                <tr>
+                  <td>2</td>
+                  <td colspan="2">체육 대회</td>
+                </tr>
+
+            → 맨 아랫줄 두 칸 사이의 세로 테두리가 사라지고 한 칸이 됩니다.
+              td 를 세 개에서 두 개로 줄인 것이 핵심입니다.
+              지우지 않으면 섹션 2 의 잘못된 표처럼 됩니다.
+
+         2) 섹션 2 의 잘못된 표에서 마지막 행 끝의 <td>영어</td> 를 지웁니다.
+
+                <tr>
+                  <td>2</td>
+                  <td colspan="2">체육 대회</td>
+                </tr>
+
+            → 표 폭이 줄어들어 올바른 표와 똑같아집니다.
+              위 두 줄 오른쪽 끝에 있던 빈 자리도 함께 사라집니다.
+
+         3) 섹션 3 의 표, 마지막 </tr> 아래에 이렇게 넣습니다.
+
+                <tr>
+                  <td rowspan="2">오후</td>
+                  <td>수학</td>
+                </tr>
+                <tr>
+                  <td>과학</td>
+                </tr>
+
+            → 표가 5행이 되고, 왼쪽에 "오전" 칸과 "오후" 칸이 각각 두 줄씩 차지합니다.
+              두 번째 행에 td 를 하나만 쓴 것을 다시 확인하세요.
+
+         4) 섹션 4 의 잘못된 표에서 마지막 행의 <td>오전</td> 을 지웁니다.
+
+                <tr>
+                  <td>영어</td>
+                </tr>
+
+            → 세 번째 열이 사라지고 2열 표로 돌아옵니다.
+              "오전" 은 위에서 내려온 칸 하나만 남습니다.
+
+         5) 섹션 5 의 표에서 첫 행을 이렇게 바꿉니다.
+
+                <th rowspan="3">교시</th>
+
+            → "교시" 칸이 한 줄 더 내려와 셋째 행의 왼쪽 첫 자리까지 차지합니다.
+              그래서 셋째 행의 1 · 국어 · 영어 가 통째로 한 칸씩 오른쪽으로 밀리고,
+              표에 네 번째 열이 생겨 그 줄만 오른쪽으로 튀어나옵니다.
+              셋째 행은 위에서 내려온 1칸 + td 3칸 = 4칸이 되어
+              다른 행의 3칸과 안 맞기 때문입니다.
+              확인했으면 rowspan="2" 로 되돌리세요.
+
+              참고로 colspan="2" 를 colspan="3" 으로 바꾸면 아무 일도 안 일어납니다.
+              섹션 6 실수 3 에서 본 대로, 열 개수보다 큰 colspan 은 무시되기 때문입니다.
+    ════════════════════════════════════════════════════════════ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #before-merge | display | table
+      #colspan-basic td[colspan] | display | table-cell
+      #colspan-basic | ~width | 118
+      #colspan-full td[colspan] | ~width | 197
+      #colspan-bad | ~width | 156
+      #colspan-good | ~width | 118
+      #before-rowspan | ~width | 80
+      #rowspan-basic td[rowspan] | ~height | 64
+      #rowspan-bad | ~width | 118
+      #rowspan-good | ~width | 80
+      #both-table th[rowspan] | ~height | 64
+      #both-table th[colspan] | ~width | 74
+      #colspan-one | display | table
+      #colspan-over | ~width | 80
+      #no-quote td[colspan] | display | table-cell
+    -->
+  </body>
+</html>
