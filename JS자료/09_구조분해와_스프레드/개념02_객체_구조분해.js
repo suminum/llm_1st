@@ -12,7 +12,6 @@
 // 실무에서 배열 구조분해보다 훨씬 많이 씁니다. React 를 배우면 매 줄 나옵니다.
 // (React 는 이 자료를 마친 뒤에 배울, 화면 만들기를 훨씬 편하게 해 주는 도구입니다)
 
-
 // ── 섹션 1: 이름으로 꺼내기 ──
 
 const user = {
@@ -20,6 +19,9 @@ const user = {
   age: 20,
   city: "부산",
 };
+for (key in user) {
+  console.log(key);
+}
 
 // [지금까지 하던 방법]
 const name1 = user.name;
@@ -46,7 +48,6 @@ console.log(email);
 // ✏️ 직접 해보기 1 — { title: "입문서", price: 25000 } 에서
 //                    title 과 price 를 구조분해로 꺼내 보세요.
 
-
 // ── 섹션 2: 다른 이름으로 받기 ──
 
 // 콜론을 쓰면 다른 이름으로 담을 수 있습니다.
@@ -70,7 +71,6 @@ console.log(userName, productName);
 // name 이라는 이름을 이미 위에서 썼기 때문에 다른 이름이 필요했습니다.
 
 // ✏️ 직접 해보기 2 — product 의 price 를 productPrice 라는 이름으로 꺼내 보세요.
-
 
 // ── 섹션 3: 기본값 ──
 
@@ -99,7 +99,6 @@ console.log(t);
 
 // ✏️ 직접 해보기 3 — 빈 객체에서 count 를 기본값 0 으로 꺼내 보세요.
 
-
 // ── 섹션 4: 나머지 모으기 ──
 
 const fullUser = {
@@ -127,7 +126,6 @@ console.log(safeAccount);
 // 출력: { userId: 'abc', nickname: '서연' }
 
 // ✏️ 직접 해보기 4 — account 에서 userId 만 빼고 나머지를 모아 보세요.
-
 
 // ── 섹션 5: 함수 매개변수에서 쓰기 ──
 
@@ -182,7 +180,6 @@ order2({ menu: "라떼", size: "L", ice: true, count: 2 });
 // ✏️ 직접 해보기 5 — { name, price } 를 받아 "이름 가격원" 을 출력하는
 //                    함수를 매개변수 구조분해로 만들어 보세요.
 
-
 // ── 섹션 6: 배열 메소드 콜백에서 쓰기 ──
 
 const products = [
@@ -203,9 +200,10 @@ products.forEach(({ name, price }) => console.log(`${name} ${price}원`));
 // map, filter 에서도 같습니다.
 console.log(products.map(({ name }) => name));
 // 출력: [ '아메리카노', '케이크' ]
-console.log(products.filter(({ price }) => price >= 5000).map(({ name }) => name));
+console.log(
+  products.filter(({ price }) => price >= 5000).map(({ name }) => name),
+);
 // 출력: [ '케이크' ]
-
 
 // ── 섹션 7: 중첩 객체 구조분해 ──
 
@@ -253,7 +251,6 @@ const { seller: { name: sellerName } = {} } = order;
 console.log(sellerName);
 // 출력: undefined
 
-
 // ── 섹션 8: 자주 하는 실수 ──
 
 // ★ 아래에서 SyntaxError 라고 적힌 것은 눈으로만 보세요. 주석을 풀지 마세요.
@@ -291,7 +288,6 @@ console.log(firstItem);
 // 실수: TypeError: Cannot destructure property 'a' of 'null'
 //       값이 있는지 확실하지 않으면 기본값을 주세요: = {}
 
-
 // ── 정리 ──
 
 // 1. const { name, age } = 객체;  — 이름으로 꺼낸다. 순서 무관.
@@ -300,7 +296,6 @@ console.log(firstItem);
 // 4. const { id, ...rest } = 객체;  — "id 만 빼고 나머지".
 // 5. function f({ name, age }) — 매개변수에서 바로 구조분해. 아주 많이 쓴다.
 // 6. 배열 메소드 콜백에서도 ({ name }) => ... 로 쓴다.
-
 
 // ============================================================
 // 직접 해보기 정답

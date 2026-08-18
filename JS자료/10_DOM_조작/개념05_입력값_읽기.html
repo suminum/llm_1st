@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -51,18 +51,22 @@
     <h1>개념 05 — 입력값 읽기</h1>
 
     <p class="guide">
-      브라우저로 열고 <strong>F12 → Console</strong> 을 함께 보세요. 아래 칸에는 미리
-      값이 채워져 있습니다. 코드가 그 값을 읽어 아래 결과 상자에 정리해 뒀습니다.<br />
-      <strong>값을 고쳐도 결과는 바뀌지 않습니다.</strong> 코드가 페이지를 열 때 한 번만
-      읽었기 때문입니다. 입력에 반응하는 방법은 11단원(이벤트)에서 배웁니다.
-    
+      브라우저로 열고 <strong>F12 → Console</strong> 을 함께 보세요. 아래 칸에는
+      미리 값이 채워져 있습니다. 코드가 그 값을 읽어 아래 결과 상자에 정리해
+      뒀습니다.<br />
+      <strong>값을 고쳐도 결과는 바뀌지 않습니다.</strong> 코드가 페이지를 열 때
+      한 번만 읽었기 때문입니다. 입력에 반응하는 방법은 11단원(이벤트)에서
+      배웁니다.
+
       <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
-      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
-      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을
+      만드는 코드입니다. 이 자료에서는 가르치지 않습니다.
+      <code>&lt;script&gt;</code> 안부터 읽으세요.
     </p>
 
     <div class="demo">
+      <!-- for는 id가 아니야. 그냥 label과 input을 연결하는 속성이야. -->
       <label for="nameInput">이름</label>
       <input type="text" id="nameInput" value="김민준" />
 
@@ -77,14 +81,14 @@
 
       <label for="sizeSelect">사이즈</label>
       <select id="sizeSelect">
-        <option value="S">작은 것</option>
-        <option value="L" selected>큰 것</option>
+        <option value="S" selected>작은 것</option>
+        <option value="L">큰 것</option>
       </select>
 
       <label><input type="checkbox" id="iceCheck" checked /> 얼음 추가</label>
       <label><input type="checkbox" id="giftCheck" /> 선물 포장</label>
 
-      <label for="memoArea">메모</label>
+      <label for="memoArea">메모</label>//
       <textarea id="memoArea" rows="2">덜 달게 해주세요</textarea>
 
       <div id="result">여기에 결과가 나옵니다</div>
@@ -127,7 +131,7 @@
       //       (바로 아래 줄에서 다시 "김민준" 으로 되돌리므로 눈에는 안 보입니다.
       //        직접 보려면 아래 줄을 잠시 주석 처리하고 새로고침하세요)
 
-      nameInput.value = "김민준"; // 원래대로 되돌려 둡니다
+      //nameInput.value = "김민준"; // 원래대로 되돌려 둡니다
 
       // ✏️ 직접 해보기 1 — memoArea 의 값을 콘솔에 찍어 보세요.
 
@@ -223,7 +227,7 @@
       // 콘솔: 선물 포장 안 함
 
       // ✏️ 직접 해보기 4 — giftCheck 를 체크된 상태로 바꿔 보세요. (checked = true)
-
+      giftCheck.checked = "true";
       // ── 섹션 5: select — 고른 값 ──
 
       const sizeSelect = document.querySelector("#sizeSelect");
@@ -335,5 +339,6 @@
       //    → 빈 문자열은 falsy 라서 || 의 오른쪽이 나옵니다. (03단원)
       //      비어 있을 때 대신 보여 줄 글자를 정하는 가장 짧은 방법입니다.
     </script>
+    <script src="./연습지.js"></script>
   </body>
 </html>

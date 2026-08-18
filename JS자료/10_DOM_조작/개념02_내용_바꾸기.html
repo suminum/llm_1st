@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -37,13 +37,14 @@
     <h1>개념 02 — 내용 바꾸기</h1>
 
     <p class="guide">
-      브라우저로 열고 <strong>F12 → Console</strong> 을 함께 보세요. 화면의 글자가 이미
-      바뀌어 있을 겁니다. 코드가 실행된 결과입니다.
-    
+      브라우저로 열고 <strong>F12 → Console</strong> 을 함께 보세요. 화면의
+      글자가 이미 바뀌어 있을 겁니다. 코드가 실행된 결과입니다.
+
       <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
-      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
-      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을
+      만드는 코드입니다. 이 자료에서는 가르치지 않습니다.
+      <code>&lt;script&gt;</code> 안부터 읽으세요.
     </p>
 
     <div class="demo">
@@ -86,13 +87,12 @@
       // 콘솔: 자바스크립트가 바꾼 글자
 
       // 변수를 넣을 수도 있습니다. 08단원까지 배운 모든 게 여기로 연결됩니다.
-      const userName = "김민준";
+      const userName = "엄수민";
       const target2 = document.querySelector("#target2");
       target2.textContent = `${userName}님, 안녕하세요!`;
       // 화면: 김민준님, 안녕하세요!
 
       // ✏️ 직접 해보기 1 — target1 의 글자를 자기 이름으로 바꿔 보세요.
-
       // ── 섹션 2: 숫자를 넣으면 글자로 바뀐다 ──
 
       const numberTarget = document.querySelector("#numberTarget");
@@ -119,6 +119,10 @@
 
       // ✏️ 직접 해보기 2 — numberTarget 에 숫자 10 을 넣은 다음,
       //                   그 값에 5 를 더한 결과를 콘솔에 찍어 보세요. (15 가 나와야 합니다)
+      console.log("직접해보기2");
+      numberTarget.textContent = 10;
+
+      console.log(Number(numberTarget.textContent) + 5);
 
       // ── 섹션 3: innerHTML — 태그까지 넣기 ──
 
@@ -141,6 +145,9 @@
       // textContent 는 태그를 빼고 글자만 줍니다.
 
       // ✏️ 직접 해보기 3 — target3 에 innerHTML 로 <em>기울임</em> 을 넣어 보세요.
+      console.log("직접해보기23");
+      target3.innerHTML = "<em>기울임</em>";
+      console.log(target3.textContent);
 
       // ── 섹션 4: 목록 만들기 — 08·09단원과 이어지는 부분 ──
 
@@ -151,7 +158,7 @@
       ];
 
       // map 으로 태그 문자열을 만들고 join 으로 붙입니다. (08단원 개념03)
-      const html = menu.map((item) => `<li>${item.name} — ${item.price}원</li>`).join("");
+      const html = menu.map((item) => `<li>${item.name}</li>`).join("");
 
       console.log(html);
       // 콘솔: <li>아메리카노 — 4000원</li><li>라떼 — 4500원</li><li>케이크 — 6000원</li>
@@ -166,7 +173,6 @@
       console.log(menu.map((item) => `<li>${item.name}</li>`));
       // 콘솔: ['<li>아메리카노</li>', '<li>라떼</li>', '<li>케이크</li>']
       // 배열을 그대로 innerHTML 에 넣으면 쉼표가 화면에 보입니다.
-
       // ✏️ 직접 해보기 4 — 위 menu 에서 이름만 목록으로 만들어 넣어 보세요.
 
       // ── 섹션 5: 언제 textContent, 언제 innerHTML ──
@@ -197,7 +203,7 @@
 
       // ✏️ 직접 해보기 5 — 위 userInput 을 target3 에 '안전한 쪽' 으로 넣어 보세요.
       //                   화면에 태그가 글자 그대로 보이면 성공입니다.
-
+      target3.textContent = userInput;
       // ── 섹션 6: innerText 와의 차이 ──
 
       // textContent 와 비슷한 innerText 도 있습니다.
@@ -214,7 +220,11 @@
       // ✏️ 직접 해보기 6 — #mixedTarget 을 textContent 로 읽을 때와
       //                   innerText 로 읽을 때 결과가 같을까요, 다를까요?
       //                   예상한 뒤 둘 다 찍어서 비교해 보세요.
+      const a = document.querySelector("#mixedTarget");
+      console.log(a.textContent);
+      console.log(a.innerText);
 
+      console.log();
       // ── 섹션 7: 자주 하는 실수 ──
 
       // [실수 1] 괄호를 붙임

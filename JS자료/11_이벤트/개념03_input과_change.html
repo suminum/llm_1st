@@ -1,8 +1,9 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <title>11단원 개념03 - input 과 change</title>
+
     <style>
       body {
         font-family: "맑은 고딕", sans-serif;
@@ -60,13 +61,14 @@
     <h1>개념 03 — input 과 change</h1>
 
     <p class="guide">
-      브라우저로 열고 <strong>직접 타이핑</strong>해 보세요. 글자를 칠 때마다 결과가
-      바로바로 바뀝니다. <strong>F12 → Console</strong> 도 함께 보세요.
-    
+      브라우저로 열고 <strong>직접 타이핑</strong>해 보세요. 글자를 칠 때마다
+      결과가 바로바로 바뀝니다. <strong>F12 → Console</strong> 도 함께 보세요.
+
       <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
-      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
-      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을
+      만드는 코드입니다. 이 자료에서는 가르치지 않습니다.
+      <code>&lt;script&gt;</code> 안부터 읽으세요.
     </p>
 
     <div class="demo">
@@ -77,12 +79,21 @@
 
       <h3>② change — 다 입력하고 벗어났을 때</h3>
       <label for="changeInput">이름 (input 과 비교)</label>
-      <input type="text" id="changeInput" placeholder="치고 나서 Tab 을 눌러 보세요" />
+      <input
+        type="text"
+        id="changeInput"
+        placeholder="치고 나서 Tab 을 눌러 보세요"
+      />
       <div class="output" id="out2">여기는 벗어날 때만 바뀝니다</div>
 
       <h3>③ 글자 수 세기</h3>
       <label for="memoArea">메모 (20자 이내)</label>
-      <textarea id="memoArea" rows="2" cols="40" placeholder="입력해 보세요"></textarea>
+      <textarea
+        id="memoArea"
+        rows="2"
+        cols="40"
+        placeholder="입력해 보세요"
+      ></textarea>
       <div class="output" id="out3">0 / 20</div>
 
       <h3>④ 실시간 계산</h3>
@@ -113,6 +124,7 @@
       // 10단원 개념05 에서 "값을 한 번만 읽어서 고쳐도 안 바뀐다" 고 했습니다.
       // 그 문제를 해결하는 이벤트가 이것입니다.
       //
+
       //     input   글자가 바뀔 때마다 (한 글자씩)
       //     change  다 입력하고 벗어났을 때 / 체크·선택이 바뀔 때
 
@@ -123,14 +135,16 @@
 
       nameInput.addEventListener("input", (e) => {
         // e.target 이 곧 nameInput 입니다 (개념02)
-        const value = e.target.value;
+        const value = e.target.value.toUpperCase();
 
-        out1.textContent = value ? `${value}님, 안녕하세요` : "여기에 실시간으로 나옵니다";
+        out1.textContent = value
+          ? `${value}님, 안녕하세요`
+          : "여기에 실시간으로 나옵니다";
         console.log("input:", value);
       });
 
       // 한 글자 칠 때마다 콜백이 실행됩니다.
-      // "김" → "김민" → "김민준" 이렇게 세 번 실행됩니다.
+      //
       //
       // 빈 값일 때 안내 문구로 되돌리려고 삼항 연산자를 썼습니다. (03단원)
 
@@ -168,10 +182,14 @@
       memoArea.addEventListener("input", (e) => {
         const length = e.target.value.length; // 01단원의 .length
 
-        out3.textContent = `${length} / ${maxLength}`;
-
-        // 넘치면 빨갛게 (10단원 개념03)
-        out3.classList.toggle("over", length > maxLength);
+        out3.textContent =
+          // 넘치면 빨갛게 (10단원 개념03)
+          out3.classList.toggle("over", length > maxLength);
+        // out3.textContent.toggle("글자 수 초과", length > maxLength);
+        out3.textContent =
+          length > maxLength
+            ? `${length} / ${maxLength}글자수 초과`
+            : `${length} / ${maxLength}`;
       });
 
       // toggle 의 두 번째 인자로 조건을 주면 붙였다 떼는 걸 한 줄로 씁니다.
@@ -219,6 +237,7 @@
 
       function updateOptions() {
         const agreeText = agreeCheck.checked ? "함" : "안 함";
+        out5.classList.toggle("over", !agreeCheck.checked);
         const size = sizeSelect.value;
 
         out5.textContent = `동의: ${agreeText} / 사이즈: ${size}`;
@@ -287,5 +306,6 @@
       //
       // 5) out5.classList.toggle("over", !agreeCheck.checked);
     </script>
+    <script src="./연습지.js" defer></script>
   </body>
 </html>

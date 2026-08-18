@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -51,13 +51,14 @@
     <h1>개념 01 — 동기와 비동기, setTimeout</h1>
 
     <p class="guide">
-      브라우저로 열고 <strong>F12 → Console</strong> 을 반드시 함께 보세요. 이 단원은
-      <strong>실행 순서</strong>가 핵심이라 콘솔을 봐야 이해됩니다.
-    
+      브라우저로 열고 <strong>F12 → Console</strong> 을 반드시 함께 보세요. 이
+      단원은 <strong>실행 순서</strong>가 핵심이라 콘솔을 봐야 이해됩니다.
+
       <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
-      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
-      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을
+      만드는 코드입니다. 이 자료에서는 가르치지 않습니다.
+      <code>&lt;script&gt;</code> 안부터 읽으세요.
     </p>
 
     <div class="demo">
@@ -66,7 +67,7 @@
       <div class="output" id="out1">버튼을 눌러 보세요</div>
 
       <h3>② 카운트다운</h3>
-      <button id="countBtn">5부터 카운트다운</button>
+      <button id="countBtn">10부터 카운트다운</button>
       <button id="stopBtn">멈추기</button>
       <div class="output" id="out2">대기 중</div>
     </div>
@@ -204,7 +205,7 @@
           return; // 두 번 눌러도 두 개가 돌지 않도록 (조기 반환)
         }
 
-        let count = 5;
+        let count = 10;
         out2.textContent = count;
         console.log("카운트다운 시작");
 

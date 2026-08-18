@@ -12,7 +12,6 @@
 //
 // 콜백이 true 를 돌려주면 통과, false 면 탈락입니다.
 
-
 // ── 섹션 1: filter — 조건에 맞는 것 전부 ──
 
 const scores = [90, 55, 78, 40, 88];
@@ -48,7 +47,9 @@ console.log(`합격자 ${scores.filter((s) => s >= 60).length}명`);
 // 출력: 합격자 3명
 
 // ✏️ 직접 해보기 1 — [12, 7, 30, 5] 에서 10 이상인 값만 골라 보세요.
-
+const list1 = [12, 7, 30, 5];
+console.log("어디읶");
+console.log(list1.filter((x) => x >= 10));
 
 // ── 섹션 2: filter 는 true/false 만 본다 ──
 
@@ -76,7 +77,6 @@ console.log(scores.filter((s) => s * 2));
 
 // ✏️ 직접 해보기 2 — ["a", "", "b", ""] 에서 빈 문자열을 걸러 보세요.
 
-
 // ── 섹션 3: 객체 배열에서 filter ──
 
 const products = [
@@ -85,7 +85,8 @@ const products = [
   { name: "케이크", price: 6000, stock: 3 },
   { name: "쿠키", price: 3000, stock: 0 },
 ];
-
+console.log("dddfsdkfhskfhskjfh");
+console.log(products.filter((p) => p.price >= 5000).map((x) => x.name));
 // 재고가 있는 것만
 const available = products.filter((p) => p.stock > 0);
 console.log(available.length);
@@ -101,11 +102,12 @@ console.log(products.filter((p) => p.stock === 0).map((p) => p.name));
 // filter 로 고르고 map 으로 이름만 뽑았습니다. 이렇게 이어 쓰는 것을 체이닝이라고 합니다.
 
 // 조건 두 개
-console.log(products.filter((p) => p.stock > 0 && p.price <= 5000).map((p) => p.name));
+console.log(
+  products.filter((p) => p.stock > 0 && p.price <= 5000).map((p) => p.name),
+);
 // 출력: [ '아메리카노' ]
 
 // ✏️ 직접 해보기 3 — products 에서 5000원 이상인 상품 이름만 뽑아 보세요.
-
 
 // ── 섹션 4: find — 첫 번째 하나만 ──
 
@@ -143,8 +145,8 @@ console.log(notFound?.price ?? "해당 상품 없음");
 // 출력: 해당 상품 없음
 
 // ✏️ 직접 해보기 4 — products 에서 이름이 "쿠키" 인 상품의 가격을 출력해 보세요.
-
-
+console.log("dsklfjdsflkflskjfweogjwoitwpeojepofjw");
+console.log(products.find((x) => x.name === "쿠키")?.name ?? "쿠키없음");
 // ── 섹션 5: findIndex — 몇 번째인지 ──
 
 console.log(products.findIndex((p) => p.name === "케이크"));
@@ -170,7 +172,7 @@ console.log(list.map((p) => p.name));
 
 // ✏️ 직접 해보기 5 — products 에서 재고가 0인 첫 상품의 위치를 출력해 보세요.
 
-
+console.log(list.findIndex((p) => p.stock === 0));
 // ── 섹션 6: some 과 every — 있나? 전부인가? ──
 
 // some : 하나라도 조건에 맞으면 true
@@ -199,8 +201,8 @@ if (products.some((p) => p.stock === 0)) {
 // 출력: 품절 상품이 있습니다
 
 // ✏️ 직접 해보기 6 — scores 에 90점 이상이 하나라도 있는지 확인해 보세요.
-
-
+const scores = [90, 55, 78, 40, 88];
+console.log(scores.some((x) => x >= 90));
 // ── 섹션 7: 무엇을 쓸까 ──
 
 // 조건에 맞는 것 전부, 배열로     → filter
@@ -214,7 +216,6 @@ if (products.some((p) => p.stock === 0)) {
 // "무엇이 나오는가" 를 기준으로 고르면 헷갈리지 않습니다.
 //     filter → 배열      find → 값 하나
 //     some/every → 불리언  map → 배열(같은 개수)
-
 
 // ── 섹션 8: 자주 하는 실수 ──
 
@@ -242,11 +243,10 @@ console.log(scores.filter((s) => s + 1));
 console.log(
   scores.filter((s) => {
     s >= 60;
-  })
+  }),
 );
 // 출력: []
 // 실수: 아무것도 안 돌려주니 전부 undefined(falsy)로 취급되어 다 걸러집니다.
-
 
 // ── 정리 ──
 
@@ -256,7 +256,6 @@ console.log(
 // 4. some / every  — 하나라도 / 전부. 결과는 true·false.
 // 5. 콜백이 돌려준 값이 truthy 면 남고 falsy 면 빠진다. 값을 '바꾸는' 게 아니다.
 // 6. filter → map 처럼 이어 쓰는 것을 체이닝이라고 한다.
-
 
 // ============================================================
 // 직접 해보기 정답

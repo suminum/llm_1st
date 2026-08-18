@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -67,12 +67,14 @@
 
     <p class="guide">
       브라우저로 열고 입력한 뒤 <strong>추가</strong> 버튼을 누르거나
-      <strong>Enter</strong> 를 쳐 보세요. <strong>F12 → Console</strong> 도 함께 보세요.
-    
+      <strong>Enter</strong> 를 쳐 보세요. <strong>F12 → Console</strong> 도
+      함께 보세요.
+
       <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
-      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
-      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을
+      만드는 코드입니다. 이 자료에서는 가르치지 않습니다.
+      <code>&lt;script&gt;</code> 안부터 읽으세요.
     </p>
 
     <div class="demo">
@@ -81,221 +83,12 @@
         <label for="todoInput">할 일</label>
         <input type="text" id="todoInput" placeholder="예: 장보기" />
         <button type="submit">추가</button>
+        <button type="button" id="todoreset">리셋 버튼</button>
         <div class="error" id="errorMsg"></div>
       </form>
       <ul id="todoList"></ul>
     </div>
 
-    <script>
-      // ============================================================
-      // 11단원 · 개념 04 — form submit
-      // ------------------------------------------------------------
-      // 실행: 브라우저로 열고 입력 후 추가 버튼 또는 Enter
-      // ============================================================
-      //
-      // 입력칸이 여러 개인 화면은 form 태그로 묶습니다. 이유가 있습니다.
-      //
-      //   1) Enter 키만 쳐도 제출됩니다 (버튼을 안 눌러도 됨)
-      //   2) 제출 처리를 한 곳(submit 이벤트)에서 합니다
-      //   3) 브라우저의 기본 검사(required 등)를 쓸 수 있습니다
-
-      // ── 섹션 1: submit 이벤트와 preventDefault ──
-
-      const todoForm = document.querySelector("#todoForm");
-      const todoInput = document.querySelector("#todoInput");
-      const todoList = document.querySelector("#todoList");
-      const errorMsg = document.querySelector("#errorMsg");
-
-      todoForm.addEventListener("submit", (e) => {
-        e.preventDefault(); // ★ 이 줄이 없으면 페이지가 새로고침됩니다
-
-        console.log("submit 이벤트 발생");
-        handleSubmit();
-      });
-
-      // e.preventDefault() 를 빠뜨리면 어떻게 될까요?
-      //   form 의 기본 동작은 "입력값을 서버로 보내고 페이지를 새로고침" 입니다.
-      //   그래서 화면이 깜빡이면서 방금 만든 목록이 전부 사라집니다.
-      //   "버튼을 눌렀는데 화면이 초기화돼요" 의 원인이 거의 항상 이것입니다.
-      //
-      // ✏️ 직접 해보기 1 — 글로 읽으면 안 와닿습니다. 3초면 되니 직접 보세요.
-      //   ① 할 일을 두세 개 추가해서 목록을 만듭니다.
-      //   ② 위의 e.preventDefault(); 줄 맨 앞에 // 를 붙여 주석 처리합니다.
-      //   ③ 저장하고 새로고침한 뒤, 다시 추가해 봅니다.
-      //   → 화면이 한 번 깜빡이면서 목록이 통째로 사라집니다.
-      //   → 주소창도 보세요. ?todoInput=장보기 처럼 값이 주소에 붙습니다.
-      //      "서버로 보냈다" 는 흔적입니다.
-      //   ④ 확인했으면 // 를 다시 지워서 되돌려 놓으세요.
-      //
-      // form 을 다룰 때는 preventDefault 를 반사적으로 쓴다고 생각하세요.
-
-      // ── 섹션 2: 입력값 검사 ──
-
-      function handleSubmit() {
-        const value = todoInput.value.trim(); // 앞뒤 공백 제거 (10단원 개념05)
-
-        // [검사 1] 비어 있는가 — 조기 반환 (05단원 개념03)
-        if (!value) {
-          errorMsg.textContent = "할 일을 입력해 주세요";
-          todoInput.focus(); // 커서를 다시 입력칸으로
-          console.log("검사 실패: 빈 값");
-          return; // 여기서 함수가 끝납니다
-        }
-
-        // [검사 2] 너무 긴가
-        if (value.length > 20) {
-          errorMsg.textContent = "20자 이내로 입력해 주세요";
-          console.log("검사 실패: 너무 김");
-          return;
-        }
-
-        // [검사 3] 이미 있는가
-        // 요소.children 은 그 안에 들어 있는 자식 요소들의 묶음입니다.
-        // NodeList 처럼 배열이 아니라서, map 을 쓰려면 [...] 로 펼쳐야 합니다.
-        // (10단원 개념01 섹션 4에서 boxes 에 했던 것과 같습니다)
-        const existing = [...todoList.children].map((li) => li.textContent);
-        if (existing.includes(value)) {
-          errorMsg.textContent = "이미 있는 항목입니다";
-          console.log("검사 실패: 중복");
-          return;
-        }
-
-        // 여기까지 왔다면 통과입니다
-        errorMsg.textContent = "";
-        addTodo(value);
-      }
-
-      // 검사를 위에서 하나씩 하고 안 맞으면 바로 return 합니다.
-      // else 가 하나도 없어서 들여쓰기가 얕고 읽기 좋습니다. 조기 반환 패턴입니다.
-      //
-      // trim( ) 을 쓴 이유: 공백만 친 경우도 걸러내기 위해서입니다.
-      //   "   " 는 빈 문자열이 아니라서 !value 로는 못 걸러냅니다.
-
-      // ✏️ 직접 해보기 2 — 입력칸에 스페이스만 세 칸 치고 추가를 눌러 보세요.
-      //                    무엇이 나오나요? trim() 이 없었다면 어떻게 됐을까요?
-
-      // ── 섹션 3: 목록에 추가하고 입력칸 비우기 ──
-
-      function addTodo(text) {
-        const li = document.createElement("li"); // 10단원 개념04
-        li.textContent = text;
-        todoList.appendChild(li);
-
-        todoInput.value = ""; // 입력칸 비우기
-        todoInput.focus(); // 커서를 다시 입력칸으로 — 연속 입력이 편해집니다
-
-        console.log("추가됨:", text, "/ 현재", todoList.children.length, "개");
-      }
-
-      // 입력칸을 비우고 focus 를 주는 것까지가 한 세트입니다.
-      // 이게 없으면 사용자가 매번 지우고 다시 클릭해야 합니다.
-
-      // 폼 전체를 비우려면 이렇게 씁니다.
-      //   todoForm.reset();
-      // 입력칸이 여러 개일 때 편합니다.
-
-      // ✏️ 직접 해보기 3 — 추가할 때마다 콘솔에 전체 개수를 찍고 있습니다.
-      //                    화면에도 "총 N개" 를 보여 주려면 어디를 고쳐야 할까요?
-
-      // ── 섹션 4: 버튼의 type 을 조심하세요 ──
-
-      // form 안의 button 은 type 을 안 쓰면 기본이 submit 입니다.
-      //
-      //     <button>추가</button>           → type="submit" 과 같음
-      //     <button type="submit">추가</button>  → 제출 (이 파일)
-      //     <button type="button">그냥버튼</button> → 제출하지 않음
-      //
-      // form 안에 "취소" 나 "지우기" 같은 버튼을 넣을 때 type="button" 을
-      // 안 쓰면 그 버튼도 폼을 제출해 버립니다. 아주 자주 겪는 문제입니다.
-
-      // ✏️ 직접 해보기 4 — 이 폼에 "전부 지우기" 버튼을 넣는다면 type 을
-      //                    무엇으로 해야 할까요? 안 쓰면 무슨 일이 생길까요?
-
-      // ── 섹션 5: click 대신 submit 을 쓰는 이유 ──
-
-      // 입력칸에서 Enter 를 치면 브라우저가 알아서 form 을 제출합니다.
-      // 그래서 이 파일에서는 Enter 만 쳐도 할 일이 추가됩니다. 직접 해 보세요.
-      //
-      // 그럼 버튼에 click 을 붙이면 안 될까요? form 안이라면 그것도 동작합니다.
-      // Enter 를 치면 브라우저가 제출 버튼을 대신 눌러 주기 때문입니다.
-      // (섹션 4에서 "form 안의 다른 버튼도 폼을 제출해 버린다" 고 한 것이 이 동작 때문입니다)
-      //
-      // 그래도 submit 을 쓰는 이유는 이렇습니다.
-      //   1) 제출하는 길이 여러 개여도(버튼 클릭 / Enter / 나중에 추가할 다른 버튼)
-      //      받는 곳은 한 군데뿐입니다.
-      //   2) form 이 없으면 Enter 가 아예 안 먹습니다. 그때는 keydown 을 따로 달아야
-      //      하는데(개념05 가 그렇게 합니다) form 을 쓰면 그럴 필요가 없습니다.
-      //   3) input 에 required 를 달면 브라우저가 알아서 빈 칸을 막아 줍니다.
-
-      // ✏️ 직접 해보기 5 — 입력칸에 "장보기" 를 치고 버튼을 누르지 말고
-      //                    Enter 만 쳐 보세요. 버튼을 누른 것과 같은 일이 일어나나요?
-
-      // ── 섹션 6: 자주 하는 실수 ──
-
-      // [실수 1] preventDefault 를 빠뜨림 (섹션 1) — 1순위 실수입니다.
-
-      // [실수 2] 매개변수 e 를 안 받고 preventDefault 를 씀
-      // form.addEventListener("submit", () => { e.preventDefault(); });
-      // 실수: ReferenceError: e is not defined
-
-      // [실수 3] 검사 후 return 을 빠뜨림
-      // if (!value) { errorMsg.textContent = "..."; }
-      // addTodo(value);
-      // 실수: 에러 메시지를 띄우고도 빈 항목이 추가됩니다. return 이 필요합니다.
-
-      // [실수 4] form 안의 다른 버튼에 type="button" 을 안 씀 (섹션 4)
-
-      // [실수 5] trim 을 안 해서 공백만 입력한 것이 통과
-      // 공백 세 칸 "   " 는 빈 문자열이 아니라 truthy 입니다.
-
-      // ── 정리 ──
-
-      // 1. form.addEventListener("submit", (e) => { e.preventDefault(); ... })
-      // 2. preventDefault 를 빠뜨리면 페이지가 새로고침되어 내용이 날아간다.
-      // 3. 검사는 위에서 하나씩 하고 안 맞으면 바로 return (조기 반환).
-      // 4. value.trim() 으로 공백만 입력한 경우를 걸러낸다.
-      // 5. 처리 후 입력칸을 비우고 focus() 를 준다.
-      // 6. form 안의 제출용이 아닌 버튼에는 type="button" 을 쓴다.
-
-      // ============================================================
-      // 직접 해보기 정답
-      // ============================================================
-      //
-      // 1) 화면이 한 번 깜빡이면서 방금 만든 목록이 통째로 사라집니다.
-      //    주소창에 ?todoInput=장보기 가 붙는 것도 함께 보세요.
-      //    → form 의 기본 동작인 "서버로 보내고 새로고침" 이 실행된 것입니다.
-      //      preventDefault 는 그 기본 동작을 취소하는 역할입니다.
-      //
-      // 2) // 콘솔: 검사 실패: 빈 값
-      //    // 화면: 할 일을 입력해 주세요
-      //    → trim() 이 "   " 를 "" 로 만들어 주어 !value 에 걸립니다.
-      //      trim() 이 없었다면 "   " 는 truthy 라서 검사를 통과하고,
-      //      화면에 아무것도 안 보이는 빈 항목이 목록에 추가됩니다.
-      //
-      // 3) 화면에 개수를 보여 줄 요소를 하나 만들고(예: <p id="countText">),
-      //    addTodo 함수 안에서 함께 갱신하면 됩니다.
-      //
-      //    document.querySelector("#countText").textContent =
-      //      `총 ${todoList.children.length}개`;
-      //
-      //    삭제 기능이 생기면 개수 갱신도 여러 곳에서 필요해집니다.
-      //    그럴 때는 갱신만 하는 함수(updateCount)를 따로 만들어 두고
-      //    추가·삭제 양쪽에서 부르는 것이 좋습니다.
-      //
-      // 4) type="button" 을 써야 합니다.
-      //
-      //    <button type="button">전부 지우기</button>
-      //
-      //    → type 을 안 쓰면 기본이 submit 이라, 지우려고 누를 때마다 폼이
-      //      제출됩니다. handleSubmit 이 실행되면서 엉뚱하게 항목이 추가되거나
-      //      "할 일을 입력해 주세요" 가 뜹니다.
-      //
-      // 5) 같은 일이 일어납니다. 항목이 그대로 추가됩니다.
-      //    // 콘솔: submit 이벤트 발생
-      //    // 콘솔: 추가됨: 장보기 / 현재 1 개
-      //    → 입력칸에서 Enter 를 치면 브라우저가 알아서 폼을 제출하기 때문입니다.
-      //      버튼 클릭이든 Enter 든 결국 같은 submit 이벤트로 모입니다.
-      //      이것이 click 대신 submit 을 쓰는 가장 큰 이유입니다.
-    </script>
+    <script src="./연습지.js"></script>
   </body>
 </html>

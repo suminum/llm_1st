@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -52,13 +52,14 @@
     <h1>개념 02 — 콜백 지옥과 Promise</h1>
 
     <p class="guide">
-      브라우저로 열고 <strong>F12 → Console</strong> 을 반드시 함께 보세요. 버튼을 누르면
-      단계마다 1초씩 걸립니다.
-    
+      브라우저로 열고 <strong>F12 → Console</strong> 을 반드시 함께 보세요.
+      버튼을 누르면 단계마다 1초씩 걸립니다.
+
       <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
-      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
-      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을
+      만드는 코드입니다. 이 자료에서는 가르치지 않습니다.
+      <code>&lt;script&gt;</code> 안부터 읽으세요.
     </p>
 
     <div class="demo">
@@ -97,40 +98,46 @@
       // ── 섹션 1: 콜백으로 이어 붙이기 ──
 
       // "끝나면 이 함수를 불러 줘" 를 계속 넘기는 방식입니다.
-      function order(callback) {
-        setTimeout(() => {
-          console.log("1. 주문 완료");
-          callback("주문번호-100");
-        }, 1000);
-      }
+      // function order() {
+      //   return new Promise((resolve) => {
+      //     setTimeout(() => {
+      //       console.log("1. 주문 완료 (Promise)");
+      //       resolve("주문번호-200");
+      //     }, 1000);
+      //   });
+      // }
 
-      function pay(orderNo, callback) {
-        setTimeout(() => {
-          console.log("2. 결제 완료");
-          callback(`${orderNo} 결제됨`);
-        }, 1000);
-      }
+      // function pay(orderNo) {
+      //   return new Promise((resolve) => {
+      //     setTimeout(() => {
+      //       console.log("2. 결제 완료 (Promise)");
+      //       resolve(`${orderNo} 결제됨`);
+      //     }, 1000);
+      //   });
+      // }
 
-      function receipt(payInfo, callback) {
-        setTimeout(() => {
-          console.log("3. 영수증 발급");
-          callback(`영수증: ${payInfo}`);
-        }, 1000);
-      }
+      // function receipt(payInfo) {
+      //   return new Promise((resolve) => {
+      //     setTimeout(() => {
+      //       console.log("3. 영수증 발급 (Promise)");
+      //       resolve(`영수증: ${payInfo}`);
+      //     }, 1000);
+      //   });
+      // }
 
-      document.querySelector("#callbackBtn").addEventListener("click", () => {
-        out1.textContent = "진행 중...";
+      // document.querySelector("#callbackBtn").addEventListener("click", () => {
+      out1.textContent = "진행 중...";
 
-        // 콜백 안에 콜백 안에 콜백 — 계단처럼 깊어집니다
-        order((orderNo) => {
-          pay(orderNo, (payInfo) => {
-            receipt(payInfo, (result) => {
-              out1.textContent = result;
-              console.log("최종:", result);
-            });
-          });
-        });
-      });
+      // 콜백 안에 콜백 안에 콜백 — 계단처럼 깊어집니다
+      //   order((orderNo) => {
+      //     pay(orderNo, (payInfo) => {
+      //       receipt(payInfo, (result) => {
+      //         out1.textContent = result;
+      //         console.log("최종:", result);
+      //       });
+      //     });
+      //   });
+      // });
 
       // 이렇게 오른쪽으로 계속 밀려나는 모양을 '콜백 지옥' 이라고 부릅니다.
       // 단계가 5개만 되어도 읽을 수 없게 됩니다.
@@ -218,7 +225,7 @@
 
       // ✏️ 직접 해보기 2 — orderP() 에 .then 을 붙여, 받은 값을 콘솔에 찍어 보세요.
       //                    값이 바로 나오나요, 조금 뒤에 나오나요?
-
+      console.log(order.p().then);
       // ── 섹션 3: then 으로 이어 붙이기 ──
 
       document.querySelector("#promiseBtn").addEventListener("click", () => {

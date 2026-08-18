@@ -21,4 +21,6 @@ console.log(tags2?.includes("d") ?? "미정");
 //undifined 나오게끔하기 힘드네
 
 console.log(delete sumin.country);
+//country가 없으니까 삭제할 것이 없지만, 삭제 작업
+// //자체는 정상적으로 수행된 것으로 보고 true를 반환해.
 delete sumin?.country;

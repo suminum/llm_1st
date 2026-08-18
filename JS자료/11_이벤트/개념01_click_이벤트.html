@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -54,14 +54,15 @@
     <h1>개념 01 — click 이벤트</h1>
 
     <p class="guide">
-      브라우저로 열고 <strong>F12 → Console</strong> 을 함께 보세요. 이번 단원부터는
-      <strong>버튼을 직접 눌러야</strong> 결과가 나옵니다. 페이지를 여는 것만으로는
-      아무 일도 일어나지 않습니다.
-    
+      브라우저로 열고 <strong>F12 → Console</strong> 을 함께 보세요. 이번
+      단원부터는 <strong>버튼을 직접 눌러야</strong> 결과가 나옵니다. 페이지를
+      여는 것만으로는 아무 일도 일어나지 않습니다.
+
       <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
-      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
-      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을
+      만드는 코드입니다. 이 자료에서는 가르치지 않습니다.
+      <code>&lt;script&gt;</code> 안부터 읽으세요.
     </p>
 
     <div class="demo">
@@ -70,7 +71,7 @@
       <div class="output" id="out1">아직 안 눌렀습니다</div>
 
       <h3>② 누를 때마다 숫자가 올라갑니다</h3>
-      <button id="btn2">+1</button>
+      <button id="btn2">제곱</button>
       <div class="output" id="out2">0</div>
 
       <h3>③ 한 버튼에 두 가지 일</h3>
@@ -108,7 +109,7 @@
       const out1 = document.querySelector("#out1");
 
       btn1.addEventListener("click", () => {
-        out1.textContent = "버튼을 눌렀습니다!";
+        out1.textContent = "엄수민";
         console.log("btn1 클릭됨");
       });
 
@@ -156,6 +157,7 @@
       function sayHello(name) {
         console.log(`${name}님 안녕하세요`);
       }
+      btn1.addEventListener("click", () => sayHello("홍길동"));
       // btn1.addEventListener("click", sayHello("김민준"));   ← 틀림
       // btn1.addEventListener("click", () => sayHello("김민준"));  ← 맞음
 
@@ -167,10 +169,10 @@
       const btn2 = document.querySelector("#btn2");
       const out2 = document.querySelector("#out2");
 
-      let count = 0; // 콜백 '밖'에 만들어야 값이 유지됩니다
+      let count = 2; // 콜백 '밖'에 만들어야 값이 유지됩니다
 
       btn2.addEventListener("click", () => {
-        count++;
+        count *= count;
         out2.textContent = count;
         console.log("현재 개수:", count);
       });
@@ -192,6 +194,9 @@
 
       btn3.addEventListener("click", () => {
         console.log("두 번째");
+      });
+      btn3.addEventListener("click", () => {
+        console.log("세 번째");
       });
 
       // 같은 이벤트에 여러 개를 붙이면 붙인 순서대로 전부 실행됩니다.
@@ -217,7 +222,7 @@
 
         out4.classList.toggle("on", isOn); // 10단원 개념03
         out4.textContent = isOn ? "불이 켜졌습니다" : "불이 꺼져 있습니다";
-        btn4.textContent = isOn ? "불 끄기" : "불 켜기";
+        btn4.textContent = isOn ? "off" : "on";
 
         console.log("현재 상태:", isOn);
       });
@@ -235,7 +240,7 @@
 
       function onceHandler() {
         console.log("이 메시지는 한 번만 나옵니다");
-        btn1.removeEventListener("click", onceHandler);
+        btn1.removeEventListener("click", onceHandler); //더이상 이벤트에 쓰지 않겠다
       }
       btn1.addEventListener("click", onceHandler);
 
@@ -250,7 +255,8 @@
         () => {
           console.log("btn2 를 처음 누른 순간에만 나옵니다");
         },
-        { once: true }
+        { once: true },
+        { once: true },
       );
 
       // ✏️ 직접 해보기 6 — btn4 에 { once: true } 로 콜백을 하나 더 붙이고

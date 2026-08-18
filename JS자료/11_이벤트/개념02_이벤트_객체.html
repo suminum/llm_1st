@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -63,12 +63,14 @@
     <h1>개념 02 — 이벤트 객체</h1>
 
     <p class="guide">
-      브라우저로 열고 버튼을 눌러 보세요. <strong>F12 → Console</strong> 도 함께 보세요.
-    
+      브라우저로 열고 버튼을 눌러 보세요. <strong>F12 → Console</strong> 도 함께
+      보세요.
+
       <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
-      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
-      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을
+      만드는 코드입니다. 이 자료에서는 가르치지 않습니다.
+      <code>&lt;script&gt;</code> 안부터 읽으세요.
     </p>
 
     <div class="demo">
@@ -90,7 +92,9 @@
       <div class="output" id="out3">누른 키가 여기에 나옵니다</div>
 
       <h3>④ 기본 동작 막기</h3>
-      <a href="https://example.com" id="blockedLink">이 링크는 이동하지 않습니다</a>
+      <a href="https://example.com" id="blockedLink"
+        >이 링크는 이동하지 않습니다</a
+      >
       <div class="output" id="out4">링크를 눌러 보세요</div>
     </div>
 
@@ -116,6 +120,7 @@
 
       const out1 = document.querySelector("#out1");
       const menuButtons = document.querySelectorAll(".menuBtn");
+      const pick2 = [];
 
       menuButtons.forEach((btn) => {
         btn.addEventListener("click", (e) => {
@@ -127,6 +132,7 @@
 
           console.log("눌린 요소:", e.target);
           console.log("메뉴:", name, "가격:", price);
+          console.log(Number(e.target.dataset.price) * 2);
         });
       });
 
@@ -209,6 +215,10 @@
           out3.textContent = `엔터! 입력값은 "${keyInput.value}" 입니다`;
           console.log("엔터가 눌렸습니다");
         }
+        if (e.key === "Escape") {
+          // out3.textContent = "";
+          keyInput.value = "";
+        }
       });
 
       // e.key 에 들어오는 값
@@ -225,7 +235,7 @@
       const out4 = document.querySelector("#out4");
 
       blockedLink.addEventListener("click", (e) => {
-        e.preventDefault(); // 링크의 '페이지 이동' 을 막습니다
+        // e.preventDefault(); // 링크의 '페이지 이동' 을 막습니다
 
         out4.textContent = "이동을 막았습니다. 주소창을 보세요 — 그대로입니다.";
         console.log("링크 이동을 막았습니다");

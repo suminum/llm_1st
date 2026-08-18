@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -37,13 +37,15 @@
     <h1>개념 01 — DOM 이란과 요소 선택</h1>
 
     <p class="guide">
-      이 파일을 더블클릭해서 브라우저로 열고, <strong>F12</strong> 를 눌러 개발자도구의
-      <strong>Console</strong> 탭을 함께 보세요. 코드의 결과가 거기에 찍힙니다.
-    
+      이 파일을 더블클릭해서 브라우저로 열고, <strong>F12</strong> 를 눌러
+      개발자도구의 <strong>Console</strong> 탭을 함께 보세요. 코드의 결과가
+      거기에 찍힙니다.
+
       <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
-      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
-      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을
+      만드는 코드입니다. 이 자료에서는 가르치지 않습니다.
+      <code>&lt;script&gt;</code> 안부터 읽으세요.
     </p>
 
     <div class="demo">
@@ -80,12 +82,12 @@
       console.log(typeof document);
       // 콘솔: object
       // document 는 브라우저가 미리 만들어 둔 객체입니다.
-      // 07단원에서 배운 객체와 똑같습니다. 점으로 속성을 꺼내고 메소드를 부릅니다.
+      // 07단원에서 배운 객체와 똑같습니다. 점으로 속성을 꺼내고 메소드()를 부릅니다.
 
       // ✏️ 직접 해보기 1 — console.log(document.body) 를 찍어 보세요.
       //   찍힌 결과 왼쪽의 ▶ 삼각형을 눌러 펼쳐 보세요.
       //   태그가 태그를 품고 있는 나무 모양이 보입니다. 그게 DOM 입니다.
-
+      console.log(document.body);
       // ── 잠깐: 내 화면에서 선택자를 어떻게 알아내나 ──
       //
       // 이 자료는 "id 가 title 인 요소" 처럼 답을 알려 주지만,
@@ -115,8 +117,8 @@
       // 콘솔: <p class="box">첫 번째 상자</p>
       // 상자가 세 개인데 첫 번째만 나왔습니다. querySelector 는 하나만 고릅니다.
 
-      const button = document.querySelector("button");
-      console.log(button);
+      // const button = document.querySelector("button");
+      // console.log(button);
       // 콘솔: <button id="myButton">버튼</button>
 
       // 고른 요소도 객체입니다. 속성을 꺼내 볼 수 있습니다.
@@ -126,13 +128,18 @@
       // 콘솔: title
 
       // ✏️ 직접 해보기 2 — button 의 textContent 를 콘솔에 찍어 보세요.
-
+      const button2 = document.querySelector("#myButton");
+      console.log("내 버튼: " + button2.textContent);
       // ── 섹션 3: 못 찾으면 null ──
 
       const notExist = document.querySelector("#없는아이디");
-      console.log(notExist);
+      console.log(notExist ?? "에러 남");
       // 콘솔: null
-
+      if (notExist) {
+        console.log("찾았다");
+      } else {
+        console.log("요소없음");
+      }
       // null 에서 무언가를 꺼내려 하면 에러가 납니다. (07단원에서 봤죠)
       // console.log(notExist.textContent);
       // 실수: TypeError: Cannot read properties of null (reading 'textContent')
@@ -194,7 +201,8 @@
       // 콘솔: ['첫 번째 상자', '두 번째 상자', '세 번째 상자']
 
       // ✏️ 직접 해보기 4 — 모든 .box 의 글자를 forEach 로 콘솔에 찍어 보세요.
-
+      console.log("직접해보기 4");
+      boxArray.forEach((a) => console.log(a.textContent));
       // ── 섹션 5: getElementById — 옛날 방식 ──
 
       // querySelector 가 생기기 전에 쓰던 방법입니다. 아직도 자주 보입니다.
@@ -212,7 +220,12 @@
 
       // ✏️ 직접 해보기 5 — 같은 버튼을 getElementById 와 querySelector 로 각각 고른 뒤,
       //                   === 로 비교한 결과를 콘솔에 찍어 보세요. (아이디는 myButton)
+      console.log("직접해보기 5");
 
+      console.log(
+        document.querySelector("#myBotton") ===
+          document.getElementById("myBotton"),
+      );
       // ── 섹션 6: 선택자 더 써 보기 ──
 
       // CSS 선택자를 아는 만큼 그대로 쓸 수 있습니다.
@@ -229,6 +242,9 @@
 
       // ✏️ 직접 해보기 6 — .demo 안에 있는 button 을 선택자 하나로 골라
       //                   textContent 를 콘솔에 찍어 보세요.
+      console.log("직접해보기 6");
+
+      console.log(document.querySelector(".demo button").textContent);
 
       // ── 섹션 7: script 를 어디에 둘 것인가 ──
 
