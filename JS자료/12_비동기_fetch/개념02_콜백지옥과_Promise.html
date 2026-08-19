@@ -77,6 +77,7 @@
     </div>
 
     <script>
+      console.log("스크립트 시작");
       // ============================================================
       // 12단원 · 개념 02 — 콜백 지옥과 Promise
       // ------------------------------------------------------------
@@ -184,9 +185,9 @@
       function orderP() {
         return new Promise((resolve) => {
           setTimeout(() => {
-            console.log("1. 주문 완료 (Promise)");
+            console.log("1. 주문 완료 (Promise)주문번호-200");
             resolve("주문번호-200");
-          }, 1000);
+          }, 3000);
         });
       }
 
@@ -208,7 +209,7 @@
       function payP(orderNo) {
         return new Promise((resolve) => {
           setTimeout(() => {
-            console.log("2. 결제 완료 (Promise)");
+            console.log("2. 결제 완료 (Promise)", orderNo);
             resolve(`${orderNo} 결제됨`);
           }, 1000);
         });
@@ -217,7 +218,7 @@
       function receiptP(payInfo) {
         return new Promise((resolve) => {
           setTimeout(() => {
-            console.log("3. 영수증 발급 (Promise)");
+            console.log("3. 영수증 발급 (Promise)", payInfo);
             resolve(`영수증: ${payInfo}`);
           }, 1000);
         });
@@ -225,18 +226,25 @@
 
       // ✏️ 직접 해보기 2 — orderP() 에 .then 을 붙여, 받은 값을 콘솔에 찍어 보세요.
       //                    값이 바로 나오나요, 조금 뒤에 나오나요?
-      console.log(order.p().then);
+      // console.log(orderP().then);
       // ── 섹션 3: then 으로 이어 붙이기 ──
 
       document.querySelector("#promiseBtn").addEventListener("click", () => {
         out2.textContent = "진행 중...";
 
         orderP()
-          .then((orderNo) => payP(orderNo))
+          .then((orderNo) => {
+            savedOrderNo = orderNo;
+            return payP(orderNo);
+          })
           .then((payInfo) => receiptP(payInfo))
+
           .then((result) => {
             out2.textContent = result;
             console.log("최종:", result);
+          })
+          .then(() => {
+            console.log("확인됨", savedOrderNo);
           });
       });
 
