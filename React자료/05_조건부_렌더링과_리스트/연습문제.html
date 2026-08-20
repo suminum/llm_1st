@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>05단원 연습문제 - 조건부 렌더링과 리스트</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 760px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 6px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 4px;
+      }
+      input,
+      select,
+      textarea {
+        padding: 6px 8px;
+        font-size: 15px;
+        font-family: inherit;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 6px;
+      }
+      .summary {
+        background: #eef4ff;
+        border-left: 4px solid #2d6cdf;
+        padding: 12px 20px;
+        margin-top: 32px;
+      }
+      .summary h2 {
+        margin: 6px 0 10px;
+        font-size: 17px;
+      }
+      .summary li {
+        margin: 4px 0;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 4px 0;
+      }
+      .done {
+        text-decoration: line-through;
+        color: #999;
+      }
+      .on {
+        background: #2d6cdf;
+        color: #fff;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+        min-height: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>05단원 연습문제 — 조건부 렌더링과 리스트</h1>
+
+    <p class="guide">
+      <code>&lt;script type="text/babel"&gt;</code> 안의 TODO 자리에 코드를 쓰고
+      저장한 뒤 브라우저를 <strong>새로고침</strong>하세요.
+      <strong>F12 → Console</strong> 도 함께 보세요.
+      <br />
+      1~12는 기본, 13은 [응용], 14는 [도전], 15는 에러 확인입니다.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
+      <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
+      <br /><br />
+      각 문제의 컴포넌트는 이미 만들어져 있습니다. 지우지 말고
+      <code>{/* TODO */}</code> 자리만 채우세요. 문제를 안 푼 상태에서는 회색 상자가
+      비어 있는 것이 정상입니다.
+    </p>
+
+    <div id="root"></div>
+
+    <script src="../_lib/react.development.js"></script>
+    <script src="../_lib/react-dom.development.js"></script>
+    <script src="../_lib/babel.min.js"></script>
+
+    <script type="text/babel">
+      // ============================================================
+      // 05단원 연습문제 — 조건부 렌더링과 리스트
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열기. F12 → Console 도 함께.
+      // ============================================================
+
+      const { useState } = React;
+
+      // ── 문제에서 함께 쓰는 데이터 ──
+
+      const menu = [
+        { id: "americano", name: "아메리카노", price: 4000, soldOut: false },
+        { id: "latte", name: "라떼", price: 4500, soldOut: true },
+        { id: "cake", name: "케이크", price: 6000, soldOut: false },
+        { id: "gimbap", name: "삼각김밥", price: 1200, soldOut: true },
+      ];
+
+      const users = [
+        { id: 101, name: "김민준", age: 20 },
+        { id: 102, name: "이서연", age: 22 },
+        { id: 103, name: "박지훈", age: 28 },
+      ];
+
+      const todos = [
+        { id: 1, text: "우유 사기", done: true },
+        { id: 2, text: "책 반납", done: false },
+        { id: 3, text: "청소하기", done: false },
+      ];
+
+      // ───── 문제 1 ───── (개념01 삼항)
+      // isOpen 이 true 면 "영업 중입니다", false 면 "준비 중입니다" 가
+      // 화면에 나오게 하세요.
+      //
+      // 기대 결과 (화면): 영업 중입니다
+      //                  isOpen 을 false 로 바꿔 저장하면 "준비 중입니다" 가 나와야 합니다.
+      //                  아무것도 안 나오면 중괄호 {} 를 안 쓴 것입니다.
+
+      function Q1() {
+        const isOpen = true;
+
+        return (
+          <div className="demo">
+            <h3>문제 1 — 삼항 연산자</h3>
+            <div className="output">{/* TODO: 여기에 코드를 쓰세요 */}</div>
+          </div>
+        );
+      }
+
+      // ───── 문제 2 ───── (개념01 &&)
+      // newCount 가 0보다 클 때만 "새 알림 3개" 처럼 보여 주세요.
+      // 0일 때는 아무것도 안 나와야 합니다.
+      //
+      // 기대 결과 (화면): 새 알림 3개
+      //                  newCount 를 0 으로 바꿔 저장하면 아무것도 안 나와야 합니다.
+      //                  0 으로 바꿨는데 화면에 0 이 보이면 && 왼쪽에 개수를 그대로 쓴 것입니다.
+
+      function Q2() {
+        const newCount = 3;
+
+        return (
+          <div className="demo">
+            <h3>문제 2 — && 로 있을 때만 보이기</h3>
+            <div className="output">{/* TODO: 여기에 코드를 쓰세요 */}</div>
+          </div>
+        );
+      }
+
+      // ───── 문제 3 ───── (개념01 변수에 담아 두기)
+      // point 에 따라 아래 셋 중 하나가 나오게 하세요.
+      //   100점 이상 → <p>VIP 회원입니다</p>
+      //   50점 이상  → <p>일반 회원입니다</p>
+      //   그 밖      → <p>신규 회원입니다</p>
+      // return 밖에서 if 로 골라 badge 변수에 담고, return 안에서는 {badge} 만 쓰세요.
+      //
+      // 기대 결과 (화면): 일반 회원입니다
+      //                  "신규 회원입니다" 가 나오면 if 의 순서나 부등호를 확인하세요.
+
+      function Q3() {
+        const point = 70;
+        let badge;
+
+        // TODO: 여기에 if 문을 쓰세요
+
+        return (
+          <div className="demo">
+            <h3>문제 3 — 변수에 담아 두기</h3>
+            <div className="output">
+              <p>이서연님 · {point}점</p>
+              {badge}
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 4 ───── (개념01 일찍 return)
+      // ProfileCard 는 user 가 없으면 <p>회원 정보가 없습니다</p> 만 돌려주고
+      // 끝나야 합니다. 함수 맨 위에서 확인하고 먼저 return 하세요.
+      //
+      // 확인하는 방법: 아래 Q4 의 user={users[0]} 을 user={null} 로 바꿔 저장하세요.
+      //
+      // 기대 결과 (화면): 지금은 "김민준 (20세)" 가 나옵니다.
+      //                  user={null} 로 바꾸고 일찍 return 을 썼다면
+      //                  → 회원 정보가 없습니다
+      //                  일찍 return 을 안 썼다면 화면이 통째로 비고 콘솔에
+      //                  TypeError: Cannot read properties of null (reading 'name')
+      //                  이 납니다. 확인했으면 users[0] 으로 되돌리세요.
+
+      function ProfileCard({ user }) {
+        // TODO: 여기에 일찍 return 하는 코드를 쓰세요
+
+        return (
+          <p>
+            {user.name} ({user.age}세)
+          </p>
+        );
+      }
+
+      function Q4() {
+        return (
+          <div className="demo">
+            <h3>문제 4 — 일찍 return</h3>
+            <div className="output">
+              <ProfileCard user={users[0]} />
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 5 ───── (개념02 map)
+      // fruits 의 각 값을 <li> 한 줄씩으로 그리세요. key 도 빠뜨리지 마세요.
+      // 이 배열은 값이 서로 겹치지 않습니다.
+      //
+      // 기대 결과 (화면): 사과 / 포도 / 딸기 세 줄
+      //                  아무 줄도 안 나오면 return 을 빠뜨렸거나 forEach 를 쓴 것입니다.
+      //                  콘솔에 key 경고가 나면 key 를 안 붙인 것입니다.
+
+      function Q5() {
+        const fruits = ["사과", "포도", "딸기"];
+
+        return (
+          <div className="demo">
+            <h3>문제 5 — map 으로 목록 그리기</h3>
+            <div className="output">
+              <ul>{/* TODO: 여기에 코드를 쓰세요 */}</ul>
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 6 ───── (개념02 객체 배열)
+      // users 를 "김민준 (20세)" 형태로 한 줄씩 그리세요. key 는 id 를 쓰세요.
+      //
+      // 기대 결과 (화면): 김민준 (20세) / 이서연 (22세) / 박지훈 (28세)
+      //                  "[object Object]" 가 나오거나 콘솔에
+      //                  "Objects are not valid as a React child" 에러가 나면
+      //                  객체를 통째로 넣은 것입니다. 안에서 값을 꺼내 쓰세요.
+
+      function Q6() {
+        return (
+          <div className="demo">
+            <h3>문제 6 — 객체 배열 그리기</h3>
+            <div className="output">
+              <ul>{/* TODO: 여기에 코드를 쓰세요 */}</ul>
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 7 ───── (개념02 컴포넌트에 넘기기)
+      // 아래 MenuRow 컴포넌트를 써서 menu 를 그리세요.
+      // MenuRow 는 name 과 price 를 props 로 받습니다. MenuRow 는 고치지 마세요.
+      // key 를 어디에 붙여야 하는지 주의하세요.
+      //
+      // 기대 결과 (화면): 아메리카노 — 4000원 / 라떼 — 4500원 /
+      //                  케이크 — 6000원 / 삼각김밥 — 1200원
+      //                  key 를 붙였는데도 콘솔에 key 경고가 나면
+      //                  MenuRow 안쪽 <li> 에 붙인 것입니다.
+
+      function MenuRow({ name, price }) {
+        return (
+          <li>
+            {name} — {price}원
+          </li>
+        );
+      }
+
+      function Q7() {
+        return (
+          <div className="demo">
+            <h3>문제 7 — 컴포넌트에 넘기기</h3>
+            <div className="output">
+              <ul>{/* TODO: 여기에 코드를 쓰세요 */}</ul>
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 8 ───── (개념03 key 고르기)
+      // orders 는 오늘 들어온 주문입니다. 같은 메뉴를 두 번 시킬 수 있습니다.
+      // 주문 번호와 메뉴 이름을 "1번 · 아메리카노" 형태로 한 줄씩 그리세요.
+      //
+      // 무엇을 key 로 쓸지 잘 고르세요. name 을 key 로 쓰면 어떻게 될까요?
+      // 궁금하면 일부러 name 을 넣어 보고 콘솔을 확인한 뒤 고쳐도 좋습니다.
+      //
+      // 기대 결과 (화면): 1번 · 아메리카노 / 2번 · 라떼 / 3번 · 아메리카노
+      //                  콘솔에 "Encountered two children with the same key" 가 나오면
+      //                  겹치는 값을 key 로 쓴 것입니다.
+
+      function Q8() {
+        const orders = [
+          { id: 1, name: "아메리카노" },
+          { id: 2, name: "라떼" },
+          { id: 3, name: "아메리카노" },
+        ];
+
+        return (
+          <div className="demo">
+            <h3>문제 8 — 무엇을 key 로 쓸까</h3>
+            <div className="output">
+              <ul>{/* TODO: 여기에 코드를 쓰세요 */}</ul>
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 9 ───── (개념03 index 를 key 로 쓰면)
+      // 아래 목록은 key 로 index 를 쓰고 있습니다.
+      // [맨 앞 항목 지우기] 를 눌러 보세요. 이름표와 입력칸이 어긋납니다.
+      // key 를 고쳐서 어긋나지 않게 하세요. (한 곳만 고치면 됩니다)
+      //
+      // 기대 결과 (화면): 고치기 전 — 지우면 "책 반납 [우유 사기]" 처럼 어긋납니다
+      //                  고친 뒤   — 지우면 "책 반납 [책 반납]" 으로 맞습니다
+      //                  고쳤는데도 어긋나면 새로고침을 안 한 것입니다.
+
+      function Q9() {
+        const [list, setList] = useState(todos);
+
+        return (
+          <div className="demo">
+            <h3>문제 9 — index 를 key 로 쓰면</h3>
+
+            <button onClick={() => setList(list.slice(1))}>맨 앞 항목 지우기</button>
+            <button onClick={() => setList(todos)}>처음으로 되돌리기</button>
+
+            <div className="output">
+              <ul>
+                {list.map((todo, index) => (
+                  // TODO: 아래 key 를 고치세요
+                  <li key={index}>
+                    {todo.text} <input defaultValue={todo.text} />
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 10 ───── (개념04 filter + map)
+      // menu 에서 품절이 아닌 것만(soldOut 이 false) 골라 이름을 그리세요.
+      //
+      // 기대 결과 (화면): 아메리카노 / 케이크 두 줄
+      //                  네 줄이 다 나오면 filter 를 안 쓴 것입니다.
+      //                  라떼와 삼각김밥이 나오면 조건을 뒤집어 쓴 것입니다.
+
+      function Q10() {
+        return (
+          <div className="demo">
+            <h3>문제 10 — 걸러서 그리기</h3>
+            <div className="output">
+              <ul>{/* TODO: 여기에 코드를 쓰세요 */}</ul>
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 11 ───── (개념04 정렬)
+      // menu 를 싼 것부터 정렬해서 그리세요.
+      // 단, 원본 menu 의 순서는 바뀌면 안 됩니다.
+      //
+      // 기대 결과 (화면): 정렬한 목록 — 삼각김밥 / 아메리카노 / 라떼 / 케이크
+      //                  원본 확인   — 아메리카노 / 라떼 / 케이크 / 삼각김밥
+      //                  아래 '원본 확인' 목록의 순서까지 바뀌면
+      //                  복사하지 않고 원본을 정렬한 것입니다.
+
+      function Q11() {
+        return (
+          <div className="demo">
+            <h3>문제 11 — 원본을 지키며 정렬하기</h3>
+            <div className="output">
+              <p>정렬한 목록</p>
+              <ul>{/* TODO: 여기에 코드를 쓰세요 */}</ul>
+
+              <p>원본 확인</p>
+              <ul>
+                {menu.map((item) => (
+                  <li key={item.id}>{item.name}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 12 ───── (개념05 비었을 때와 0 함정)
+      // cart 가 비었을 때 아래 두 가지가 되게 하세요.
+      //   (1) "장바구니가 비었습니다" 안내 문구가 나온다
+      //   (2) 화면에 0 이 찍히지 않는다
+      // 아래 코드는 지금 0 이 찍힙니다. 두 곳을 고쳐야 합니다.
+      //
+      // 기대 결과 (화면): 장바구니가 비었습니다
+      //                  대괄호 안에 0 이 남아 있으면 && 왼쪽을 안 고친 것입니다.
+
+      function Q12() {
+        const cart = [];
+
+        return (
+          <div className="demo">
+            <h3>문제 12 — 비었을 때 처리</h3>
+            <div className="output">
+              {/* TODO: 비었을 때 안내 문구가 나오게 하세요 */}
+
+              {/* TODO: 아래 줄을 고쳐 0 이 안 나오게 하세요 */}
+              <p>[{cart.length && <span>담긴 상품이 있습니다</span>}]</p>
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 13 ───── [응용] (개념04 + 개념02)
+      // 버튼 세 개로 목록을 갈아 끼우세요.
+      //   [전체]   → menu 전부
+      //   [판매중] → soldOut 이 false 인 것만
+      //   [품절]   → soldOut 이 true 인 것만
+      // 지금 눌린 버튼에는 className="on" 이 붙어 파랗게 보여야 합니다.
+      // mode state 는 이미 만들어 두었습니다.
+      //
+      // 기대 결과 (화면): 처음에는 네 줄 모두, [전체] 버튼이 파랗습니다
+      //                  [판매중] → 아메리카노 / 케이크 두 줄
+      //                  [품절]   → 라떼 / 삼각김밥 두 줄
+      //                  버튼 색이 안 바뀌면 className 을 안 붙인 것입니다.
+      //                  목록이 안 바뀌면 shown 을 안 쓰고 menu 를 그대로 그린 것입니다.
+
+      function Q13() {
+        const [mode, setMode] = useState("all");
+
+        // TODO: mode 에 따라 shown 을 정하세요
+        let shown = menu;
+
+        return (
+          <div className="demo">
+            <h3>문제 13 [응용] — 필터 버튼</h3>
+
+            {/* TODO: 버튼 세 개를 만드세요 */}
+
+            <div className="output">
+              <ul>
+                {shown.map((item) => (
+                  <li key={item.id}>{item.name}</li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 14 ───── [도전] (개념02~05 전부)
+      // 아래 두 버튼을 한 화면에서 함께 동작하게 만드세요. 글자는 바뀌지 않습니다.
+      //   ① [품절 감추기] — 누르면 품절 상품이 사라지고, 다시 누르면 돌아온다
+      //   ② [싼 것부터]   — 누르면 가격순으로 정렬되고, 다시 누르면 원래 순서로 돌아온다
+      //   두 버튼 모두 지금 켜져 있으면 className="on" 이 붙어 파랗게 보여야 합니다.
+      // 그리고 아래 세 가지도 지켜야 합니다.
+      //   ③ 지금 보이는 줄이 몇 개인지 "N개 보이는 중" 으로 보여 준다
+      //   ④ 보여 줄 것이 하나도 없으면 "조건에 맞는 메뉴가 없습니다" 를 대신 보여 준다
+      //   ⑤ 원본 menu 의 순서는 절대 바뀌면 안 된다
+      //
+      // 순서에 주의하세요. 거르는 것이 먼저이고 정렬이 나중입니다.
+      // (문제 13을 먼저 풀고 오세요. 버튼 만드는 방법이 같습니다)
+      //
+      // 기대 결과 (화면):
+      //   처음        → 4개 보이는 중 · 아메리카노 / 라떼 / 케이크 / 삼각김밥
+      //   품절 감추기   → 2개 보이는 중 · 아메리카노 — 4000원 / 케이크 — 6000원
+      //   + 싼 것부터   → 2개 보이는 중 · 아메리카노 — 4000원 / 케이크 — 6000원
+      //   품절 감추기 끄기 → 4개 보이는 중 ·
+      //                  삼각김밥 1200 / 아메리카노 4000 / 라떼 4500 / 케이크 6000
+      //   두 버튼을 여러 번 번갈아 눌러도 결과가 같아야 합니다.
+      //   [싼 것부터] 를 껐을 때 원래 순서가 안 돌아오면 원본을 정렬한 것입니다.
+      //   문제 11의 '원본 확인' 목록 순서까지 바뀌었다면 확실히 그렇습니다.
+      //   ④를 확인하려면 menu 의 soldOut 을 전부 true 로 바꿔 보세요.
+
+      function Q14() {
+        const [hideSoldOut, setHideSoldOut] = useState(false);
+        const [sortByPrice, setSortByPrice] = useState(false);
+
+        // TODO: hideSoldOut 과 sortByPrice 를 보고 shown 을 만드세요
+        let shown = menu;
+
+        return (
+          <div className="demo">
+            <h3>문제 14 [도전] — 거르기 + 정렬 + 개수 + 빈 상태</h3>
+
+            {/* TODO: 버튼 두 개를 만드세요 */}
+
+            <div className="output">
+              {/* TODO: 개수와 목록을 보여 주세요. 비었으면 안내 문구를 대신 보여 주세요 */}
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 15 ───── (에러 확인 — 맨 마지막)
+      // 아래 BadList 는 key 를 일부러 뺐습니다.
+      // F12 → Console 을 열고 [key 없이 그려 보기] 버튼을 누르세요.
+      //
+      // 화면에는 세 줄이 멀쩡히 나옵니다. 그런데 콘솔에는 무엇이 나올까요?
+      // 읽어 보고 아래 빈칸을 채워 보세요.
+      //
+      //   경고의 첫 줄은?            _______________________________________
+      //   어느 컴포넌트를 보라고 하나?  _______________________________________
+      //   고치려면 무엇을 해야 하나?   _______________________________________
+      //
+      // 그리고 하나 더: 버튼을 눌러 감췄다가 다시 눌러 보세요.
+      //   경고가 또 나오나요? 왜 그럴까요?  ____________________________________
+
+      // 검증: 경고허용 Each child in a list should have a unique "key" prop
+      function BadList() {
+        const names = ["아메리카노", "라떼", "케이크"];
+
+        return (
+          <ul>
+            {names.map((name) => (
+              <li>{name}</li>
+            ))}
+          </ul>
+        );
+      }
+
+      function Q15() {
+        const [show, setShow] = useState(false);
+
+        return (
+          <div className="demo">
+            <h3>문제 15 — 에러 확인</h3>
+
+            <button onClick={() => setShow(!show)}>
+              {show ? "감추기" : "key 없이 그려 보기"}
+            </button>
+
+            <div className="output">
+              {show ? <BadList /> : <p>아직 안 그렸습니다. 콘솔도 깨끗합니다.</p>}
+            </div>
+          </div>
+        );
+      }
+
+      // ── 전체 화면 그리기 (고치지 마세요) ──
+
+      function App() {
+        return (
+          <div>
+            <Q1 />
+            <Q2 />
+            <Q3 />
+            <Q4 />
+            <Q5 />
+            <Q6 />
+            <Q7 />
+            <Q8 />
+            <Q9 />
+            <Q10 />
+            <Q11 />
+            <Q12 />
+            <Q13 />
+            <Q14 />
+            <Q15 />
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.querySelector("#root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>

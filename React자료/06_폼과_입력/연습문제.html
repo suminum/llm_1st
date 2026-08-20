@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>06단원 연습문제 - 폼과 입력</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 760px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 6px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 4px;
+      }
+      input,
+      select,
+      textarea {
+        padding: 6px 8px;
+        font-size: 15px;
+        font-family: inherit;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 6px;
+      }
+      .summary {
+        background: #eef4ff;
+        border-left: 4px solid #2d6cdf;
+        padding: 12px 20px;
+        margin-top: 32px;
+      }
+      .summary h2 {
+        margin: 6px 0 10px;
+        font-size: 17px;
+      }
+      .summary li {
+        margin: 4px 0;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 4px 0;
+      }
+      .done {
+        text-decoration: line-through;
+        color: #999;
+      }
+      .on {
+        background: #2d6cdf;
+        color: #fff;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+        min-height: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>06단원 연습문제 — 폼과 입력</h1>
+
+    <p class="guide">
+      <code>&lt;script type="text/babel"&gt;</code> 안의 <strong>TODO</strong> 자리에 코드를 쓰고
+      저장한 뒤, 브라우저를 <strong>새로고침(F5)</strong> 하고 직접 쳐 보며 확인하세요.
+      <br /><br />
+      <strong>1~12는 기본, 13은 [응용], 14는 [도전], 15는 에러 확인</strong>입니다.
+      <br /><br />
+      화면이 통째로 비면 코드에 문법 오류가 있는 것입니다.
+      <strong>F12 → Console</strong> 의 빨간 줄을 먼저 읽으세요.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
+      <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
+    </p>
+
+    <div id="root"></div>
+
+    <script src="../_lib/react.development.js"></script>
+    <script src="../_lib/react-dom.development.js"></script>
+    <script src="../_lib/babel.min.js"></script>
+
+    <script type="text/babel">
+      // ============================================================
+      // 06단원 연습문제 — 폼과 입력
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 직접 쳐 보세요. F12 → Console 도 함께.
+      // ============================================================
+
+      const { useState } = React;
+
+      // ───── 문제 1 ───── (개념01)
+      // 입력칸에 친 글자가 아래 줄에 바로 나오게 하세요.
+      // input 에 value 와 onChange 를 붙이면 됩니다.
+      //
+      // 기대 결과 (화면): "김민준" 을 치면 → 입력한 값: 김민준
+      //                  글자는 써지는데 아래 줄이 안 바뀌면 onChange 만 붙이고
+      //                  setText 를 안 부른 것입니다.
+      //                  한 글자도 안 써지면 value 만 붙인 것입니다.
+
+      function Q1() {
+        const [text, setText] = useState("");
+
+        return (
+          <div className="demo">
+            <h3>문제 1 — 제어 컴포넌트</h3>
+            {/* TODO: 아래 input 에 value 와 onChange 를 붙이세요 */}
+            <input placeholder="이름을 입력하세요" />
+            <div className="output">입력한 값: {text}</div>
+          </div>
+        );
+      }
+
+      // ───── 문제 2 ───── (개념01)
+      // 아래 빈 상자에 지금 친 글자 수를 "3자" 형태로 보여 주세요.
+      // input 은 이미 다 되어 있습니다. 상자 안만 채우면 됩니다.
+      //
+      // 기대 결과 (화면): 아무것도 안 치면 → 0자
+      //                  "김민준" 을 치면 → 3자
+      //                  숫자만 나오면 뒤에 "자" 를 안 붙인 것입니다.
+
+      function Q2() {
+        const [memo, setMemo] = useState("");
+
+        return (
+          <div className="demo">
+            <h3>문제 2 — 글자 수 세기</h3>
+            <input value={memo} onChange={(e) => setMemo(e.target.value)} />
+            <div className="output">
+              {/* TODO: 여기에 글자 수를 보여 주세요 */}
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 3 ───── (개념01)
+      // '지우기' 버튼을 누르면 입력칸이 비워지게 하세요.
+      // 입력칸을 직접 건드리지 말고 state 만 바꾸세요.
+      //
+      // 기대 결과 (화면): 누르면 입력칸이 텅 비고 → 지금 값:  (뒤가 빕니다)
+      //                  눌러도 아무 일이 없으면 onClick 을 안 붙인 것입니다.
+
+      function Q3() {
+        const [text, setText] = useState("아메리카노");
+
+        return (
+          <div className="demo">
+            <h3>문제 3 — 지우기 버튼</h3>
+            <input value={text} onChange={(e) => setText(e.target.value)} />
+            {/* TODO: 아래 버튼에 onClick 을 붙이세요 */}
+            <button>지우기</button>
+            <div className="output">지금 값: {text}</div>
+          </div>
+        );
+      }
+
+      // ───── 문제 4 ───── (개념02)
+      // 메모 칸에 친 글자가 form.memo 에 들어가게 handleMemo 를 채우세요.
+      // 이름은 그대로 남아 있어야 합니다.
+      //
+      // 기대 결과 (화면): 메모에 "라떼" 를 치면 → 김민준 / 라떼
+      //                  이름이 사라지면 ...form 을 빠뜨린 것입니다.
+      //                  (그때는 콘솔에 controlled / uncontrolled 경고도 함께 납니다)
+
+      function Q4() {
+        const [form, setForm] = useState({ name: "김민준", memo: "" });
+
+        function handleMemo(e) {
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 4 — 객체 state 와 스프레드</h3>
+            <div>
+              이름 <input value={form.name} readOnly />
+            </div>
+            <div>
+              메모 <input value={form.memo} onChange={handleMemo} />
+            </div>
+            <div className="output">
+              {form.name} / {form.memo}
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 5 ───── (개념02)
+      // 아이디 칸과 비밀번호 칸을 handleChange 하나로 처리하세요.
+      // 두 input 에는 이미 name 이 붙어 있습니다. 대괄호 키를 쓰세요.
+      //
+      // 기대 결과 (화면): 아이디에 "minjun", 비밀번호에 "1234" 를 치면
+      //                  → minjun / 1234
+      //                  어느 칸을 쳐도 한쪽만 바뀌면 대괄호를 안 씌운 것입니다.
+
+      function Q5() {
+        const [form, setForm] = useState({ id: "", pw: "" });
+
+        function handleChange(e) {
+          // TODO: 여기에 코드를 쓰세요 (한 줄이면 됩니다)
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 5 — 핸들러 하나로 두 칸</h3>
+            <div>
+              아이디 <input name="id" value={form.id} onChange={handleChange} />
+            </div>
+            <div>
+              비밀번호 <input name="pw" value={form.pw} onChange={handleChange} />
+            </div>
+            <div className="output">
+              {form.id} / {form.pw}
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 6 ───── (개념02)
+      // 아래 total 을 "가격 × 개수" 로 고치세요.
+      // 두 칸의 값은 숫자처럼 보여도 문자열이라는 점에 주의하세요.
+      //
+      // 기대 결과 (화면): 합계: 8000원
+      //                  개수를 3 으로 바꾸면 → 합계: 12000원
+      //                  40002 같은 값이 나오면 곱하기가 아니라 더하기를 쓴 것입니다.
+
+      function Q6() {
+        const [item, setItem] = useState({ price: "4000", count: "2" });
+
+        function handleChange(e) {
+          setItem({ ...item, [e.target.name]: e.target.value });
+        }
+
+        // TODO: 아래 줄을 고치세요
+        const total = 0;
+
+        return (
+          <div className="demo">
+            <h3>문제 6 — 숫자 칸 합계</h3>
+            <div>
+              가격 <input type="number" name="price" value={item.price} onChange={handleChange} />
+            </div>
+            <div>
+              개수 <input type="number" name="count" value={item.count} onChange={handleChange} />
+            </div>
+            <div className="output">합계: {total}원</div>
+          </div>
+        );
+      }
+
+      // ───── 문제 7 ───── (개념03)
+      // 체크박스를 켜면 "동의: 함", 풀면 "동의: 안 함" 이 나오게 하세요.
+      // 체크박스는 value 가 아니라는 점을 떠올리세요.
+      //
+      // 기대 결과 (화면): 체크하면 → 동의: 함
+      //                  풀면     → 동의: 안 함
+      //                  풀었는데도 계속 "함" 이면 e.target.value 를 읽은 것입니다.
+
+      function Q7() {
+        const [agree, setAgree] = useState(false);
+
+        return (
+          <div className="demo">
+            <h3>문제 7 — 체크박스</h3>
+            {/* TODO: 아래 input 에 checked 와 onChange 를 붙이세요 */}
+            <label>
+              <input type="checkbox" /> 약관에 동의합니다
+            </label>
+            <div className="output">동의: {agree ? "함" : "안 함"}</div>
+          </div>
+        );
+      }
+
+      // ───── 문제 8 ───── (개념03)
+      // select 에서 고른 값이 아래 줄에 나오게 하세요.
+      //
+      // 기대 결과 (화면): 처음에는 '보통' 이 골라져 있고 → 고른 사이즈: M
+      //                  '큰 것' 을 고르면 → 고른 사이즈: L
+      //                  처음에 '작은 것' 이 골라져 있으면 value 를 안 붙인 것입니다.
+
+      function Q8() {
+        const [size, setSize] = useState("M");
+
+        return (
+          <div className="demo">
+            <h3>문제 8 — select</h3>
+            {/* TODO: 아래 select 에 value 와 onChange 를 붙이세요 */}
+            <select>
+              <option value="S">작은 것</option>
+              <option value="M">보통</option>
+              <option value="L">큰 것</option>
+            </select>
+            <div className="output">고른 사이즈: {size}</div>
+          </div>
+        );
+      }
+
+      // ───── 문제 9 ───── (개념03)
+      // 라디오 두 개 중 고른 것이 아래 줄에 나오게 하세요.
+      // 두 input 에는 이미 value 가 붙어 있습니다.
+      //
+      // 기대 결과 (화면): 처음에는 '카드' 가 켜져 있고 → 결제 방법: 카드
+      //                  '현금' 을 누르면 → 결제 방법: 현금
+      //                  처음에 아무것도 안 켜져 있으면 checked 를 안 붙인 것입니다.
+
+      function Q9() {
+        const [pay, setPay] = useState("카드");
+
+        return (
+          <div className="demo">
+            <h3>문제 9 — 라디오</h3>
+            {/* TODO: 아래 두 input 에 checked 와 onChange 를 붙이세요 */}
+            <label>
+              <input type="radio" name="pay" value="카드" /> 카드
+            </label>
+            <label>
+              <input type="radio" name="pay" value="현금" /> 현금
+            </label>
+            <div className="output">결제 방법: {pay}</div>
+          </div>
+        );
+      }
+
+      // ───── 문제 10 ───── (개념03)
+      // 켜면 배열에 더하고, 끄면 배열에서 빼도록 handleChange 를 채우세요.
+      //
+      // 기대 결과 (화면): '시럽' 을 켜면 → 고른 것: 시럽 / 모두 1개
+      //                  '휘핑크림' 도 켜면 → 고른 것: 시럽, 휘핑크림 / 모두 2개
+      //                  '시럽' 을 끄면 → 고른 것: 휘핑크림 / 모두 1개
+      //                  껐는데도 남아 있으면 켜짐/꺼짐을 if 로 안 갈라 준 것입니다.
+
+      const Q10_TOPPINGS = ["시럽", "휘핑크림"];
+
+      function Q10() {
+        const [picked, setPicked] = useState([]);
+
+        function handleChange(e) {
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 10 — 여러 개 체크</h3>
+            {Q10_TOPPINGS.map((topping) => (
+              <label key={topping} style={{ marginRight: "12px" }}>
+                <input
+                  type="checkbox"
+                  value={topping}
+                  checked={picked.includes(topping)}
+                  onChange={handleChange}
+                />
+                {topping}
+              </label>
+            ))}
+            <div className="output">고른 것: {picked.join(", ")}</div>
+            <div className="output">모두 {picked.length}개</div>
+          </div>
+        );
+      }
+
+      // ───── 문제 11 ───── (개념04)
+      // 제출하면 아래 줄이 "OOO님 환영합니다" 로 바뀌게 하세요.
+      // e.preventDefault() 는 미리 써 두었습니다.
+      //
+      // 기대 결과 (화면): "김민준" 인 채로 '확인' 을 누르면 → 김민준님 환영합니다
+      //                  입력칸에서 Enter 만 쳐도 같아야 합니다.
+      //                  화면이 깜빡이고 글자가 처음으로 돌아가면
+      //                  preventDefault 를 지운 것입니다.
+
+      function Q11() {
+        const [name, setName] = useState("김민준");
+        const [message, setMessage] = useState("아직 제출 전입니다");
+
+        function handleSubmit(e) {
+          e.preventDefault();
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 11 — onSubmit</h3>
+            <form onSubmit={handleSubmit}>
+              <input value={name} onChange={(e) => setName(e.target.value)} />
+              <button type="submit">확인</button>
+            </form>
+            <div className="output">{message}</div>
+          </div>
+        );
+      }
+
+      // ───── 문제 12 ───── (개념05)
+      // 제출하면 입력칸의 글이 목록 뒤에 붙게 하세요.
+      // push 는 쓰지 마세요. 새 배열을 만들어 넣습니다.
+      //
+      // 기대 결과 (화면): 입력칸에 이미 들어 있는 "우유 사기" 로 '추가' 를 누르면
+      //                  목록이 장보기 / 우유 사기  두 줄이 됩니다.
+      //                  목록이 한 줄로 덮여 버리면 스프레드를 안 쓴 것입니다.
+
+      function Q12() {
+        const [text, setText] = useState("우유 사기");
+        const [todos, setTodos] = useState(["장보기"]);
+
+        function handleSubmit(e) {
+          e.preventDefault();
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 12 — 목록에 더하기</h3>
+            <form onSubmit={handleSubmit}>
+              <input value={text} onChange={(e) => setText(e.target.value)} />
+              <button type="submit">추가</button>
+            </form>
+            <ul>
+              {todos.map((todo, index) => (
+                <li key={index}>{todo}</li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      // ───── 문제 13 ───── [응용] (개념04)
+      // 후기 폼을 완성하세요. 할 일이 세 가지입니다.
+      //   (1) 공백만 친 경우를 포함해 비어 있으면 error 에 "후기를 입력해 주세요"
+      //   (2) 10자를 넘으면 error 에 "10자 이내로 써 주세요"
+      //   (3) 둘 다 통과하면 saved 에 넣고, error 를 지우고, 입력칸을 비우기
+      // 그리고 '지우기' 버튼이 폼을 제출하지 않게 고치세요.
+      //
+      // 기대 결과 (화면): 빈 칸에서 '저장' → 후기를 입력해 주세요
+      //                  스페이스 세 칸만 치고 '저장' → 후기를 입력해 주세요
+      //                  "맛있어요" 치고 '저장' → 저장된 후기: 맛있어요 (입력칸이 비워짐)
+      //                  "아메리카노가 정말 맛있어요" 치고 '저장' → 10자 이내로 써 주세요
+      //                  '지우기' 를 눌렀는데 에러 문구가 뜨면 아직 type 을 안 고친 것입니다.
+
+      function Q13() {
+        const [text, setText] = useState("");
+        const [error, setError] = useState("");
+        const [saved, setSaved] = useState("(아직 없음)");
+
+        function handleSubmit(e) {
+          e.preventDefault();
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 13 — [응용] 검사하고 에러 보여 주기</h3>
+            <form onSubmit={handleSubmit}>
+              <input value={text} onChange={(e) => setText(e.target.value)} />
+              <button type="submit">저장</button>
+              {/* TODO: 아래 버튼이 폼을 제출하지 않게 고치세요 */}
+              <button onClick={() => setText("")}>지우기</button>
+            </form>
+            <div className="error">{error}</div>
+            <div className="output">저장된 후기: {saved}</div>
+          </div>
+        );
+      }
+
+      // ───── 문제 14 ───── [도전] (개념05)
+      // 주문 목록을 완성하세요. 할 일이 다섯 가지입니다.
+      //   (1) 앞뒤 공백을 없앤 값으로 검사한다
+      //   (2) 비어 있으면 error 에 "메뉴를 입력해 주세요" 를 넣고 멈춘다
+      //   (3) 통과하면 { id: nextId, text: 값 } 을 목록 뒤에 더한다
+      //   (4) nextId 를 1 올린다
+      //   (5) error 를 지우고 입력칸을 비운다
+      //
+      // 기대 결과 (화면): "라떼" 를 치고 '담기' → 목록이
+      //                  1번 — 아메리카노 / 2번 — 라떼  두 줄이 되고
+      //                  '모두 2잔' 이 되며 입력칸이 비워집니다.
+      //                  "라떼" 를 한 번 더 담으면 3번 — 라떼 가 또 생깁니다.
+      //                  두 번째 항목이 "2번" 이 아니면 nextId 를 안 올린 것입니다.
+      //                  화면이 안 바뀌면 setOrders 를 안 부른 것입니다.
+
+      function Q14() {
+        const [text, setText] = useState("");
+        const [orders, setOrders] = useState([{ id: 1, text: "아메리카노" }]);
+        const [nextId, setNextId] = useState(2);
+        const [error, setError] = useState("");
+
+        function handleSubmit(e) {
+          e.preventDefault();
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 14 — [도전] id 를 붙여 담기</h3>
+            <form onSubmit={handleSubmit}>
+              <input value={text} onChange={(e) => setText(e.target.value)} />
+              <button type="submit">담기</button>
+            </form>
+            <div className="error">{error}</div>
+            <div className="output">모두 {orders.length}잔</div>
+            <ul>
+              {orders.map((order) => (
+                <li key={order.id}>
+                  {order.id}번 — {order.text}
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      // ───── 문제 15 ───── (에러 확인 — 맨 마지막)
+      // 아래 Q15 의 input 에서 onChange={handleChange} 부분만 지우고 저장한 뒤,
+      // F5 로 새로고침하고 입력칸에 글자를 쳐 보세요.
+      //
+      // 기대 결과: 한 글자도 안 써집니다.
+      //           그리고 F12 → Console 에 빨간 경고가 한 줄 나옵니다.
+      //           그 경고의 첫 문장을 아래에 옮겨 적어 보세요.
+      //           (확인했으면 onChange 를 꼭 되살려 놓으세요)
+      //
+      // 왜 안 써질까요? __________________________________________
+      // 경고 첫 문장:  __________________________________________
+
+      function Q15() {
+        const [text, setText] = useState("김민준");
+
+        function handleChange(e) {
+          setText(e.target.value);
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 15 — 에러 확인</h3>
+            <input value={text} onChange={handleChange} />
+            <div className="output">지금 값: {text}</div>
+          </div>
+        );
+      }
+
+      // ── 화면 조립 ──
+
+      function App() {
+        return (
+          <div>
+            <Q1 />
+            <Q2 />
+            <Q3 />
+            <Q4 />
+            <Q5 />
+            <Q6 />
+            <Q7 />
+            <Q8 />
+            <Q9 />
+            <Q10 />
+            <Q11 />
+            <Q12 />
+            <Q13 />
+            <Q14 />
+            <Q15 />
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.querySelector("#root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>04단원 개념03 - state가 바뀌면 다시 그린다</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 760px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 6px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 4px;
+      }
+      input,
+      select,
+      textarea {
+        padding: 6px 8px;
+        font-size: 15px;
+        font-family: inherit;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 6px;
+      }
+      .summary {
+        background: #eef4ff;
+        border-left: 4px solid #2d6cdf;
+        padding: 12px 20px;
+        margin-top: 32px;
+      }
+      .summary h2 {
+        margin: 6px 0 10px;
+        font-size: 17px;
+      }
+      .summary li {
+        margin: 4px 0;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 4px 0;
+      }
+      .done {
+        text-decoration: line-through;
+        color: #999;
+      }
+      .on {
+        background: #2d6cdf;
+        color: #fff;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+        min-height: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 03 — state가 바뀌면 다시 그린다</h1>
+
+    <p class="guide">
+      이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
+      <strong>F12 → Console</strong> 도 함께 보세요.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
+      <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
+      <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
+      <br /><br />
+      이 파일은 <strong>콘솔이 주인공</strong>입니다. 버튼을 누를 때마다 콘솔에 줄이
+      몇 개씩 늘어나는지 세어 보세요.
+    </p>
+
+    <div id="root"></div>
+
+    <script src="../_lib/react.development.js"></script>
+    <script src="../_lib/react-dom.development.js"></script>
+    <script src="../_lib/babel.min.js"></script>
+
+    <script type="text/babel">
+      // ============================================================
+      // 04단원 · 개념 03 — state가 바뀌면 다시 그린다
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 버튼을 눌러 보세요. F12 → Console 도 함께.
+      // ============================================================
+      //
+      // 개념02에서 setCount 를 부르니 화면이 따라왔습니다.
+      // 그 사이에 정확히 무슨 일이 일어난 걸까요?
+      //
+      // 답은 한 문장입니다.
+      //
+      //     set 함수를 부르면, 그 컴포넌트 함수가 처음부터 다시 실행된다.
+      //
+      // '처음부터 다시' 라는 말이 핵심입니다.
+      // 함수 안의 첫 줄부터 return 까지 전부 다시 지나갑니다.
+      // 이 일을 렌더링(rendering)이라고 부릅니다. 우리말로는 '그리기' 입니다.
+      //
+      // 말로만 들으면 잘 안 믿깁니다. 그래서 이 파일에서는 세어 봅니다.
+
+      const { useState } = React;
+
+      // ── 섹션 1: 다시 실행되는 것을 눈으로 세어 보기 ──
+
+      // 컴포넌트 함수가 몇 번 실행됐는지 셀 변수를 하나 둡니다.
+      // 컴포넌트 '밖' 에 둬야 다시 실행돼도 값이 남습니다. (개념02 섹션 1)
+
+      let renderCount = 0;
+
+      function RenderCounter() {
+        const [count, setCount] = useState(0);
+
+        renderCount = renderCount + 1;
+
+        console.log("그리는 중 —", renderCount, "번째 실행 / count =", count);
+        // 콘솔: 그리는 중 — 1 번째 실행 / count = 0
+        // 콘솔: 그리는 중 — 2 번째 실행 / count = 1
+
+        return (
+          <div className="demo">
+            <h3>① 누를 때마다 함수가 다시 실행됩니다</h3>
+            <div className="output" id="renderOut">
+              count: {count} / 이 컴포넌트가 실행된 횟수: {renderCount}
+            </div>
+            <button id="btnRenderUp" onClick={() => setCount(count + 1)}>
+              +1
+            </button>
+          </div>
+        );
+      }
+
+      // 페이지를 열면 콘솔에 "1 번째 실행" 이 찍힙니다.
+      // 버튼을 한 번 누르면 "2 번째 실행" 이 찍힙니다. 세 번 누르면 4 번째까지 갑니다.
+      //
+      // console.log 를 return 위, 함수 몸통 한복판에 적었다는 점을 보세요.
+      // 그 줄이 매번 다시 실행된다는 뜻입니다.
+      //
+      // 순서를 정리하면 이렇습니다.
+      //
+      //   ① 버튼을 누른다
+      //   ② onClick 에 맡겨 둔 함수가 실행된다 → setCount(1) 이 불린다
+      //   ③ React 가 "이 컴포넌트 다시 그려야겠다" 라고 표시해 둔다
+      //   ④ RenderCounter 함수가 처음부터 다시 실행된다
+      //      이때 useState(0) 은 0을 주지 않습니다. 기억해 둔 1을 줍니다.
+      //   ⑤ 새로 돌려받은 화면 설명을 예전 것과 비교해 바뀐 곳만 실제 화면에 반영한다
+      //
+      // ④가 이 파일의 주제입니다.
+      // useState(0) 의 0이 두 번째부터는 무시된다는 점을 다시 확인하세요.
+      // 개념02 섹션 4에서 본 "시작값은 맨 처음 한 번만" 이 이 이야기입니다.
+
+      // ✏️ 직접 해보기 1 — ① 의 +1 을 네 번 누르면 콘솔의 마지막 줄은
+      //                    몇 번째 실행이라고 나올까요? 예상하고 확인하세요.
+
+      // ── 섹션 2: 다시 실행되면 함수 안의 변수도 새로 만들어진다 ──
+
+      // 함수가 처음부터 다시 실행된다는 말에는 이런 뜻도 들어 있습니다.
+      // 함수 안에서 만든 보통 변수는 매번 새로 태어납니다.
+      //
+      // state 와 나란히 놓고 비교해 봅시다.
+
+      function CompareVars() {
+        const [saved, setSaved] = useState(0);
+
+        let normal = 0; // ← 이 줄이 렌더링마다 다시 실행됩니다
+
+        function handleClick() {
+          normal = normal + 1; // 보통 변수를 올려 봅니다
+          setSaved(saved + 1); // state 는 React 에게 맡깁니다
+
+          console.log("버튼 안에서 본 normal:", normal);
+          // 콘솔: 버튼 안에서 본 normal: 1
+        }
+
+        console.log("새로 그린 화면의 normal:", normal, "/ saved:", saved);
+        // 콘솔: 새로 그린 화면의 normal: 0 / saved: 0
+        // 콘솔: 새로 그린 화면의 normal: 0 / saved: 1
+
+        return (
+          <div className="demo">
+            <h3>② 보통 변수는 사라지고 state 만 남습니다</h3>
+            <div className="output" id="compareOut">
+              normal: {normal} / saved: {saved}
+            </div>
+            <button id="btnCompareUp" onClick={handleClick}>
+              둘 다 +1 해 보기
+            </button>
+          </div>
+        );
+      }
+
+      // 버튼을 눌렀을 때 콘솔에 두 줄이 나옵니다. 순서와 값을 잘 보세요.
+      //
+      //   버튼 안에서 본 normal: 1          ← 올라간 게 맞습니다
+      //   새로 그린 화면의 normal: 0 / saved: 1
+      //
+      // normal 은 분명히 1이 됐는데, 다시 그리고 나니 0으로 돌아왔습니다.
+      // let normal = 0; 이 다시 실행됐기 때문입니다. 올려 둔 1은 버려졌습니다.
+      //
+      // 화면(누르면): normal: 0 / saved: 1
+      //
+      // saved 는 남았습니다. React 가 컴포넌트 밖 어딘가에 따로 보관하고 있다가
+      // 다시 실행될 때 useState 를 통해 돌려주기 때문입니다.
+      //
+      // 그래서 이렇게 나눠 생각하면 됩니다.
+      //   화면에 보여야 하고 다음에도 기억해야 하는 값  →  state
+      //   이번에 그릴 때만 잠깐 쓰는 값                →  보통 변수
+      //
+      // 예를 들어 "가격에 개수를 곱한 합계" 같은 값은 보통 변수면 충분합니다.
+      // 매번 다시 계산하면 되니까요. 그 이야기는 개념04에서 다시 나옵니다.
+
+      // ✏️ 직접 해보기 2 — let normal = 0 을 let normal = 100 으로 바꾸고
+      //                    버튼을 눌러 보세요. 화면의 normal 은 무엇이 될까요?
+
+      // ── 섹션 3: 값이 그대로면 다시 그리지 않는다 ──
+
+      // set 함수를 부르기만 하면 무조건 다시 그리는 걸까요? 아닙니다.
+      // React 는 새로 들어온 값이 지금 값과 같은지 먼저 비교합니다.
+      // 같으면 다시 그릴 이유가 없으니 그냥 넘어갑니다.
+
+      function SameValue() {
+        const [count, setCount] = useState(0);
+
+        console.log("[값 비교 데모] 다시 그렸습니다. count =", count);
+        // 콘솔: [값 비교 데모] 다시 그렸습니다. count = 0
+        // 콘솔: [값 비교 데모] 다시 그렸습니다. count = 1
+
+        return (
+          <div className="demo">
+            <h3>③ 같은 값을 넣으면 콘솔에 아무것도 안 늘어납니다</h3>
+            <div className="output" id="sameOut">
+              count: {count}
+            </div>
+            <button id="btnSame" onClick={() => setCount(count)}>
+              같은 값 넣기
+            </button>
+            <button id="btnSameUp" onClick={() => setCount(count + 1)}>
+              +1
+            </button>
+          </div>
+        );
+      }
+
+      // '같은 값 넣기' 를 열 번 눌러 보세요. 콘솔에 한 줄도 안 늘어납니다.
+      // '+1' 을 누르면 그때 한 줄이 늘어납니다.
+      //
+      // 이 성질 덕분에 마음 놓고 set 을 불러도 됩니다.
+      // 값이 안 바뀌었다면 React 가 알아서 일을 안 합니다.
+      //
+      // 다만 여기에 함정이 하나 있습니다.
+      // 배열이나 객체를 state 로 쓸 때, 안의 내용을 고치고 같은 배열을 다시 넣으면
+      // React 는 "같은 값" 으로 보고 다시 그리지 않습니다.
+      // "화면이 안 바뀌어요" 의 큰 원인입니다. 개념06에서 실제로 재현해 봅니다.
+
+      // ✏️ 직접 해보기 3 — '같은 값 넣기' 버튼의 setCount(count) 를
+      //                    setCount(count + 0) 으로 바꿔 보세요. 결과가 달라질까요?
+
+      // ── 섹션 4: 부모가 다시 그려지면 자식도 다시 그려진다 ──
+
+      // 다시 그려지는 범위는 그 컴포넌트 하나가 아닙니다.
+      // 그 안에 들어 있는 컴포넌트들도 같이 다시 실행됩니다.
+      // 자식에게 state 가 없어도 그렇습니다.
+
+      function Child() {
+        console.log("   └ Child 도 다시 실행되었습니다");
+        // 콘솔:    └ Child 도 다시 실행되었습니다
+
+        return <div className="output">저는 자식입니다. state 가 없습니다.</div>;
+      }
+
+      function Parent() {
+        const [n, setN] = useState(0);
+
+        console.log("Parent 실행 — n =", n);
+        // 콘솔: Parent 실행 — n = 0
+        // 콘솔: Parent 실행 — n = 1
+
+        return (
+          <div className="demo">
+            <h3>④ 부모를 누르면 자식도 다시 실행됩니다</h3>
+            <div className="output" id="parentOut">
+              부모의 n: {n}
+            </div>
+            <Child />
+            <button id="btnParentUp" onClick={() => setN(n + 1)}>
+              부모의 n 올리기
+            </button>
+          </div>
+        );
+      }
+
+      // 버튼을 한 번 누르면 콘솔에 두 줄이 나옵니다. 부모 한 줄, 자식 한 줄입니다.
+      //
+      // "자식은 바뀐 게 없는데 왜 또 실행하지?" 라는 생각이 들 수 있습니다.
+      // React 는 자식이 바뀌었는지 미리 알 방법이 없어서 일단 전부 다시 실행합니다.
+      // 다시 실행한 결과가 예전과 같으면, 실제 화면은 건드리지 않습니다.
+      //
+      // 함수를 다시 실행하는 일은 대개 아주 빠릅니다. 그래서 보통은 신경 쓸 필요가 없습니다.
+      // 정말 느려지는 경우에 막는 방법이 있는데, 그건 10단원에서 배웁니다.
+      // 지금 미리 막으려 들면 코드만 복잡해집니다.
+
+      // ✏️ 직접 해보기 4 — Child 안에 자기만의 state 를 하나 넣어 보세요.
+      //                    (const [x, setX] = useState(0); 를 맨 위에 적으면 됩니다)
+      //                    부모를 눌러도 x 값은 그대로일까요?
+
+      // ── 섹션 5: 다시 그린다고 화면을 새로 만들지는 않는다 ──
+
+      // '다시 그린다' 는 말을 들으면 화면을 전부 지우고 새로 만드는 그림이 떠오릅니다.
+      // 실제로는 그렇지 않습니다.
+      //
+      // React 는 새로 나온 화면 설명과 예전 설명을 비교해서
+      // 달라진 곳만 실제 화면에 반영합니다. 01단원 개념03에서 본 그 이야기입니다.
+      //
+      // 정말 그런지 확인해 봅시다. 화면의 요소 하나를 기억해 뒀다가,
+      // 다시 그린 뒤에도 같은 요소인지 비교해 보겠습니다.
+
+      let savedNode = null;
+
+      function DomCheck() {
+        const [count, setCount] = useState(0);
+
+        function remember() {
+          savedNode = document.querySelector("#domBox");
+          console.log("지금 화면의 요소를 기억해 뒀습니다");
+          // 콘솔: 지금 화면의 요소를 기억해 뒀습니다
+        }
+
+        function check() {
+          const nodeNow = document.querySelector("#domBox");
+
+          console.log("아까 그 요소와 같은 것인가?", savedNode === nodeNow);
+          // 콘솔: 아까 그 요소와 같은 것인가? true
+
+          console.log("안의 글자는:", nodeNow.textContent);
+          // 콘솔: 안의 글자는: 눌린 횟수: 1
+        }
+
+        return (
+          <div className="demo">
+            <h3>⑤ 같은 요소의 글자만 바뀝니다 — ①②③ 순서로 눌러 보세요</h3>
+            <div className="output" id="domBox">
+              눌린 횟수: {count}
+            </div>
+            <button id="btnRemember" onClick={remember}>
+              ① 요소 기억하기
+            </button>
+            <button id="btnDomUp" onClick={() => setCount(count + 1)}>
+              ② +1
+            </button>
+            <button id="btnDomCheck" onClick={check}>
+              ③ 같은 요소인지 확인
+            </button>
+          </div>
+        );
+      }
+
+      // 결과는 true 입니다. 요소는 그대로 두고 안의 글자만 바꾼 것입니다.
+      // 요소를 통째로 새로 만들었다면 false 가 나왔을 것입니다.
+      //
+      // 여기서 document.querySelector 를 쓴 것은 '확인용' 입니다.
+      // 평소 React 코드에서는 이렇게 요소를 직접 찾지 않습니다. (개념01 섹션 6 실수 6)
+      // 꼭 요소를 만져야 할 때 쓰는 제대로 된 방법은 10단원 useRef 에서 배웁니다.
+
+      // ✏️ 직접 해보기 5 — ①③ 만 눌러 보세요. (②를 건너뛰고)
+      //                    결과가 true 일까요 false 일까요?
+
+      // ── 섹션 6: 자주 하는 실수 ──
+
+      // ⚠️ [SyntaxError] 라고 적힌 것은 주석을 풀지 말고 눈으로만 보세요.
+      //    풀면 파일 전체가 멈춰서 화면이 통째로 비어 버립니다. 다시 // 를 붙이면 돌아옵니다.
+
+      // [실수 1] 렌더링 중에 set 함수를 불렀다
+      //   function Bad() {
+      //     const [count, setCount] = useState(0);
+      //     setCount(count + 1);        // ← return 위, 함수 몸통에서 바로
+      //     return <p>{count}</p>;
+      //   }
+      // 실수: 무한 루프입니다.
+      //       set → 다시 그림 → 또 set → 또 다시 그림 ... 이 끝없이 돕니다.
+      //       React 가 알아채고 이렇게 멈춰 세웁니다.
+      //         Error: Too many re-renders. React limits the number of renders ...
+      //       화면은 통째로 비어 버립니다. 브라우저가 잠깐 멎을 수도 있습니다.
+      //       set 함수는 이벤트 핸들러 안에서만 부릅니다.
+
+      // [실수 2] 콘솔이 두 번씩 찍혀서 놀란다
+      // 실수: 이 자료의 01~07단원에서는 한 번만 찍힙니다.
+      //       08단원 Vite 프로젝트로 옮기면 개발 중에 일부러 두 번 실행하는 설정이
+      //       기본으로 켜져 있어서 두 줄씩 나올 수 있습니다. 고장이 아닙니다.
+      //       그때 다시 설명합니다. 지금은 "그런 게 있다" 정도만 알아 두세요.
+
+      // [실수 3] set 을 불렀는데 화면이 안 바뀐다
+      // 실수: 원인이 세 가지 있습니다.
+      //       (1) 같은 값을 넣었다 (섹션 3) — 정상입니다.
+      //       (2) 배열이나 객체의 안을 고치고 그대로 넣었다 — 개념06에서 다룹니다.
+      //       (3) 화면에 그 state 를 안 썼다 — return 안에 {count} 가 있는지 보세요.
+
+      // [실수 4] 렌더링 중에 바깥 변수를 고쳤다
+      //   renderCount = renderCount + 1;   // ← 섹션 1에서 일부러 한 것
+      // 실수: 지금은 잘 돕니다. 하지만 실제 코드에서는 하지 않습니다.
+      //       React 가 컴포넌트 함수를 몇 번 실행할지는 보장돼 있지 않습니다.
+      //       실수 2에서 말한 것처럼 두 번 실행되는 설정이 켜지면 숫자가 두 배가 됩니다.
+      //       세어 보려고 이 파일에서만 쓴 방법입니다.
+
+      // [실수 5] 함수 이름을 대문자로 안 지었다
+      //   function child() { ... }
+      //   <child />
+      // 실수: React 가 컴포넌트가 아니라 HTML 태그로 봅니다.
+      //       화면에 아무것도 안 나오고 콘솔에 경고가 뜹니다. 03단원에서 배운 규칙입니다.
+
+      // [실수 6] return 안에서 태그 두 개를 나란히 돌려줬다
+      //   return (
+      //     <div className="output">{count}</div>
+      //     <button onClick={...}>+1</button>
+      //   );
+      // 실수: [SyntaxError] 입니다. 파일 전체가 안 돌아가고 화면이 통째로 빕니다.
+      //         SyntaxError: /Inline Babel script: Adjacent JSX elements must be
+      //         wrapped in an enclosing tag. Did you want a JSX fragment <>...</>?
+      //       02단원 개념04에서 배운 규칙입니다. 하나로 감싸거나 <> </> 를 쓰세요.
+
+      // ── 마지막: 위에서 만든 컴포넌트를 한 화면에 모으기 ──
+
+      function App() {
+        return (
+          <div>
+            <RenderCounter />
+            <CompareVars />
+            <SameValue />
+            <Parent />
+            <DomCheck />
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.querySelector("#root"));
+      root.render(<App />);
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) 5 번째 실행입니다.
+      //    // 콘솔: 그리는 중 — 5 번째 실행 / count = 4
+      //    → 페이지를 열 때 이미 1번 실행됐습니다. 거기에 네 번을 더한 값입니다.
+      //      "누른 횟수 + 1" 이 됩니다.
+      //
+      // 2) 화면의 normal 은 여전히 100 입니다.
+      //    // 화면(누르면): normal: 100 / saved: 1
+      //    // 콘솔: 버튼 안에서 본 normal: 101
+      //    → 버튼 안에서는 101이 됐지만, 다시 그리면서 let normal = 100 이
+      //      다시 실행되어 100으로 돌아옵니다. 시작값만 바뀐 셈입니다.
+      //
+      // 3) 결과는 같습니다. 콘솔에 아무것도 안 늘어납니다.
+      //    → count + 0 은 count 와 같은 값입니다. React 는 '값' 을 비교하지
+      //      '어떻게 계산했는지' 를 보지 않습니다.
+      //      setCount(count + 1) 로 바꿔야 비로소 다시 그립니다.
+      //
+      // 4) 그대로입니다. 부모가 다시 그려도 자식의 state 는 사라지지 않습니다.
+      //    function Child() {
+      //      const [x, setX] = useState(0);
+      //      console.log("   └ Child 도 다시 실행되었습니다. x =", x);
+      //      return <div className="output">저는 자식입니다. x: {x}</div>;
+      //    }
+      //    // 콘솔:    └ Child 도 다시 실행되었습니다. x = 0
+      //    → 함수는 다시 실행되지만 useState 는 기억해 둔 값을 그대로 돌려줍니다.
+      //      state 가 렌더링마다 초기화된다면 아무 쓸모가 없겠지요.
+      //
+      // 5) true 입니다.
+      //    // 콘솔: 아까 그 요소와 같은 것인가? true
+      //    // 콘솔: 안의 글자는: 눌린 횟수: 0
+      //    → 다시 그리지 않았으니 당연히 같은 요소입니다.
+      //      이 문제의 요점은 ②를 눌러 다시 그린 뒤에도 true 라는 것입니다.
+      //      다시 그려도 요소를 새로 만들지 않는다는 뜻입니다.
+    </script>
+
+    <div class="summary">
+      <h2>정리</h2>
+      <ol>
+        <li>
+          set 함수를 부르면 그 컴포넌트 함수가 <strong>처음부터 다시 실행</strong>됩니다. 이
+          일을 렌더링이라고 합니다.
+        </li>
+        <li>다시 실행될 때 useState 는 시작값이 아니라 <strong>기억해 둔 값</strong>을 줍니다.</li>
+        <li>함수 안의 보통 변수는 매번 새로 만들어집니다. state 만 남습니다.</li>
+        <li>새 값이 지금 값과 같으면 React 는 다시 그리지 않습니다.</li>
+        <li>부모가 다시 그려지면 그 안의 자식들도 다시 실행됩니다.</li>
+        <li>
+          다시 그린다고 화면을 새로 만들지 않습니다. 달라진 곳만 실제 화면에 반영합니다.
+        </li>
+        <li>set 함수는 이벤트 핸들러 안에서만 부릅니다. 렌더링 중에 부르면 무한 루프입니다.</li>
+      </ol>
+    </div>
+  </body>
+</html>

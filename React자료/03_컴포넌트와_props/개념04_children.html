@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>03단원 개념04 - children</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 760px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 6px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 4px;
+      }
+      input,
+      select,
+      textarea {
+        padding: 6px 8px;
+        font-size: 15px;
+        font-family: inherit;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 6px;
+      }
+      .summary {
+        background: #eef4ff;
+        border-left: 4px solid #2d6cdf;
+        padding: 12px 20px;
+        margin-top: 32px;
+      }
+      .summary h2 {
+        margin: 6px 0 10px;
+        font-size: 17px;
+      }
+      .summary li {
+        margin: 4px 0;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 4px 0;
+      }
+      .done {
+        text-decoration: line-through;
+        color: #999;
+      }
+      .on {
+        background: #2d6cdf;
+        color: #fff;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+        min-height: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 04 — children</h1>
+
+    <p class="guide">
+      이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
+      <strong>F12 → Console</strong> 도 함께 보세요.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
+      <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
+      <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
+      <br /><br />
+      아래 회색 상자 ① ~ ⑥ 이 이 파일의 화면입니다. 흰 칸이 '상자 컴포넌트' 가 그린 부분입니다.
+    </p>
+
+    <div id="root"></div>
+
+    <script src="../_lib/react.development.js"></script>
+    <script src="../_lib/react-dom.development.js"></script>
+    <script src="../_lib/babel.min.js"></script>
+
+    <script type="text/babel">
+      // ============================================================
+      // 03단원 · 개념 04 — children
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열기. F12 → Console 도 함께.
+      // ============================================================
+      //
+      // 지금까지 값을 넘길 때는 전부 속성 자리를 썼습니다.
+      //
+      //     <MenuItem name="아메리카노" price={4000} />
+      //
+      // 그런데 HTML 을 떠올려 보면 이런 모양이 더 익숙합니다.
+      //
+      //     <div>안녕하세요</div>
+      //     <li>아메리카노</li>
+      //
+      // 태그 '사이' 에 내용을 넣는 방식입니다.
+      // 내 컴포넌트도 이렇게 쓸 수 있습니다.
+      //
+      //     <Box>안녕하세요</Box>
+      //
+      // 이때 태그 사이에 넣은 것은 children 이라는 props 로 들어옵니다.
+      // children 은 '자식들' 이라는 뜻입니다.
+      //
+      // 이 파일에서 배우는 것
+      //   1. 태그 사이에 넣은 것이 children 으로 온다
+      //   2. children 을 화면 어디에 놓을지는 내가 정한다
+      //   3. 테두리·제목 같은 겉모습을 담당하는 '상자 컴포넌트' 만들기
+
+      // ── 섹션 1: 태그 사이에 넣은 것이 children 입니다 ──
+
+      function Box(props) {
+        console.log(props.children);
+        // 콘솔: 안녕하세요
+        console.log(typeof props.children);
+        // 콘솔: string
+        console.log(Object.keys(props));
+        // 콘솔: ['children']
+
+        return <div className="output">{props.children}</div>;
+      }
+
+      // 이렇게 씁니다.
+      //
+      //     <Box>안녕하세요</Box>
+      //
+      // 속성은 하나도 안 넘겼는데 props 에 children 이 들어 있습니다.
+      // 태그 사이에 쓴 글자가 children 이라는 이름으로 자동으로 담긴 것입니다.
+      //
+      // 즉 children 은 특별한 문법이 아니라 props 의 한 속성입니다.
+      // 이름을 우리가 짓지 않고 React 가 정해 뒀을 뿐입니다.
+      //
+      // 화면 ① 을 보세요. 흰 칸 안에 "안녕하세요" 가 들어 있습니다.
+
+      // ✏️ 직접 해보기 1 — 화면 ① 의 <Box>안녕하세요</Box> 안 글자를
+      //                    "오늘의 메뉴" 로 바꾸고 콘솔이 어떻게 바뀌는지 보세요.
+
+      // ── 섹션 2: children 을 어디에 놓을지는 내가 정합니다 ──
+
+      // 받은 children 은 그냥 값입니다. JSX 안 아무 데나 넣을 수 있습니다.
+      // 개념03에서 배운 구조분해로 받으면 더 짧습니다.
+
+      function Card({ title, children }) {
+        return (
+          <div className="output">
+            <h4>{title}</h4>
+            {children}
+            <p>— 이 줄은 Card 가 항상 붙입니다 —</p>
+          </div>
+        );
+      }
+
+      // 이렇게 씁니다.
+      //
+      //     <Card title="오늘의 커피">
+      //       <p>아메리카노 4000원</p>
+      //     </Card>
+      //
+      // 제목은 위, children 은 가운데, 고정 문구는 아래입니다.
+      // 순서를 바꾸면 화면 순서도 바뀝니다. 정하는 사람은 Card 를 만든 나입니다.
+      //
+      // 그리고 중요한 점이 하나 있습니다.
+      // {children} 을 안 쓰면 넘긴 내용이 화면에 나오지 않습니다.
+      // 에러도 경고도 없습니다. 화면 ⑤ 에서 직접 확인합니다.
+
+      // ✏️ 직접 해보기 2 — Card 안에서 {children} 과 <h4>{title}</h4> 의 순서를 바꿔 보고
+      //                    화면 ② 가 어떻게 달라지는지 확인하세요.
+
+      // ── 섹션 3: 태그도 넣을 수 있고 여러 개도 됩니다 ──
+
+      // 태그 사이에는 글자만이 아니라 태그도 넣을 수 있습니다.
+      // 몇 개를 넣든 상관없습니다.
+
+      function ListBox({ children }) {
+        console.log("ListBox children 이 배열인가?", Array.isArray(children));
+        // 콘솔: ListBox children 이 배열인가? true
+
+        return <div className="output">{children}</div>;
+      }
+
+      function OneBox({ children }) {
+        console.log("OneBox children 이 배열인가?", Array.isArray(children));
+        // 콘솔: OneBox children 이 배열인가? false
+
+        return <div className="output">{children}</div>;
+      }
+
+      // 넣은 것이 하나면 그 값 하나가 오고, 둘 이상이면 배열이 옵니다.
+      //
+      //     <OneBox><p>아메리카노 4000원</p></OneBox>          → 배열이 아님
+      //     <ListBox>
+      //       <p>아메리카노 4000원</p>
+      //       <p>라떼 4500원</p>
+      //     </ListBox>                                        → 배열
+      //
+      // 그런데 이걸 구분해서 쓸 일은 거의 없습니다.
+      // {children} 이라고만 쓰면 하나든 여럿이든 React 가 알아서 다 그려 줍니다.
+      //
+      // 다만 '몇 개인지 세려고' 할 때는 조심해야 합니다. 섹션 6 [실수 3] 을 보세요.
+
+      // ✏️ 직접 해보기 3 — 화면 ③ 의 ListBox 안에 <p>케이크 6000원</p> 을 한 줄 더 넣어 보세요.
+
+      // ── 섹션 4: 속성으로 넘길까, children 으로 넘길까 ──
+
+      // 둘 다 결국 props 입니다. 아래처럼 나눠 쓰면 읽기 좋습니다.
+      //
+      //   짧은 값 하나 (제목·가격·이름)      → 속성        title="오늘의 커피"
+      //   화면 덩어리 (여러 줄, 태그 포함)   → children    태그 사이에 넣기
+      //
+      // 실제로 children 은 속성으로도 넘길 수 있습니다.
+      //
+      //     <Box children="안녕하세요" />
+      //
+      // 동작은 똑같습니다. children 이 그냥 props 라는 증거이기도 합니다.
+      // 하지만 아무도 이렇게 쓰지 않습니다. 읽기 어렵기 때문입니다.
+      // "태그 사이에 넣는다" 는 모양 자체가 이미 설명이 되어 주기 때문에 그 방식을 씁니다.
+
+      function Panel(props) {
+        console.log("Panel 이 받은 props 이름들:", Object.keys(props));
+        // 콘솔: Panel 이 받은 props 이름들: ['title', 'children']
+
+        const { title, children } = props;
+
+        return (
+          <div className="output">
+            <h4>{title}</h4>
+            {children}
+          </div>
+        );
+      }
+
+      // ✏️ 직접 해보기 4 — <Panel title="공지"> ... </Panel> 를 화면 ④ 에 하나 더 만들고
+      //                    안에 <p>내일은 쉽니다</p> 를 넣어 보세요.
+
+      // ── 섹션 5: 상자 컴포넌트 만들기 ──
+
+      // children 이 가장 빛나는 곳은 '겉모습만 담당하는 컴포넌트' 입니다.
+      // 안에 무엇이 들어올지는 모르지만, 테두리와 여백은 항상 같게 하고 싶을 때 씁니다.
+      //
+      // 예를 들어 알림 상자를 만들어 봅시다.
+      // 겉모습은 한 곳(Notice)에만 적혀 있고, 안의 내용은 쓰는 쪽이 정합니다.
+
+      function Notice({ children }) {
+        return (
+          <div className="output">
+            <strong>[알림]</strong> {children}
+          </div>
+        );
+      }
+
+      // 상자는 겹쳐 쓸 수도 있습니다. Notice 안에 또 Card 를 넣어도 됩니다.
+      // 화면 ⑤ 의 두 번째 흰 칸이 그렇게 만든 것입니다.
+      //
+      // 이렇게 하면 좋은 점이 있습니다.
+      // 나중에 알림 상자 모양을 바꾸고 싶으면 Notice 한 곳만 고치면 됩니다.
+      // 쓰는 쪽 열 군데를 전부 찾아다닐 필요가 없습니다.
+      //
+      // 이것이 컴포넌트를 나누는 이유이기도 합니다. 개념05에서 더 다룹니다.
+
+      // ✏️ 직접 해보기 5 — Notice 의 [알림] 을 [공지] 로 바꿔 보세요.
+      //                    쓰는 쪽은 한 글자도 안 고쳐도 화면 ⑤ 가 전부 바뀝니다.
+
+      // ── 섹션 6: 자주 하는 실수 ──
+
+      // ⚠️ [SyntaxError] 라고 적힌 것은 주석을 풀지 말고 눈으로만 보세요.
+      //    풀면 파일 전체가 멈춰서 화면이 통째로 비어 버립니다. 다시 // 를 붙이면 돌아옵니다.
+
+      // [실수 1] {children} 을 안 씀 ★ 가장 자주 납니다
+      //   에러가 없습니다. 넘긴 내용이 통째로 사라집니다.
+
+      function ForgetChildren({ title, children }) {
+        return (
+          <div className="output">
+            <h4>{title}</h4>
+            <p>여기에 children 이 나와야 하는데 없습니다</p>
+          </div>
+        );
+      }
+
+      //   화면 ⑥ 의 첫 번째 칸입니다. 넘긴 <p>아메리카노 4000원</p> 이 안 보입니다.
+      //   "분명히 넣었는데 화면에 없다" 면 받는 컴포넌트에 {children} 이 있는지 보세요.
+
+      // [실수 2] 스스로 닫는 태그로 씀
+      //   <Card title="제목" /> 처럼 쓰면 태그 사이가 없으므로 children 도 없습니다.
+
+      function EmptyBox({ children }) {
+        console.log("실수 2 — children:", String(children));
+        // 콘솔: 실수 2 — children: undefined
+
+        return <div className="output">[{children}]</div>;
+      }
+
+      //   화면 ⑥ 의 두 번째 칸은 대괄호 두 개만 나옵니다.
+      //   undefined 는 화면에 아무것도 안 그린다고 개념02에서 배웠습니다.
+
+      // [실수 3] children.length 를 '개수' 로 생각함 ★ 조용히 틀립니다
+
+      function CountBox({ children }) {
+        console.log("실수 3 — children.length:", children.length);
+        // 콘솔: 실수 3 — children.length: 5
+
+        return <div className="output">개수라고 생각한 값: {children.length}</div>;
+      }
+
+      //   <CountBox>안녕하세요</CountBox> 로 썼습니다. 넣은 것은 한 덩어리인데 5가 나옵니다.
+      //   children 이 문자열이라 '글자 수' 가 나온 것입니다. (JS자료 01단원 length)
+      //   태그를 두 개 넣으면 배열이 되어 2가 나옵니다. 같은 코드인데 뜻이 달라집니다.
+      //   그래서 children 의 개수를 세는 코드는 되도록 쓰지 않습니다.
+
+      // [실수 4] children 을 함수처럼 부름
+      // function Bad4({ children }) {
+      //   return <div>{children()}</div>;
+      // }
+      //   실수: TypeError: children is not a function 이 납니다.
+      //         children 은 화면 조각이지 함수가 아닙니다. 괄호 없이 {children} 으로 쓰세요.
+
+      // [실수 5] 여는 태그와 닫는 태그 이름이 다름
+      // <Card title="제목">
+      //   <p>내용</p>
+      // </Panel>
+      //   실수: [SyntaxError] 입니다. 화면이 통째로 빕니다.
+      //         컴포넌트 이름을 바꿀 때 닫는 태그를 안 고쳐서 자주 납니다.
+
+      // ============================================================
+      // 화면에 그리기
+      // ============================================================
+
+      function App() {
+        return (
+          <>
+            <div className="demo">
+              <h3>① 태그 사이에 넣은 글자</h3>
+              <Box>안녕하세요</Box>
+            </div>
+
+            <div className="demo">
+              <h3>② 제목은 속성, 본문은 children</h3>
+              <Card title="오늘의 커피">
+                <p>아메리카노 4000원</p>
+              </Card>
+            </div>
+
+            <div className="demo">
+              <h3>③ 하나 넣기 / 여러 개 넣기</h3>
+              <OneBox>
+                <p>아메리카노 4000원</p>
+              </OneBox>
+              <ListBox>
+                <p>아메리카노 4000원</p>
+                <p>라떼 4500원</p>
+              </ListBox>
+            </div>
+
+            <div className="demo">
+              <h3>④ 속성과 children 을 함께</h3>
+              <Panel title="영업 안내">
+                <p>오전 8시부터 오후 10시까지 문을 엽니다.</p>
+              </Panel>
+            </div>
+
+            <div className="demo">
+              <h3>⑤ 상자 컴포넌트 — 겉모습은 한 곳에서</h3>
+              <Notice>케이크가 6000원입니다.</Notice>
+              <Notice>
+                <Card title="이번 주 신메뉴">
+                  <p>삼각김밥 1200원</p>
+                </Card>
+              </Notice>
+            </div>
+
+            <div className="demo">
+              <h3>⑥ 실수 1 · 2 · 3</h3>
+              <ForgetChildren title="children 을 안 그린 상자">
+                <p>아메리카노 4000원</p>
+              </ForgetChildren>
+              <EmptyBox />
+              <CountBox>안녕하세요</CountBox>
+            </div>
+          </>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.querySelector("#root"));
+      root.render(<App />);
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) <Box>오늘의 메뉴</Box>
+      //    // 콘솔: 오늘의 메뉴
+      //    // 콘솔: string
+      //    // 콘솔: ['children']
+      //    // 화면: 흰 칸 안에 "오늘의 메뉴"
+      //    → 자료형과 키 목록은 그대로입니다. 값만 바뀝니다.
+      //
+      // 2) function Card({ title, children }) {
+      //      return (
+      //        <div className="output">
+      //          {children}
+      //          <h4>{title}</h4>
+      //          <p>— 이 줄은 Card 가 항상 붙입니다 —</p>
+      //        </div>
+      //      );
+      //    }
+      //    // 화면: "아메리카노 4000원" 이 먼저 나오고 그 아래에 제목 "오늘의 커피" 가 나옵니다.
+      //    → 넘기는 쪽은 한 글자도 안 고쳤습니다. 자리를 정하는 것은 Card 입니다.
+      //
+      // 3) <ListBox>
+      //      <p>아메리카노 4000원</p>
+      //      <p>라떼 4500원</p>
+      //      <p>케이크 6000원</p>
+      //    </ListBox>
+      //    // 화면: 흰 칸 안에 세 줄이 나옵니다.
+      //    // 콘솔: ListBox children 이 배열인가? true
+      //    → 세 개여도 배열이라는 사실은 그대로입니다.
+      //
+      // 4) App 의 ④ 상자 안에 아래를 넣습니다.
+      //
+      //      <Panel title="공지">
+      //        <p>내일은 쉽니다</p>
+      //      </Panel>
+      //
+      // 화면: "공지" 제목 아래에 "내일은 쉽니다" 가 나옵니다.
+      //    // 콘솔: Panel 이 받은 props 이름들: ['title', 'children']  (두 번 찍힙니다)
+      //    → Panel 을 두 번 썼으니 콘솔에도 두 번 찍힙니다.
+      //
+      // 5) function Notice({ children }) {
+      //      return (
+      //        <div className="output">
+      //          <strong>[공지]</strong> {children}
+      //        </div>
+      //      );
+      //    }
+      //    // 화면: ⑤ 의 두 칸이 모두 [알림] 에서 [공지] 로 바뀝니다.
+      //    → 쓰는 쪽 두 군데를 고치지 않았는데 둘 다 바뀌었습니다.
+      //      이것이 겉모습을 컴포넌트 하나에 모아 두는 이유입니다.
+    </script>
+
+    <div class="summary">
+      <h2>정리</h2>
+      <ol>
+        <li>
+          <code>&lt;Box&gt;안녕&lt;/Box&gt;</code> 처럼 <strong>태그 사이에 넣은 것</strong>은
+          <code>props.children</code> 으로 옵니다.
+        </li>
+        <li>children 은 특별한 문법이 아니라 <strong>props 의 한 속성</strong>입니다.</li>
+        <li>
+          받은 children 을 화면 어디에 놓을지는 <strong>받는 컴포넌트가</strong> 정합니다.
+        </li>
+        <li>
+          <code>{children}</code> 을 안 쓰면 넘긴 내용이 <strong>에러 없이</strong>
+          사라집니다.
+        </li>
+        <li>
+          짧은 값은 속성으로, 여러 줄짜리 화면 덩어리는 children 으로 넘기면 읽기 좋습니다.
+        </li>
+        <li>
+          테두리·제목 같은 겉모습만 담당하는 <strong>상자 컴포넌트</strong>를 만들면 모양을
+          한 곳에서 고칠 수 있습니다.
+        </li>
+        <li><code>children.length</code> 는 개수가 아닐 수 있습니다. 글자 수일 수도 있습니다.</li>
+      </ol>
+    </div>
+  </body>
+</html>
