@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -68,18 +68,20 @@
     <h1>12단원 연습문제 — 비동기와 fetch</h1>
 
     <p class="guide">
-      <strong>6번부터는 인터넷 연결이 필요합니다.</strong> TODO 자리에 코드를 쓰고
-      저장한 뒤 새로고침하세요. <strong>F12 → Console</strong> 을 반드시 함께 보세요.<br />
+      <strong>6번부터는 인터넷 연결이 필요합니다.</strong> TODO 자리에 코드를
+      쓰고 저장한 뒤 새로고침하세요. <strong>F12 → Console</strong> 을 반드시
+      함께 보세요.<br />
       1~12는 기본, 13은 응용, 14는 [도전], 15는 에러 확인입니다.
-    
+
       <br /><br />
       <strong>인터넷이 막혀 있어 안 된다면</strong> 이 파일 아래쪽
-      <code>&lt;script&gt;</code> 바로 위에 있는 <code>오프라인_대체.js</code> 줄에서
-      주석 기호를 지우세요. 인터넷 없이도 똑같이 동작합니다.
-      <br /><br />
+      <code>&lt;script&gt;</code> 바로 위에 있는
+      <code>오프라인_대체.js</code> 줄에서 주석 기호를 지우세요. 인터넷 없이도
+      똑같이 동작합니다. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
-      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
-      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을
+      만드는 코드입니다. 이 자료에서는 가르치지 않습니다.
+      <code>&lt;script&gt;</code> 안부터 읽으세요.
     </p>
 
     <div class="demo">
@@ -135,6 +137,10 @@
       // ───── 문제 1 ───── (개념01 setTimeout)
       // timerBtn 을 누르면 out1 에 "기다리는 중..." 을 넣고,
       // 2초 뒤에 "2초가 지났습니다" 로 바꾸세요.
+      document.querySelector("#timerBtn").addEventListener("click", () => {
+        out1.textContent = "잠시만 기다려주세요";
+        setTimeout(() => (out1.textContent = "2초가 지났습니다."), 2000);
+      });
 
       //
       // 기대 결과 (화면): 누르자마자 "기다리는 중..." 이 나오고, 2초 뒤 "2초가 지났습니다" 로 바뀝니다.
@@ -145,7 +151,7 @@
       // 아래 세 줄을 실행하면 콘솔에 어떤 순서로 찍힐까요?
       // 먼저 예상을 적어 보고, 주석을 풀어 확인하세요.
       //
-      // 내 예상: __________________
+      // 내 예상: __________________acb
 
       // console.log("A");
       // setTimeout(() => console.log("B"), 0);
@@ -159,6 +165,27 @@
       // 기대 결과 (화면): 3 → 2 → 1 이 1초 간격으로 바뀌고 마지막에 "끝!" 이 나옵니다.
       //                  "끝!" 뒤에도 숫자가 계속 바뀌면 clearInterval 을 안 한 것입니다.
       // TODO: 여기에 코드를 쓰세요
+      countTimer = null;
+      document.querySelector("#countBtn").addEventListener("click", (e) => {
+        if (countTimer !== null) {
+          return;
+        }
+        let count = 3;
+        out3.textContent = count;
+
+        countTimer = setInterval(() => {
+          //setInterval()은 실행되면서 번호 같은 식별값을 반환
+          //그래서 한번 더 누르면 한번더 선언되고 다른 타이머가 또만들어짐
+          count--;
+          if (count <= 0) {
+            out3.textContent = "끝";
+            clearInterval(countTimer); //타이머 작동만 멈춤
+            countTimer = null; //현재 실행 중인 타이머 없다는걸 명확하게 표현 기록
+            return;
+          }
+          out3.textContent = count;
+        }, 1000);
+      });
 
       // ───── 문제 4 ───── (개념02 Promise)
       // 아래 함수는 이미 만들어져 있습니다.

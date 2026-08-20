@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -55,17 +55,18 @@
     <h1>개념 04 — async 와 await</h1>
 
     <p class="guide">
-      <strong>인터넷 연결이 필요합니다.</strong> 브라우저로 열고 버튼을 눌러 보세요.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-    
+      <strong>인터넷 연결이 필요합니다.</strong> 브라우저로 열고 버튼을 눌러
+      보세요. <strong>F12 → Console</strong> 도 함께 보세요.
+
       <br /><br />
       <strong>인터넷이 막혀 있어 안 된다면</strong> 이 파일 아래쪽
-      <code>&lt;script&gt;</code> 바로 위에 있는 <code>오프라인_대체.js</code> 줄에서
-      주석 기호를 지우세요. 인터넷 없이도 똑같이 동작합니다.
-      <br /><br />
+      <code>&lt;script&gt;</code> 바로 위에 있는
+      <code>오프라인_대체.js</code> 줄에서 주석 기호를 지우세요. 인터넷 없이도
+      똑같이 동작합니다. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
-      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
-      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을
+      만드는 코드입니다. 이 자료에서는 가르치지 않습니다.
+      <code>&lt;script&gt;</code> 안부터 읽으세요.
     </p>
 
     <div class="demo">
@@ -143,15 +144,19 @@
       async function loadWithAwait() {
         out1.textContent = "불러오는 중...";
 
-        const res = await fetch(`${BASE_URL}/posts/1`);
+        const res = await fetch(`${BASE_URL}/posts/3`);
         const data = await res.json();
 
         out1.textContent = `[await] ${data.title}`;
         console.log("await 방식 완료");
       }
 
-      document.querySelector("#thenBtn").addEventListener("click", loadWithThen);
-      document.querySelector("#awaitBtn").addEventListener("click", loadWithAwait);
+      document
+        .querySelector("#thenBtn")
+        .addEventListener("click", loadWithThen);
+      document
+        .querySelector("#awaitBtn")
+        .addEventListener("click", loadWithAwait);
 
       // 차이를 보세요.
       //   then : .then((res) => res.json()).then((data) => ...)
@@ -186,7 +191,12 @@
 
       // ✏️ 직접 해보기 2 — getNumber() 의 42 를 then 이 아니라 await 로 꺼내 보세요.
       //                    (규칙 1을 기억하세요. await 를 쓸 자리를 먼저 만들어야 합니다)
+      async function test() {
+        const n = await getNumber();
+        console.log(n);
+      }
 
+      test();
       // ── 섹션 3: 순서대로 요청하기 ──
 
       // 앞의 결과가 있어야 다음 요청을 할 수 있는 경우입니다.
@@ -197,17 +207,20 @@
         // 글을 가져오고
         const postRes = await fetch(`${BASE_URL}/posts/1`);
         const post = await postRes.json();
-        console.log("2단계: 글 받음, userId =", post.userId);
+        console.log("2단계: 글 받음, userId도 받음 ", post.userId);
 
         // 그 글의 작성자를 가져옵니다 (앞의 결과가 필요합니다)
         const userRes = await fetch(`${BASE_URL}/users/${post.userId}`);
         const user = await userRes.json();
         console.log("3단계: 작성자 받음");
+        console.log(user);
 
-        out2.textContent = `"${post.title}" — 작성자: ${user.name}`;
+        out2.textContent = `"${post.title}" — 작성자: ${user.name} (${user.email})`;
       }
 
-      document.querySelector("#seqBtn").addEventListener("click", loadPostAndAuthor);
+      document
+        .querySelector("#seqBtn")
+        .addEventListener("click", loadPostAndAuthor);
 
       // then 으로 쓰면 이렇게 됩니다. 비교해 보세요.
       //
@@ -241,16 +254,17 @@
         // 아래 [ ] 배열 안은 함수 안이 아니라 그냥 값을 나열하는 자리입니다.
         // 그래서 각 요청은 then 으로 json 까지 처리해 두고,
         // 그 묶음 '전체' 를 Promise.all 로 감싸 한 번만 await 합니다.
-        const [post1, post2, post3] = await Promise.all([
+        const [post1, post2, post3, post4] = await Promise.all([
           fetch(`${BASE_URL}/posts/1`).then((r) => r.json()),
           fetch(`${BASE_URL}/posts/2`).then((r) => r.json()),
           fetch(`${BASE_URL}/posts/3`).then((r) => r.json()),
+          fetch(`${BASE_URL}/posts/4`).then((r) => r.json()),
         ]);
 
-        console.log("셋 다 도착");
+        console.log("넷 다 도착");
 
         allList.innerHTML = "";
-        [post1, post2, post3].forEach((post) => {
+        [post1, post2, post3, post4].forEach((post) => {
           const li = document.createElement("li");
           li.textContent = `${post.id}. ${post.title}`;
           allList.appendChild(li);
@@ -292,7 +306,12 @@
 
       // ✏️ 직접 해보기 5 — #seqBtn 에 async 콜백을 하나 더 붙여, 누르면
       //                    /posts/2 의 title 을 콘솔에 찍게 해 보세요.
-
+      document.querySelector("#seqBtn").addEventListener("click", async () => {
+        const res = await fetch(`${BASE_URL}/posts/2`);
+        const data = await res.json();
+        console.log(data);
+        console.log("posts/2의 title:", data.title);
+      });
       // ── 섹션 6: 자주 하는 실수 ──
 
       // ★ 아래에서 SyntaxError 라고 적힌 것은 눈으로만 보세요. 주석을 풀지 마세요.

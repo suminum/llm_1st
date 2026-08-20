@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -62,17 +62,18 @@
     <h1>개념 05 — 에러 처리</h1>
 
     <p class="guide">
-      <strong>인터넷 연결이 필요합니다.</strong> 각 버튼을 눌러 성공·실패 경우를 모두
-      확인해 보세요. <strong>F12 → Console</strong> 도 함께 보세요.
-    
+      <strong>인터넷 연결이 필요합니다.</strong> 각 버튼을 눌러 성공·실패 경우를
+      모두 확인해 보세요. <strong>F12 → Console</strong> 도 함께 보세요.
+
       <br /><br />
       <strong>인터넷이 막혀 있어 안 된다면</strong> 이 파일 아래쪽
-      <code>&lt;script&gt;</code> 바로 위에 있는 <code>오프라인_대체.js</code> 줄에서
-      주석 기호를 지우세요. 인터넷 없이도 똑같이 동작합니다.
-      <br /><br />
+      <code>&lt;script&gt;</code> 바로 위에 있는
+      <code>오프라인_대체.js</code> 줄에서 주석 기호를 지우세요. 인터넷 없이도
+      똑같이 동작합니다. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
-      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
-      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을
+      만드는 코드입니다. 이 자료에서는 가르치지 않습니다.
+      <code>&lt;script&gt;</code> 안부터 읽으세요.
     </p>
 
     <div class="demo">
@@ -185,7 +186,9 @@
         }
       }
 
-      document.querySelector("#notFoundBtn").addEventListener("click", loadWithoutCheck);
+      document
+        .querySelector("#notFoundBtn")
+        .addEventListener("click", loadWithoutCheck);
 
       // catch 로 가지 않고 조용히 빈 화면이 됩니다.
       // "왜 아무것도 안 나오지?" 하는 문제의 정체입니다.
@@ -229,7 +232,8 @@
           console.log("성공:", data.id);
         } catch (error) {
           // 4) 실패 — 사용자에게는 쉬운 말로, 콘솔에는 자세히
-          out3.textContent = "글을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.";
+          out3.textContent =
+            "글을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요.";
           out3.className = "output error";
           console.log("에러 내용:", error.message);
         } finally {
@@ -239,7 +243,7 @@
         }
       }
 
-      goodBtn.addEventListener("click", () => loadPostProperly(1));
+      goodBtn.addEventListener("click", () => loadPostProperly(9999));
 
       // throw new Error("메시지") 는 "여기서 에러를 내겠다" 는 뜻입니다.
       // 던지면 즉시 catch 로 뜁니다.
