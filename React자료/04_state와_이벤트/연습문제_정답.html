@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>04단원 연습문제 정답 - state와 이벤트</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 760px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 6px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 4px;
+      }
+      input,
+      select,
+      textarea {
+        padding: 6px 8px;
+        font-size: 15px;
+        font-family: inherit;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 6px;
+      }
+      .summary {
+        background: #eef4ff;
+        border-left: 4px solid #2d6cdf;
+        padding: 12px 20px;
+        margin-top: 32px;
+      }
+      .summary h2 {
+        margin: 6px 0 10px;
+        font-size: 17px;
+      }
+      .summary li {
+        margin: 4px 0;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 4px 0;
+      }
+      .done {
+        text-decoration: line-through;
+        color: #999;
+      }
+      .on {
+        background: #2d6cdf;
+        color: #fff;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+        min-height: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>04단원 연습문제 정답 — state와 이벤트</h1>
+
+    <p class="guide">
+      먼저 스스로 풀어 본 다음에 보세요. 직접 눌러 보면서
+      <strong>F12 → Console</strong> 도 함께 확인하세요.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
+      <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
+      <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
+      <br /><br />
+      정답과 모양이 조금 달라도 결과가 같으면 맞은 것입니다. 이름을 다르게 지었거나,
+      화살표 함수를 밖으로 빼서 썼거나 하는 차이는 상관없습니다.
+    </p>
+
+    <div id="root"></div>
+
+    <script src="../_lib/react.development.js"></script>
+    <script src="../_lib/react-dom.development.js"></script>
+    <script src="../_lib/babel.min.js"></script>
+
+    <script type="text/babel">
+      // ============================================================
+      // 04단원 연습문제 정답 — state와 이벤트
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 직접 눌러 보세요. F12 → Console 도 함께.
+      // ============================================================
+
+      const { useState } = React;
+
+      // ───── 문제 1 ─────
+
+      function Q1() {
+        function handleClick() {
+          console.log("안녕하세요, 김민준님!");
+          // 콘솔: 안녕하세요, 김민준님!
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 1 — 버튼에 이벤트 붙이기</h3>
+            <button id="q1Btn" onClick={handleClick}>
+              인사하기
+            </button>
+          </div>
+        );
+      }
+
+      // onClick={handleClick} 입니다. 괄호를 붙이면 안 됩니다.
+      // onClick={handleClick()} 로 쓰면 화면을 그릴 때 한 번 실행되고,
+      // 그 결과인 undefined 가 onClick 에 들어가 버튼이 아무 반응도 안 합니다.
+
+      // ───── 문제 2 ─────
+
+      function Q2() {
+        function greet(name) {
+          console.log(`${name}님 반갑습니다`);
+          // 콘솔: 김민준님 반갑습니다
+          // 콘솔: 이서연님 반갑습니다
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 2 — 인자 넘기기</h3>
+            <button id="q2BtnA" onClick={() => greet("김민준")}>
+              김민준
+            </button>
+            <button id="q2BtnB" onClick={() => greet("이서연")}>
+              이서연
+            </button>
+          </div>
+        );
+      }
+
+      // 값을 넘겨야 하니 괄호가 필요합니다. 그래서 화살표 함수로 한 겹 감쌌습니다.
+      // onClick 이 받는 것은 화살표 함수이고, greet("김민준") 은 그 안에 들어 있어
+      // 누를 때 비로소 실행됩니다.
+      // onClick={greet("김민준")} 로 쓰면 페이지를 여는 순간 두 줄이 다 찍힙니다.
+
+      // ───── 문제 3 ─────
+
+      function Q3() {
+        const [count, setCount] = useState(0);
+
+        return (
+          <div className="demo">
+            <h3>문제 3 — 카운터 만들기</h3>
+            <div className="output" id="q3Out">
+              담은 개수: {count}
+            </div>
+            <button id="q3Btn" onClick={() => setCount(count + 1)}>
+              +1
+            </button>
+          </div>
+        );
+      }
+
+      // 화면(누르면): 담은 개수: 1
+      //
+      // let count = 0 으로 만들고 count++ 를 했다면 콘솔의 값만 올라가고
+      // 화면은 0에서 멈춥니다. 화면을 다시 그리라고 알려 주는 것이 set 함수입니다.
+
+      // ───── 문제 4 ─────
+
+      function Q4() {
+        const [cake, setCake] = useState(6);
+
+        return (
+          <div className="demo">
+            <h3>문제 4 — 시작값과 되돌리기</h3>
+            <div className="output" id="q4Out">
+              남은 케이크: {cake}조각
+            </div>
+            <button id="q4BtnEat" onClick={() => setCake(cake - 1)}>
+              한 조각 먹기
+            </button>
+            <button id="q4BtnBake" onClick={() => setCake(6)}>
+              새로 굽기
+            </button>
+          </div>
+        );
+      }
+
+      // 화면(누르면): 남은 케이크: 5조각
+      //
+      // 되돌리는 버튼은 setCake(6) 처럼 시작값을 직접 넣어야 합니다.
+      // useState(6) 은 맨 처음 그릴 때 한 번만 쓰이므로,
+      // 코드에 6이 적혀 있다고 저절로 6으로 돌아가지 않습니다.
+
+      // ───── 문제 5 ─────
+
+      function Q5() {
+        const [count, setCount] = useState(0);
+
+        console.log("Q5 그리는 중, count =", count);
+        // 콘솔: Q5 그리는 중, count = 0
+        // 콘솔: Q5 그리는 중, count = 1
+
+        return (
+          <div className="demo">
+            <h3>문제 5 — 다시 그려지는 횟수 세기</h3>
+            <div className="output" id="q5Out">
+              누른 횟수: {count}
+            </div>
+            <button id="q5Btn" onClick={() => setCount(count + 1)}>
+              +1
+            </button>
+          </div>
+        );
+      }
+
+      // 페이지를 열 때 한 줄, 누를 때마다 한 줄씩 늘어납니다.
+      // console.log 를 return 위에 적었기 때문입니다. 그 자리는 렌더링마다 지나갑니다.
+      // return 아래에 적으면 영원히 실행되지 않습니다. return 에서 함수가 끝나기 때문입니다.
+
+      // ───── 문제 6 ─────
+
+      function Q6() {
+        const [americano, setAmericano] = useState(0);
+        const [latte, setLatte] = useState(0);
+
+        return (
+          <div className="demo">
+            <h3>문제 6 — state 두 개</h3>
+            <div className="output" id="q6Out">
+              아메리카노 {americano}잔 / 라떼 {latte}잔
+            </div>
+            <button id="q6BtnA" onClick={() => setAmericano(americano + 1)}>
+              아메리카노 +1
+            </button>
+            <button id="q6BtnB" onClick={() => setLatte(latte + 1)}>
+              라떼 +1
+            </button>
+          </div>
+        );
+      }
+
+      // 화면(누르면): 아메리카노 1잔 / 라떼 0잔
+      //
+      // useState 를 두 줄 적으면 끝입니다. 둘은 서로 아무 상관이 없습니다.
+      // 다만 둘 중 하나만 바뀌어도 이 컴포넌트 전체가 다시 실행됩니다.
+
+      // ───── 문제 7 ─────
+
+      function Q7() {
+        const [menu, setMenu] = useState("아직 안 골랐습니다");
+
+        function pick(name) {
+          setMenu(name);
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 7 — 문자열 state</h3>
+            <div className="output" id="q7Out">
+              오늘의 메뉴: {menu}
+            </div>
+            <button id="q7BtnA" onClick={() => pick("아메리카노")}>
+              아메리카노
+            </button>
+            <button id="q7BtnB" onClick={() => pick("라떼")}>
+              라떼
+            </button>
+            <button id="q7BtnC" onClick={() => pick("케이크")}>
+              케이크
+            </button>
+          </div>
+        );
+      }
+
+      // 화면(누르면): 오늘의 메뉴: 아메리카노
+      //
+      // 버튼마다 참/거짓 state 를 두면 "라떼를 고르면 아메리카노를 꺼라" 같은 일을
+      // 손으로 해야 합니다. 한 번에 하나만 고르는 값은 '고른 것 하나' 만 state 로 둡니다.
+
+      // ───── 문제 8 ─────
+
+      function Q8() {
+        const [isOn, setIsOn] = useState(false);
+
+        // 화면에 쓸 글자는 미리 변수에 담아 두면 return 안이 깔끔해집니다.
+        const lampText = isOn ? "불이 켜졌습니다" : "불이 꺼져 있습니다";
+        const buttonText = isOn ? "끄기" : "켜기";
+        const boxClass = isOn ? "output on" : "output";
+
+        function toggle() {
+          setIsOn(!isOn);
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 8 — 켜고 끄기</h3>
+            <div className={boxClass} id="q8Out">
+              {lampText}
+            </div>
+            <button id="q8Btn" onClick={toggle}>
+              {buttonText}
+            </button>
+          </div>
+        );
+      }
+
+      // 화면(누르면): 불이 켜졌습니다
+      //
+      // setIsOn(true) 로 쓰면 한 번 켜진 뒤로 영원히 안 꺼집니다.
+      // 뒤집으려면 !isOn 을 넣어야 합니다.
+      // setIsOn((prev) => !prev) 로 써도 됩니다. 그쪽이 더 안전합니다. (개념05)
+
+      // ───── 문제 9 ─────
+
+      function Q9() {
+        const [americano, setAmericano] = useState(0);
+        const [cake, setCake] = useState(0);
+
+        // ↓ state 가 아닙니다. 렌더링할 때마다 다시 계산되는 보통 변수입니다.
+        const total = americano * 4000 + cake * 6000;
+
+        return (
+          <div className="demo">
+            <h3>문제 9 — 합계는 계산해서</h3>
+            <div className="output" id="q9Out">
+              아메리카노 {americano}개 + 케이크 {cake}개 = {total}원
+            </div>
+            <button id="q9BtnA" onClick={() => setAmericano(americano + 1)}>
+              아메리카노 담기
+            </button>
+            <button id="q9BtnC" onClick={() => setCake(cake + 1)}>
+              케이크 담기
+            </button>
+          </div>
+        );
+      }
+
+      // 화면(누르면): 아메리카노 1개 + 케이크 0개 = 4000원
+      //
+      // total 을 state 로 두면 담기 버튼마다 setTotal 을 같이 불러야 합니다.
+      // 한 군데만 잊어도 개수와 금액이 어긋나고, 그 버그는 찾기 어렵습니다.
+      // 계산으로 얻을 수 있는 값은 state 로 두지 않습니다.
+
+      // ───── 문제 10 ─────
+
+      function Q10() {
+        const [count, setCount] = useState(0);
+
+        function handleClick() {
+          setCount((prev) => prev + 1);
+          setCount((prev) => prev + 1);
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 10 — 한 번에 2 올리기</h3>
+            <div className="output" id="q10Out">
+              값: {count}
+            </div>
+            <button id="q10Btn" onClick={handleClick}>
+              +2
+            </button>
+          </div>
+        );
+      }
+
+      // 화면(누르면): 값: 2
+      //
+      // setCount(count + 1) 을 두 번 쓰면 1만 오릅니다.
+      // 이번 렌더의 count 는 고정된 숫자라 두 줄 다 같은 값을 넣기 때문입니다.
+      // 함수형으로 쓰면 첫 번째 결과가 두 번째의 prev 로 이어집니다.
+
+      // ───── 문제 11 ─────
+
+      function Q11() {
+        const [count, setCount] = useState(0);
+
+        function handleClick() {
+          setCount(count + 1);
+
+          console.log("set 직후:", count);
+          // 콘솔: set 직후: 0
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 11 — set 직후의 값</h3>
+            <div className="output" id="q11Out">
+              값: {count}
+            </div>
+            <button id="q11Btn" onClick={handleClick}>
+              +1
+            </button>
+          </div>
+        );
+      }
+
+      // 화면(누르면): 값: 1
+      //
+      // 화면은 1인데 콘솔은 0입니다. set 함수는 값을 즉시 바꾸지 않습니다.
+      // "다음 화면은 1로 그려 주세요" 라고 부탁만 하고 돌아옵니다.
+      // 다음 값이 필요하면 const next = count + 1; 처럼 미리 담아 두고 그걸 쓰세요.
+
+      // ───── 문제 12 ─────
+
+      function Q12() {
+        const [user, setUser] = useState({ name: "김민준", age: 20 });
+
+        function birthday() {
+          setUser({ ...user, age: user.age + 1 });
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 12 — 객체 state 올바르게 고치기</h3>
+            <div className="output" id="q12Out">
+              {user.name} ({user.age}세)
+            </div>
+            <button id="q12Btn" onClick={birthday}>
+              생일 축하
+            </button>
+          </div>
+        );
+      }
+
+      // 화면(누르면): 김민준 (21세)
+      //
+      // 흔한 오답 두 가지입니다.
+      //   setUser({ age: user.age + 1 })   → 이름이 사라집니다. 새 객체를 통째로 넣는 것이라
+      //                                      적지 않은 속성은 없어집니다.
+      //   user.age = user.age + 1          → 에러도 안 나고 화면도 안 바뀝니다.
+      //                                      주소가 그대로라 React 가 같은 값으로 봅니다.
+
+      // ───── 문제 13 ───── [응용]
+
+      function Q13() {
+        const [menu, setMenu] = useState("아메리카노");
+        const [cups, setCups] = useState(1);
+        const [isPacked, setIsPacked] = useState(false);
+
+        // 계산되는 값은 전부 보통 변수입니다. state 로 두지 않았습니다.
+        const price = menu === "라떼" ? 4500 : 4000;
+        const packFee = isPacked ? 500 : 0;
+        const total = price * cups + packFee;
+        const packText = isPacked ? "포장" : "매장";
+
+        return (
+          <div className="demo">
+            <h3>문제 13 [응용] — 커피 주문</h3>
+            <div className="output" id="q13Out">
+              {menu} · {cups}잔 · {packText} · {total}원
+            </div>
+            <button id="q13BtnA" onClick={() => setMenu("아메리카노")}>
+              아메리카노
+            </button>
+            <button id="q13BtnL" onClick={() => setMenu("라떼")}>
+              라떼
+            </button>
+            <button id="q13BtnPlus" onClick={() => setCups(cups + 1)}>
+              한 잔 더
+            </button>
+            <button id="q13BtnPack" onClick={() => setIsPacked(!isPacked)}>
+              포장 바꾸기
+            </button>
+          </div>
+        );
+      }
+
+      // 화면: 아메리카노 · 1잔 · 매장 · 4000원
+      // 화면(누르면): 라떼를 고르고 '한 잔 더' 와 '포장 바꾸기' 를 한 번씩 누르면
+      //              라떼 · 2잔 · 포장 · 9500원
+      //
+      // state 는 세 개, 계산 결과는 네 개입니다. 계산 결과는 하나도 state 가 아닙니다.
+      // 포장료를 total state 에 더해 두면, 포장을 껐을 때 500원을 다시 빼는 코드를
+      // 따로 써야 합니다. 그러다 한 번만 어긋나면 금액이 영영 틀어집니다.
+
+      // ───── 문제 14 ───── [도전]
+
+      function Q14() {
+        const [orders, setOrders] = useState([]);
+
+        function addOne() {
+          // 새 배열을 만들어 넣습니다. push 를 쓰면 화면이 안 바뀝니다.
+          setOrders([...orders, "아메리카노"]);
+        }
+
+        function addTwo() {
+          // 한 번에 두 개를 넣으려면 앞의 결과를 이어받아야 합니다.
+          setOrders((prev) => [...prev, "아메리카노"]);
+          setOrders((prev) => [...prev, "아메리카노"]);
+        }
+
+        function clear() {
+          setOrders([]);
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 14 [도전] — 주문 기록 쌓기</h3>
+            <div className="output" id="q14Out">
+              {orders.join(", ")} (모두 {orders.length}개)
+            </div>
+            <button id="q14BtnOne" onClick={addOne}>
+              한 잔 담기
+            </button>
+            <button id="q14BtnTwo" onClick={addTwo}>
+              두 잔 담기
+            </button>
+            <button id="q14BtnClear" onClick={clear}>
+              비우기
+            </button>
+          </div>
+        );
+      }
+
+      // 화면(누르면): '한 잔 담기' 한 번 → 아메리카노 (모두 1개)
+      //              이어서 '두 잔 담기' 한 번 → 모두 3개
+      //
+      // 이 문제는 두 가지를 한꺼번에 물었습니다.
+      //   ① 배열은 새로 만들어 넣어야 화면이 바뀐다 (개념06)
+      //   ② 한 이벤트에서 같은 state 를 두 번 바꾸려면 함수형이어야 한다 (개념05)
+      //
+      // addTwo 를 setOrders([...orders, "아메리카노"]) 두 줄로 쓰면 1개만 늘어납니다.
+      // 두 줄 다 '지금 orders 에 하나 더한 배열' 을 넣으라는 뜻이기 때문입니다.
+      //
+      // 목록에서 하나만 빼는 것은 07단원에서 filter 로 배웁니다.
+      // 목록을 여러 줄로 그리는 것은 05단원에서 map 으로 배웁니다.
+      // 여기서는 join 으로 한 줄에 이어 붙였습니다.
+
+      // ───── 문제 15 ───── (에러 확인)
+
+      function Q15() {
+        function handleClick() {
+          console.log("[문제 15] 제대로 눌렸습니다");
+          // 콘솔: [문제 15] 제대로 눌렸습니다
+        }
+
+        function handleWrong() {
+          console.log("[문제 15] 아무도 안 눌렀는데 실행되었습니다");
+          // 콘솔: [문제 15] 아무도 안 눌렀는데 실행되었습니다
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 15 — 에러 확인</h3>
+            <button id="q15Btn" onClick={handleClick}>
+              괄호 없는 버튼
+            </button>
+            <button id="q15BtnWrong" onClick={handleWrong()}>
+              괄호를 붙인 버튼
+            </button>
+          </div>
+        );
+      }
+
+      // 답:
+      //   onClick={handleWrong()} 는 함수가 아니라 '함수를 실행한 결과' 를 넘긴 것입니다.
+      //   그래서 화면을 그리는 순간 한 번 실행되어 콘솔에 한 줄이 찍히고,
+      //   그 결과인 undefined 가 onClick 에 들어갑니다.
+      //   undefined 는 함수가 아니므로 버튼을 눌러도 아무 일이 없습니다.
+      //
+      // 관찰 결과:
+      //   ① 페이지를 열자마자 "[문제 15] 아무도 안 눌렀는데 실행되었습니다" 가 찍힙니다.
+      //   ② 그 버튼을 눌러도 아무 일이 없습니다. 에러도 안 납니다.
+      //
+      // 고치는 방법: 괄호를 떼면 됩니다. onClick={handleWrong}
+      //   값을 넘겨야 한다면 onClick={() => handleWrong("김민준")} 처럼 감쌉니다.
+      //
+      // JS자료 11단원 개념01에서 addEventListener 로 배운 그 실수가
+      // React 에서는 onClick 으로 모양만 바꿔 그대로 나타납니다.
+      // "버튼이 안 눌려요" 라고 느껴지면 이 실수부터 의심하세요.
+
+      // ── 화면에 그리기 ──
+
+      function App() {
+        return (
+          <div>
+            <Q1 />
+            <Q2 />
+            <Q3 />
+            <Q4 />
+            <Q5 />
+            <Q6 />
+            <Q7 />
+            <Q8 />
+            <Q9 />
+            <Q10 />
+            <Q11 />
+            <Q12 />
+            <Q13 />
+            <Q14 />
+            <Q15 />
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.querySelector("#root"));
+      root.render(<App />);
+    </script>
+
+    <div class="summary">
+      <h2>정리</h2>
+      <ol>
+        <li>onClick 에는 <strong>함수를 넘깁니다</strong>. 괄호를 붙이면 그릴 때 실행됩니다.</li>
+        <li>값을 넘겨야 하면 <strong>() =&gt; 함수(값)</strong> 로 감쌉니다.</li>
+        <li>화면이 바뀌어야 하는 값만 <strong>useState</strong> 로 만듭니다.</li>
+        <li>set 함수를 부르면 컴포넌트가 처음부터 다시 실행됩니다.</li>
+        <li>
+          한 이벤트에서 같은 state 를 두 번 바꿀 때는 <strong>함수형 갱신</strong>을 씁니다.
+        </li>
+        <li>배열·객체 state 는 <strong>새로 만들어</strong> 넣습니다. push 나 직접 대입은 안 됩니다.</li>
+        <li>계산으로 얻을 수 있는 값은 state 로 두지 않습니다.</li>
+      </ol>
+    </div>
+  </body>
+</html>

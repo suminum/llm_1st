@@ -1,0 +1,207 @@
+/* ============================================================
+   실습 프로젝트 공용 스타일
+   ------------------------------------------------------------
+   이 파일은 자료가 미리 만들어 둔 '틀'입니다.
+   CSS 를 넣는 방법은 08단원 개념05에서 설명합니다.
+   ============================================================ */
+
+body {
+  font-family: "맑은 고딕", sans-serif;
+  line-height: 1.7;
+  margin: 0;
+  color: #222;
+  background: #fff;
+}
+
+/* ── 화면 배치 ── */
+.layout {
+  display: flex;
+  align-items: flex-start;
+  min-height: 100vh;
+}
+
+.sidebar {
+  width: 260px;
+  flex: 0 0 260px;
+  background: #f5f5f5;
+  border-right: 1px solid #ddd;
+  padding: 16px 12px 40px;
+  position: sticky;
+  top: 0;
+  max-height: 100vh;
+  overflow-y: auto;
+}
+
+.sidebar h1 {
+  font-size: 17px;
+  margin: 4px 8px 14px;
+  padding-bottom: 8px;
+  border-bottom: 3px solid #333;
+}
+
+.sidebar h2 {
+  font-size: 13px;
+  color: #666;
+  margin: 16px 8px 4px;
+  font-weight: bold;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
+}
+
+.navBtn {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: none;
+  border: none;
+  padding: 5px 8px;
+  margin: 0;
+  font-size: 13px;
+  font-family: inherit;
+  color: #333;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.navBtn:hover {
+  background: #e4e4e4;
+}
+
+.navBtn.on {
+  background: #2d6cdf;
+  color: #fff;
+}
+
+.empty {
+  font-size: 13px;
+  color: #888;
+  margin: 8px;
+}
+
+.stage {
+  flex: 1;
+  min-width: 0;
+  max-width: 760px;
+  padding: 40px 28px 80px;
+}
+
+/* ── 개념 파일이 쓰는 공용 모양 (01~07단원과 같습니다) ── */
+h1 {
+  border-bottom: 3px solid #333;
+  padding-bottom: 8px;
+}
+
+.guide {
+  background: #fff8dc;
+  border-left: 4px solid #f0c040;
+  padding: 12px 16px;
+}
+
+.demo {
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  padding: 16px;
+  margin: 20px 0;
+}
+
+.demo h3 {
+  margin: 14px 0 6px;
+  font-size: 15px;
+  color: #555;
+}
+
+button {
+  padding: 6px 14px;
+  font-size: 15px;
+  font-family: inherit;
+  cursor: pointer;
+  margin-right: 4px;
+}
+
+input,
+select,
+textarea {
+  padding: 6px 8px;
+  font-size: 15px;
+  font-family: inherit;
+}
+
+.output {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-top: 6px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.demo li,
+.stage li {
+  background: #fff;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  margin: 4px 0;
+}
+
+.done {
+  text-decoration: line-through;
+  color: #999;
+}
+
+.on {
+  background: #2d6cdf;
+  color: #fff;
+}
+
+.error {
+  color: #c00;
+  font-weight: bold;
+  min-height: 24px;
+}
+
+.summary {
+  background: #eef4ff;
+  border-left: 4px solid #2d6cdf;
+  padding: 12px 20px;
+  margin-top: 32px;
+}
+
+.summary h2 {
+  margin: 6px 0 10px;
+  font-size: 17px;
+}
+
+.summary li {
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 4px 0;
+}
+
+.errorBox {
+  background: #fff4f4;
+  border-left: 4px solid #c00;
+  padding: 12px 20px;
+}
+
+.errorBox pre {
+  background: #fff;
+  border: 1px solid #f0c0c0;
+  padding: 10px;
+  overflow-x: auto;
+  font-size: 13px;
+}

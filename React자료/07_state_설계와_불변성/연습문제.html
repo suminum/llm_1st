@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>07단원 연습문제 - state 설계와 불변성</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 760px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 6px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 4px;
+      }
+      input,
+      select,
+      textarea {
+        padding: 6px 8px;
+        font-size: 15px;
+        font-family: inherit;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 6px;
+      }
+      .summary {
+        background: #eef4ff;
+        border-left: 4px solid #2d6cdf;
+        padding: 12px 20px;
+        margin-top: 32px;
+      }
+      .summary h2 {
+        margin: 6px 0 10px;
+        font-size: 17px;
+      }
+      .summary li {
+        margin: 4px 0;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 4px 0;
+      }
+      .done {
+        text-decoration: line-through;
+        color: #999;
+      }
+      .on {
+        background: #2d6cdf;
+        color: #fff;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+        min-height: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>07단원 연습문제 — state 설계와 불변성</h1>
+
+    <p class="guide">
+      <code>&lt;script type="text/babel"&gt;</code> 안의 <strong>TODO</strong> 자리에 코드를 쓰고
+      저장한 뒤, 브라우저를 <strong>새로고침</strong>하고 직접 눌러서 확인하세요.<br />
+      1~12는 기본, 13은 <strong>[응용]</strong>, 14는 <strong>[도전]</strong>, 15는 에러
+      확인입니다.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽 <code>&lt;style&gt;</code> 은 화면 모양을
+      만드는 코드입니다.
+      <br /><br />
+      아직 안 푼 문제의 버튼은 눌러도 아무 일이 없습니다. 정상입니다.
+      <strong>F12 → Console</strong> 도 함께 열어 두세요.
+    </p>
+
+    <div id="root"></div>
+
+    <script src="../_lib/react.development.js"></script>
+    <script src="../_lib/react-dom.development.js"></script>
+    <script src="../_lib/babel.min.js"></script>
+
+    <script type="text/babel">
+      // ============================================================
+      // 07단원 연습문제 — state 설계와 불변성
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 직접 눌러 보세요. F12 → Console 도 함께.
+      // ============================================================
+
+      const { useState } = React;
+
+      // 새 항목에 붙일 번호입니다. 필요하면 쓰세요.
+      // (화면에 안 보이는 값이라 state 가 아니어도 됩니다)
+      let nextId = 100;
+
+      // ───── 문제 1 ───── (개념01 추가)
+      // '케이크 담기' 를 누르면 목록 맨 뒤에 "케이크" 가 붙게 하세요.
+      // push 를 쓰면 안 됩니다.
+      //
+      // 기대 결과 (화면): 누를 때마다 목록에 "케이크" 가 한 줄씩 늘어납니다.
+      //                  눌러도 아무 변화가 없으면 push 를 쓰고 setItems(items) 를 한 것입니다.
+
+      function Q1() {
+        const [items, setItems] = useState(["아메리카노"]);
+
+        function handleAdd() {
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 1 — 담기</h3>
+            <button onClick={handleAdd}>케이크 담기</button>
+            <ul>
+              {items.map((name, index) => (
+                <li key={index}>{name}</li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      // ───── 문제 2 ───── (개념01 삭제)
+      // 각 줄의 '빼기' 를 누르면 그 줄만 사라지게 하세요.
+      //
+      // 기대 결과 (화면): '케이크' 의 빼기를 누르면 아메리카노와 라떼만 남습니다.
+      //                  누른 것만 남고 나머지가 사라지면 filter 조건을 반대로 쓴 것입니다.
+
+      function Q2() {
+        const [items, setItems] = useState([
+          { id: 1, name: "아메리카노" },
+          { id: 2, name: "케이크" },
+          { id: 3, name: "라떼" },
+        ]);
+
+        function handleRemove(targetId) {
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 2 — 빼기</h3>
+            <ul>
+              {items.map((item) => (
+                <li key={item.id}>
+                  {item.name}
+                  <button onClick={() => handleRemove(item.id)}>빼기</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      // ───── 문제 3 ───── (개념01 수정)
+      // 각 줄의 '+1' 을 누르면 그 줄의 수량만 1 올라가게 하세요.
+      //
+      // 기대 결과 (화면): 아메리카노의 +1 을 누르면 "아메리카노 2개",
+      //                  케이크는 "케이크 1개" 그대로입니다.
+      //                  두 줄이 같이 올라가면 조건 없이 전부 바꾼 것입니다.
+
+      function Q3() {
+        const [items, setItems] = useState([
+          { id: 1, name: "아메리카노", qty: 1 },
+          { id: 2, name: "케이크", qty: 1 },
+        ]);
+
+        function handlePlus(targetId) {
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 3 — 수량 늘리기</h3>
+            <ul>
+              {items.map((item) => (
+                <li key={item.id}>
+                  {item.name} {item.qty}개
+                  <button onClick={() => handlePlus(item.id)}>+1</button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      // ───── 문제 4 ───── (개념01 정렬)
+      // '싼 것부터' 를 누르면 목록이 가격 오름차순으로 바뀌게 하세요.
+      // sort 는 원본을 바꾼다는 점에 주의하세요.
+      //
+      // 기대 결과 (화면): 아메리카노 4000 → 라떼 4500 → 케이크 6000 순서가 됩니다.
+      //                  눌러도 화면이 그대로면 복사하지 않고 바로 sort 한 것입니다.
+
+      function Q4() {
+        const [items, setItems] = useState([
+          { id: 1, name: "케이크", price: 6000 },
+          { id: 2, name: "아메리카노", price: 4000 },
+          { id: 3, name: "라떼", price: 4500 },
+        ]);
+
+        function handleSort() {
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 4 — 정렬</h3>
+            <button onClick={handleSort}>싼 것부터</button>
+            <ul>
+              {items.map((item) => (
+                <li key={item.id}>
+                  {item.name} — {item.price}원
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      // ───── 문제 5 ───── (개념02 객체 한 속성)
+      // '대구로 이사' 를 누르면 city 만 "대구" 로 바뀌게 하세요.
+      // 이름과 나이는 그대로 남아야 합니다.
+      //
+      // 기대 결과 (화면): 김민준 / 20살 / 대구
+      //                  나이 자리가 빈칸이 되면 ...user 를 빠뜨린 것입니다.
+
+      function Q5() {
+        const [user, setUser] = useState({ name: "김민준", age: 20, city: "서울" });
+
+        function handleMove() {
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 5 — 객체의 한 속성만 바꾸기</h3>
+            <button onClick={handleMove}>대구로 이사</button>
+            <div className="output">
+              {user.name} / {user.age}살 / {user.city}
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 6 ───── (개념02 토글)
+      // '얼음 켜기/끄기' 를 누를 때마다 ice 가 true ↔ false 로 뒤집히게 하세요.
+      // menu 는 그대로 남아야 합니다.
+      //
+      // 기대 결과 (화면): 아메리카노 / 얼음 있음 → 누르면 얼음 없음 → 또 누르면 얼음 있음
+      //                  한 번 바뀐 뒤 안 움직이면 !order.ice 대신 고정값을 넣은 것입니다.
+
+      function Q6() {
+        const [order, setOrder] = useState({ menu: "아메리카노", ice: true });
+
+        function handleToggle() {
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 6 — 불리언 뒤집기</h3>
+            <button onClick={handleToggle}>얼음 켜기/끄기</button>
+            <div className="output">
+              {order.menu} / 얼음 {order.ice ? "있음" : "없음"}
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 7 ───── (개념02 중첩 객체)
+      // 'L 사이즈로' 를 누르면 option.size 만 "L" 이 되게 하세요.
+      // option.ice 와 menu 는 그대로 남아야 합니다.
+      //
+      // 기대 결과 (화면): 아메리카노 / L 사이즈 / 얼음 있음
+      //                  '얼음' 자리가 빈칸이 되면 option 안쪽을 펼치지 않은 것입니다.
+
+      function Q7() {
+        const [order, setOrder] = useState({
+          menu: "아메리카노",
+          option: { size: "M", ice: true },
+        });
+
+        function handleSizeUp() {
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 7 — 중첩 객체 바꾸기</h3>
+            <button onClick={handleSizeUp}>L 사이즈로</button>
+            <div className="output">
+              {order.menu} / {order.option.size} 사이즈 / 얼음 {order.option.ice ? "있음" : "없음"}
+            </div>
+          </div>
+        );
+      }
+
+      // ───── 문제 8 ───── (개념03 끌어올리기)
+      // 지금은 Q8List 와 Q8Count 가 각자 items state 를 갖고 있어 어긋납니다.
+      // items 를 Q8 로 옮기고, 두 자식에게 props 로 내려보내세요.
+      // 담기 버튼은 Q8 에 그대로 두세요.
+      //
+      // 기대 결과 (화면): '라떼 담기' 를 누르면 목록이 2줄이 되고
+      //                  아래 '담긴 개수' 도 함께 2개가 됩니다.
+      //                  목록만 늘고 개수가 1개 그대로면 아직 안 올린 것입니다.
+
+      function Q8List() {
+        // TODO: state 를 지우고 props 로 items 를 받으세요
+        const [items] = useState(["아메리카노"]);
+
+        return (
+          <ul>
+            {items.map((name, index) => (
+              <li key={index}>{name}</li>
+            ))}
+          </ul>
+        );
+      }
+
+      function Q8Count() {
+        // TODO: state 를 지우고 props 로 items 를 받으세요
+        const [items] = useState(["아메리카노"]);
+
+        return <div className="output">담긴 개수: {items.length}개</div>;
+      }
+
+      function Q8() {
+        // TODO: 여기에 items state 를 만들고 handleAdd 를 완성하세요
+
+        function handleAdd() {
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 8 — state 끌어올리기</h3>
+            <button onClick={handleAdd}>라떼 담기</button>
+            <Q8List />
+            <Q8Count />
+          </div>
+        );
+      }
+
+      // ───── 문제 9 ───── (개념04 함수를 props 로)
+      // Q9Button 은 버튼만 갖고 있습니다.
+      // 부모 Q9 가 handleAdd 를 만들어 onAdd 라는 이름으로 내려보내고,
+      // 자식이 눌리면 그 함수를 부르게 하세요.
+      //
+      // 기대 결과 (화면): 버튼을 누를 때마다 목록에 "삼각김밥" 이 한 줄씩 늘어납니다.
+      //                  "onAdd is not a function" 이 나오면 부모가 안 내려보낸 것입니다.
+
+      function Q9Button(props) {
+        // TODO: props 에서 onAdd 를 꺼내 버튼이 눌리면 부르세요
+        return <button>삼각김밥 담기</button>;
+      }
+
+      function Q9() {
+        const [items, setItems] = useState([]);
+
+        function handleAdd() {
+          setItems([...items, { id: nextId, name: "삼각김밥" }]);
+          nextId = nextId + 1;
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 9 — 함수를 자식에게 내려보내기</h3>
+            {/* TODO: Q9Button 에 onAdd 를 넘기세요 */}
+            <Q9Button />
+            <ul>
+              {items.map((item) => (
+                <li key={item.id}>{item.name}</li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      // ───── 문제 10 ───── (개념04 값 같이 넘기기)
+      // Q10Row 의 '빼기' 를 누르면 그 항목이 사라지게 하세요.
+      // 부모의 handleRemove 는 이미 완성돼 있습니다.
+      // 자식이 자기 id 를 같이 넘겨서 부르도록 고치면 됩니다.
+      //
+      // 기대 결과 (화면): '케이크' 의 빼기를 누르면 케이크만 사라집니다.
+      //                  누르기도 전에 목록이 사라지거나 화면이 통째로 비면
+      //                  onClick 에 괄호를 붙인 것입니다.
+
+      function Q10Row({ item, onRemove }) {
+        return (
+          <li>
+            {item.name}
+            {/* TODO: 아래 버튼이 눌리면 onRemove 를 item.id 와 함께 부르세요 */}
+            <button>빼기</button>
+          </li>
+        );
+      }
+
+      function Q10() {
+        const [items, setItems] = useState([
+          { id: 1, name: "아메리카노" },
+          { id: 2, name: "케이크" },
+        ]);
+
+        function handleRemove(targetId) {
+          setItems(items.filter((item) => item.id !== targetId));
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 10 — 값을 같이 넘기기</h3>
+            <ul>
+              {items.map((item) => (
+                <Q10Row key={item.id} item={item} onRemove={handleRemove} />
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      // ───── 문제 11 ───── (개념05 파생 state)
+      // 지금은 count 가 state 라서 '맨 뒤 빼기' 를 누르면 어긋납니다.
+      // count state 를 없애고 items 로 계산해서 쓰도록 고치세요.
+      //
+      // 기대 결과 (화면): '맨 뒤 빼기' 를 누르면 '담긴 개수' 도 함께 줄어듭니다.
+      //                  담기는 맞는데 빼기에서만 틀리면 아직 count state 가 남아 있는 것입니다.
+
+      function Q11() {
+        const [items, setItems] = useState([
+          { id: 1, name: "아메리카노" },
+          { id: 2, name: "케이크" },
+        ]);
+        // TODO: 아래 state 를 없애고, count 를 items 로 계산하세요
+        const [count, setCount] = useState(2);
+
+        function handleAdd() {
+          setItems([...items, { id: nextId, name: "라떼" }]);
+          setCount(count + 1);
+          nextId = nextId + 1;
+        }
+
+        function handleRemoveLast() {
+          setItems(items.slice(0, items.length - 1));
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 11 — 개수를 계산해서 쓰기</h3>
+            <button onClick={handleAdd}>라떼 담기</button>
+            <button onClick={handleRemoveLast}>맨 뒤 빼기</button>
+            <div className="output">담긴 개수: {count}개</div>
+            <ul>
+              {items.map((item) => (
+                <li key={item.id}>{item.name}</li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      // ───── 문제 12 ───── (개념05 계산해서 쓰기)
+      // 총액을 계산해서 화면에 보여 주세요. state 를 새로 만들면 안 됩니다.
+      // 지금은 total 이 늘 0 이라 화면에 0원만 나옵니다.
+      //
+      // 기대 결과 (화면): 처음에 "총액: 10000원",
+      //                  '라떼 담기' 를 누르면 "총액: 14500원" 이 됩니다.
+      //                  0원 그대로면 아직 reduce 를 안 쓴 것입니다.
+
+      function Q12() {
+        const [items, setItems] = useState([
+          { id: 1, name: "아메리카노", price: 4000 },
+          { id: 2, name: "케이크", price: 6000 },
+        ]);
+
+        // TODO: reduce 로 총액을 구하세요 (JS자료 08단원)
+        const total = 0;
+
+        function handleAdd() {
+          setItems([...items, { id: nextId, name: "라떼", price: 4500 }]);
+          nextId = nextId + 1;
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 12 — 총액 계산하기</h3>
+            <button onClick={handleAdd}>라떼 담기</button>
+            <div className="output">총액: {total}원</div>
+            <ul>
+              {items.map((item) => (
+                <li key={item.id}>
+                  {item.name} — {item.price}원
+                </li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      // ───── 문제 13 ───── [응용] (개념01 + 개념04)
+      // Q13Row 의 '+' 와 '−' 를 누르면 그 줄의 수량이 1 오르내리게 하세요.
+      // 자식은 부모가 준 onChangeQty 를 id 와 변화량(1 또는 -1)으로 부릅니다.
+      // 부모는 map 으로 그 줄만 고칩니다.
+      // 단, 수량이 1 아래로는 내려가지 않아야 합니다.
+      //
+      // 기대 결과 (화면): 아메리카노에서 '+' 를 두 번 누르면 "아메리카노 3개",
+      //                  '−' 를 계속 눌러도 "아메리카노 1개" 에서 멈춥니다.
+      //                  0개나 -1개가 나오면 아래로 못 내려가게 막지 않은 것입니다.
+      //                  케이크 줄이 같이 움직이면 id 로 고르지 않은 것입니다.
+
+      function Q13Row({ item, onChangeQty }) {
+        return (
+          <li>
+            {item.name} {item.qty}개{/* TODO: '+' 와 '−' 버튼을 만드세요 */}
+          </li>
+        );
+      }
+
+      function Q13() {
+        const [items, setItems] = useState([
+          { id: 1, name: "아메리카노", qty: 1 },
+          { id: 2, name: "케이크", qty: 1 },
+        ]);
+
+        function handleChangeQty(targetId, diff) {
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 13 [응용] — 수량 올리고 내리기</h3>
+            <ul>
+              {items.map((item) => (
+                <Q13Row key={item.id} item={item} onChangeQty={handleChangeQty} />
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      // ───── 문제 14 ───── [도전] (07단원 전체)
+      // 작은 장바구니를 완성하세요. 아래 세 가지를 전부 만들어야 합니다.
+      //
+      //   (1) 메뉴 버튼을 누르면 장바구니에 담깁니다.
+      //       ★ 이미 담긴 메뉴를 또 누르면 새 줄을 만들지 말고 그 줄의 수량을 1 올립니다.
+      //   (2) 각 줄의 '빼기' 를 누르면 그 줄이 통째로 사라집니다.
+      //   (3) 담긴 개수와 총액을 보여 줍니다. state 를 새로 만들면 안 됩니다.
+      //       담긴 개수는 줄 수가 아니라 '수량을 다 더한 것' 입니다.
+      //
+      // 힌트: (1)은 find 로 이미 있는지 먼저 확인하고, 있으면 map, 없으면 스프레드입니다.
+      //
+      // 기대 결과 (화면): 아메리카노 → 아메리카노 → 케이크 순서로 누르면
+      //                  "아메리카노 2개 / 케이크 1개",
+      //                  "담긴 개수: 3개 / 총액: 14000원" 이 됩니다.
+      //                  줄이 세 개가 되면 (1)의 '이미 있는지 확인' 을 안 한 것입니다.
+      //                  담긴 개수가 2개로 나오면 줄 수를 센 것입니다.
+
+      const q14Menu = [
+        { id: 1, name: "아메리카노", price: 4000 },
+        { id: 2, name: "라떼", price: 4500 },
+        { id: 3, name: "케이크", price: 6000 },
+      ];
+
+      function Q14() {
+        // 담긴 것은 { id, name, price, qty } 모양으로 두세요. id 는 메뉴 id 를 그대로 씁니다.
+        const [cart, setCart] = useState([]);
+
+        // TODO: 담긴 개수와 총액을 계산하세요
+        const count = 0;
+        const total = 0;
+
+        function handlePick(menu) {
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        function handleRemove(targetId) {
+          // TODO: 여기에 코드를 쓰세요
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 14 [도전] — 작은 장바구니</h3>
+            {q14Menu.map((menu) => (
+              <button key={menu.id} onClick={() => handlePick(menu)}>
+                {menu.name}
+              </button>
+            ))}
+            <div className="output">
+              담긴 개수: {count}개 / 총액: {total}원
+            </div>
+            {cart.length === 0 ? (
+              <div className="output">장바구니가 비었습니다</div>
+            ) : (
+              <ul>
+                {cart.map((item) => (
+                  <li key={item.id}>
+                    {item.name} {item.qty}개 — {item.price * item.qty}원
+                    <button onClick={() => handleRemove(item.id)}>빼기</button>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
+        );
+      }
+
+      // ───── 문제 15 ───── (에러 확인 — 맨 마지막)
+      // 아래 handleWrongAdd 안의 두 줄에서 // 를 지우고 저장한 뒤 새로고침하세요.
+      // 그리고 '담기(push)' 를 세 번 누르고 나서 '화면 강제로 다시 그리기' 를 눌러 보세요.
+      // 콘솔도 함께 보세요.
+      //
+      // 기대 결과 (화면): '담기(push)' 를 세 번 눌러도 화면은 "아메리카노" 한 줄 그대로입니다.
+      //                  그 뒤 '화면 강제로 다시 그리기' 를 누르면
+      //                  갑자기 네 줄이 한꺼번에 나타납니다.
+      // 기대 결과 (콘솔): 페이지를 열 때 "items.length: 1" 이 한 번 찍힙니다.
+      //                  '담기(push)' 를 세 번 눌러도 다시 안 찍힙니다.
+      //                  '화면 강제로 다시 그리기' 를 누르면 "items.length: 4" 가 찍힙니다.
+      //                  다시 안 찍힌다는 것은 React 가 무엇을 안 했다는 뜻일까요?
+      //
+      // 배열은 분명히 늘어났는데 화면은 왜 안 바뀔까요?
+      // 답: __________________________________________
+      //
+      // 확인이 끝나면 다시 // 를 붙여 두세요.
+
+      function Q15() {
+        const [items, setItems] = useState(["아메리카노"]);
+        const [redrawCount, setRedrawCount] = useState(0);
+
+        // 이 줄은 화면을 그릴 때마다 찍힙니다. 지우지 마세요.
+        console.log("[문제 15] 화면을 그렸습니다. items.length:", items.length);
+        // 콘솔: [문제 15] 화면을 그렸습니다. items.length: 1
+
+        function handleWrongAdd() {
+          // items.push("케이크");
+          // setItems(items);
+        }
+
+        return (
+          <div className="demo">
+            <h3>문제 15 — 에러 확인</h3>
+            <button onClick={handleWrongAdd}>담기(push)</button>
+            <button onClick={() => setRedrawCount(redrawCount + 1)}>
+              화면 강제로 다시 그리기
+            </button>
+            <ul>
+              {items.map((name, index) => (
+                <li key={index}>{name}</li>
+              ))}
+            </ul>
+          </div>
+        );
+      }
+
+      // ------------------------------------------------------------
+      // 문제들을 화면에 붙입니다. 이 아래는 고치지 않아도 됩니다.
+      // ------------------------------------------------------------
+
+      function App() {
+        return (
+          <div>
+            <Q1 />
+            <Q2 />
+            <Q3 />
+            <Q4 />
+            <Q5 />
+            <Q6 />
+            <Q7 />
+            <Q8 />
+            <Q9 />
+            <Q10 />
+            <Q11 />
+            <Q12 />
+            <Q13 />
+            <Q14 />
+            <Q15 />
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.querySelector("#root"));
+      root.render(<App />);
+    </script>
+  </body>
+</html>

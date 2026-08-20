@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>04단원 개념01 - 이벤트 붙이기</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 760px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 6px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 4px;
+      }
+      input,
+      select,
+      textarea {
+        padding: 6px 8px;
+        font-size: 15px;
+        font-family: inherit;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 6px;
+      }
+      .summary {
+        background: #eef4ff;
+        border-left: 4px solid #2d6cdf;
+        padding: 12px 20px;
+        margin-top: 32px;
+      }
+      .summary h2 {
+        margin: 6px 0 10px;
+        font-size: 17px;
+      }
+      .summary li {
+        margin: 4px 0;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 4px 0;
+      }
+      .done {
+        text-decoration: line-through;
+        color: #999;
+      }
+      .on {
+        background: #2d6cdf;
+        color: #fff;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+        min-height: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 01 — 이벤트 붙이기</h1>
+
+    <p class="guide">
+      이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
+      <strong>F12 → Console</strong> 도 함께 보세요.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
+      <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
+      <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
+      <br /><br />
+      <strong>이번 단원부터는 버튼을 직접 눌러야 결과가 나옵니다.</strong> 페이지를 여는
+      것만으로는 대부분 아무 일도 일어나지 않습니다. JS자료 11단원과 같습니다.
+    </p>
+
+    <div id="root"></div>
+
+    <script src="../_lib/react.development.js"></script>
+    <script src="../_lib/react-dom.development.js"></script>
+    <script src="../_lib/babel.min.js"></script>
+
+    <script type="text/babel">
+      // ============================================================
+      // 04단원 · 개념 01 — 이벤트 붙이기
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 버튼을 눌러 보세요. F12 → Console 도 함께.
+      // ============================================================
+      //
+      // 01~03단원의 화면은 전부 '고정' 이었습니다.
+      // props 로 값을 바꿔 넣을 수는 있었지만, 화면을 열고 난 뒤에는
+      // 사용자가 무엇을 해도 아무 일이 없었습니다.
+      //
+      // 이제 사용자의 행동에 반응하는 화면을 만듭니다.
+      // 그 첫 단계가 '이벤트를 붙이는 일' 입니다.
+      //
+      // JS자료 11단원에서는 이렇게 했습니다.
+      //
+      //     const btn = document.querySelector("#btn");
+      //     btn.addEventListener("click", handleClick);
+      //
+      //   ① 요소를 찾아오고  ② 거기에 이벤트를 붙였습니다.
+      //
+      // React 에서는 ①이 사라집니다. 요소를 찾아올 필요가 없습니다.
+      // 화면을 그리는 그 자리에서 바로 붙입니다.
+      //
+      //     <button onClick={handleClick}>눌러 보세요</button>
+      //
+      // 달라진 것은 '적는 위치' 와 '이름' 뿐입니다.
+      // 넘기는 것이 함수라는 점, 괄호를 붙이면 안 된다는 점은 똑같습니다.
+      // 그 '괄호' 이야기가 이 파일의 절반을 차지합니다. 그만큼 자주 틀립니다.
+
+      console.log("페이지를 열었습니다. 버튼을 눌러야 나머지가 나옵니다.");
+      // 콘솔: 페이지를 열었습니다. 버튼을 눌러야 나머지가 나옵니다.
+
+      // ── 섹션 1: React 에서 이벤트 붙이기 ──
+
+      // 규칙은 세 가지입니다.
+      //
+      //   (1) 이벤트를 붙일 태그 안에 속성처럼 적는다
+      //   (2) 이름은 on 으로 시작하고, 뒤 단어는 대문자로 (onClick)
+      //   (3) 값은 중괄호 { } 안에 '함수' 를 넣는다
+      //
+      // (3)의 중괄호는 02단원에서 배운 그 중괄호입니다.
+      // JSX 안에서 자바스크립트 값을 쓰려면 { } 로 감싸야 했습니다.
+      // 함수도 값이므로 똑같이 { } 안에 넣습니다.
+
+      function Greeting() {
+        // 이벤트가 일어났을 때 실행할 함수를 컴포넌트 '안' 에 만듭니다.
+        // 이름은 보통 handle 로 시작하게 짓습니다. handleClick, handleSave ...
+        // 규칙은 아니지만 대부분 이렇게 써서, 읽는 사람이 바로 알아봅니다.
+        function handleClick() {
+          console.log("안녕하세요, 김민준님!");
+          // 콘솔: 안녕하세요, 김민준님!
+        }
+
+        return (
+          <div className="demo">
+            <h3>① 가장 기본 — onClick={"{"}handleClick{"}"}</h3>
+            <button id="btnGreet" onClick={handleClick}>
+              인사하기
+            </button>
+          </div>
+        );
+      }
+
+      // 위 h3 에 있는 {"{"} 는 신경 쓰지 마세요.
+      // 화면에 중괄호 글자 자체를 보여 주려고 쓴 것입니다. (02단원 개념02)
+
+      // 이 handleClick 은 '지금' 실행되지 않습니다.
+      // "누르면 이걸 해라" 라고 React 에게 맡겨 둔 것입니다.
+      // JS자료 11단원에서 addEventListener 에 콜백을 넘긴 것과 같은 뜻입니다.
+      //
+      // 함수를 컴포넌트 안에 만드는 이유가 있습니다.
+      // 곧 배울 state 값을 이 함수 안에서 써야 하기 때문입니다.
+      // 지금은 "핸들러는 컴포넌트 안에 만든다" 로 기억해 두세요.
+
+      // ✏️ 직접 해보기 1 — handleClick 이 찍는 이름을 "이서연" 으로 바꿔 보세요.
+      //                    저장하고 F5 를 누른 뒤 버튼을 눌러 확인합니다.
+
+      // ── 섹션 2: 괄호를 붙이면 안 됩니다 ──
+
+      // 여기가 이 파일에서 가장 중요한 곳입니다.
+      // JS자료 11단원 개념01 섹션 2에서 배운 그 실수가 React 에서 또 나옵니다.
+      //
+      //     handleClick     ← 함수 그 자체.        "이 종이를 받아 두세요"
+      //     handleClick()   ← 함수를 실행한 결과.  "지금 요리해서 접시를 주세요"
+      //
+      // 비유는 여기까지입니다. 실제로 무슨 일이 일어나는지 봅시다.
+      // 괄호를 붙이면 React 가 화면을 그리는 그 순간에 함수가 실행됩니다.
+      // 그리고 함수가 돌려준 값(여기서는 undefined)이 onClick 에 들어갑니다.
+      // undefined 는 함수가 아니므로, 정작 눌렀을 때는 아무 일도 없습니다.
+
+      function shout() {
+        console.log("[실수] shout 가 지금 실행되었습니다. 아무도 안 눌렀는데요!");
+        // 콘솔: [실수] shout 가 지금 실행되었습니다. 아무도 안 눌렀는데요!
+      }
+
+      function BadButton() {
+        // ↓ 괄호를 붙였습니다. 일부러 틀리게 쓴 것입니다.
+        return (
+          <div className="demo">
+            <h3>② 괄호를 붙인 버튼 — 눌러도 아무 일이 없습니다</h3>
+            <button id="btnBad" onClick={shout()}>
+              괄호 붙인 버튼
+            </button>
+          </div>
+        );
+      }
+
+      // 위 컴포넌트가 화면에 그려지는 순간 콘솔에 한 줄이 이미 찍혔습니다.
+      // 아직 버튼을 누르기 전인데도 말입니다. F5 를 눌러 다시 확인해 보세요.
+      //
+      // 그리고 버튼을 눌러 보세요. 아무 일도 안 일어납니다.
+      // 에러도 안 납니다. 빨간 글씨도 없습니다. 그래서 더 찾기 어렵습니다.
+      // "버튼이 안 눌려요" 라고 할 때 열에 아홉은 이 실수입니다.
+
+      function GoodButton() {
+        return (
+          <div className="demo">
+            <h3>③ 괄호를 뗀 버튼 — 이게 맞습니다</h3>
+            <button id="btnGood" onClick={shout}>
+              괄호 없는 버튼
+            </button>
+          </div>
+        );
+      }
+
+      // 이쪽은 누를 때마다 콘솔에 찍힙니다.
+      // 같은 shout 함수인데 괄호 하나로 동작이 완전히 달라집니다.
+      //
+      // 정리하면 이렇습니다.
+      //
+      //   onClick={shout}     그릴 때: 아무 일 없음 / 누르면: 실행됨      ← 맞음
+      //   onClick={shout()}   그릴 때: 실행됨       / 누르면: 아무 일 없음 ← 틀림
+      //
+      // 왜 이런지 한 번 더 짚습니다.
+      // React 는 onClick 에 들어온 값을 '나중에 부를 것' 으로 보관합니다.
+      // 그러려면 값이 함수여야 합니다. shout() 는 함수가 아니라 실행 결과입니다.
+
+      // ✏️ 직접 해보기 2 — GoodButton 의 onClick 에도 괄호를 붙였다 떼 보세요.
+      //                    붙인 채로 F5 를 누르면 콘솔에 언제 찍히는지 보세요.
+      //                    (확인했으면 반드시 다시 떼세요)
+
+      // ── 섹션 3: 인자를 넘기려면 화살표로 감싼다 ──
+
+      // 그럼 함수에 값을 넘기고 싶을 때는 어떻게 할까요?
+      // greetPerson("김민준") 처럼 쓰려면 괄호가 꼭 필요합니다.
+      // 그런데 괄호를 쓰면 바로 실행되어 버립니다. 막힌 것 같습니다.
+      //
+      // 해결은 JS자료 11단원과 똑같습니다. 화살표 함수로 한 겹 감쌉니다.
+      //
+      //     onClick={() => greetPerson("김민준")}
+      //              ^^^^^^^ 이 화살표 함수가 onClick 에 들어갑니다
+      //
+      // onClick 이 받는 것은 화살표 함수입니다. 이건 함수가 맞습니다.
+      // greetPerson("김민준") 은 그 화살표 함수 '안' 에 적혀 있으므로,
+      // 눌렀을 때 화살표 함수가 실행되면서 그때 같이 실행됩니다.
+
+      function greetPerson(name) {
+        console.log(`${name}님 안녕하세요`);
+        // 콘솔: 김민준님 안녕하세요
+        // 콘솔: 이서연님 안녕하세요
+      }
+
+      function ArgButtons() {
+        return (
+          <div className="demo">
+            <h3>④ 인자 넘기기 — 화살표로 감싸기</h3>
+            <button id="btnMinjun" onClick={() => greetPerson("김민준")}>
+              김민준에게 인사
+            </button>
+            <button id="btnSeoyeon" onClick={() => greetPerson("이서연")}>
+              이서연에게 인사
+            </button>
+          </div>
+        );
+      }
+
+      // 버튼은 두 개인데 함수는 하나입니다. 넘기는 값만 다릅니다.
+      // JS자료 11단원에서는 이럴 때 data-price 같은 속성에 값을 숨겨 두고
+      // e.target.dataset 으로 꺼냈습니다. React 에서는 그럴 필요가 없습니다.
+      // 화면을 그리는 자리에서 값을 그대로 적어 넘기면 됩니다.
+      //
+      // 다만 화살표를 빼먹으면 안 됩니다.
+      //
+      //   onClick={greetPerson("김민준")}        ← 그릴 때 실행되고 끝. 틀림
+      //   onClick={() => greetPerson("김민준")}  ← 맞음
+
+      // ✏️ 직접 해보기 3 — "박지훈에게 인사" 버튼을 하나 더 만들어 보세요.
+      //                    ArgButtons 안에 button 을 한 줄 더 적으면 됩니다.
+
+      // ── 섹션 4: 이벤트 객체 e 받기 ──
+
+      // JS자료 11단원 개념02에서 콜백의 첫 매개변수로 이벤트 객체를 받았습니다.
+      // React 도 똑같이 줍니다. 이름은 보통 e 나 event 로 짓습니다.
+      //
+      //     function handleClick(e) { ... }
+      //
+      // e 안에는 "무엇이 눌렸는지" 같은 정보가 들어 있습니다.
+      // 자주 쓰는 것은 이 정도입니다.
+      //
+      //   e.target       이벤트가 일어난 요소 (누른 그 버튼)
+      //   e.type         이벤트 이름 ("click")
+      //   e.preventDefault()   기본 동작 막기 (06단원 폼에서 씁니다)
+
+      function EventObjectButton() {
+        function handleClick(e) {
+          console.log("이벤트 이름:", e.type);
+          // 콘솔: 이벤트 이름: click
+
+          console.log("눌린 요소의 글자:", e.target.textContent);
+          // 콘솔: 눌린 요소의 글자: 나를 눌러 보세요
+
+          console.log("눌린 요소의 태그:", e.target.tagName);
+          // 콘솔: 눌린 요소의 태그: BUTTON
+        }
+
+        return (
+          <div className="demo">
+            <h3>⑤ 이벤트 객체 — 무엇이 눌렸는지 알려 줍니다</h3>
+            <button id="btnEvent" onClick={handleClick}>
+              나를 눌러 보세요
+            </button>
+          </div>
+        );
+      }
+
+      // tagName 이 대문자 BUTTON 으로 나오는 것도 JS자료 11단원과 같습니다.
+      //
+      // 화살표로 감싼 경우에도 e 를 받을 수 있습니다. 이렇게 적습니다.
+      //
+      //     onClick={(e) => handleClick(e, "김민준")}
+      //
+      // 다만 04단원에서는 e 를 거의 쓰지 않습니다.
+      // 값을 화면에 보여 주는 일은 곧 배울 state 가 대신해 주기 때문입니다.
+      // e 가 본격적으로 필요해지는 곳은 입력칸을 다루는 06단원입니다.
+
+      // ✏️ 직접 해보기 4 — handleClick 안에서 e.target.id 도 찍어 보세요.
+      //                    버튼에 적어 둔 id 가 그대로 나옵니다.
+
+      // ── 섹션 5: 한 버튼에 여러 가지 일 시키기 ──
+
+      // JS자료 11단원에서는 addEventListener 를 여러 번 붙일 수 있었습니다.
+      // 붙인 순서대로 전부 실행됐습니다.
+      //
+      // React 의 onClick 은 그렇지 않습니다. '속성' 이라서 하나만 들어갑니다.
+      // 같은 태그에 onClick 을 두 번 적으면 뒤에 적은 것만 남습니다.
+      // 예전 방식인 btn.onclick = 함수 와 같은 성질입니다.
+      //
+      //     <button onClick={jobA} onClick={jobB}>   ← jobA 는 사라집니다
+      //
+      // 그래서 두 가지 일을 시키려면 함수 하나 안에서 둘 다 부릅니다.
+
+      function TwoJobsButton() {
+        function takeOrder() {
+          console.log("[1] 주문을 받았습니다");
+          // 콘솔: [1] 주문을 받았습니다
+        }
+
+        function printReceipt() {
+          console.log("[2] 영수증을 찍었습니다");
+          // 콘솔: [2] 영수증을 찍었습니다
+        }
+
+        function handleClick() {
+          takeOrder();
+          printReceipt();
+        }
+
+        return (
+          <div className="demo">
+            <h3>⑥ 한 번 누르면 두 가지 일</h3>
+            <button id="btnTwoJobs" onClick={handleClick}>
+              주문 + 영수증
+            </button>
+          </div>
+        );
+      }
+
+      // 이렇게 하면 순서도 눈에 보이고, 나중에 하나만 빼기도 쉽습니다.
+
+      // ✏️ 직접 해보기 5 — handleClick 안의 두 줄 순서를 바꿔 보세요.
+      //                    콘솔에 찍히는 순서도 따라 바뀝니다.
+
+      // React 가 알아듣는 이벤트 이름은 아주 많습니다. 자주 쓰는 것만 봅시다.
+      //
+      //   onClick       눌렀을 때                    ← 이 파일에서 씁니다
+      //   onDoubleClick 두 번 눌렀을 때
+      //   onMouseOver   마우스를 올렸을 때
+      //   onMouseOut    마우스가 벗어났을 때
+      //   onChange      입력칸의 값이 바뀔 때        (06단원)
+      //   onSubmit      폼을 제출할 때               (06단원)
+      //   onKeyDown     키를 눌렀을 때
+      //
+      // JS자료에서 쓴 문자열 이름에 on 을 붙이고 첫 글자를 대문자로 바꾼 모양입니다.
+      //
+      //     addEventListener("click", ...)      →   onClick={...}
+      //     addEventListener("mouseover", ...)  →   onMouseOver={...}
+      //
+      // onChange 와 onSubmit 은 이름만 알아 두세요. 입력칸과 폼이 필요해서
+      // 06단원에서 제대로 다룹니다.
+
+      function HoverButton() {
+        function handleClick() {
+          console.log("[onClick] 눌렀습니다");
+          // 콘솔: [onClick] 눌렀습니다
+        }
+
+        function handleMouseOver() {
+          console.log("[onMouseOver] 마우스가 올라왔습니다");
+          // ↑ 이 줄은 '마우스를 올렸을 때' 만 나옵니다. 누르는 것과 다릅니다.
+          //   그래서 여기에는 // 콘솔: 을 적지 않았습니다.
+        }
+
+        return (
+          <div className="demo">
+            <h3>⑦ 이벤트 이름만 바꾸면 됩니다</h3>
+            <button id="btnHover" onClick={handleClick} onMouseOver={handleMouseOver}>
+              누르거나 마우스를 올려 보세요
+            </button>
+          </div>
+        );
+      }
+
+      // 이름이 다르면 서로 다른 속성이므로 한 태그에 함께 붙일 수 있습니다.
+      // 위 버튼은 onClick 과 onMouseOver 를 둘 다 갖고 있습니다.
+
+      // ✏️ 직접 해보기 6 — HoverButton 에 onMouseOut 을 붙여
+      //                    마우스가 벗어날 때도 콘솔에 찍히게 해 보세요.
+
+      // ── 섹션 6: 자주 하는 실수 ──
+
+      // ⚠️ [SyntaxError] 라고 적힌 것은 주석을 풀지 말고 눈으로만 보세요.
+      //    풀면 파일 전체가 멈춰서 화면이 통째로 비어 버립니다. 다시 // 를 붙이면 돌아옵니다.
+
+      // [실수 1] 함수에 괄호를 붙였다 (섹션 2)
+      //   <button onClick={handleClick()}>
+      // 실수: 에러가 안 납니다. 그릴 때 한 번 실행되고, 눌러도 반응이 없습니다.
+      //       "버튼이 안 먹어요" 의 1순위 원인입니다. 위 데모 ② 에서 직접 봤습니다.
+
+      // [실수 2] 화살표 안에서 괄호를 빠뜨렸다
+      //   <button onClick={() => greetPerson}>
+      // 실수: 이것도 에러가 안 납니다. 그런데 눌러도 아무 일이 없습니다.
+      //       화살표 함수가 greetPerson 을 '돌려주기만' 하고 부르지는 않기 때문입니다.
+      //       아래 데모 ⑧ 에서 실제로 확인할 수 있습니다.
+
+      function MistakeDemo() {
+        return (
+          <div className="demo">
+            <h3>⑧ [실수 2] 눌러도 아무 일이 없는 버튼</h3>
+            <button id="btnMistake" onClick={() => greetPerson}>
+              눌러도 조용합니다
+            </button>
+            <button id="btnMistakeFixed" onClick={() => greetPerson("박지훈")}>
+              이렇게 고칩니다
+            </button>
+          </div>
+        );
+      }
+
+      // 두 버튼을 번갈아 눌러 보세요. 왼쪽은 조용하고 오른쪽만 찍힙니다.
+      // 오른쪽 버튼은 이렇게 찍습니다.
+      //   박지훈님 안녕하세요
+
+      // [실수 3] 이름을 소문자로 썼다
+      //   <button onclick={handleClick}>
+      // 실수: React 가 콘솔에 노란 경고를 냅니다.
+      //         Warning: Invalid event handler property `onclick`. Did you mean `onClick`?
+      //       경고만 나오고 이벤트는 붙지 않습니다. 눌러도 반응이 없습니다.
+      //       JSX 의 이벤트 이름은 반드시 onClick 처럼 중간이 대문자입니다.
+
+      // [실수 4] 중괄호 대신 따옴표로 감쌌다
+      //   <button onClick="handleClick">
+      // 실수: 이것도 노란 경고가 납니다.
+      //         Warning: Expected `onClick` listener to be a function,
+      //         instead got a value of `string` type.
+      //       onClick 에는 함수가 들어가야 하는데 "handleClick" 은 그냥 글자입니다.
+      //       중괄호 { } 를 빼먹은 경우입니다.
+
+      // [실수 5] 중괄호를 안 닫았다
+      //   <button onClick={handleClick>눌러 보세요</button>
+      // 실수: [SyntaxError] 입니다. 파일 전체가 안 돌아가고 화면이 통째로 빕니다.
+      //       괄호·중괄호가 짝이 맞는지부터 세어 보세요.
+
+      // [실수 6] React 안에서 addEventListener 를 쓰려고 한다
+      //   document.querySelector("#btnGreet").addEventListener("click", ...)
+      // 실수: 지금은 동작할 수도 있습니다. 하지만 React 가 화면을 다시 그리면서
+      //       그 요소를 바꿔 버리면 조용히 사라집니다. React 안에서는 onClick 을 씁니다.
+      //       요소를 직접 만져야 하는 드문 경우는 10단원 useRef 에서 다룹니다.
+
+      // ── 마지막: 위에서 만든 컴포넌트를 한 화면에 모으기 ──
+
+      // 03단원에서 배운 대로, 컴포넌트 안에 컴포넌트를 넣어 조립합니다.
+
+      function App() {
+        return (
+          <div>
+            <Greeting />
+            <BadButton />
+            <GoodButton />
+            <ArgButtons />
+            <EventObjectButton />
+            <TwoJobsButton />
+            <HoverButton />
+            <MistakeDemo />
+          </div>
+        );
+      }
+
+      const root = ReactDOM.createRoot(document.querySelector("#root"));
+      root.render(<App />);
+
+      // ============================================================
+      // 직접 해보기 정답
+      // ============================================================
+      //
+      // 1) function handleClick() {
+      //      console.log("안녕하세요, 이서연님!");
+      //    }
+      //    // 콘솔: 안녕하세요, 이서연님!
+      //    → 버튼을 눌렀을 때만 나옵니다. 페이지를 열 때는 안 나옵니다.
+      //
+      // 2) <button id="btnGood" onClick={shout()}>
+      //    → F5 를 누르는 순간, 즉 아직 누르지 않았을 때 콘솔에 찍힙니다.
+      //    // 콘솔: [실수] shout 가 지금 실행되었습니다. 아무도 안 눌렀는데요!
+      //    → 그리고 버튼을 눌러도 더 이상 찍히지 않습니다.
+      //      onClick 에 undefined 가 들어가 이벤트가 아예 안 붙었기 때문입니다.
+      //
+      // 3) <button onClick={() => greetPerson("박지훈")}>박지훈에게 인사</button>
+      //    // 콘솔: 박지훈님 안녕하세요
+      //    → 화살표를 빼고 onClick={greetPerson("박지훈")} 로 쓰면
+      //      페이지를 열 때 한 번 찍히고 눌러도 조용해집니다.
+      //
+      // 4) function handleClick(e) {
+      //      console.log("눌린 요소의 id:", e.target.id);
+      //    }
+      //    // 콘솔: 눌린 요소의 id: btnEvent
+      //    → id 를 안 적어 둔 요소라면 빈 문자열이 나옵니다.
+      //
+      // 5) function handleClick() {
+      //      printReceipt();
+      //      takeOrder();
+      //    }
+      //    // 콘솔: [2] 영수증을 찍었습니다
+      //    // 콘솔: [1] 주문을 받았습니다
+      //    → 적은 순서대로 실행됩니다. 번호 순서가 아닙니다.
+      //
+      // 6) function handleMouseOut() {
+      //      console.log("[onMouseOut] 마우스가 벗어났습니다");
+      //    }
+      //    <button onClick={handleClick} onMouseOver={handleMouseOver} onMouseOut={handleMouseOut}>
+      //    → 마우스를 올렸다 내리면 두 줄이 차례로 나옵니다.
+      //      이벤트 이름만 바꾸면 되고, 나머지는 onClick 과 똑같습니다.
+    </script>
+
+    <div class="summary">
+      <h2>정리</h2>
+      <ol>
+        <li>
+          React 에서는 요소를 찾아올 필요 없이 태그에 바로
+          <strong>onClick={함수}</strong> 를 적습니다.
+        </li>
+        <li>이벤트 이름은 <strong>on + 대문자</strong> 입니다. onclick 이 아니라 onClick.</li>
+        <li>
+          <strong>괄호를 붙이지 않습니다.</strong> 붙이면 그릴 때 실행되고, 눌렀을 때는
+          아무 일도 안 일어납니다. 에러도 안 납니다.
+        </li>
+        <li>
+          값을 넘겨야 하면 <strong>() =&gt; 함수(값)</strong> 처럼 화살표 함수로 감쌉니다.
+        </li>
+        <li>핸들러의 첫 매개변수로 이벤트 객체가 옵니다. e.target 으로 눌린 요소를 봅니다.</li>
+        <li>
+          한 태그에 같은 이벤트를 두 번 붙일 수 없습니다. 두 가지 일은 함수 하나 안에서
+          차례로 부릅니다.
+        </li>
+        <li>
+          아직 화면은 바뀌지 않습니다. 콘솔만 찍힙니다. 화면을 바꾸는 방법은 개념02에서
+          배웁니다.
+        </li>
+      </ol>
+    </div>
+  </body>
+</html>

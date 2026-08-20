@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>01단원 연습문제 - React 시작하기</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 760px;
+        margin: 40px auto;
+        padding: 0 20px;
+        color: #222;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 6px 14px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 4px;
+      }
+      input,
+      select,
+      textarea {
+        padding: 6px 8px;
+        font-size: 15px;
+        font-family: inherit;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 6px;
+      }
+      .summary {
+        background: #eef4ff;
+        border-left: 4px solid #2d6cdf;
+        padding: 12px 20px;
+        margin-top: 32px;
+      }
+      .summary h2 {
+        margin: 6px 0 10px;
+        font-size: 17px;
+      }
+      .summary li {
+        margin: 4px 0;
+        background: none;
+        border: none;
+        padding: 0;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 4px 0;
+      }
+      .done {
+        text-decoration: line-through;
+        color: #999;
+      }
+      .on {
+        background: #2d6cdf;
+        color: #fff;
+      }
+      .error {
+        color: #c00;
+        font-weight: bold;
+        min-height: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>01단원 연습문제 — React 시작하기</h1>
+
+    <p class="guide">
+      아래 script 안의 <strong>TODO</strong> 자리에 코드를 쓰세요. 쓴 다음에는
+      <strong>저장(Ctrl+S) → 브라우저에서 F5</strong> 를 꼭 누르세요. 안 누르면 화면이 그대로라
+      틀린 줄 알게 됩니다.
+      <br /><br />
+      1~10은 기본, 11은 [응용], 12는 [도전], 13은 에러 확인입니다.
+      <strong>F12 → Console</strong> 도 함께 여세요.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽 <code>&lt;style&gt;</code> 과
+      <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
+      <br /><br />
+      처음에는 아래 상자가 거의 다 비어 있습니다. <strong>정상입니다.</strong> 여러분이
+      채우는 것입니다.
+    </p>
+
+    <div class="demo">
+      <h3>문제 1</h3>
+      <div id="q1"></div>
+
+      <h3>문제 2~3</h3>
+      <div id="q2"></div>
+
+      <h3>문제 4</h3>
+      <div id="q4"></div>
+
+      <h3>문제 7</h3>
+      <div id="q7"></div>
+      <button id="q7Btn">누르기</button>
+
+      <h3>문제 8~9</h3>
+      <div id="q8"></div>
+      <button id="q8StopBtn">초시계 멈춤</button>
+
+      <h3>문제 10</h3>
+      <div id="q10"></div>
+
+      <h3>문제 11 — 응용</h3>
+      <div id="q11"></div>
+      <button id="q11AmeBtn">아메리카노 담기</button>
+      <button id="q11LatteBtn">라떼 담기</button>
+
+      <h3>문제 12 — 도전</h3>
+      <div id="q12"></div>
+      <button id="q12StopBtn">초시계 멈춤</button>
+
+      <h3>문제 13 — 에러 확인</h3>
+      <div id="q13"></div>
+    </div>
+
+    <script src="../_lib/react.development.js"></script>
+    <script src="../_lib/react-dom.development.js"></script>
+    <script src="../_lib/babel.min.js"></script>
+
+    <script type="text/babel">
+      // ============================================================
+      // 01단원 연습문제 — React 시작하기
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열기. 고쳤으면 저장 → F5. F12 → Console 도 함께.
+      // ============================================================
+
+      // ───── 문제 1 ───── (개념02)
+      // #q1 자리에 <h3>안녕하세요</h3> 가 보이게 하세요.
+      // createRoot 와 render 를 씁니다. 한 줄로 이어 써도 되고 두 줄로 나눠 써도 됩니다.
+      //
+      // 기대 결과 (화면): 문제 1 상자에 "안녕하세요" 가 굵고 큰 글씨로 보입니다.
+      //                  아무것도 안 보이면 render 를 안 불렀거나 저장 후 F5 를 안 누른 것입니다.
+      //                  콘솔에 Target container is not a DOM element 가 뜨면 id 를 틀린 것입니다.
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 2 ───── (개념02)
+      // #q2 자리를 맡은 root 를 root2 라는 변수에 담고,
+      // <p>아메리카노 4000원</p> 을 그리세요.
+      // (문제 3에서 이 root2 를 다시 씁니다. 꼭 변수에 담아 두세요)
+      //
+      // 기대 결과 (화면): 문제 2~3 상자에 "아메리카노 4000원" 이 보입니다.
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 3 ───── (개념03)
+      // 문제 2에서 만든 root2 로 render 를 한 번 더 불러
+      // <p>라떼 4500원</p> 이 보이게 하세요. (문제 2를 먼저 풀어야 합니다)
+      // createRoot 를 또 부르면 안 됩니다.
+      //
+      // 기대 결과 (화면): 문제 2~3 상자에 "라떼 4500원" 만 보입니다.
+      //                  두 줄이 다 보이면 새 자리에 따로 그린 것입니다.
+      //                  콘솔에 createRoot() on a container that has already been passed
+      //                  경고가 뜨면 createRoot 를 두 번 부른 것입니다.
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 4 ───── (개념02)
+      // 화면 설명을 함수로 묶어 보세요.
+      // <p>김민준님 환영합니다</p> 를 돌려주는 함수 App4 를 만들고,
+      // 그것을 #q4 자리에 그리세요.
+      //
+      // 기대 결과 (화면): 문제 4 상자에 "김민준님 환영합니다" 가 보입니다.
+      //                  비어 있는데 콘솔도 조용하면, 함수 이름을 소문자로 썼거나
+      //                  render 에 <App4 /> 가 아니라 App4 를 넣은 것입니다.
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 5 ───── (개념02)
+      // 지금 쓰고 있는 React 의 버전을 콘솔에 찍으세요.
+      //
+      // 기대 결과 (콘솔): 18.3.1
+      //                  undefined 가 나오면 이름을 잘못 쓴 것입니다. 대소문자를 확인하세요.
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 6 ───── (개념04)
+      // 코드를 쓰는 문제가 아닙니다. 콘솔을 읽는 문제입니다.
+      // F12 → Console 을 열고 F5 를 누르면, 우리가 찍은 것보다 먼저 나오는 줄이 둘 있습니다.
+      // 그 두 줄이 무엇인지, 각각 무슨 뜻인지 한 줄씩 적어 보세요.
+      //
+      // 기대 결과 (적을 내용): 두 줄 다 정상 메시지입니다. 고칠 것이 없습니다.
+      //                       먼저 스스로 적어 본 다음 정답 파일과 맞춰 보세요.
+      //                       빨간 줄이 보인다면 그것은 이 두 줄이 아닙니다. 문제 13을 보세요.
+      // TODO: 여기에 답을 주석으로 적으세요
+      //   첫 줄:
+      //   둘째 줄:
+
+      // ───── 문제 7 ───── (개념03)
+      // "누르기" 버튼을 누를 때마다 #q7 자리의 숫자가 1씩 올라가게 하세요.
+      // 버튼은 이미 화면에 있습니다. id 는 q7Btn 입니다.
+      // React 안에서 버튼에 기능을 붙이는 방법은 04단원에서 배웁니다.
+      // 여기서는 JS자료 11단원처럼 addEventListener 를 쓰고, 안에서 render 를 다시 부르세요.
+      //
+      // 기대 결과 (화면): 처음에는 "눌린 횟수: 0" 입니다.
+      //                  누를 때마다 1 → 2 → 3 으로 올라갑니다.
+      // 기대 결과 (콘솔): 누를 때마다 눌린 횟수: 1 처럼 찍히면 좋습니다.
+      //                  화면이 계속 0 이면 render 를 다시 안 부른 것입니다.
+      //                  항상 1 이면 세는 변수를 콜백 안에 만든 것입니다.
+      // TODO: 여기에 코드를 쓰세요
+      //   (화면 설명 함수는 아래 것을 그대로 쓰세요)
+      //
+      //   let q7Count = 0;
+      //
+      //   function Q7Counter() {
+      //     return <p>눌린 횟수: {q7Count}</p>;
+      //   }
+
+      // ───── 문제 8 ───── (개념03)
+      // #q8 자리의 초시계가 1초마다 올라가게 하세요.
+      // 화면 설명 함수 Q8Clock 과 자리 q8Root 는 아래에 이미 만들어 뒀습니다.
+      // 여러분이 할 일은 setInterval 로 1초마다 q8Seconds 를 1 올리고
+      // q8Root 를 다시 그리는 것입니다. 타이머 아이디는 q8TimerId 에 담으세요.
+      //
+      // 기대 결과 (화면): 문제 8~9 상자의 숫자가 1초마다 0 → 1 → 2 로 올라갑니다.
+      //                  숫자가 0 에서 안 움직이면 render 를 다시 안 부른 것입니다.
+      //                  숫자가 두 칸씩 뛰면 setInterval 을 두 번 부른 것입니다.
+
+      let q8Seconds = 0;
+      let q8TimerId = null;
+
+      function Q8Clock() {
+        return (
+          <div>
+            <p>초시계: {q8Seconds}초</p>
+            <p>
+              입력칸: <input />
+            </p>
+          </div>
+        );
+      }
+
+      const q8Root = ReactDOM.createRoot(document.querySelector("#q8"));
+      q8Root.render(<Q8Clock />);
+
+      // TODO: 여기에 setInterval 코드를 쓰세요
+
+      // 멈춤 버튼은 미리 붙여 뒀습니다. q8TimerId 에 담기만 하면 동작합니다.
+      document.querySelector("#q8StopBtn").addEventListener("click", () => {
+        clearInterval(q8TimerId);
+        console.log("초시계를 멈췄습니다.");
+        // 콘솔: 초시계를 멈췄습니다.
+      });
+
+      // ───── 문제 9 ───── (개념03)
+      // 코드를 쓰는 문제가 아닙니다. 눈으로 확인하는 문제입니다.
+      // 문제 8이 돌아가고 있어야 합니다.
+      // 문제 8~9 상자의 입력칸에 "김민준" 이라고 치고, 손을 떼고 3초쯤 기다리세요.
+      //
+      // 기대 결과 (화면): 숫자는 계속 올라가는데 여러분이 친 "김민준" 은 그대로 남아 있습니다.
+      //                  커서 자리도 그대로입니다.
+      //                  글자가 사라진다면 문제 8을 render 가 아닌 다른 방법으로 푼 것입니다.
+      // TODO: 왜 글자가 남아 있는지 한 줄로 적으세요
+      //   답:
+
+      // ───── 문제 10 ───── (개념04)
+      // 아래 코드는 화면에 아무것도 그리지 않습니다.
+      // 그런데 콘솔에는 빨간 줄도 노란 줄도 없습니다.
+      // 왜 그런지 찾아서 고치세요. 고칠 곳은 이름 두 군데뿐입니다.
+      //
+      // 기대 결과 (화면): 문제 10 상자에 "케이크 6000원" 이 보입니다.
+      //                  여전히 비어 있다면 이름을 한쪽만 고친 것입니다. 쓰는 곳도 함께 고쳐야 합니다.
+
+      function menu() {
+        return <p>케이크 6000원</p>;
+      }
+
+      const q10Root = ReactDOM.createRoot(document.querySelector("#q10"));
+      q10Root.render(<menu />);
+
+      // TODO: 위 두 군데를 고치세요
+
+      // ───── 문제 11 ───── [응용] (개념03)
+      // 문제 11 상자에 버튼이 두 개 있습니다. id 는 q11AmeBtn 과 q11LatteBtn 입니다.
+      // 어느 버튼을 누르든 #q11 자리에 이렇게 보이게 하세요.
+      //
+      //     지금까지 3번 담았습니다. 마지막: 라떼
+      //
+      // 담은 횟수와 마지막 메뉴 이름을 각각 변수에 두고, 버튼을 누를 때마다
+      // 두 값을 고친 뒤 render 를 다시 부르면 됩니다.
+      //
+      // 기대 결과 (화면): 처음에는 "지금까지 0번 담았습니다. 마지막: 없음" 입니다.
+      //                  아메리카노 → 라떼 순으로 누르면
+      //                  "지금까지 2번 담았습니다. 마지막: 라떼" 가 됩니다.
+      //                  횟수만 오르고 이름이 안 바뀌면 마지막 메뉴 변수를 안 고친 것입니다.
+      //                  둘 다 안 바뀌면 render 를 다시 안 부른 것입니다.
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 12 ───── [도전] (개념03)
+      // 같은 초시계를 React 없이 만들어 보고, 문제 8과 무엇이 다른지 확인하는 문제입니다.
+      //
+      //   (1) #q12 자리에 innerHTML 로 아래 모양을 그리는 함수를 만드세요.
+      //         <p>초시계: 0초</p><p>입력칸: <input /></p>
+      //   (2) setInterval 로 1초마다 숫자를 올리고 다시 그리세요.
+      //       타이머 아이디는 q12TimerId 에 담으세요.
+      //   (3) 페이지를 연 지 1.5초 뒤에, #q12 안의 input 이
+      //       처음 그려졌던 그 input 과 같은 요소인지 콘솔에 찍으세요.
+      //       (처음 것을 미리 변수에 담아 뒀다가 === 로 비교하면 됩니다)
+      //
+      // 기대 결과 (화면): 숫자는 문제 8과 똑같이 올라갑니다.
+      //                  그런데 입력칸에 글자를 치면 1초 만에 사라집니다.
+      // 기대 결과 (콘솔): false
+      //                  true 가 나왔다면 다시 그리는 코드가 실제로 안 돌고 있는 것입니다.
+
+      let q12Seconds = 0;
+      let q12TimerId = null;
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // 멈춤 버튼은 미리 붙여 뒀습니다. q12TimerId 에 담기만 하면 동작합니다.
+      document.querySelector("#q12StopBtn").addEventListener("click", () => {
+        clearInterval(q12TimerId);
+        console.log("직접 그리는 초시계를 멈췄습니다.");
+        // 콘솔: 직접 그리는 초시계를 멈췄습니다.
+      });
+
+      // ───── 문제 13 ───── (에러 확인 — 맨 마지막)
+      //
+      // ⚠️ (다)는 주석을 풀지 마세요. 눈으로만 보세요.
+      //    풀면 파일 전체가 멈춰서 화면이 통째로 비어 버립니다. 다시 // 를 붙이면 돌아옵니다.
+      //
+      // (가)와 (나)는 주석을 풀고 저장 → F5 로 확인한 뒤, 다시 주석을 다세요.
+      //
+      // 기대 결과: (가)는 콘솔이 조용한데 화면만 비어 있습니다.
+      //           (나)는 빨간 줄이 뜹니다. 문제 1~12의 화면은 그대로 살아 있습니다.
+      //           (다)는 주석을 풀면 문제 1~12가 전부 사라집니다. 그래서 눈으로만 봅니다.
+      //           빈칸을 스스로 채운 뒤 정답 파일과 맞춰 보세요.
+      //
+      // (가) 자리는 맡았는데 그리지 않았다
+      // const q13Root = ReactDOM.createRoot(document.querySelector("#q13"));
+      //
+      //   콘솔에 무엇이 나오나요?  ______________________
+      //   화면은 어떻게 되나요?    ______________________
+      //
+      // (나) 그릴 자리 이름을 틀렸다
+      // ReactDOM.createRoot(document.querySelector("#q31")).render(<p>안녕</p>);
+      //
+      //   콘솔 맨 윗줄을 그대로 옮겨 적어 보세요.
+      //   ______________________________________________
+      //   그 아래 줄들 중 우리가 읽어야 할 곳은 어디인가요? ______________
+      //
+      // (다) 태그를 하나로 안 감쌌다   ← 눈으로만 보세요
+      // function Q13() {
+      //   return (
+      //     <p>김민준</p>
+      //     <p>20세</p>
+      //   );
+      // }
+      //
+      //   이 주석을 풀면 왜 화면이 통째로 비는지 한 줄로 적으세요.
+      //   ______________________________________________
+    </script>
+  </body>
+</html>
