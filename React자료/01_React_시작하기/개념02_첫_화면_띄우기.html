@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,15 +98,14 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
-      <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다. 이 자료에서는 가르치지
-      않습니다. <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
-      <br /><br />
+      <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다. 이 자료에서는
+      가르치지 않습니다. <code>&lt;script type="text/babel"&gt;</code> 안부터
+      읽으세요. <br /><br />
       <strong>이 파일은 직접 고쳐 보는 파일입니다.</strong> 코드를 고쳤으면
-      <strong>저장(Ctrl+S) → 브라우저에서 F5</strong> 를 꼭 누르세요. 섹션 4에서 자세히
-      설명합니다.
+      <strong>저장(Ctrl+S) → 브라우저에서 F5</strong> 를 꼭 누르세요. 섹션 4에서
+      자세히 설명합니다.
     </p>
 
     <div class="demo">
@@ -245,7 +244,8 @@
       // 그 안은 이제 React 가 통째로 맡습니다.
       // 미리 써 둔 안내 문구는 React 가 처음 그리는 순간 사라집니다.
       // 그래서 보통은 <div id="root"></div> 처럼 비워 둡니다.
-
+      console.log("직접해보기");
+      console.log(document.querySelector("#appRoot").id);
       // ✏️ 직접 해보기 2 — 두 번째 자리인 appRoot 를 querySelector 로 찾아
       //                    그 id 를 콘솔에 찍어 보세요.
 
@@ -268,15 +268,16 @@
       //   괄호 안에 "무엇이 보여야 하는지"를 넣습니다.
 
       const root = ReactDOM.createRoot(container);
+      console.log(typeof root.render);
 
       console.log(typeof root);
       // 콘솔: object
 
       console.log(typeof root.render);
       // 콘솔: function
-
       // 이 한 줄로 화면 ① 의 안내 문구가 사라지고 인사말이 나타납니다.
-      root.render(<h3>안녕하세요, React 입니다</h3>);
+
+      root.render(<h3>이시안 님 환영합니다"</h3>);
       // 화면: ① 안에 "안녕하세요, React 입니다" 가 큰 글씨로 보입니다.
 
       // 두 줄을 한 줄로 이어 붙여도 됩니다. 개념01에서 그렇게 썼습니다.
@@ -338,7 +339,7 @@
       // 그래서 화면 설명을 함수로 묶어 두고, 그 함수를 render 에 넣습니다.
 
       function App() {
-        return <p>아메리카노 4000원</p>;
+        return <h3>케이크6000</h3>;
       }
 
       const appRoot = ReactDOM.createRoot(document.querySelector("#appRoot"));
@@ -456,11 +457,12 @@
           <strong>Babel</strong>(태그 문법 번역) 을 불러옵니다.
         </li>
         <li>
-          우리 코드가 들어가는 script 에는 <code>type="text/babel"</code> 이 붙습니다.
+          우리 코드가 들어가는 script 에는 <code>type="text/babel"</code> 이
+          붙습니다.
         </li>
         <li>
-          <code>id="root"</code> 인 div 는 React 가 그림을 그릴 자리입니다. 그 안은 React 가
-          통째로 맡습니다.
+          <code>id="root"</code> 인 div 는 React 가 그림을 그릴 자리입니다. 그
+          안은 React 가 통째로 맡습니다.
         </li>
         <li>
           <code>createRoot(자리)</code> 는 자리를 맡는 줄이고,
@@ -468,11 +470,12 @@
         </li>
         <li>
           화면 설명이 길어지면 <code>function App()</code> 으로 묶고
-          <code>render(&lt;App /&gt;)</code> 로 넣습니다. 이름은 대문자로 시작합니다.
+          <code>render(&lt;App /&gt;)</code> 로 넣습니다. 이름은 대문자로
+          시작합니다.
         </li>
         <li>
-          <strong>고쳤으면 저장(Ctrl+S) → 브라우저에서 F5.</strong> 안 바뀐다면 이것부터
-          확인하세요.
+          <strong>고쳤으면 저장(Ctrl+S) → 브라우저에서 F5.</strong> 안 바뀐다면
+          이것부터 확인하세요.
         </li>
       </ol>
     </div>

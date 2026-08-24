@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,13 +98,13 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
       <br /><br />
-      이 파일에는 <strong>버튼이 나옵니다. 눌러도 아무 일도 일어나지 않습니다.</strong>
+      이 파일에는
+      <strong>버튼이 나옵니다. 눌러도 아무 일도 일어나지 않습니다.</strong>
       버튼을 동작하게 만드는 것은 04단원입니다. 여기서는 모양만 봅니다.
     </p>
 
@@ -202,6 +202,7 @@
 
       // ✏️ 직접 해보기 1 — toJs 에 '<p lang="ko">라떼</p>' 를 넣어
       //                    두 번째 인자가 어떤 객체가 되는지 확인해 보세요.
+      console.log(toJs('<p lang="ko">라떼</p>'));
 
       // ── 섹션 2: class 가 아니라 className ──
 
@@ -230,12 +231,16 @@
 
       const styled = (
         <div>
-          <p className="output">className 을 붙인 줄입니다</p>
-          <p className="output on">클래스 두 개는 한 문자열에 띄어쓰기로 씁니다</p>
+          <p className="output done">className 을 붙인 줄입니다</p>
+          <p className="output on">
+            클래스 두 개는 한 문자열에 띄어쓰기로 씁니다
+          </p>
         </div>
       );
 
-      const rootClass = ReactDOM.createRoot(document.querySelector("#rootClass"));
+      const rootClass = ReactDOM.createRoot(
+        document.querySelector("#rootClass"),
+      );
       rootClass.render(styled);
       // 화면: 데모 ① 첫 줄은 흰 상자, 둘째 줄은 파란 바탕에 흰 글자입니다.
 
@@ -278,7 +283,7 @@
 
       const attrDemo = (
         <div>
-          <img src={blueBox} alt="파란 사각형" width={60} height={60} />
+          <img src={blueBox} alt="파란 사각형" width={1200} height={1200} />
           <p>
             <a href={linkUrl}>이 링크의 주소는 변수에서 왔습니다</a>
           </p>
@@ -331,7 +336,11 @@
       // 즉 style 에는 '객체를 넣는다' 는 뜻입니다.
       // 그래서 객체를 먼저 만들어 두면 중괄호가 하나로 줄어듭니다. 확인해 봅시다.
 
-      const boxStyle = { color: "white", backgroundColor: "#2d6cdf", padding: 10 };
+      const boxStyle = {
+        color: "white",
+        backgroundColor: "#2d6cdf",
+        padding: 10,
+      };
 
       console.log(typeof boxStyle);
       // 콘솔: object
@@ -378,9 +387,13 @@
       const styleDemo = (
         <div>
           <p style={boxStyle}>미리 만든 객체를 넣었습니다</p>
-          <p style={{ color: "#c00", fontWeight: "bold" }}>그 자리에서 만든 객체입니다</p>
+          <p style={{ color: "#c00", fontWeight: "bold", textAlign: "center" }}>
+            그 자리에서 만든 객체입니다
+          </p>
           <p style={{ fontSize: 24 }}>숫자만 쓰면 px 이 자동으로 붙습니다</p>
-          <p style={{ fontSize: "24pt" }}>px 이 아니면 단위를 글자로 적습니다</p>
+          <p style={{ fontSize: "24pt" }}>
+            px 이 아니면 단위를 글자로 적습니다
+          </p>
         </div>
       );
 
@@ -419,14 +432,21 @@
       const labelDemo = (
         <p>
           <label htmlFor="nameBox">이름: </label>
-          <input id="nameBox" type="text" placeholder="이름표를 눌러 보세요" />
+          <input
+            id="nameBox"
+            maxLength={3}
+            type="text"
+            placeholder="이름표를 눌러 보세요"
+          />
         </p>
       );
 
       console.log(labelDemo.props.children[0].props.htmlFor);
       // 콘솔: nameBox
 
-      const rootLabel = ReactDOM.createRoot(document.querySelector("#rootLabel"));
+      const rootLabel = ReactDOM.createRoot(
+        document.querySelector("#rootLabel"),
+      );
       rootLabel.render(labelDemo);
       // 화면: 데모 ④ 에 "이름:" 이름표와 입력칸이 보입니다.
       // 화면: "이름:" 글자를 눌러도 입력칸에 커서가 갑니다.
@@ -474,7 +494,7 @@
       // 콘솔: false
 
       // 조건에 따라 잠그려면 중괄호 안에 비교식을 넣습니다.
-      const stock = 0;
+      const stock = 3;
 
       const buyButton = <button disabled={stock === 0}>담기</button>;
 
@@ -598,31 +618,34 @@
       <h2>정리</h2>
       <ol>
         <li>
-          속성은 <code>createElement</code> 의 <strong>두 번째 인자</strong>, 즉 객체가
-          됩니다. 태그 사이 내용과 함께 <code>props</code> 에 담깁니다.
+          속성은 <code>createElement</code> 의 <strong>두 번째 인자</strong>, 즉
+          객체가 됩니다. 태그 사이 내용과 함께 <code>props</code> 에 담깁니다.
         </li>
         <li>
-          <code>class</code> 는 자바스크립트 예약어라서 <code>className</code> 을 씁니다.
-          <code>for</code> 도 같은 이유로 <code>htmlFor</code> 입니다.
+          <code>class</code> 는 자바스크립트 예약어라서
+          <code>className</code> 을 씁니다. <code>for</code> 도 같은 이유로
+          <code>htmlFor</code> 입니다.
         </li>
         <li>
-          속성 값에 자바스크립트를 넣으려면 중괄호를 씁니다. 따옴표와 같이 쓰지 않습니다.
+          속성 값에 자바스크립트를 넣으려면 중괄호를 씁니다. 따옴표와 같이 쓰지
+          않습니다.
         </li>
         <li>
-          <code>style={{ }}</code> 의 바깥 중괄호는 "자바스크립트다", 안쪽 중괄호는
-          "객체다" 라는 뜻입니다.
+          <code>style={{ }}</code> 의 바깥 중괄호는 "자바스크립트다", 안쪽
+          중괄호는 "객체다" 라는 뜻입니다.
         </li>
         <li>
           CSS 속성 이름은 대시를 빼고 카멜케이스로 씁니다.
           <code>background-color</code> → <code>backgroundColor</code>.
         </li>
         <li>
-          숫자만 쓴 크기 값에는 <code>px</code> 이 자동으로 붙습니다. 다른 단위는 글자로
-          적습니다.
+          숫자만 쓴 크기 값에는 <code>px</code> 이 자동으로 붙습니다. 다른
+          단위는 글자로 적습니다.
         </li>
         <li>
-          이름만 적은 속성은 <code>true</code> 입니다. 끌 때는 <code>{false}</code> 로
-          씁니다. <code>"false"</code> 는 글자라서 켜진 것으로 취급됩니다.
+          이름만 적은 속성은 <code>true</code> 입니다. 끌 때는
+          <code>{false}</code> 로 씁니다. <code>"false"</code> 는 글자라서 켜진
+          것으로 취급됩니다.
         </li>
       </ol>
     </div>

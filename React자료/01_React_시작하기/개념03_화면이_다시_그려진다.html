@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,14 +98,14 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
-      <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다. 이 자료에서는 가르치지
-      않습니다. <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
-      <br /><br />
-      이 파일에는 <strong>1초마다 스스로 움직이는 초시계</strong>가 두 개 있습니다.
-      ② 와 ③ 의 입력칸에 글자를 쳐 놓고 기다려 보는 것이 이 파일의 핵심입니다.
+      <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다. 이 자료에서는
+      가르치지 않습니다. <code>&lt;script type="text/babel"&gt;</code> 안부터
+      읽으세요. <br /><br />
+      이 파일에는 <strong>1초마다 스스로 움직이는 초시계</strong>가 두 개
+      있습니다. ② 와 ③ 의 입력칸에 글자를 쳐 놓고 기다려 보는 것이 이 파일의
+      핵심입니다.
     </p>
 
     <div class="demo">
@@ -182,7 +182,7 @@
 
       americanoBtn.addEventListener("click", () => {
         // 같은 root 에 대고 render 를 '다시' 부릅니다.
-        root.render(<p>아메리카노 4000원</p>);
+        root.render(<h3>케이크 6000원</h3>);
         console.log("render 를 다시 불렀습니다: 아메리카노");
         // 콘솔: render 를 다시 불렀습니다: 아메리카노
       });
@@ -236,7 +236,9 @@
         );
       }
 
-      const clockRoot = ReactDOM.createRoot(document.querySelector("#clockRoot"));
+      const clockRoot = ReactDOM.createRoot(
+        document.querySelector("#clockRoot"),
+      );
 
       function tickClock() {
         seconds = seconds + 1;
@@ -312,7 +314,10 @@
 
       setTimeout(() => {
         const nowInput = document.querySelector("#clockRoot input");
-        console.log("[React] 2초 뒤에도 같은 입력칸인가?", nowInput === firstClockInput);
+        console.log(
+          "[React] 2초 뒤에도 같은 입력칸인가?",
+          nowInput === firstClockInput,
+        );
         // 콘솔: [React] 2초 뒤에도 같은 입력칸인가? true
       }, 2000);
 
@@ -337,7 +342,9 @@
         const box = document.querySelector("#plainClock");
         // 안을 통째로 새 HTML 로 갈아 끼웁니다
         box.innerHTML =
-          "<div><p>초시계: " + plainSeconds + "초</p><p>입력칸: <input /></p></div>";
+          "<div><p>초시계: " +
+          plainSeconds +
+          "초</p><p>입력칸: <input /></p></div>";
       }
 
       function tickPlainClock() {
@@ -383,7 +390,10 @@
 
       setTimeout(() => {
         const nowPlainInput = document.querySelector("#plainClock input");
-        console.log("[직접] 2초 뒤에도 같은 입력칸인가?", nowPlainInput === firstPlainInput);
+        console.log(
+          "[직접] 2초 뒤에도 같은 입력칸인가?",
+          nowPlainInput === firstPlainInput,
+        );
         // 콘솔: [직접] 2초 뒤에도 같은 입력칸인가? false
       }, 1500);
 
@@ -422,7 +432,9 @@
       document.querySelector("#badBtn").addEventListener("click", () => {
         cart.push("아메리카노"); // 데이터는 바뀝니다
         // render 를 안 불렀습니다
-        console.log("[render 안 부름] 데이터에는 담겼습니다. 화면은 그대로입니다.");
+        console.log(
+          "[render 안 부름] 데이터에는 담겼습니다. 화면은 그대로입니다.",
+        );
         // 콘솔: [render 안 부름] 데이터에는 담겼습니다. 화면은 그대로입니다.
       });
       // 화면(누르면): ④ 는 "0개" 그대로입니다. 몇 번을 눌러도 그대로입니다.
@@ -488,7 +500,9 @@
         );
       }
 
-      const braceRoot = ReactDOM.createRoot(document.querySelector("#braceRoot"));
+      const braceRoot = ReactDOM.createRoot(
+        document.querySelector("#braceRoot"),
+      );
       braceRoot.render(<BraceDemo />);
       // 화면: ⑤ 의 첫 줄은 "중괄호 없이: seconds초" 입니다.
       // 화면: ⑤ 의 둘째 줄은 "중괄호 있게: 0초" 입니다.
@@ -548,7 +562,8 @@
           <strong>다시 부르는 것</strong> 하나뿐입니다.
         </li>
         <li>
-          <code>createRoot</code> 는 자리마다 한 번, <code>render</code> 는 여러 번입니다.
+          <code>createRoot</code> 는 자리마다 한 번, <code>render</code> 는 여러
+          번입니다.
         </li>
         <li>
           다시 불러도 화면이 통째로 새로 만들어지지 않습니다. React 가
@@ -559,8 +574,9 @@
           <code>innerHTML</code> 로 직접 다시 그리면 전부 사라집니다.
         </li>
         <li>
-          다만 <strong>"다시 그려라" 라고 말하는 일은 아직 내 몫</strong>입니다. 데이터만
-          바꾸고 <code>render</code> 를 빠뜨리면 화면이 조용히 어긋납니다.
+          다만 <strong>"다시 그려라" 라고 말하는 일은 아직 내 몫</strong>입니다.
+          데이터만 바꾸고 <code>render</code> 를 빠뜨리면 화면이 조용히
+          어긋납니다.
         </li>
         <li>
           이 부름을 대신해 주는 것이 <strong>04단원의 useState</strong> 입니다.

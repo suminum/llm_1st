@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,8 +98,7 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
@@ -199,7 +198,11 @@
 
       // ✏️ 직접 해보기 1 — const menu = "아메리카노"; 를 만들고
       //                    <p>오늘은 {menu}</p> 의 props 를 콘솔에 찍어 보세요.
-
+      console.log("dsjflkjsdlfkjsdf");
+      const menu2 = "아메리카노";
+      const a = <p>오늘은 {menu2}</p>;
+      console.log(a.props);
+      //                    <p>오늘은 {menu}</p> 의
       // ── 섹션 2: 중괄호 안에는 '식' 이 들어간다 ──
 
       // 개념01에서 '식' 을 이렇게 정했습니다.
@@ -246,7 +249,9 @@
         </div>
       );
 
-      const rootDetail = ReactDOM.createRoot(document.querySelector("#rootDetail"));
+      const rootDetail = ReactDOM.createRoot(
+        document.querySelector("#rootDetail"),
+      );
       rootDetail.render(detail);
       // 화면: 데모 ② 에 다섯 줄이 보입니다.
       // 화면: 메뉴 수: 3개 / 두 잔 값: 8000원 / 가격 표기: 4,000원
@@ -259,6 +264,10 @@
 
       // ✏️ 직접 해보기 2 — <p>{price + 500}원</p> 을 만들어 props 를 찍어 보세요.
       //                    children 배열에 무엇이 들어가는지 확인하세요.
+      console.log("dsjflkjsdlfkjsdf");
+      const menu3 = <p>{price + 500}원</p>;
+
+      console.log(menu3.props.children);
 
       // ── 섹션 3: if 문과 for 문은 왜 안 되나 ──
 
@@ -277,7 +286,9 @@
         }
       }
 
-      console.log(tryJsx("const x = <div>{ if (age >= 19) { '성인' } }</div>;"));
+      console.log(
+        tryJsx("const x = <div>{ if (age >= 19) { '성인' } }</div>;"),
+      );
       // 콘솔: unknown: Unexpected token (1:17)
 
       console.log(tryJsx("const x = <div>{ for (const m of menu) {} }</div>;"));
@@ -291,7 +302,9 @@
       //
       // 삼항 연산자는 어떨까요?
 
-      console.log(tryJsx("const x = <div>{ age >= 19 ? '성인' : '미성년' }</div>;"));
+      console.log(
+        tryJsx("const x = <div>{ age >= 19 ? '성인' : '미성년' }</div>;"),
+      );
       // 콘솔: 문제 없음
 
       // 되는 것과 안 되는 것의 차이가 무엇일까요.
@@ -362,7 +375,9 @@
         </div>
       );
 
-      const rootFalsy = ReactDOM.createRoot(document.querySelector("#rootFalsy"));
+      const rootFalsy = ReactDOM.createRoot(
+        document.querySelector("#rootFalsy"),
+      );
       rootFalsy.render(nothing);
       // 화면: 데모 ③ 의 대괄호 안이 다섯 줄은 비어 있고, 마지막 줄만 [0] 입니다.
 
@@ -420,7 +435,7 @@
       // 콘솔: {"name":"이서연","age":22}
 
       // 배열은 어떨까요? 배열은 에러가 안 납니다. 하나씩 이어서 그립니다.
-      const numbers = <p>{[1, 2, 3]}</p>;
+      const numbers = <p>{menu}</p>;
       console.log(numbers.props);
       // 콘솔: { children: [1, 2, 3] }
 
@@ -453,7 +468,11 @@
       // 중괄호를 열고, 여러 줄 주석을 쓰고, 중괄호를 닫습니다.
       // 실제로 어떻게 처리되는지 확인해 봅시다.
 
-      console.log(toJs("<p>{/* 안 보이는 메모 */}보이는 글자</p>"));
+      console.log(toJs("<p>{/* 메모 */}아메리카노</p>"));
+      console.log(toJs("<p>{/* 메모 */}아메리카노</p>"));
+      console.log(toJs("<p>{/* 메모 */}아메리카노</p>"));
+      console.log(toJs("<p>{/* 메모 */}아메리카노</p>"));
+      console.log(toJs("<p>{/* 메모 */}아메리카노</p>"));
       // 콘솔: /*#__PURE__*/React.createElement("p", null, "보이는 글자");
 
       // 주석이 통째로 사라졌습니다. 화면에도 당연히 안 나옵니다.
@@ -566,27 +585,29 @@
       <h2>정리</h2>
       <ol>
         <li>
-          태그 사이에 자바스크립트 값을 넣으려면 <code>{ }</code> 로 감쌉니다. 안 감싸면
-          글자가 됩니다.
+          태그 사이에 자바스크립트 값을 넣으려면 <code>{ }</code> 로 감쌉니다.
+          안 감싸면 글자가 됩니다.
         </li>
         <li>
-          중괄호 안에는 <strong>식</strong>만 들어갑니다. 계산·함수 호출·속성 꺼내기·삼항
-          연산자가 됩니다.
+          중괄호 안에는 <strong>식</strong>만 들어갑니다. 계산·함수 호출·속성
+          꺼내기·삼항 연산자가 됩니다.
         </li>
         <li>
-          <code>if</code> 문과 <code>for</code> 문은 값을 남기지 않아서 안 됩니다. 밖에서
-          변수에 담아 두고 그 변수를 넣으세요.
+          <code>if</code> 문과 <code>for</code> 문은 값을 남기지 않아서 안
+          됩니다. 밖에서 변수에 담아 두고 그 변수를 넣으세요.
         </li>
         <li>
-          중괄호 안의 것은 <code>createElement</code> 의 인자 자리로 들어갑니다. 그래서
-          값만 됩니다.
+          중괄호 안의 것은 <code>createElement</code> 의 인자 자리로 들어갑니다.
+          그래서 값만 됩니다.
         </li>
         <li>
-          <code>true</code>·<code>false</code>·<code>null</code>·<code>undefined</code>·빈
+          <code>true</code
+          >·<code>false</code>·<code>null</code>·<code>undefined</code>·빈
           문자열은 화면에 안 나옵니다. 숫자 <code>0</code> 은 나옵니다.
         </li>
         <li>
-          객체를 그대로 넣으면 에러입니다. 속성을 꺼내서 넣으세요. 배열은 이어 붙여 그립니다.
+          객체를 그대로 넣으면 에러입니다. 속성을 꺼내서 넣으세요. 배열은 이어
+          붙여 그립니다.
         </li>
         <li>JSX 안의 주석은 <code>{/* ... */}</code> 로 씁니다.</li>
       </ol>

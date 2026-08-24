@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,13 +98,13 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
       <br /><br />
-      이 파일은 <strong>콘솔이 주인공</strong>입니다. 화면보다 콘솔에 찍히는 글자를 더 많이 봅니다.
+      이 파일은 <strong>콘솔이 주인공</strong>입니다. 화면보다 콘솔에 찍히는
+      글자를 더 많이 봅니다.
     </p>
 
     <div class="demo">
@@ -168,7 +168,7 @@
       //
       // 값이 남으니까 변수에 담을 수 있습니다.
 
-      const title = <h1>오늘의 메뉴</h1>;
+      const title = <h2>오늘의 메뉴</h2>;
 
       // 방금 <h1> 태그를 변수에 담았습니다. HTML 에서는 할 수 없는 일입니다.
       // 이 변수 안에 무엇이 들어 있는지 봅시다.
@@ -276,7 +276,7 @@
       //
       // 태그 안에 태그가 들어가면 어떻게 될까요?
 
-      console.log(toJs("<div><h3>아메리카노</h3><p>4000원</p></div>"));
+      console.log(toJs("<span>케이크</span>"));
       // 콘솔: /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", null, "아메리카노"), /*#__PURE__*/React.createElement("p", null, "4000원"));
 
       // 세 번째 인자 자리에 createElement 가 또 들어갔습니다.
@@ -308,11 +308,12 @@
 
       rootCe.render(
         React.createElement(
+          //createElement()
           "div",
           null,
-          React.createElement("h3", null, "아메리카노"),
-          React.createElement("p", null, "4000원")
-        )
+          React.createElement("h2", null, "아메리카노"),
+          React.createElement("p", null, "4000원"),
+        ),
       );
       // 화면: 데모 ② 에 "아메리카노" 와 "4000원" 이 보입니다.
 
@@ -326,7 +327,10 @@
       // 위의 createElement 여섯 줄과 이 네 줄은 완전히 같은 것입니다.
       // 실제로 그런지 섹션 2의 도구로 확인해 봅시다.
 
-      console.log(toJs("<div><h3>아메리카노</h3><p>4000원</p></div>") === toJs("<div>\n<h3>아메리카노</h3>\n<p>4000원</p>\n</div>"));
+      console.log(
+        toJs("<div><h3>아메리카노</h3><p>4000원</p></div>") ===
+          toJs("<div>\n<h3>아메리카노</h3>\n<p>4000원</p>\n</div>"),
+      );
       // 콘솔: true
 
       // 줄바꿈만 다르게 써도 결과가 같습니다. 줄바꿈은 변환 결과에 영향을 주지 않습니다.
@@ -425,7 +429,8 @@
       //   - HTML 이 되는 것이 아닙니다. 함수 호출이 됩니다.
 
       // 길이도 재 볼까요. 같은 화면을 두 방식으로 쓴 글자 수입니다.
-      const jsxCode = "<div><h3>김민준님의 장바구니</h3><ul><li>아메리카노</li><li>케이크</li></ul></div>";
+      const jsxCode =
+        "<div><h3>김민준님의 장바구니</h3><ul><li>아메리카노</li><li>케이크</li></ul></div>";
 
       console.log(jsxCode.length);
       // 콘솔: 65
@@ -449,7 +454,9 @@
       // 에러가 안 납니다. 그래서 가장 찾기 어렵습니다.
       // 데모 ③ 을 보세요. 아래 코드가 만든 화면입니다.
 
-      const rootQuoted = ReactDOM.createRoot(document.querySelector("#rootQuoted"));
+      const rootQuoted = ReactDOM.createRoot(
+        document.querySelector("#rootQuoted"),
+      );
       rootQuoted.render("<h1>안녕</h1>");
       // 화면: 데모 ③ 에 태그가 글자 그대로 보입니다 — <h1>안녕</h1>
       // 실수: 따옴표로 감싸면 그냥 문자열입니다. React 는 문자열을 글자로만 그립니다.
@@ -518,24 +525,27 @@
       <h2>정리</h2>
       <ol>
         <li>
-          JSX 는 자바스크립트 <strong>식</strong>입니다. 값 하나가 남으므로 변수에 담고
-          함수로 돌려주고 배열에 넣을 수 있습니다.
+          JSX 는 자바스크립트 <strong>식</strong>입니다. 값 하나가 남으므로
+          변수에 담고 함수로 돌려주고 배열에 넣을 수 있습니다.
         </li>
         <li>
-          Babel 이 JSX 를 <code>React.createElement("태그", 속성, 안쪽)</code> 함수 호출로
-          바꿔 줍니다. 브라우저는 JSX 를 모릅니다.
+          Babel 이 JSX 를
+          <code>React.createElement("태그", 속성, 안쪽)</code> 함수 호출로 바꿔
+          줍니다. 브라우저는 JSX 를 모릅니다.
         </li>
         <li>
           그 결과로 남는 것은 <strong>화면 설계도 객체</strong>입니다.
-          <code>type</code> 과 <code>props</code> 를 가집니다. 아직 화면은 아닙니다.
+          <code>type</code> 과 <code>props</code> 를 가집니다. 아직 화면은
+          아닙니다.
         </li>
         <li>설계도를 실제 화면으로 만드는 것은 <code>render</code> 입니다.</li>
         <li>
-          <code>createElement</code> 를 직접 써도 결과는 같습니다. JSX 는 그것을 읽기 쉽게
-          적는 방법입니다.
+          <code>createElement</code> 를 직접 써도 결과는 같습니다. JSX 는 그것을
+          읽기 쉽게 적는 방법입니다.
         </li>
         <li>
-          JSX 를 따옴표로 감싸면 그냥 문자열입니다. 화면에 태그가 글자로 보이면 이 실수입니다.
+          JSX 를 따옴표로 감싸면 그냥 문자열입니다. 화면에 태그가 글자로 보이면
+          이 실수입니다.
         </li>
       </ol>
     </div>

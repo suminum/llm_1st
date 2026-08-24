@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,14 +98,13 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
       <br /><br />
-      아래 회색 상자 ① ~ ⑥ 은 <strong>전부 React 가 그린 것</strong>입니다. 코드를 읽으면서
-      번호가 같은 상자를 함께 보세요.
+      아래 회색 상자 ① ~ ⑥ 은 <strong>전부 React 가 그린 것</strong>입니다.
+      코드를 읽으면서 번호가 같은 상자를 함께 보세요.
     </p>
 
     <div id="root"></div>
@@ -175,6 +174,9 @@
       //
       // 이 파일은 맨 아래에서 한 번에 그립니다. 화면 ① 을 보세요.
       // 왜 괄호로 부르지 않는지는 섹션 6 [실수 4] 에서 확인합니다.
+      function bye() {
+        return <p>또 만나요</p>;
+      }
 
       // ✏️ 직접 해보기 1 — <p>또 만나요</p> 를 돌려주는 Bye 컴포넌트를 만드세요.
       //                    (화면에 넣는 것은 직접 해보기 5에서 합니다)
@@ -480,19 +482,31 @@
     <div class="summary">
       <h2>정리</h2>
       <ol>
-        <li>컴포넌트는 <strong>화면(JSX)을 돌려주는 함수</strong>입니다. 새 문법이 아닙니다.</li>
         <li>
-          이름은 <strong>반드시 대문자로 시작</strong>합니다. React 는 첫 글자로 HTML 태그와
-          내 컴포넌트를 구분합니다.
+          컴포넌트는 <strong>화면(JSX)을 돌려주는 함수</strong>입니다. 새 문법이
+          아닙니다.
         </li>
         <li>
-          소문자로 쓰면 <strong>에러 없이</strong> HTML 태그로 취급되어 화면에서 조용히
-          사라집니다. 가장 자주 나는 사고입니다.
+          이름은 <strong>반드시 대문자로 시작</strong>합니다. React 는 첫 글자로
+          HTML 태그와 내 컴포넌트를 구분합니다.
         </li>
-        <li>화면에 그릴 때는 <code>Hello()</code> 가 아니라 <code>&lt;Hello /&gt;</code> 로 씁니다.</li>
-        <li>한 파일에 컴포넌트를 여러 개 만들고, 다른 컴포넌트 안에 넣어 조립합니다.</li>
+        <li>
+          소문자로 쓰면 <strong>에러 없이</strong> HTML 태그로 취급되어 화면에서
+          조용히 사라집니다. 가장 자주 나는 사고입니다.
+        </li>
+        <li>
+          화면에 그릴 때는 <code>Hello()</code> 가 아니라
+          <code>&lt;Hello /&gt;</code> 로 씁니다.
+        </li>
+        <li>
+          한 파일에 컴포넌트를 여러 개 만들고, 다른 컴포넌트 안에 넣어
+          조립합니다.
+        </li>
         <li>같은 컴포넌트를 여러 번 써도 됩니다. 쓴 만큼 화면에 나옵니다.</li>
-        <li><code>return</code> 을 빼먹어도 에러가 안 납니다. 그 컴포넌트만 사라집니다.</li>
+        <li>
+          <code>return</code> 을 빼먹어도 에러가 안 납니다. 그 컴포넌트만
+          사라집니다.
+        </li>
       </ol>
     </div>
   </body>
