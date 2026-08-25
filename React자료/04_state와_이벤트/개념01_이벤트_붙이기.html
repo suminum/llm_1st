@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,14 +98,14 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
       <br /><br />
-      <strong>이번 단원부터는 버튼을 직접 눌러야 결과가 나옵니다.</strong> 페이지를 여는
-      것만으로는 대부분 아무 일도 일어나지 않습니다. JS자료 11단원과 같습니다.
+      <strong>이번 단원부터는 버튼을 직접 눌러야 결과가 나옵니다.</strong>
+      페이지를 여는 것만으로는 대부분 아무 일도 일어나지 않습니다. JS자료
+      11단원과 같습니다.
     </p>
 
     <div id="root"></div>
@@ -164,13 +164,16 @@
         // 이름은 보통 handle 로 시작하게 짓습니다. handleClick, handleSave ...
         // 규칙은 아니지만 대부분 이렇게 써서, 읽는 사람이 바로 알아봅니다.
         function handleClick() {
-          console.log("안녕하세요, 김민준님!");
+          console.log("안녕하세요, 이서연님!");
           // 콘솔: 안녕하세요, 김민준님!
         }
 
         return (
           <div className="demo">
-            <h3>① 가장 기본 — onClick={"{"}handleClick{"}"}</h3>
+            <h3>
+              ① 가장 기본 — onClick={"{"} handleClick {"}"}
+            </h3>
+            //왜 색구분이 다름?
             <button id="btnGreet" onClick={handleClick}>
               인사하기
             </button>
@@ -206,7 +209,9 @@
       // undefined 는 함수가 아니므로, 정작 눌렀을 때는 아무 일도 없습니다.
 
       function shout() {
-        console.log("[실수] shout 가 지금 실행되었습니다. 아무도 안 눌렀는데요!");
+        console.log(
+          "[실수] shout 가 지금 실행되었습니다. 아무도 안 눌렀는데요!",
+        );
         // 콘솔: [실수] shout 가 지금 실행되었습니다. 아무도 안 눌렀는데요!
       }
 
@@ -216,6 +221,7 @@
           <div className="demo">
             <h3>② 괄호를 붙인 버튼 — 눌러도 아무 일이 없습니다</h3>
             <button id="btnBad" onClick={shout()}>
+              //onclick에는 undifined가 들어감 함수가 아닌 값이 들어가기 때문에
               괄호 붙인 버튼
             </button>
           </div>
@@ -287,6 +293,9 @@
             <button id="btnSeoyeon" onClick={() => greetPerson("이서연")}>
               이서연에게 인사
             </button>
+            <button id="btnSeoyeon" onClick={() => greetPerson("박지훈")}>
+              벅지훈에게 인사
+            </button>
           </div>
         );
       }
@@ -327,6 +336,7 @@
           // 콘솔: 눌린 요소의 글자: 나를 눌러 보세요
 
           console.log("눌린 요소의 태그:", e.target.tagName);
+          console.log("눌린 요소의 태그:", e.target.id); //btnEvent
           // 콘솔: 눌린 요소의 태그: BUTTON
         }
 
@@ -378,8 +388,8 @@
         }
 
         function handleClick() {
-          takeOrder();
           printReceipt();
+          takeOrder();
         }
 
         return (
@@ -397,12 +407,14 @@
       // ✏️ 직접 해보기 5 — handleClick 안의 두 줄 순서를 바꿔 보세요.
       //                    콘솔에 찍히는 순서도 따라 바뀝니다.
 
-      // React 가 알아듣는 이벤트 이름은 아주 많습니다. 자주 쓰는 것만 봅시다.
+      // React 가 알아듣는 이벤트 이름          은 아주 많습니다. 자주 쓰는 것만 봅시다.
       //
-      //   onClick       눌렀을 때                    ← 이 파일에서 씁니다
+      //   onClick       눌렀을 때
+      //              ← 이 파일에서 씁니다
       //   onDoubleClick 두 번 눌렀을 때
       //   onMouseOver   마우스를 올렸을 때
       //   onMouseOut    마우스가 벗어났을 때
+
       //   onChange      입력칸의 값이 바뀔 때        (06단원)
       //   onSubmit      폼을 제출할 때               (06단원)
       //   onKeyDown     키를 눌렀을 때
@@ -426,11 +438,18 @@
           // ↑ 이 줄은 '마우스를 올렸을 때' 만 나옵니다. 누르는 것과 다릅니다.
           //   그래서 여기에는 // 콘솔: 을 적지 않았습니다.
         }
+        function handleonMouseOut() {
+          console.log("onMouseOut 마우스 나감");
+        }
 
         return (
           <div className="demo">
             <h3>⑦ 이벤트 이름만 바꾸면 됩니다</h3>
-            <button id="btnHover" onClick={handleClick} onMouseOver={handleMouseOver}>
+            <button
+              id="btnHover"
+              onMouseOver={handleMouseOver}
+              onMouseOut={handleonMouseOut}
+            >
               누르거나 마우스를 올려 보세요
             </button>
           </div>
@@ -575,22 +594,29 @@
           React 에서는 요소를 찾아올 필요 없이 태그에 바로
           <strong>onClick={함수}</strong> 를 적습니다.
         </li>
-        <li>이벤트 이름은 <strong>on + 대문자</strong> 입니다. onclick 이 아니라 onClick.</li>
         <li>
-          <strong>괄호를 붙이지 않습니다.</strong> 붙이면 그릴 때 실행되고, 눌렀을 때는
-          아무 일도 안 일어납니다. 에러도 안 납니다.
+          이벤트 이름은 <strong>on + 대문자</strong> 입니다. onclick 이 아니라
+          onClick.
         </li>
         <li>
-          값을 넘겨야 하면 <strong>() =&gt; 함수(값)</strong> 처럼 화살표 함수로 감쌉니다.
-        </li>
-        <li>핸들러의 첫 매개변수로 이벤트 객체가 옵니다. e.target 으로 눌린 요소를 봅니다.</li>
-        <li>
-          한 태그에 같은 이벤트를 두 번 붙일 수 없습니다. 두 가지 일은 함수 하나 안에서
-          차례로 부릅니다.
+          <strong>괄호를 붙이지 않습니다.</strong> 붙이면 그릴 때 실행되고,
+          눌렀을 때는 아무 일도 안 일어납니다. 에러도 안 납니다.
         </li>
         <li>
-          아직 화면은 바뀌지 않습니다. 콘솔만 찍힙니다. 화면을 바꾸는 방법은 개념02에서
-          배웁니다.
+          값을 넘겨야 하면 <strong>() =&gt; 함수(값)</strong> 처럼 화살표 함수로
+          감쌉니다.
+        </li>
+        <li>
+          핸들러의 첫 매개변수로 이벤트 객체가 옵니다. e.target 으로 눌린 요소를
+          봅니다.
+        </li>
+        <li>
+          한 태그에 같은 이벤트를 두 번 붙일 수 없습니다. 두 가지 일은 함수 하나
+          안에서 차례로 부릅니다.
+        </li>
+        <li>
+          아직 화면은 바뀌지 않습니다. 콘솔만 찍힙니다. 화면을 바꾸는 방법은
+          개념02에서 배웁니다.
         </li>
       </ol>
     </div>

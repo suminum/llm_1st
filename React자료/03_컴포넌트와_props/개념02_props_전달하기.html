@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,13 +98,13 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
       <br /><br />
-      아래 회색 상자 ① ~ ⑦ 은 전부 React 가 그린 것입니다. 번호가 같은 코드와 함께 보세요.
+      아래 회색 상자 ① ~ ⑦ 은 전부 React 가 그린 것입니다. 번호가 같은 코드와
+      함께 보세요.
     </p>
 
     <div id="root"></div>
@@ -148,6 +148,7 @@
       console.log(greet("김민준"));
       // 콘솔: 김민준님 환영합니다
       console.log(greet("이서연"));
+      console.log(greet("박지훈"));
       // 콘솔: 이서연님 환영합니다
 
       // 함수는 하나인데 넘긴 값이 달라서 결과가 달라졌습니다.
@@ -186,7 +187,7 @@
 
         return (
           <p>
-            {props.name} / {props.age}세
+            {props.name} / {props.age}세 /{props.city}
           </p>
         );
       }
@@ -227,6 +228,8 @@
         // 콘솔: number string
         console.log(typeof props.hot, Array.isArray(props.tags));
         // 콘솔: boolean true
+        console.log("직접해보기 3");
+        console.log(typeof props.count);
 
         return (
           <p>
@@ -274,8 +277,7 @@
         return (
           <div className="output">
             <strong>{props.name}</strong> — {props.price}원
-            <br />
-            세 개 사면 {props.price * 3}원
+            <br />세 개 사면 {props.price * 3}원
           </div>
         );
       }
@@ -398,6 +400,7 @@
               <div className="output">
                 <Greet name="김민준" />
                 <Greet name="이서연" />
+                <Greet name="박지훈" />
               </div>
             </div>
 
@@ -413,6 +416,7 @@
               <div className="output">
                 <TypeCheck
                   name="아메리카노"
+                  count={2}
                   price={4000}
                   priceText="4000"
                   hot={true}
@@ -426,12 +430,13 @@
               <MenuItem name="아메리카노" price={4000} />
               <MenuItem name="라떼" price={4500} />
               <MenuItem name="케이크" price={6000} />
+              <MenuItem name="삼김" price={1500} />
             </div>
 
             <div className="demo">
               <h3>⑤ 아무것도 안 넘겼을 때</h3>
               <div className="output">
-                <NoProps />
+                <NoProps name="박지훈" />
               </div>
             </div>
 
@@ -498,22 +503,29 @@
       <h2>정리</h2>
       <ol>
         <li>
-          컴포넌트에 값을 넘기는 것을 <strong>props</strong> 라고 합니다. 함수의 인자와 같은
-          역할입니다.
-        </li>
-        <li>넘길 때는 <code>&lt;Greet name="김민준" /&gt;</code> 처럼 속성으로 씁니다.</li>
-        <li>
-          받을 때는 매개변수 하나로 받습니다. 넘긴 것이 전부 <strong>객체 하나</strong>에
-          담겨 옵니다. <code>props.name</code> 으로 꺼냅니다.
+          컴포넌트에 값을 넘기는 것을 <strong>props</strong> 라고 합니다. 함수의
+          인자와 같은 역할입니다.
         </li>
         <li>
-          문자열은 <code>title="글자"</code>, 그 밖의 값은 <code>price={4000}</code> 처럼
-          <strong>중괄호</strong>가 필요합니다. 중괄호는 "여기부터 자바스크립트" 표시입니다.
+          넘길 때는 <code>&lt;Greet name="김민준" /&gt;</code> 처럼 속성으로
+          씁니다.
+        </li>
+        <li>
+          받을 때는 매개변수 하나로 받습니다. 넘긴 것이 전부
+          <strong>객체 하나</strong>에 담겨 옵니다. <code>props.name</code> 으로
+          꺼냅니다.
+        </li>
+        <li>
+          문자열은 <code>title="글자"</code>, 그 밖의 값은
+          <code>price={4000}</code> 처럼 <strong>중괄호</strong>가 필요합니다.
+          중괄호는 "여기부터 자바스크립트" 표시입니다.
         </li>
         <li>
           숫자를 따옴표로 넘기면 문자열이 됩니다. 에러 없이 계산만 틀립니다.
         </li>
-        <li>props 는 부모 → 자식 한 방향입니다. 반대 방향은 07단원에서 배웁니다.</li>
+        <li>
+          props 는 부모 → 자식 한 방향입니다. 반대 방향은 07단원에서 배웁니다.
+        </li>
         <li>안 넘긴 props 는 undefined 이고, 화면에는 아무것도 안 나옵니다.</li>
       </ol>
     </div>

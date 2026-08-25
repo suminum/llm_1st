@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,8 +98,7 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
@@ -176,10 +175,10 @@
         );
       }
 
-      function MenuItemB({ name, price }) {
+      function MenuItemB({ name, price = 0, degree }) {
         return (
           <p>
-            {name} — {price}원
+            {name} — {price}원 ,{degree}
           </p>
         );
       }
@@ -206,6 +205,7 @@
 
       function MenuItemC(props) {
         const { name, price } = props; // ← 함수 안에서 꺼내기
+        console.log("구조 분해 후 : " + props);
 
         return (
           <p>
@@ -313,7 +313,7 @@
       // 그런데 원래 데이터가 객체 하나였다면, 통째로 넘기는 편이 짧습니다.
 
       const seoyeon = { name: "이서연", age: 22, city: "서울" };
-
+      const jihun = { name: "박지훈", age: 28, city: "대구" };
       function UserCard({ user }) {
         const { name, age, city } = user; // 받은 객체에서 다시 꺼냅니다
 
@@ -376,7 +376,11 @@
       // [실수 3] 중괄호를 빼먹음 ★ 자주 납니다
 
       function NoBraceItem(name, price) {
-        console.log("실수 3 — 첫 번째 매개변수:", typeof name, Object.keys(name));
+        console.log(
+          "실수 3 — 첫 번째 매개변수:",
+          typeof name,
+          Object.keys(name),
+        );
         // 콘솔: 실수 3 — 첫 번째 매개변수: object ['name', 'price']
         console.log("실수 3 — price 가 4000 인가?", price === 4000);
         // 콘솔: 실수 3 — price 가 4000 인가? false
@@ -419,7 +423,8 @@
               <h3>① 같은 결과 — props. 방식과 구조분해 방식</h3>
               <div className="output">
                 <MenuItemA name="아메리카노" price={4000} />
-                <MenuItemB name="아메리카노" price={4000} />
+                // <MenuItemB name="아메리카노" price={4000} degree={"hot"} />
+                <MenuItemB name="물" />
               </div>
             </div>
 
@@ -448,6 +453,7 @@
             <div className="demo">
               <h3>⑤ 객체를 통째로 넘기기</h3>
               <UserCard user={seoyeon} />
+              <UserCard user={jihun} />
             </div>
 
             <div className="demo">
@@ -509,23 +515,29 @@
       <h2>정리</h2>
       <ol>
         <li>
-          <code>function Item({ name, price })</code> — 매개변수 자리에서 props 를 꺼냅니다.
-          JS자료 09단원 객체 구조분해 그대로입니다.
+          <code>function Item({ name, price })</code> — 매개변수 자리에서 props
+          를 꺼냅니다. JS자료 09단원 객체 구조분해 그대로입니다.
         </li>
         <li>넘기는 쪽은 바뀌지 않습니다. 받는 쪽 괄호 안만 바뀝니다.</li>
         <li>
-          매개변수 한 줄만 봐도 그 컴포넌트가 무엇을 받는지 보입니다. 설명서 역할을 합니다.
+          매개변수 한 줄만 봐도 그 컴포넌트가 무엇을 받는지 보입니다. 설명서
+          역할을 합니다.
         </li>
         <li>
-          <code>{ name = "손님" }</code> — 안 넘어왔을 때 쓸 <strong>기본값</strong>을 정합니다.
+          <code>{ name = "손님" }</code> — 안 넘어왔을 때 쓸
+          <strong>기본값</strong>을 정합니다.
         </li>
         <li>
-          기본값은 <strong>undefined 일 때만</strong> 쓰입니다. <code>null</code> 이나 빈
-          문자열은 그대로 쓰입니다.
+          기본값은 <strong>undefined 일 때만</strong> 쓰입니다.
+          <code>null</code> 이나 빈 문자열은 그대로 쓰입니다.
         </li>
-        <li><code>{ name: itemName }</code> — 왼쪽이 원래 이름, 오른쪽이 내가 쓸 이름입니다.</li>
         <li>
-          객체를 통째로 넘기고(<code>user={seoyeon}</code>) 컴포넌트 안에서 다시 꺼내도 됩니다.
+          <code>{ name: itemName }</code> — 왼쪽이 원래 이름, 오른쪽이 내가 쓸
+          이름입니다.
+        </li>
+        <li>
+          객체를 통째로 넘기고(<code>user={seoyeon}</code>) 컴포넌트 안에서 다시
+          꺼내도 됩니다.
         </li>
       </ol>
     </div>

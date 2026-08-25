@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,14 +98,13 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
       <br /><br />
-      이 파일의 앞부분은 <strong>일부러 안 되는 코드</strong>입니다. 화면이 안 바뀌는 것이
-      정상입니다. 왜 안 되는지 본 다음에 고칩니다.
+      이 파일의 앞부분은 <strong>일부러 안 되는 코드</strong>입니다. 화면이 안
+      바뀌는 것이 정상입니다. 왜 안 되는지 본 다음에 고칩니다.
     </p>
 
     <div id="root"></div>
@@ -257,6 +256,15 @@
             <button id="btnGoodUp" onClick={handleClick}>
               +1
             </button>
+
+            <button
+              id="btnGoodUp"
+              onClick={() =>
+                count > 0 ? setCount(count - 1) : console.log("에러")
+              }
+            >
+              -1
+            </button>
           </div>
         );
       }
@@ -315,18 +323,18 @@
       // 정말 두 칸짜리 배열인지 컴포넌트 안에서 확인해 봅시다.
 
       function PairCheck() {
-        const [count, setCount] = useState(0);
+        const [num, setNum] = useState(0);
 
-        console.log("0번 칸:", count, "/ 1번 칸의 정체:", typeof setCount);
+        console.log("0번 칸:", num, "/ 1번 칸의 정체:", typeof setNum);
         // 콘솔: 0번 칸: 0 / 1번 칸의 정체: function
 
         return (
           <div className="demo">
             <h3>③ 두 칸의 정체 확인 — 콘솔을 보세요</h3>
             <div className="output" id="pairOut">
-              지금 값: {count}
+              지금 값: {num}
             </div>
-            <button id="btnPairUp" onClick={() => setCount(count + 1)}>
+            <button id="btnPairUp" onClick={() => setCount(num + 1)}>
               +1 (누를 때마다 콘솔에 한 줄 더 찍힙니다)
             </button>
           </div>
@@ -374,6 +382,7 @@
             <button id="btnTenReset" onClick={() => setCount(10)}>
               10으로 되돌리기
             </button>
+            <button onClick={() => setCount(count + 1)}>한 조각 굽기</button>
           </div>
         );
       }
@@ -428,6 +437,7 @@
             <h3>⑤ 같은 컴포넌트 두 개 — 값은 각자 따로</h3>
             <CupCounter owner="김민준" btnId="btnCupA" />
             <CupCounter owner="이서연" btnId="btnCupB" />
+            <CupCounter owner="박서현" btnId="btnCupC" />
           </div>
         );
       }
@@ -548,23 +558,31 @@
       <h2>정리</h2>
       <ol>
         <li>
-          보통 변수는 바꿔도 화면이 안 바뀝니다. 컴포넌트 함수를 다시 실행하지 않기
-          때문입니다.
+          보통 변수는 바꿔도 화면이 안 바뀝니다. 컴포넌트 함수를 다시 실행하지
+          않기 때문입니다.
         </li>
         <li>
           컴포넌트 안의 보통 변수는 다시 그릴 때마다 처음 값으로 되돌아갑니다.
         </li>
         <li>
-          <strong>const [값, set값] = useState(시작값)</strong> 한 줄이 그 두 문제를 함께
-          해결합니다.
+          <strong>const [값, set값] = useState(시작값)</strong> 한 줄이 그 두
+          문제를 함께 해결합니다.
         </li>
         <li>
-          값을 바꿀 때는 대입이 아니라 <strong>set 함수</strong>를 부릅니다. 그러면 React 가
-          다시 그립니다.
+          값을 바꿀 때는 대입이 아니라 <strong>set 함수</strong>를 부릅니다.
+          그러면 React 가 다시 그립니다.
         </li>
-        <li>대괄호는 JS자료 09단원의 배열 구조분해입니다. 새 문법이 아닙니다.</li>
-        <li>시작값은 맨 처음 그릴 때만 쓰입니다. 되돌리려면 set 으로 직접 넣습니다.</li>
-        <li>state 는 컴포넌트마다 따로 생깁니다. 같은 컴포넌트를 둘 놓으면 값도 둘입니다.</li>
+        <li>
+          대괄호는 JS자료 09단원의 배열 구조분해입니다. 새 문법이 아닙니다.
+        </li>
+        <li>
+          시작값은 맨 처음 그릴 때만 쓰입니다. 되돌리려면 set 으로 직접
+          넣습니다.
+        </li>
+        <li>
+          state 는 컴포넌트마다 따로 생깁니다. 같은 컴포넌트를 둘 놓으면 값도
+          둘입니다.
+        </li>
       </ol>
     </div>
   </body>

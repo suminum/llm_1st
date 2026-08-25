@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,18 +98,20 @@
 
     <p class="guide">
       script 안의 TODO 자리에 코드를 쓰고 저장한 뒤 브라우저를
-      <strong>새로고침</strong>해서 확인하세요. <strong>F12 → Console</strong> 도 함께 보세요.<br />
+      <strong>새로고침</strong>해서 확인하세요.
+      <strong>F12 → Console</strong> 도 함께 보세요.<br />
       1~11은 기본, 12는 [응용], 13은 [도전], 14는 에러 확인입니다.
       <br /><br />
-      <strong>푸는 순서를 지키세요.</strong> 컴포넌트를 만들기 전에 아래 App 안에 먼저
-      <code>&lt;Hello /&gt;</code> 를 써 넣으면 화면이 통째로 비어 버립니다. 없는 이름을 쓴
-      것이기 때문입니다. <strong>먼저 만들고, 그다음에 App 에 넣으세요.</strong>
+      <strong>푸는 순서를 지키세요.</strong> 컴포넌트를 만들기 전에 아래 App
+      안에 먼저 <code>&lt;Hello /&gt;</code> 를 써 넣으면 화면이 통째로 비어
+      버립니다. 없는 이름을 쓴 것이기 때문입니다.
+      <strong>먼저 만들고, 그다음에 App 에 넣으세요.</strong> <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
+      <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
+      <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
       <br /><br />
-      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽 <code>&lt;style&gt;</code> 은 화면
-      모양을 만드는 코드입니다. <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
-      <br /><br />
-      이 단원에서는 <strong>화면이 바뀌지 않습니다.</strong> 버튼을 눌러 값을 바꾸는 것은
-      04단원입니다.
+      이 단원에서는 <strong>화면이 바뀌지 않습니다.</strong> 버튼을 눌러 값을
+      바꾸는 것은 04단원입니다.
     </p>
 
     <div id="root"></div>
@@ -133,7 +135,9 @@
       //                  아무것도 안 나오는데 에러도 없다면 컴포넌트 이름이
       //                  소문자로 시작하는지 확인하세요.
       // TODO: 여기에 코드를 쓰세요
-
+      function Hello() {
+        return <p>안녕하세요, 김민준입니다</p>;
+      }
       // ───── 문제 2 ───── (개념01 대문자 규칙)
       // 아래 header 컴포넌트는 App 의 '문제 2' 칸에 이미 들어 있습니다.
       // 그런데 화면에 아무것도 안 나옵니다. 이유를 생각하고 고치세요.
@@ -142,7 +146,7 @@
       // 기대 결과 (화면): 문제 2 칸에 "동네 카페" 라는 제목이 나옵니다.
       //                  이름만 고치고 App 의 태그를 안 고치면 여전히 안 나옵니다.
 
-      function header() {
+      function Header() {
         return <h4>동네 카페</h4>;
       }
 
@@ -153,6 +157,14 @@
       // 기대 결과 (화면): 문제 3 칸에 "아메리카노" 와 "케이크" 두 줄이 차례로 나옵니다.
       //                  한 줄만 나오면 MenuList 안에 하나만 넣은 것입니다.
       //                  화면이 통째로 비면 두 덩어리를 하나로 안 감싼 것입니다.
+      function MenuList() {
+        return (
+          <>
+            {Coffee()}
+            {Cake()}
+          </>
+        );
+      }
 
       function Coffee() {
         return <p>아메리카노</p>;
@@ -171,6 +183,10 @@
       // 기대 결과 (화면): 이서연님 환영합니다
       //                  "님 환영합니다" 만 나오면 넘기는 이름과 받는 이름이 다른 것입니다.
       // TODO: 여기에 코드를 쓰세요
+      function Welcome(props) {
+        name = props.name;
+        return <p>{name}님 환영합니다.</p>;
+      }
 
       // ───── 문제 5 ───── (개념02 숫자 props)
       // price 를 props 로 받아 두 줄을 보여 주는 PriceTag 컴포넌트를 만드세요.
@@ -182,6 +198,15 @@
       //                  500원 더하면 4500원
       //                  둘째 줄이 "4000500원" 이면 price 를 따옴표로 넘긴 것입니다.
       // TODO: 여기에 코드를 쓰세요
+      function PriceTag(props) {
+        let addPrice = props.price + 500;
+        return (
+          <>
+            <p>{props.price}</p>
+            <p>500원 더하면 {addPrice}</p>
+          </>
+        );
+      }
 
       // ───── 문제 6 ───── (개념02 같은 컴포넌트 여러 번)
       // name 과 price 를 받아 "아메리카노 — 4000원" 처럼 보여 주는 MenuItem 을 만드세요.
@@ -193,6 +218,23 @@
       //                  케이크 — 6000원
       //                  세 줄이 전부 같은 내용이면 props 를 안 넘긴 것입니다.
       // TODO: 여기에 코드를 쓰세요
+      function Menu({ name, price }) {
+        let inform = { name, price };
+        return (
+          <p>
+            {inform.name} -{inform.price}
+          </p>
+        );
+      }
+      function MenuItem(props) {
+        return (
+          <>
+            <Menu name="아메리카노" price={4000} />
+            <Menu name="라뗴" price={4500} />
+            <Menu name="케이크" price={6000} />
+          </>
+        );
+      }
 
       // ───── 문제 7 ───── (개념03 구조분해)
       // 문제 6에서 만든 MenuItem 을 매개변수 자리에서 구조분해하는 방식으로 고치세요.
@@ -212,6 +254,10 @@
       //                  손님님, 어서 오세요.
       //                  둘째 줄이 "님, 어서 오세요." 면 기본값을 안 준 것입니다.
       // TODO: 여기에 코드를 쓰세요
+      function Greeting({ name = "손님" }) {
+        //객체단위로 인자 넘기긱
+        return <p>{name}님 어서오십쇼</p>;
+      }
 
       // ───── 문제 9 ───── (개념04 children)
       // 태그 사이에 넣은 것을 흰 칸에 그려 주는 Box 컴포넌트를 만드세요.
@@ -221,19 +267,27 @@
       // 기대 결과 (화면): 테두리가 있는 흰 칸 안에 "오늘도 좋은 하루" 가 나옵니다.
       //                  빈 칸만 나오면 Box 안에서 {children} 을 안 그린 것입니다.
       // TODO: 여기에 코드를 쓰세요
+      function Box({ children }) {
+        return <>{children}</>; //구조분해 할당임 그냥 props.chiledren 을 쓰나 저렇게 쓰나 같은말
+      }
 
       // ───── 문제 10 ───── (개념04 children + 속성)
       // title 은 속성으로, 본문은 children 으로 받는 TitleBox 컴포넌트를 만드세요.
       // 제목은 <h4> 로, 본문은 그 아래에 그립니다.
       // App 의 '문제 10' 칸에 아래처럼 넣으세요.
       //
-      //     <TitleBox title="오늘의 메뉴">
-      //       <p>아메리카노 4000원</p>
-      //     </TitleBox>
+
       //
       // 기대 결과 (화면): "오늘의 메뉴" 제목 아래에 "아메리카노 4000원" 이 나옵니다.
       //                  제목만 나오면 {children} 을 안 그린 것입니다.
       // TODO: 여기에 코드를 쓰세요
+      function TitleBox(props) {
+        return (
+          <>
+            <h4>{props.title}</h4> {props.children}
+          </>
+        );
+      }
 
       // ───── 문제 11 ───── (개념05 쪼개기)
       // 아래 BigNotice 는 같은 모양이 세 번 반복됩니다.
@@ -247,20 +301,22 @@
       function BigNotice() {
         return (
           <div className="output">
-            <div>
-              <strong>[알림]</strong> 오전 8시에 문을 엽니다
-            </div>
-            <div>
-              <strong>[알림]</strong> 오후 10시에 문을 닫습니다
-            </div>
-            <div>
-              <strong>[알림]</strong> 케이크는 6000원입니다
-            </div>
+            <NoticeLine>오전 8시에 문을 엽니다</NoticeLine>
+            <NoticeLine>오후 10시에 문을 닫습니다</NoticeLine>
+            <NoticeLine>케이크는 6000원입니다</NoticeLine>
           </div>
         );
       }
 
       // TODO: NoticeLine 을 만들고 BigNotice 를 고치세요
+      function NoticeLine(props) {
+        return (
+          <div>
+            <strong>[알림]</strong>
+            {props.children}
+          </div>
+        );
+      }
 
       // ───── 문제 12 ───── [응용] (개념03 · 05)
       // 주문 한 줄을 그리는 OrderCard 컴포넌트를 만드세요.
@@ -276,6 +332,15 @@
 
       const americano = { name: "아메리카노", price: 4000 };
       const latte = { name: "라떼", price: 4500 };
+      function OrderCard({ name, price, count = 1 }) {
+        //count 1까지 구조분해 형태로 넣어줘야함
+        return (
+          <p>
+            {" "}
+            {name} - 합계 {price * count} 원
+          </p>
+        );
+      }
 
       // TODO: 여기에 코드를 쓰세요
       //       App 의 '문제 12' 칸에 아래 두 줄을 넣으세요.
@@ -298,6 +363,16 @@
       //                  주문 두 줄이 안 보이면 Receipt 안에서 {children} 을 안 그린 것입니다.
       //                  합계가 0원이면 total 을 안 넘긴 것입니다.
       // TODO: 여기에 코드를 쓰세요
+      // TODO: 여기에 코드를 쓰세요
+      function Receipt({ name: title, total = 0, children }) {
+        return (
+          <>
+            <h4>{title}</h4>
+            {children}
+            <>총액 : {total}원</>
+          </>
+        );
+      }
 
       // ───── 문제 14 ───── (에러 확인 — 맨 마지막)
       // 아래 두 줄의 주석을 풀고 저장한 뒤 화면과 F12 → Console 을 보세요.
@@ -326,49 +401,53 @@
           <>
             <div className="demo">
               <h3>문제 1</h3>
-              <div className="output">{/* TODO 문제 1: <Hello /> */}</div>
+              <div className="output">{<Hello />}</div>
             </div>
 
             <div className="demo">
               <h3>문제 2</h3>
               <div className="output">
-                <header />
+                <Header />
               </div>
             </div>
 
             <div className="demo">
               <h3>문제 3</h3>
-              <div className="output">{/* TODO 문제 3: <MenuList /> */}</div>
+              <div className="output">{<MenuList />}</div>
             </div>
 
             <div className="demo">
               <h3>문제 4</h3>
-              <div className="output">{/* TODO 문제 4: <Welcome name="이서연" /> */}</div>
+              <div className="output">{<Welcome name="이서연" />}</div>
             </div>
 
             <div className="demo">
               <h3>문제 5</h3>
-              <div className="output">{/* TODO 문제 5: <PriceTag price={4000} /> */}</div>
+              <div className="output">{<PriceTag price={4000} />}</div>
             </div>
 
             <div className="demo">
               <h3>문제 6 · 7</h3>
-              <div className="output">{/* TODO 문제 6: MenuItem 세 줄 */}</div>
+              <div className="output">{<MenuItem />}</div>
             </div>
 
             <div className="demo">
               <h3>문제 8</h3>
-              <div className="output">{/* TODO 문제 8: Greeting 두 줄 */}</div>
+              <div className="output">
+                <Greeting name="박지훈" /> <Greeting />
+              </div>
+              //+를 쓰게 되면 문자열로 인식함 그냥 컴포넌트는 나란히 쓰기만 하면
+              됨
             </div>
 
             <div className="demo">
               <h3>문제 9</h3>
-              {/* TODO 문제 9: <Box>오늘도 좋은 하루</Box> */}
+              <Box>오늘도 좋은 하루</Box>
             </div>
 
             <div className="demo">
               <h3>문제 10</h3>
-              {/* TODO 문제 10: TitleBox */}
+              {<TitleBox title="오늘의 메뉴"></TitleBox>}
             </div>
 
             <div className="demo">
@@ -378,17 +457,24 @@
 
             <div className="demo">
               <h3>문제 12 [응용]</h3>
-              {/* TODO 문제 12: OrderCard 두 줄 */}
+              <OrderCard {...americano} count={3} />
+              <OrderCard {...latte} />
             </div>
 
             <div className="demo">
               <h3>문제 13 [도전]</h3>
-              {/* TODO 문제 13: Receipt 와 그 안의 OrderCard 두 개 */}
+              <Receipt title="오늘의 영수증" total={30000}>
+                {" "}
+                <OrderCard {...americano} count={3} />
+                <OrderCard {...latte} />
+              </Receipt>
             </div>
 
             <div className="demo">
               <h3>문제 14 (에러 확인)</h3>
-              <div className="output">{/* <ChangeProps name="김민준" /> */}</div>
+              <div className="output">
+                {/* <ChangeProps name="김민준" /> */}
+              </div>
             </div>
           </>
         );

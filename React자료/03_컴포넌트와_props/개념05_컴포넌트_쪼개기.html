@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,14 +98,13 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
       <br /><br />
-      이 파일에는 <strong>일부러 잘못 만든 컴포넌트</strong>가 들어 있습니다. 화면 ⑤ ~ ⑦ 이
-      그렇습니다. 무엇이 잘못됐는지 코드와 함께 확인하세요.
+      이 파일에는 <strong>일부러 잘못 만든 컴포넌트</strong>가 들어 있습니다.
+      화면 ⑤ ~ ⑦ 이 그렇습니다. 무엇이 잘못됐는지 코드와 함께 확인하세요.
     </p>
 
     <div id="root"></div>
@@ -195,7 +194,7 @@
           <div>
             <strong>{name}</strong> — {price}원
             <br />
-            <small>가장 많이 팔립니다</small>
+            <small>오늘의 추천 (바꾼거)</small>
           </div>
         );
       }
@@ -207,6 +206,7 @@
             <MenuRow name="아메리카노" price={4000} />
             <MenuRow name="라떼" price={4500} />
             <MenuRow name="케이크" price={6000} />
+            <MenuRow name="삼각김밥" price={1200} />
           </div>
         );
       }
@@ -265,7 +265,7 @@
         // JS자료 12단원 개념05에서 배운 try / catch 입니다.
         // 에러가 나도 파일 전체가 멈추지 않게 감싼 것입니다.
         try {
-          props.name = "바꿈";
+          props.name = "바꿈"; //역기서 에러나서 다음 토듲ㄹ 실행 안됨
           result = "조용히 바뀌었습니다";
         } catch (error) {
           result = error.message;
@@ -380,7 +380,9 @@
         console.log("원본 객체의 나이:", sharedUser.age);
         // 콘솔: 원본 객체의 나이: 99
 
-        return <div className="output">여기서 몰래 user.age 를 99로 바꿨습니다</div>;
+        return (
+          <div className="output">여기서 몰래 user.age 를 99로 바꿨습니다</div>
+        );
       }
 
       //   화면 ⑥ 을 보세요. 같은 sharedUser 를 넘겼는데
@@ -448,7 +450,11 @@
 
             <div className="demo">
               <h3>③ props 로 값만 바꿔 여러 개</h3>
-              <MenuCard name="아메리카노" price={4000} note="가장 많이 팔립니다" />
+              <MenuCard
+                name="아메리카노"
+                price={4000}
+                note="가장 많이 팔립니다"
+              />
               <MenuCard name="라떼" price={4500} note="우유가 들어갑니다" />
               <MenuCard name="케이크" price={6000} />
               <MenuCard name="삼각김밥" price={1200} />
@@ -456,7 +462,7 @@
 
             <div className="demo">
               <h3>④ 읽어서 새 값 만들기 / 너무 잘게 쪼갠 예</h3>
-              <OrderLine name="아메리카노" price={4000} />
+              <OrderLine name="아메리카노" price={4000} count={3} />
               <TooSmallRow name="라떼" price={4500} />
             </div>
 
@@ -524,10 +530,12 @@
       <h2>정리</h2>
       <ol>
         <li>
-          같은 모양이 반복되거나, 이름을 붙일 수 있거나, 너무 길면 컴포넌트로 쪼갭니다.
+          같은 모양이 반복되거나, 이름을 붙일 수 있거나, 너무 길면 컴포넌트로
+          쪼갭니다.
         </li>
         <li>
-          쪼개면 <strong>고칠 곳이 한 곳</strong>이 됩니다. 이것이 쪼개는 가장 큰 이유입니다.
+          쪼개면 <strong>고칠 곳이 한 곳</strong>이 됩니다. 이것이 쪼개는 가장
+          큰 이유입니다.
         </li>
         <li>달라지는 값만 props 로 빼고, 같은 부분은 컴포넌트 안에 둡니다.</li>
         <li>
@@ -535,11 +543,17 @@
           <code>TypeError: Cannot assign to read only property</code> 가 납니다.
         </li>
         <li>
-          props 로 받은 <strong>객체 안의 값</strong>은 에러 없이 바뀝니다. 원본까지 함께
-          바뀌므로 더 위험합니다. 손대지 마세요.
+          props 로 받은 <strong>객체 안의 값</strong>은 에러 없이 바뀝니다.
+          원본까지 함께 바뀌므로 더 위험합니다. 손대지 마세요.
         </li>
-        <li>읽어서 새 변수를 만드는 것은 자유입니다. 값을 바꿔 화면을 바꾸는 것은 04단원입니다.</li>
-        <li>너무 잘게 쪼개면 오히려 읽기 어려워집니다. 두 번째로 반복될 때 쪼개도 늦지 않습니다.</li>
+        <li>
+          읽어서 새 변수를 만드는 것은 자유입니다. 값을 바꿔 화면을 바꾸는 것은
+          04단원입니다.
+        </li>
+        <li>
+          너무 잘게 쪼개면 오히려 읽기 어려워집니다. 두 번째로 반복될 때 쪼개도
+          늦지 않습니다.
+        </li>
       </ol>
     </div>
   </body>

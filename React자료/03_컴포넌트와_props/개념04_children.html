@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,13 +98,13 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
       <br /><br />
-      아래 회색 상자 ① ~ ⑥ 이 이 파일의 화면입니다. 흰 칸이 '상자 컴포넌트' 가 그린 부분입니다.
+      아래 회색 상자 ① ~ ⑥ 이 이 파일의 화면입니다. 흰 칸이 '상자 컴포넌트' 가
+      그린 부분입니다.
     </p>
 
     <div id="root"></div>
@@ -178,8 +178,8 @@
       function Card({ title, children }) {
         return (
           <div className="output">
-            <h4>{title}</h4>
             {children}
+            <h4>{title}</h4>
             <p>— 이 줄은 Card 가 항상 붙입니다 —</p>
           </div>
         );
@@ -207,13 +207,16 @@
       // 몇 개를 넣든 상관없습니다.
 
       function ListBox({ children }) {
+        console.log("ListBox", children);
         console.log("ListBox children 이 배열인가?", Array.isArray(children));
-        // 콘솔: ListBox children 이 배열인가? true
+        // 콘솔: ListBox children 이 배열인가? true 태그가 2개이상
 
         return <div className="output">{children}</div>;
       }
 
       function OneBox({ children }) {
+        console.log("OneBox", children);
+
         console.log("OneBox children 이 배열인가?", Array.isArray(children));
         // 콘솔: OneBox children 이 배열인가? false
 
@@ -278,7 +281,7 @@
       function Notice({ children }) {
         return (
           <div className="output">
-            <strong>[알림]</strong> {children}
+            <strong>[공지]</strong> {children}
           </div>
         );
       }
@@ -334,7 +337,9 @@
         console.log("실수 3 — children.length:", children.length);
         // 콘솔: 실수 3 — children.length: 5
 
-        return <div className="output">개수라고 생각한 값: {children.length}</div>;
+        return (
+          <div className="output">개수라고 생각한 값: {children.length}</div>
+        );
       }
 
       //   <CountBox>안녕하세요</CountBox> 로 썼습니다. 넣은 것은 한 덩어리인데 5가 나옵니다.
@@ -365,7 +370,7 @@
           <>
             <div className="demo">
               <h3>① 태그 사이에 넣은 글자</h3>
-              <Box>안녕하세요</Box>
+              <Box>오늘의 멩뉴</Box>
             </div>
 
             <div className="demo">
@@ -390,6 +395,9 @@
               <h3>④ 속성과 children 을 함께</h3>
               <Panel title="영업 안내">
                 <p>오전 8시부터 오후 10시까지 문을 엽니다.</p>
+              </Panel>
+              <Panel title="공지">
+                <p>오늘은 쉽니다.</p>
               </Panel>
             </div>
 
@@ -476,25 +484,35 @@
       <h2>정리</h2>
       <ol>
         <li>
-          <code>&lt;Box&gt;안녕&lt;/Box&gt;</code> 처럼 <strong>태그 사이에 넣은 것</strong>은
+          <code>&lt;Box&gt;안녕&lt;/Box&gt;</code> 처럼
+          <strong>태그 사이에 넣은 것</strong>은
           <code>props.children</code> 으로 옵니다.
         </li>
-        <li>children 은 특별한 문법이 아니라 <strong>props 의 한 속성</strong>입니다.</li>
         <li>
-          받은 children 을 화면 어디에 놓을지는 <strong>받는 컴포넌트가</strong> 정합니다.
+          children 은 특별한 문법이 아니라
+          <strong>props 의 한 속성</strong>입니다.
         </li>
         <li>
-          <code>{children}</code> 을 안 쓰면 넘긴 내용이 <strong>에러 없이</strong>
+          받은 children 을 화면 어디에 놓을지는
+          <strong>받는 컴포넌트가</strong> 정합니다.
+        </li>
+        <li>
+          <code>{children}</code> 을 안 쓰면 넘긴 내용이
+          <strong>에러 없이</strong>
           사라집니다.
         </li>
         <li>
-          짧은 값은 속성으로, 여러 줄짜리 화면 덩어리는 children 으로 넘기면 읽기 좋습니다.
+          짧은 값은 속성으로, 여러 줄짜리 화면 덩어리는 children 으로 넘기면
+          읽기 좋습니다.
         </li>
         <li>
-          테두리·제목 같은 겉모습만 담당하는 <strong>상자 컴포넌트</strong>를 만들면 모양을
-          한 곳에서 고칠 수 있습니다.
+          테두리·제목 같은 겉모습만 담당하는 <strong>상자 컴포넌트</strong>를
+          만들면 모양을 한 곳에서 고칠 수 있습니다.
         </li>
-        <li><code>children.length</code> 는 개수가 아닐 수 있습니다. 글자 수일 수도 있습니다.</li>
+        <li>
+          <code>children.length</code> 는 개수가 아닐 수 있습니다. 글자 수일
+          수도 있습니다.
+        </li>
       </ol>
     </div>
   </body>
