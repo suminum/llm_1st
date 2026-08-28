@@ -1,0 +1,475 @@
+// ============================================================
+// 05단원 · 개념 05 — 비었을 때와 falsy 함정
+// ------------------------------------------------------------
+// 실행: 실습프로젝트에서 npm run dev → 왼쪽 목록에서 이 예제를 고르세요.
+//       F12 → Console 도 함께 보세요.
+// ============================================================
+//
+// 개념04에서 filter 로 걸러 봤습니다.
+// 그런데 조건에 맞는 게 하나도 없으면 어떻게 될까요?
+//
+// 장바구니를 비웠을 때, 검색 결과가 없을 때, 할 일을 다 끝냈을 때 —
+// 목록이 비는 일은 아주 흔합니다. 오히려 화면이 처음 열릴 때는 대부분 비어 있습니다.
+//
+// 그런데 여기에 React 초보자가 가장 많이 빠지는 함정이 하나 있습니다.
+// 화면에 난데없이 0 이 하나 찍히는 것입니다.
+// 이 파일에서 그 함정을 직접 재현하고, 왜 그런지 끝까지 파고듭니다.
+
+import { useState } from "react";
+import Summary from "../_ui/Summary.jsx";
+
+const fullCart = [
+  { id: "americano", name: "아메리카노", price: 4000 },
+  { id: "cake", name: "케이크", price: 6000 },
+];
+
+const emptyCart = [];
+
+// ── 섹션 1: 빈 목록은 에러가 아니다 ──
+
+// 먼저 확인할 것이 있습니다. 빈 배열에 map 을 써도 에러가 나지 않습니다.
+// 빈 배열이 나올 뿐입니다. JS자료 08단원에서 배운 그대로입니다.
+
+console.log(emptyCart.map((item) => item.name));
+// 콘솔: []
+console.log(emptyCart.length);
+// 콘솔: 0
+
+// React 도 빈 배열을 받으면 아무것도 안 그립니다. 조용히 넘어갑니다.
+// 즉 코드는 멀쩡합니다. 문제는 '사용자가 보는 화면' 입니다.
+
+function EmptyIsSilent() {
+  return (
+    <div className="demo">
+      <h3>섹션 1 — 빈 목록은 그냥 아무것도 안 나온다</h3>
+
+      <div className="output">
+        <p>장바구니</p>
+        <ul>
+          {emptyCart.map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+        <p>(위에 아무것도 없습니다)</p>
+      </div>
+    </div>
+  );
+}
+// 화면: "장바구니" 아래에 아무 줄도 없고 바로 "(위에 아무것도 없습니다)" 가 나옵니다
+
+// 이 화면을 처음 본 사람은 이렇게 생각합니다.
+//   "고장 났나? 아직 안 불러왔나? 내가 뭘 잘못 눌렀나?"
+//
+// 비어 있다는 것을 화면이 직접 말해 줘야 합니다.
+// 이것을 빈 상태 처리라고 합니다. 화면을 만들 때 빼먹기 쉬운 일 중 하나입니다.
+
+// ✏️ 직접 해보기 1 — emptyCart 대신 fullCart 를 넣어 저장해 보세요.
+//                    두 줄이 나오나요? 확인했으면 되돌리세요.
+
+// ── 섹션 2: 비었을 때 안내 문구 보여 주기 ──
+
+// 개념01에서 배운 삼항을 그대로 씁니다. 조건은 "개수가 0이냐" 입니다.
+
+function CartView({ items }) {
+  return (
+    <div>
+      <p>장바구니 ({items.length}개)</p>
+      {items.length === 0 ? (
+        <p>장바구니가 비었습니다. 메뉴를 담아 보세요.</p>
+      ) : (
+        <ul>
+          {items.map((item) => (
+            <li key={item.id}>
+              {item.name} — {item.price}원
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function EmptyStateDemo() {
+  const [cart, setCart] = useState(emptyCart);
+
+  return (
+    <div className="demo">
+      <h3>섹션 2 — 비었을 때 안내 문구</h3>
+
+      <button onClick={() => setCart(fullCart)}>담은 상태로 보기</button>
+      <button onClick={() => setCart(emptyCart)}>비운 상태로 보기</button>
+
+      <div className="output">
+        <CartView items={cart} />
+      </div>
+    </div>
+  );
+}
+// 화면: 장바구니 (0개) · 장바구니가 비었습니다. 메뉴를 담아 보세요.
+// 화면(담은 상태로 보기를 누르면): 장바구니 (2개) · 아메리카노 — 4000원 / 케이크 — 6000원
+
+// 삼항의 두 갈래가 길어서 각각 소괄호로 감쌌습니다.
+// JSX 를 여러 줄로 쓸 때 소괄호로 묶는 것은 02단원 개념05에서 배웠습니다.
+//
+// 개념01 섹션 5의 '일찍 return' 을 써도 됩니다. 이렇게요.
+//
+//     function CartView({ items }) {
+//       if (items.length === 0) {
+//         return <p>장바구니가 비었습니다</p>;
+//       }
+//       return <ul>...</ul>;
+//     }
+//
+// 어느 쪽이든 됩니다. 개수 표시처럼 '항상 보여야 하는 것' 이 있으면 삼항이,
+// 화면 전체가 달라지면 일찍 return 이 보통 읽기 좋습니다.
+
+// ✏️ 직접 해보기 2 — CartView 를 고쳐서 비었을 때는 개수 표시도
+//                    아예 안 나오게 해 보세요. (일찍 return 을 씁니다)
+
+// ── 섹션 3: 화면에 0 이 찍히는 함정 ★ ──
+
+// 여기서부터가 이 파일의 핵심입니다.
+//
+// "비었을 때 안내 문구" 말고 "있을 때만 뭔가 보여 주기" 를 하고 싶다고 합시다.
+// 개념01에서 배운 && 를 쓰면 될 것 같습니다.
+//
+//     {items.length && <p>담긴 상품이 있습니다</p>}
+//
+// 읽어 보면 자연스럽습니다. "개수가 있으면 보여 줘라".
+// 그런데 목록이 비면 화면에 0 이 하나 찍힙니다. 직접 보세요.
+
+function ZeroTrapDemo() {
+  const [cart, setCart] = useState(emptyCart);
+
+  return (
+    <div className="demo">
+      <h3>섹션 3 — 0 이 찍히는 함정 ★</h3>
+
+      <button onClick={() => setCart(emptyCart)}>비운 상태로 보기</button>
+      <button onClick={() => setCart(fullCart)}>담은 상태로 보기</button>
+
+      <div className="output">
+        <p>아래 대괄호 안을 보세요.</p>
+        <p>[{cart.length && <span>담긴 상품이 있습니다</span>}]</p>
+      </div>
+    </div>
+  );
+}
+// 화면: [0]
+// 화면(담은 상태로 보기를 누르면): [담긴 상품이 있습니다]
+
+// 비었을 때 대괄호 안에 0 이 들어 있습니다.
+// 에러도 경고도 안 났습니다. 그냥 화면에 0 이 하나 붙어 있습니다.
+//
+// 실제 화면에서는 이 0 이 목록 위나 버튼 옆에 혼자 떠 있게 됩니다.
+// "이 0 은 어디서 나온 거지?" 하고 한참 찾게 되는 이유입니다.
+//
+// 왜 이렇게 되는지 두 단계로 나눠 봅시다.
+//
+// [1단계] && 가 무엇을 돌려주는가
+//   && 는 왼쪽이 거짓이면 '왼쪽 값을 그대로' 돌려줍니다. true / false 가 아닙니다.
+//   이건 JS자료 03단원에서 배운 것입니다. 콘솔로 확인합시다.
+
+console.log(emptyCart.length);
+// 콘솔: 0
+console.log(emptyCart.length && "담긴 상품이 있습니다");
+// 콘솔: 0
+console.log(fullCart.length && "담긴 상품이 있습니다");
+// 콘솔: 담긴 상품이 있습니다
+
+//   왼쪽이 0 이면 결과도 0 입니다. false 가 아니라 숫자 0 입니다.
+//
+// [2단계] React 는 0 을 화면에 그린다
+//   개념01 섹션 4에서 확인했습니다.
+//     null · undefined · true · false → 안 그려진다
+//     숫자 0 · 문자열                  → 그려진다
+//
+//   그래서 0 이 화면에 나옵니다.
+//
+// 두 단계를 합치면 이렇습니다.
+//   개수가 0  →  && 가 0 을 돌려줌  →  React 가 0 을 그림  →  화면에 0
+//
+// 참고로 목록이 비었을 때 length 가 아니라 배열 자체를 조건으로 쓰면
+// 이 함정은 안 생깁니다. 대신 다른 문제가 생깁니다. 섹션 6 [실수 2] 를 보세요.
+
+// ✏️ 직접 해보기 3 — 콘솔에 아래 두 줄을 쳐 보고 결과가 어떻게 다른지 보세요.
+//                    0 && "안녕"
+//                    1 && "안녕"
+
+// ── 섹션 4: 안전하게 쓰는 법 ──
+
+// 고치는 방법은 하나뿐입니다.
+//   ★ && 왼쪽을 반드시 true 나 false 가 나오는 식으로 만든다.
+//
+// 방법은 여러 가지입니다. 콘솔에서 결과를 비교해 봅시다.
+
+console.log(emptyCart.length > 0);
+// 콘솔: false
+console.log(emptyCart.length !== 0);
+// 콘솔: false
+console.log(Boolean(emptyCart.length));
+// 콘솔: false
+
+// 셋 다 false 입니다. false 는 화면에 안 그려지므로 0 이 안 나옵니다.
+// Boolean() 은 JS자료 01단원 개념05에서 배운 형변환입니다.
+
+console.log(emptyCart.length > 0 && "담긴 상품이 있습니다");
+// 콘솔: false
+console.log(fullCart.length > 0 && "담긴 상품이 있습니다");
+// 콘솔: 담긴 상품이 있습니다
+
+// 세 방법 중 무엇을 쓸까요?
+//   length > 0        ← 가장 많이 씁니다. 뜻이 그대로 읽힙니다. 이걸 쓰세요.
+//   length !== 0      ← 같은 뜻입니다. 취향 차이입니다.
+//   Boolean(length)   ← 됩니다. 다만 한 겹 더 감싸야 해서 덜 씁니다.
+//
+// 삼항으로 바꾸는 방법도 있습니다. 이건 애초에 && 를 안 쓰는 것이라 안전합니다.
+//   {items.length ? <p>담긴 상품이 있습니다</p> : null}
+// 삼항은 왼쪽 값을 그대로 돌려주지 않고 둘 중 하나를 고르기 때문입니다.
+
+function SafeDemo() {
+  const [cart, setCart] = useState(emptyCart);
+
+  return (
+    <div className="demo">
+      <h3>섹션 4 — 안전하게 쓰는 네 가지</h3>
+
+      <button onClick={() => setCart(emptyCart)}>비운 상태로 보기</button>
+      <button onClick={() => setCart(fullCart)}>담은 상태로 보기</button>
+
+      <div className="output">
+        <p>① {"{cart.length && ...}"} → [{cart.length && <span>있음</span>}]</p>
+        <p>② {"{cart.length > 0 && ...}"} → [{cart.length > 0 && <span>있음</span>}]</p>
+        <p>③ {"{cart.length !== 0 && ...}"} → [{cart.length !== 0 && <span>있음</span>}]</p>
+        <p>
+          ④ {"{cart.length ? ... : null}"} → [
+          {cart.length ? <span>있음</span> : null}]
+        </p>
+      </div>
+    </div>
+  );
+}
+// 화면: ① ... → [0]     ← 이것만 잘못됐습니다
+// 화면: ② ... → []
+// 화면: ③ ... → []
+// 화면: ④ ... → []
+// 화면(담은 상태로 보기를 누르면): ①②③④ 모두 [있음]
+
+// ✏️ 직접 해보기 4 — 위 SafeDemo 의 ① 을 고쳐서 비었을 때 [] 가 되게 하세요.
+
+// ── 섹션 5: 0 말고 다른 falsy 함정 ──
+
+// 0 만 조심하면 될까요? 아닙니다. falsy 값은 여섯 가지입니다(JS자료 01단원).
+//   false · 0 · "" · null · undefined · NaN
+//
+// 이 중에서 화면에 '그려지는' 것은 0 과 "" 와 NaN 입니다.
+//   0    → 화면에 0 이 보인다        ← 섹션 3에서 봤습니다
+//   ""   → 아무것도 안 보인다        ← 눈에 안 띄어서 오히려 안전합니다
+//   NaN  → 화면에 NaN 이 보인다      ← 0 만큼 당황스럽습니다
+//
+// NaN 은 언제 나올까요? 개념04 마지막에 나온 완료율 계산이 딱 그 경우입니다.
+// 목록이 비면 0 으로 나누게 되어 NaN 이 됩니다.
+
+const emptyTodos = [];
+
+console.log(emptyTodos.filter((todo) => todo.done).length / emptyTodos.length);
+// 콘솔: NaN
+
+// 0 / 0 은 NaN 입니다. 에러가 아니라 값입니다(JS자료 01단원).
+// 그래서 그대로 화면까지 흘러갑니다.
+
+function NanDemo() {
+  const [todos, setTodos] = useState(emptyTodos);
+
+  const doneCount = todos.filter((todo) => todo.done).length;
+  const rate = Math.round((doneCount / todos.length) * 100);
+
+  return (
+    <div className="demo">
+      <h3>섹션 5 — NaN 도 화면에 나옵니다</h3>
+
+      <button onClick={() => setTodos(emptyTodos)}>빈 목록으로 보기</button>
+      <button
+        onClick={() =>
+          setTodos([
+            { id: 1, text: "우유 사기", done: true },
+            { id: 2, text: "책 반납", done: false },
+          ])
+        }
+      >
+        두 개짜리 목록으로 보기
+      </button>
+
+      <div className="output">
+        <p>① 그냥 계산 → 완료율 {rate}%</p>
+        <p>
+          ② 비었는지 먼저 확인 → 완료율{" "}
+          {todos.length > 0 ? rate : 0}%
+        </p>
+      </div>
+    </div>
+  );
+}
+// 화면: ① 그냥 계산 → 완료율 NaN%
+// 화면: ② 비었는지 먼저 확인 → 완료율 0%
+// 화면(두 개짜리 목록으로 보기를 누르면): ①②  모두 완료율 50%
+
+// 정리하면 규칙은 하나입니다.
+//   ★ 화면에 넣는 값이 숫자 계산에서 나왔다면, 비었을 때를 먼저 확인한다.
+//
+// && 왼쪽이든, 그냥 값을 넣는 자리든 마찬가지입니다.
+// "목록이 비어 있으면 이 계산이 어떻게 되지?" 를 한 번만 생각해 보면 됩니다.
+
+// ✏️ 직접 해보기 5 — NanDemo 의 ② 를 && 를 쓴 형태로 바꿔 보세요.
+//                    비었을 때는 완료율 줄이 아예 안 나오게 하면 됩니다.
+
+// ── 섹션 6: 자주 하는 실수 ──
+
+// 이 섹션에는 SyntaxError 항목이 하나 있습니다.
+//
+// ⚠️ [SyntaxError] 라고 적힌 것은 주석을 풀지 말고 눈으로만 보세요.
+//    풀면 파일 전체가 멈춰서 화면이 통째로 비어 버립니다. 다시 // 를 붙이면 돌아옵니다.
+
+// [실수 1] {items.length && ...}
+//   섹션 3에서 본 그것입니다. 05단원에서 가장 많이 나오는 실수입니다.
+//   화면 어딘가에 0 이 혼자 떠 있으면 이것부터 의심하세요.
+//   고치는 법: {items.length > 0 && ...}
+
+// [실수 2] 빈 배열이 거짓일 거라고 생각함
+
+console.log(Boolean(emptyCart));
+// 콘솔: true
+console.log(Boolean(emptyCart.length));
+// 콘솔: false
+
+// 실수: 빈 배열은 참입니다. 배열은 객체라서 안이 비어 있어도 truthy 입니다.
+//       JS자료 01단원 falsy 여섯 가지에 빈 배열은 없습니다.
+//       그래서 아래처럼 쓰면 비어 있어도 항상 '있다' 쪽으로 갑니다.
+//
+//           {items && <p>담긴 상품이 있습니다</p>}
+//
+//       배열이 있는지가 아니라 '몇 개인지' 를 물어야 합니다.
+
+function EmptyArrayTruthy() {
+  return (
+    <div className="demo">
+      <h3>섹션 6 — [실수 2] 빈 배열은 참입니다</h3>
+
+      <div className="output">
+        <p>장바구니는 비어 있습니다.</p>
+        <p>[{emptyCart && <span>담긴 상품이 있습니다</span>}] ← 배열 자체를 물어봄</p>
+        <p>
+          [{emptyCart.length > 0 && <span>담긴 상품이 있습니다</span>}] ← 개수를 물어봄
+        </p>
+      </div>
+    </div>
+  );
+}
+// 화면: [담긴 상품이 있습니다] ← 배열 자체를 물어봄   (비었는데 나옵니다)
+// 화면: [] ← 개수를 물어봄
+
+// [실수 3] 아직 안 온 데이터에 length 를 읽음   (런타임 에러)
+//
+//   let items;                       // 아직 아무것도 안 담김
+//   {items.length > 0 && <ul>...</ul>}
+//
+// 실수: 콘솔에 이 에러가 나고 그 지점부터 화면이 안 그려집니다.
+//       TypeError: Cannot read properties of undefined (reading 'length')
+//       JS자료 07단원에서 본 그 에러입니다.
+//       서버에서 목록을 받아 오는 화면에서 자주 납니다.
+//       받아 오기 전에는 배열이 아직 없기 때문입니다(09단원에서 다룹니다).
+// 고치는 법: state 의 처음 값을 빈 배열 [] 로 두면 됩니다.
+//       useState([]) 로 시작하면 length 는 항상 읽을 수 있습니다.
+
+// [실수 4] JSX 안에서 && 를 그대로 쓰려다 태그가 깨짐   [SyntaxError]
+//
+//   <p>담긴 상품 {cart.length > 0 && <span>있음</span></p>
+//
+// 실수: 중괄호를 닫지 않았습니다. 여는 { 와 닫는 } 의 개수를 세어 보세요.
+//       조건이 길어질수록 이 실수가 늘어납니다.
+//       화면이 통째로 비고 콘솔에 SyntaxError 가 납니다.
+// 고치는 법: {cart.length > 0 && <span>있음</span>} 처럼 중괄호를 닫으세요.
+//       조건이 길면 개념01 섹션 3처럼 return 밖에서 변수에 담는 편이 낫습니다.
+
+// ── 전체 화면 그리기 ──
+
+export default function Concept05() {
+  return (
+    <div>
+      <h1>개념 05 — 비었을 때와 falsy 함정</h1>
+
+      <p className="guide">
+        왼쪽 목록에서 이 예제를 고르면 이 화면이 나옵니다. <strong>F12 → Console</strong> 도 함께 보세요.
+        <br />
+        <br />
+        이 파일의 데모에는 <strong>일부러 잘못 만든 화면</strong>이 여러 개 있습니다. 어디가 잘못됐는지 눈으로 찾아보세요.
+      </p>
+
+      <div>
+        <EmptyIsSilent />
+        <EmptyStateDemo />
+        <ZeroTrapDemo />
+        <SafeDemo />
+        <NanDemo />
+        <EmptyArrayTruthy />
+      </div>
+
+      <Summary
+        items={[
+          <>빈 배열에 <code>map</code> 을 써도 에러가 안 납니다. 화면에 아무것도 안 나올 뿐입니다.</>,
+          <>그래서 <strong>비었을 때 안내 문구</strong>를 직접 보여 줘야 합니다. 삼항이나 일찍 <code>return</code> 을 씁니다.</>,
+          <><code>{"{"}items.length &amp;&amp; ...{"}"}</code> 는 목록이 비면 <strong>화면에 0 을 찍습니다.</strong> 에러도 경고도 안 납니다.</>,
+          <>이유는 두 가지가 겹쳐서입니다. <code>&amp;&amp;</code> 는 왼쪽이 거짓이면 <strong>왼쪽 값을 그대로</strong> 돌려주고, React 는 <strong>숫자 0 을 화면에 그립니다.</strong></>,
+          <>고치는 법은 하나입니다. <code>&amp;&amp;</code> 왼쪽을 <code>length &gt; 0</code> 처럼 <strong>참·거짓이 나오는 식</strong>으로 만드세요.</>,
+          <><code>NaN</code> 도 화면에 그대로 나옵니다. 개수로 나누는 계산은 비었을 때를 먼저 확인하세요.</>,
+          <><strong>빈 배열은 참입니다.</strong> <code>{"{"}items &amp;&amp; ...{"}"}</code> 가 아니라 <code>{"{"}items.length &gt; 0 &amp;&amp; ...{"}"}</code> 라고 쓰세요.</>,
+        ]}
+      />
+    </div>
+  );
+}
+
+console.log("개념05 화면을 그렸습니다");
+// 콘솔: 개념05 화면을 그렸습니다
+
+// ============================================================
+// 직접 해보기 정답
+// ============================================================
+//
+// 1) {fullCart.map((item) => (
+//      <li key={item.id}>{item.name}</li>
+//    ))}
+//    // 화면: 아메리카노 / 케이크 두 줄
+//    → map 코드는 그대로입니다. 배열만 바뀌었습니다.
+//      빈 배열이든 아니든 map 은 똑같이 동작합니다. 에러가 안 납니다.
+//
+// 2) function CartView({ items }) {
+//      if (items.length === 0) {
+//        return <p>장바구니가 비었습니다. 메뉴를 담아 보세요.</p>;
+//      }
+//      return (
+//        <div>
+//          <p>장바구니 ({items.length}개)</p>
+//          <ul>...</ul>
+//        </div>
+//      );
+//    }
+//    // 화면: 안내 문구 한 줄만 나옵니다. "장바구니 (0개)" 는 안 보입니다.
+//    → 개수 표시를 두 번째 return 안으로 옮긴 것이 핵심입니다.
+//
+// 3) 0 && "안녕"
+//    // 콘솔: 0
+//    1 && "안녕"
+//    // 콘솔: 안녕
+//    → 왼쪽이 거짓이면 '왼쪽 값' 이 그대로 나옵니다. false 가 아닙니다.
+//      이 한 줄이 0 함정의 전부입니다.
+//
+// 4) <p>① {"{cart.length > 0 && ...}"} → [{cart.length > 0 && <span>있음</span>}]</p>
+//    // 화면: ① ... → []
+//    → > 0 을 붙이면 결과가 false 가 되고, false 는 화면에 안 그려집니다.
+//
+// 5) {todos.length > 0 && <p>완료율 {rate}%</p>}
+//    // 화면: 빈 목록일 때는 완료율 줄이 아예 안 나옵니다
+//    // 화면(두 개짜리 목록): 완료율 50%
+//    → 이번에는 && 왼쪽이 todos.length > 0 이라 안전합니다.
+//      todos.length 만 쓰면 빈 목록일 때 그 자리에 0 이 찍힙니다.

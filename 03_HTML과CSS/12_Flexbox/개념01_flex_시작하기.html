@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>12단원 개념01 - flex 시작하기</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ── 섹션 1 : flex 없이 나란히 놓아 보기 ── */
+      .stack-wrap {
+        background: #eef2f7;
+        border: 1px solid #c9d6ea;
+        padding: 10px;
+      }
+      .stack-box {
+        background: #2d6cdf;
+        color: #fff;
+        padding: 10px 14px;
+        text-align: center;
+      }
+      /* 화면: 파란 상자 세 개가 위에서 아래로 한 줄씩 쌓입니다 */
+
+      .inline-wrap {
+        background: #eef2f7;
+        border: 1px solid #c9d6ea;
+        padding: 10px;
+      }
+      .inline-box {
+        display: inline-block;
+        background: #2d6cdf;
+        color: #fff;
+        padding: 10px 14px;
+        width: 120px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+      /* 화면: 상자 세 개가 가로로 놓이지만 상자 사이에 정체 모를 틈이 생깁니다 */
+
+      .pos-wrap {
+        background: #eef2f7;
+        border: 1px solid #c9d6ea;
+        height: 120px;
+        position: relative;
+      }
+      .pos-box {
+        background: #2d6cdf;
+        color: #fff;
+        padding: 10px 14px;
+        width: 120px;
+        box-sizing: border-box;
+        text-align: center;
+        position: absolute;
+        top: 50%;
+      }
+      /* 화면: 상자가 가운데보다 아래로 치우칩니다 (진짜 가운데가 아닙니다) */
+
+      /* ── 섹션 2 : display: flex 한 줄 ── */
+      .side-wrap {
+        background: #eef2f7;
+        border: 1px solid #c9d6ea;
+        padding: 10px;
+        display: flex;
+      }
+      /* 화면: 아래 파란 상자 세 개가 가로로 딱 붙어 나란히 놓입니다 */
+      .side-box {
+        background: #2d6cdf;
+        color: #fff;
+        padding: 10px 14px;
+        width: 120px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+
+      .center-wrap {
+        background: #eef2f7;
+        border: 1px solid #c9d6ea;
+        height: 120px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      /* 화면: 상자 한 개가 가로세로 모두 진짜 정중앙에 놓입니다 */
+      .center-box {
+        background: #2d6cdf;
+        color: #fff;
+        padding: 10px 14px;
+        width: 120px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+
+      /* ── 섹션 3 : 컨테이너와 아이템 ── */
+      .role-wrap {
+        background: #eef2f7;
+        border: 2px solid #2d6cdf;
+        padding: 10px;
+        display: flex;
+      }
+      .role-item {
+        background: #fff;
+        border: 1px solid #c9d6ea;
+        padding: 8px;
+      }
+      .role-inner {
+        background: #ffe9b8;
+        border: 1px solid #e0bb62;
+        padding: 4px 6px;
+        font-size: 13px;
+      }
+      /* 화면: 파란 테두리 안에 흰 상자 두 개가 나란히,
+               흰 상자 안의 노란 조각은 여전히 위아래로 쌓입니다 */
+
+      /* ── 섹션 4 : 주축과 교차축 ── */
+      .axis-wrap {
+        background: #eef2f7;
+        border: 1px solid #c9d6ea;
+        padding: 10px;
+        height: 120px;
+        display: flex;
+      }
+      .axis-item {
+        background: #2d6cdf;
+        color: #fff;
+        padding: 10px 14px;
+        width: 100px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+      /* 화면: 상자 세 개가 왼쪽부터 차례로 놓이고, 세로로는 상자가 통째로 늘어납니다 */
+
+      /* ── 섹션 5 : 속성을 어디에 붙이나 ── */
+      .where-wrap {
+        background: #eef2f7;
+        border: 1px solid #c9d6ea;
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+      }
+      /* 화면: 상자 두 개가 컨테이너 한가운데로 모입니다 */
+      .where-item {
+        background: #2d6cdf;
+        color: #fff;
+        padding: 10px 14px;
+        width: 140px;
+        box-sizing: border-box;
+        text-align: center;
+      }
+
+      .miss-wrap {
+        background: #eef2f7;
+        border: 1px solid #c9d6ea;
+        padding: 10px;
+        display: flex;
+      }
+      .miss-item {
+        background: #b9432f;
+        color: #fff;
+        padding: 10px 14px;
+        width: 140px;
+        box-sizing: border-box;
+        text-align: center;
+        justify-content: center;
+      }
+      /* 화면: 아무 일도 일어나지 않습니다. 상자는 그냥 왼쪽에 붙어 있습니다 */
+
+      /* ── 섹션 6 : 자주 하는 실수 ── */
+      .typo-wrap {
+        background: #eef2f7;
+        border: 1px solid #c9d6ea;
+        padding: 10px;
+        display: flexbox;
+      }
+      /* 화면: flexbox 라는 값은 없어서 통째로 무시됩니다. 상자가 세로로 쌓입니다 */
+      .typo-box {
+        background: #b9432f;
+        color: #fff;
+        padding: 10px 14px;
+        text-align: center;
+      }
+
+      .grand-wrap {
+        background: #eef2f7;
+        border: 1px solid #c9d6ea;
+        padding: 10px;
+        display: flex;
+      }
+      .grand-item {
+        background: #fff;
+        border: 1px solid #c9d6ea;
+        padding: 8px;
+        width: 250px;
+        box-sizing: border-box;
+      }
+      .grand-inner {
+        background: #ffe9b8;
+        border: 1px solid #e0bb62;
+        padding: 4px 6px;
+        font-size: 13px;
+      }
+      /* 화면: 흰 상자는 나란히 놓이지만 그 안의 노란 조각은 세로로 쌓인 채입니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ════════════════════════════════════════════════════════════
+         12단원 · 개념 01 — flex 시작하기
+         ────────────────────────────────────────────────────────────
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ════════════════════════════════════════════════════════════
+
+         11단원까지 배운 것으로 화면을 만들어 보면 이상하게 어려운 일이 하나 있습니다.
+         바로 "상자 몇 개를 가로로 나란히 놓고, 가운데에 두는 것" 입니다.
+
+         div 는 블록 요소라서 가로 폭을 전부 차지하고 아래로 쌓입니다(11단원).
+         나란히 놓으려면 display: inline-block 이나 float 를 써야 했는데,
+         둘 다 원래 그 일을 하라고 만든 도구가 아니었습니다.
+         그래서 이상한 틈이 생기거나, 부모의 높이가 0 이 되어 버리거나 했습니다.
+
+         세로 가운데 정렬은 더 까다롭습니다.
+         position: absolute 와 top 을 써도 "상자의 위쪽 모서리"가 가운데에 올 뿐,
+         상자 자체가 가운데로 오지는 않습니다. 섹션 1 에서 직접 해 보겠습니다.
+
+         flex(플렉스) 는 바로 이 문제를 풀려고 나중에 만들어진 배치 방법입니다.
+         "한 줄에 늘어놓고 남는 공간을 어떻게 나눌지" 를 정하는 도구입니다.
+
+         이 파일에서 배울 것은 딱 세 가지입니다.
+
+             1) display: flex 를 어디에 쓰는가
+             2) 컨테이너와 아이템이라는 두 역할
+             3) 주축과 교차축
+
+         이 세 가지를 확실히 해 두면 개념02 부터는 속성 이름만 외우면 됩니다.
+    ════════════════════════════════════════════════════════════ -->
+
+    <h1 class="doc-head">개념 01 — flex 시작하기</h1>
+    <p class="doc-sub">12단원 · Flexbox</p>
+
+    <p class="doc-guide">
+      이 파일은 <strong>flex 가 왜 필요한지</strong>와 <strong>누구에게 속성을 붙이는지</strong>
+      두 가지만 다룹니다. 아래 상자들을 위에서 아래로 순서대로 보세요.
+      앞쪽 상자는 일부러 불편하게 만들어 둔 것이고, 뒤쪽 상자가 flex 로 고친 결과입니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: flex 없이 나란히 놓아 보기 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — flex 없이 나란히 놓아 보기</h2>
+      <p class="doc-desc">
+        먼저 <strong>11단원까지 배운 방법만으로</strong> 상자를 가로로 놓아 보겠습니다.
+        생각보다 잘 안 됩니다. 이 불편함을 느끼는 것이 이 섹션의 목적입니다.
+      </p>
+
+      <!--
+        [시도 0] 그냥 div 세 개를 놓으면 어떻게 되나
+
+            <div class="stack-wrap">
+              <div class="stack-box">상자 1</div>
+              <div class="stack-box">상자 2</div>
+              <div class="stack-box">상자 3</div>
+            </div>
+
+        div 는 블록(block) 요소입니다. 블록 요소는 두 가지 성질이 있습니다(11단원).
+
+            1) 가로 폭을 부모만큼 전부 차지한다
+            2) 그래서 다음 요소는 아래로 밀려 내려간다
+
+        그 결과가 아래 첫 번째 상자입니다. 세 개가 세로로 쌓입니다.
+        재어 보면 파란 상자 하나의 폭이 802px 입니다. 부모 안쪽 폭을 통째로 먹은 것입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">시도 0 — 그냥 div 세 개</p>
+        <div class="stack-wrap" id="stackWrap">
+          <div class="stack-box" id="stackBox1">상자 1</div>
+          <div class="stack-box">상자 2</div>
+          <div class="stack-box">상자 3</div>
+        </div>
+        <!-- 화면: 파란 상자 세 개가 세로로 쌓입니다. 상자 하나의 폭은 802px 입니다 -->
+      </div>
+
+      <!--
+        [시도 1] display: inline-block 으로 나란히 놓기
+
+            .inline-box { display: inline-block; width: 120px; }
+
+        inline-block 은 "글자처럼 옆으로 놓이되 폭과 높이는 가질 수 있는 상태"입니다(11단원).
+        이걸 쓰면 확실히 가로로 놓이기는 합니다.
+
+        그런데 상자 사이에 6px 짜리 틈이 생깁니다.
+        margin 을 준 적이 없는데도 그렇습니다.
+
+        이유는 이렇습니다. inline-block 은 "글자처럼" 놓입니다.
+        그런데 우리가 HTML 을 쓸 때 태그와 태그 사이에 줄바꿈과 들여쓰기를 넣습니다.
+        그 줄바꿈이 브라우저에게는 띄어쓰기 한 칸으로 읽힙니다.
+        즉 상자와 상자 사이에 공백 문자가 들어 있는 것입니다.
+
+        없애려면 태그를 한 줄에 붙여 쓰거나 부모의 글자 크기를 0 으로 만들어야 합니다.
+        둘 다 "코드 모양을 망가뜨려서 화면을 고치는" 방법입니다. 좋은 방법이 아닙니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">시도 1 — inline-block</p>
+        <div class="inline-wrap" id="inlineWrap">
+          <div class="inline-box">상자 1</div>
+          <div class="inline-box">상자 2</div>
+          <div class="inline-box">상자 3</div>
+        </div>
+        <!-- 화면: 상자 세 개가 가로로 놓입니다. 첫 상자와 둘째 상자 사이가 6px 벌어져 있습니다 -->
+      </div>
+
+      <!--
+        [시도 2] 세로 가운데에 놓아 보기
+
+            .pos-wrap { height: 120px; position: relative; }
+            .pos-box  { position: absolute; top: 50%; }
+
+        높이 120px 짜리 회색 칸 안에서 상자를 세로 가운데에 두고 싶습니다.
+        11단원에서 배운 도구 중에 자리를 직접 정하는 것은 position: absolute 와 top 뿐입니다.
+
+        11단원의 예제는 top 에 px 만 썼습니다. 여기서는 % 를 써 봅니다.
+        10단원에서 width 에 쓰던 그 % 이고, 기준이 부모라는 점도 같습니다.
+        top: 50% 는 "부모 높이의 절반 지점에 상자의 위쪽 모서리를 둔다" 는 뜻입니다.
+        상자의 가운데가 아니라 위쪽 모서리 기준입니다.
+
+            부모 안쪽 높이 120 의 절반 = 60   → 상자 위 모서리가 60 지점에 옵니다
+            상자 높이는 47                    → 진짜 가운데라면 위 모서리가 36.5 지점
+
+        그래서 23.5px 만큼 아래로 내려가 있습니다. 눈으로도 아래쪽에 치우쳐 보입니다.
+        이걸 정확히 맞추려면 상자 높이를 미리 알아서 빼 주거나
+        아직 배우지 않은 변환(transform) 속성이 필요합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">시도 2 — position 으로 세로 가운데 (실패)</p>
+        <div class="pos-wrap" id="posWrap">
+          <div class="pos-box" id="posBox">가운데?</div>
+        </div>
+        <!-- 화면: 상자가 회색 칸의 가운데보다 아래로 치우쳐 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        정리하면, 지금까지의 도구는 <strong>원래 다른 일을 하라고 만든 것을 빌려 쓰는</strong>
+        방식이었습니다. 그래서 예상 못 한 틈이 생기고 계산이 필요했습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 시도 2 의 <code>.pos-box</code> 에서 <code>top: 50%</code> 를
+        <code>top: 0</code> 으로 바꿔 보세요. 상자가 맨 위로 붙습니다. 확인했으면 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: display: flex 한 줄 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — display: flex 한 줄로 해결</h2>
+      <p class="doc-desc">
+        같은 일을 flex 로 하면 <strong>부모에 한 줄</strong>만 쓰면 끝납니다.
+      </p>
+
+      <!--
+        섹션 1 의 시도 1 과 HTML 은 완전히 같습니다. CSS 만 이렇게 바꿨습니다.
+
+            .side-wrap {
+              display: flex;      ← 이 한 줄이 전부입니다
+            }
+
+        display 는 11단원 개념02 에서 배운 그 속성입니다.
+        거기서는 block, inline, inline-block, none 을 봤습니다.
+        flex 는 그 목록에 하나 더 있는 값입니다. 새로운 속성이 아닙니다.
+        다만 앞의 네 값이 "나 자신이 어떻게 놓일까" 를 정했다면,
+        flex 는 "내 자식들을 어떻게 늘어놓을까" 를 정한다는 점이 다릅니다.
+
+        중요한 것은 이 한 줄을 어디에 썼느냐입니다.
+        상자(자식)가 아니라 상자를 감싼 부모에 썼습니다.
+
+        결과를 보면 상자 사이의 6px 틈도 사라졌습니다.
+        flex 는 자식을 "글자처럼" 다루지 않기 때문에 코드의 줄바꿈이 공백이 되지 않습니다.
+        시도 1 에서 골치였던 문제가 저절로 없어진 것입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">display: flex 를 부모에 한 줄</p>
+        <div class="side-wrap" id="sideWrap">
+          <div class="side-box">상자 1</div>
+          <div class="side-box">상자 2</div>
+          <div class="side-box">상자 3</div>
+        </div>
+        <!-- 화면: 상자 세 개가 틈 없이 딱 붙어 가로로 나란히 놓입니다 -->
+      </div>
+
+      <!--
+        세로 가운데 정렬도 마찬가지입니다.
+
+            .center-wrap {
+              height: 120px;
+              display: flex;
+              justify-content: center;   ← 가로 가운데
+              align-items: center;       ← 세로 가운데
+            }
+
+        뒤의 두 줄은 개념03 과 개념04 에서 제대로 배웁니다.
+        지금은 "부모에 세 줄 쓰면 계산 없이 정중앙에 온다" 는 것만 보세요.
+
+        섹션 1 의 시도 2 에서는 23.5px 이 어긋났습니다.
+        여기서는 상자 높이를 몰라도 정확히 가운데에 옵니다.
+        브라우저가 대신 재 주기 때문입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">flex 로 정중앙에 놓기</p>
+        <div class="center-wrap" id="centerWrap">
+          <div class="center-box" id="centerBox">가운데</div>
+        </div>
+        <!-- 화면: 상자가 회색 칸의 가로세로 정중앙에 놓입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>display: flex</code> 는 <strong>부모에게 주는 명령</strong>입니다.
+        "너의 자식들을 한 줄로 늘어놓아라" 라는 뜻이지, 자기 자신을 어떻게 하라는 뜻이 아닙니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — <code>.side-wrap</code> 의 <code>display: flex</code> 줄 앞뒤에
+        <code>/*</code> 와 <code>*/</code> 를 붙여 주석으로 막아 보세요.
+        상자가 다시 세로로 쌓입니다. 확인했으면 주석을 푸세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 컨테이너와 아이템 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 컨테이너와 아이템, 두 개의 역할</h2>
+      <p class="doc-desc">
+        flex 를 쓰는 순간 요소들은 <strong>두 가지 역할</strong>로 나뉩니다.
+        이 단원에서 가장 먼저 확실히 해 둘 것입니다.
+      </p>
+
+      <!--
+        용어를 여기서 정의합니다. 앞으로 계속 이 두 단어만 씁니다.
+
+            컨테이너(container)  display: flex 를 쓴 그 요소. 부모입니다.
+            아이템(item)         컨테이너의 바로 아래 자식들. 전부 자동으로 아이템이 됩니다.
+
+        그림으로 보면 이렇습니다.
+
+            <div class="role-wrap">        ← 컨테이너 (display: flex 를 여기에 씀)
+              <div class="role-item">      ← 아이템 1
+                <span class="role-inner">  ← 아이템이 아닙니다 (손자)
+              </div>
+              <div class="role-item">      ← 아이템 2
+              </div>
+            </div>
+
+        중요한 규칙이 하나 있습니다.
+
+            아이템이 되는 것은 "바로 아래 자식" 뿐입니다. 손자는 아이템이 아닙니다.
+
+        아래 데모에서 흰 상자 두 개는 아이템이라 가로로 나란히 놓입니다.
+        그런데 흰 상자 안의 노란 조각들은 손자라서 아이템이 아닙니다.
+        그래서 노란 조각은 원래대로 위아래로 쌓입니다.
+
+        흰 상자의 폭도 눈여겨보세요. 재어 보면 71px 입니다.
+        div 는 블록 요소라 원래 부모 안쪽 폭(800px)을 전부 차지해야 하는데 그러지 않았습니다.
+        아이템이 되면 폭이 "내용만큼" 으로 바뀝니다.
+
+        "부모에 flex 를 걸었는데 왜 안쪽은 그대로지?" 하는 질문의 답이 이것입니다.
+        flex 는 한 단계만 내려갑니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">파란 테두리 = 컨테이너 / 흰 상자 = 아이템</p>
+        <div class="role-wrap" id="roleWrap">
+          <div class="role-item" id="roleItem1">
+            <p class="role-inner">손자 A</p>
+            <p class="role-inner">손자 B</p>
+          </div>
+          <div class="role-item" id="roleItem2">
+            <p class="role-inner">손자 C</p>
+            <p class="role-inner">손자 D</p>
+          </div>
+        </div>
+        <!-- 화면: 흰 상자 두 개는 가로로 나란히,
+                  그 안의 노란 조각은 위아래로 쌓인 채 그대로입니다 -->
+      </div>
+
+      <p class="doc-note">
+        아이템이 되면 그 요소의 성질이 바뀝니다. 위 데모의 흰 상자는 원래 블록 요소라
+        폭을 전부 차지해야 하는데, 아이템이 되면서 <strong>내용만큼만</strong> 차지하게 되었습니다.
+        11단원에서 배운 블록·인라인 구분이 아이템에게는 그대로 통하지 않는다고 생각하세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>.role-wrap</code> 안에
+        <code>&lt;div class="role-item"&gt;아이템 3&lt;/div&gt;</code> 를 하나 더 넣어 보세요.
+        아무 설정도 안 했는데 세 번째 상자가 저절로 옆에 붙습니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 주축과 교차축 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 주축과 교차축</h2>
+      <p class="doc-desc">
+        flex 의 모든 정렬 속성은 <strong>축(axis)</strong> 을 기준으로 말합니다.
+        축 두 개의 이름을 여기서 외워 두면 나머지가 전부 쉬워집니다.
+      </p>
+
+      <!--
+        flex 컨테이너에는 방향이 두 개 있습니다.
+
+            주축(main axis)   아이템이 줄지어 놓이는 방향
+            교차축(cross axis) 주축과 직각인 방향
+
+        기본값(flex-direction: row)일 때 그림은 이렇습니다.
+
+                      주축(main axis)  →  →  →  →  가로 방향
+              ┌────────────────────────────────────────┐
+              │  ┌──────┐ ┌──────┐ ┌──────┐            │   교
+              │  │  1   │ │  2   │ │  3   │            │   차   ↓
+              │  └──────┘ └──────┘ └──────┘            │   축   세로 방향
+              └────────────────────────────────────────┘
+
+        "주축은 아이템이 줄 서는 방향" 이라고 기억하세요.
+        기본값에서는 왼쪽에서 오른쪽이 주축이고, 위에서 아래가 교차축입니다.
+
+        아래 데모의 회색 칸은 안쪽 높이를 120px 로 정해 두었습니다.
+        파란 상자의 글자는 한 줄(47px)뿐인데 상자 높이가 120px 로 늘어나 있습니다.
+        이것이 교차축 쪽의 기본 동작입니다. 남으면 늘려서 채웁니다.
+        개념04 에서 이 동작의 이름(stretch)을 배웁니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">주축 = 가로 / 교차축 = 세로</p>
+        <div class="axis-wrap" id="axisWrap">
+          <div class="axis-item" id="axisItem1">1</div>
+          <div class="axis-item">2</div>
+          <div class="axis-item">3</div>
+        </div>
+        <!-- 화면: 상자 세 개가 왼쪽부터 차례로 놓이고,
+                  글자는 한 줄인데 상자 높이는 120px 까지 늘어나 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        축 이름이 중요한 이유는 <strong>속성 이름이 축을 가리키기 때문</strong>입니다.
+        <code>justify-content</code> 는 주축을, <code>align-items</code> 는 교차축을 다룹니다.
+        "가로 정렬 / 세로 정렬" 이라고 외우면 개념02 에서 방향을 바꾸는 순간 전부 틀립니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>.axis-wrap</code> 의 <code>height: 120px</code> 을
+        <code>height: 200px</code> 으로 바꿔 보세요. 파란 상자의 높이도 같이 커집니다.
+        교차축 방향으로 늘어나고 있다는 증거입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 속성은 누구에게 붙이나 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 속성은 컨테이너용과 아이템용으로 나뉩니다</h2>
+      <p class="doc-desc">
+        이 단원에서 가장 많이 나는 사고는 <strong>속성을 엉뚱한 쪽에 쓰는 것</strong>입니다.
+        지금 표로 한 번 보고, 헷갈릴 때마다 여기로 돌아오세요.
+      </p>
+
+      <!--
+        flex 속성은 두 무리로 나뉩니다.
+
+            [컨테이너에 쓰는 것]  부모에게 씁니다
+                display: flex
+                flex-direction     방향        (개념02)
+                flex-wrap          줄바꿈      (개념02)
+                justify-content    주축 정렬   (개념03)
+                gap                사이 간격   (개념03)
+                align-items        교차축 정렬 (개념04)
+                align-content      여러 줄 정렬(개념04)
+
+            [아이템에 쓰는 것]  자식에게 씁니다
+                flex-grow          남는 공간 나눠 갖기 (개념05)
+                flex-shrink        모자랄 때 줄어들기  (개념05)
+                flex-basis         기본 크기           (개념05)
+                flex               위 세 개의 단축     (개념05)
+                align-self         나만 다르게 정렬    (개념04)
+                order              순서 바꾸기         (개념05)
+
+        구분하는 요령이 있습니다.
+
+            "여럿을 한꺼번에 어떻게 늘어놓을까" → 컨테이너
+            "나 하나가 어떻게 될까"             → 아이템
+
+        justify-content 는 아이템 전체를 어디에 모을지 정하는 것이니 컨테이너입니다.
+        align-self 는 나 혼자만 다르게 놓겠다는 것이니 아이템입니다.
+
+        아래 두 데모는 같은 justify-content: center 를 서로 다른 쪽에 쓴 것입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">올바른 자리 — 컨테이너에 justify-content</p>
+        <div class="where-wrap" id="whereWrap">
+          <div class="where-item" id="whereItem1">상자 1</div>
+          <div class="where-item">상자 2</div>
+        </div>
+        <!-- 화면: 상자 두 개가 회색 칸 한가운데로 모입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">틀린 자리 — 아이템에 justify-content</p>
+        <div class="miss-wrap" id="missWrap">
+          <div class="miss-item" id="missItem1">상자 1</div>
+          <div class="miss-item">상자 2</div>
+        </div>
+        <!-- 화면: 상자가 왼쪽에 그대로 붙어 있습니다. 아무 변화가 없습니다 -->
+      </div>
+
+      <p class="doc-note">
+        아래쪽 데모에서 <strong>에러는 한 줄도 나지 않습니다.</strong>
+        CSS 는 뜻이 통하지 않는 선언을 조용히 무시합니다.
+        "분명히 썼는데 왜 안 되지?" 의 대부분은 이렇게 자리를 잘못 잡은 경우입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>.miss-item</code> 의 <code>justify-content: center</code> 를
+        잘라내어 <code>.miss-wrap</code> 안으로 옮겨 보세요. 그제서야 빨간 상자가 가운데로 모입니다.
+        확인했으면 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        다시 강조합니다. <strong>CSS 는 틀려도 에러가 나지 않습니다.</strong>
+        화면이 안 바뀌는 것이 유일한 신호입니다.
+      </p>
+
+      <!-- [실수 1] display: flex 를 아이템에 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 나란히 놓고 싶은 상자 자신에게 display: flex 를 씀</span>
+        <div class="doc-code">.side-box { display: flex; }   /* 상자 자신에게 */</div>
+        <p>
+          상자들은 여전히 세로로 쌓입니다. <code>display: flex</code> 는
+          <strong>자기 자식을 늘어놓는 명령</strong>이라서, 상자 자신에게 쓰면
+          그 상자 <strong>안쪽</strong>만 손댈 뿐 옆 상자와는 아무 상관이 없습니다.
+          나란히 놓고 싶은 상자들의 <strong>부모</strong>에 써야 합니다.
+        </p>
+        <p>
+          엉뚱한 변화가 하나 생기기는 합니다. 상자 안 글자가
+          <strong>가운데에서 왼쪽으로 옮겨 갑니다.</strong> 상자가 컨테이너가 되면서
+          <code>text-align: center</code> 가 글자에 더 이상 통하지 않기 때문입니다.
+          바라던 것과 전혀 다른 곳이 바뀌니 더 헷갈립니다.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">.side-wrap { display: flex; }  /* 상자들을 감싼 부모에게 */</div>
+      </div>
+
+      <!-- [실수 2] justify-content 를 아이템에 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 아이템에 justify-content 를 씀</span>
+        <div class="doc-code">.miss-item { justify-content: center; }</div>
+        <p>
+          섹션 5 아래쪽 데모가 바로 이것입니다. 상자는 꿈쩍도 하지 않습니다.
+          <code>justify-content</code> 는 <strong>컨테이너가 아이템들을 어디에 모을지</strong>
+          정하는 속성이라, 아이템이 자기한테 써 봐야 지시할 상대가 없습니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] 값 이름을 flexbox 로 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — display: flexbox 라고 씀</span>
+        <div class="doc-code">.typo-wrap { display: flexbox; }</div>
+        <p>
+          기술의 별명이 "플렉스박스" 라서 값 이름도 그럴 거라고 생각하기 쉽습니다.
+          그런 값은 없습니다. 값 하나가 틀리면 <strong>그 한 줄만 통째로 버려집니다.</strong>
+          아래 상자가 세로로 쌓여 있는 것이 그 결과입니다. 값은 <code>flex</code> 입니다.
+        </p>
+        <div class="typo-wrap" id="typoWrap">
+          <div class="typo-box">상자 1</div>
+          <div class="typo-box">상자 2</div>
+        </div>
+        <!-- 화면: 빨간 상자 두 개가 가로가 아니라 세로로 쌓여 있습니다 -->
+      </div>
+
+      <!-- [실수 4] 손자까지 정렬될 거라 기대 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 손자도 나란히 놓일 거라고 생각함</span>
+        <div class="doc-code">.grand-wrap { display: flex; }  /* 손자에게는 안 갑니다 */</div>
+        <p>
+          컨테이너의 <strong>바로 아래 자식만</strong> 아이템이 됩니다.
+          아래에서 흰 상자는 나란히 놓이지만, 그 안의 노란 조각은 그대로 세로로 쌓여 있습니다.
+          안쪽도 나란히 놓고 싶다면 <strong>흰 상자에도</strong> 따로
+          <code>display: flex</code> 를 써야 합니다.
+        </p>
+        <div class="grand-wrap" id="grandWrap">
+          <div class="grand-item" id="grandItem1">
+            <p class="grand-inner">손자 A</p>
+            <p class="grand-inner">손자 B</p>
+          </div>
+          <div class="grand-item">
+            <p class="grand-inner">손자 C</p>
+            <p class="grand-inner">손자 D</p>
+          </div>
+        </div>
+        <!-- 화면: 흰 상자는 가로로 나란히, 그 안 노란 조각은 세로로 쌓여 있습니다 -->
+      </div>
+
+      <!-- [실수 5] 축 이름을 가로세로로 외움 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 주축을 그냥 "가로" 라고 외움</span>
+        <div class="doc-code">주축 = 가로, 교차축 = 세로   /* 기본값일 때만 맞습니다 */</div>
+        <p>
+          지금은 맞는 말이지만 개념02 에서 <code>flex-direction: column</code> 을 쓰는 순간
+          주축이 세로가 됩니다. 그때 <code>justify-content</code> 가 갑자기 위아래를 움직여서
+          "고장 났나?" 싶어집니다. <strong>주축은 아이템이 줄 서는 방향</strong>이라고 외우세요.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>display: flex</code> 는 <strong>부모(컨테이너)</strong> 에 씁니다. 자식이 아닙니다.</p>
+      <p>2. 컨테이너의 <strong>바로 아래 자식</strong>이 자동으로 아이템이 됩니다. 손자는 아닙니다.</p>
+      <p>3. <strong>주축</strong>은 아이템이 줄 서는 방향, <strong>교차축</strong>은 그와 직각인 방향입니다.</p>
+      <p>4. 속성은 <strong>컨테이너용</strong>과 <strong>아이템용</strong>으로 나뉩니다. 자리를 틀리면 조용히 무시됩니다.</p>
+      <p>5. flex 를 쓰면 inline-block 의 정체 모를 6px 틈이 생기지 않습니다.</p>
+      <p>6. 세로 가운데 정렬은 계산 없이 컨테이너 두 줄로 끝납니다.</p>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════
+         ✏️ 직접 해보기 정답
+         ════════════════════════════════════════════════════════════
+
+         1) .pos-box 의 top 을 이렇게 바꿉니다.
+
+                .pos-box { position: absolute; top: 0; }
+
+            → 상자가 회색 칸 맨 위에 딱 붙습니다.
+              top 이 "상자의 위쪽 모서리 위치" 라는 뜻임을 확인할 수 있습니다.
+              되돌릴 때는 top: 50% 로 다시 씁니다.
+
+         2) .side-wrap 을 이렇게 바꿉니다.
+
+                .side-wrap {
+                  background: #eef2f7;
+                  border: 1px solid #c9d6ea;
+                  padding: 10px;
+                  /* display: flex; */
+                }
+
+            → 상자 세 개가 다시 세로로 쌓입니다. 폭은 width: 120px 을 준 그대로 120px 이고
+              위에서 아래로 한 줄씩 내려갑니다.
+              display: flex 한 줄이 하던 일이 그만큼 컸다는 뜻입니다.
+
+         3) .role-wrap 안 마지막에 이렇게 한 줄 넣습니다.
+
+                <div class="role-item">아이템 3</div>
+
+            → 흰 상자가 세 개가 되어 셋 다 가로로 나란히 놓입니다.
+              컨테이너에 자식을 넣기만 하면 자동으로 아이템이 됩니다.
+
+         4) .axis-wrap 의 높이를 바꿉니다.
+
+                .axis-wrap { height: 200px; }
+
+            → 파란 상자의 높이도 120px 에서 200px 로 같이 커집니다.
+              교차축 방향(세로)으로는 남는 자리를 알아서 채우기 때문입니다.
+              반면 주축 방향인 가로 폭은 100px 그대로입니다.
+
+         5) 두 곳을 이렇게 고칩니다.
+
+                .miss-wrap { display: flex; justify-content: center; }
+                .miss-item { /* justify-content 를 지웁니다 */ }
+
+            → 빨간 상자 두 개가 회색 칸 가운데로 모입니다.
+              속성은 그대로인데 붙인 자리만 바꿨을 뿐입니다.
+    ════════════════════════════════════════════════════════════ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #stackWrap | display | block
+      #stackBox1 | ~width | 802
+      #inlineWrap | ~gap-x | 6
+      #posBox | position | absolute
+      #posBox | ~height | 47
+      #sideWrap | display | flex
+      #sideWrap | ~gap-x | 0
+      #centerWrap | justify-content | center
+      #centerWrap | align-items | center
+      #centerBox | ~x | 580
+      #roleWrap | ~gap-x | 0
+      #roleItem1 | ~width | 71
+      #axisItem1 | ~height | 120
+      #axisItem1 | ~width | 100
+      #whereItem1 | ~x | 500
+      #missItem1 | ~x | 239
+      #missItem1 | justify-content | center
+      #typoWrap | display | block
+      #grandItem1 | ~width | 250
+    -->
+  </body>
+</html>

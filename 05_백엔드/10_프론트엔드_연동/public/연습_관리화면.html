@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>설비 관리 화면</title>
+    <link rel="stylesheet" href="/공통.css" />
+  </head>
+  <body>
+    <h1>설비 관리</h1>
+
+    <h2>등록</h2>
+    <form id="폼">
+      <label class="칸"><span>이름</span><input type="text" id="name" name="name" /></label>
+      <div class="오류글" id="오류-name"></div>
+
+      <label class="칸">
+        <span>라인</span>
+        <select id="line" name="line">
+          <option value="">고르세요</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="Z">Z (없는 라인)</option>
+        </select>
+      </label>
+      <div class="오류글" id="오류-line"></div>
+
+      <div class="줄"><button type="submit" id="보내기">등록</button></div>
+    </form>
+    <div id="알림"></div>
+
+    <h2>목록</h2>
+    <div class="줄">
+      <input type="text" id="검색" placeholder="검색" />
+      <select id="라인거르기">
+        <option value="">라인 전체</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+      </select>
+    </div>
+
+    <div id="요약" class="로딩">불러오는 중...</div>
+
+    <table>
+      <thead><tr><th>번호</th><th>이름</th><th>라인</th><th>상태</th><th></th></tr></thead>
+      <tbody id="본문"></tbody>
+    </table>
+
+    <div class="쪽">
+      <button id="이전쪽">이전</button>
+      <span id="쪽정보">-</span>
+      <button id="다음쪽">다음</button>
+    </div>
+
+    <script src="/api.js"></script>
+    <script>
+      const 상태 = { page: 1, limit: 3, q: "", line: "" };
+      let 마지막번호 = 0;
+
+      const 요약 = document.querySelector("#요약");
+      const 본문 = document.querySelector("#본문");
+      const 쪽정보 = document.querySelector("#쪽정보");
+      const 이전쪽 = document.querySelector("#이전쪽");
+      const 다음쪽 = document.querySelector("#다음쪽");
+      const 알림 = document.querySelector("#알림");
+      const 폼 = document.querySelector("#폼");
+      const 보내기 = document.querySelector("#보내기");
+
+      function 주소만들기() {
+        const 쿼리 = new URLSearchParams();
+        쿼리.set("page", 상태.page);
+        쿼리.set("limit", 상태.limit);
+        if (상태.q) 쿼리.set("q", 상태.q);
+        if (상태.line) 쿼리.set("line", 상태.line);
+        return "/api/v1/equipments?" + 쿼리.toString();
+      }
+
+      function 오류지우기() {
+        for (const 이름 of ["name", "line"]) {
+          document.querySelector(`#오류-${이름}`).textContent = "";
+          document.querySelector(`#${이름}`).classList.remove("입력오류");
+        }
+        알림.textContent = "";
+        알림.className = "";
+      }
+
+      async function 불러오기() {
+        마지막번호 += 1;
+        const 내번호 = 마지막번호;
+
+        요약.className = "로딩";
+        요약.textContent = "불러오는 중...";
+
+        try {
+          const 답 = await api.get(주소만들기());
+          if (내번호 !== 마지막번호) return;
+          그리기(답.data, 답.meta);
+        } catch (에러) {
+          if (내번호 !== 마지막번호) return;
+          요약.className = "에러";
+          요약.textContent = 에러.message;
+          본문.innerHTML = "";
+        }
+      }
+
+      function 그리기(목록, meta) {
+        이전쪽.disabled = meta.page <= 1;
+        다음쪽.disabled = meta.page >= meta.totalPages;
+        쪽정보.textContent = `${meta.page} / ${meta.totalPages}`;
+
+        if (목록.length === 0) {
+          요약.className = "비었음";
+          요약.textContent = "조건에 맞는 설비가 없습니다.";
+          본문.innerHTML = "";
+          return;
+        }
+
+        요약.className = "";
+        요약.textContent = `전체 ${meta.total}건 중 ${목록.length}건`;
+
+        // ★ 실무에서는 사용자가 입력한 값(설비 이름)을 innerHTML 에 그대로 넣으면 안 됩니다(XSS).
+        //   textContent 나 이스케이프를 쓰세요. 여기서는 학습용으로 단순화했습니다.
+        본문.innerHTML = 목록
+          .map(
+            (설비) =>
+              `<tr><td>${설비.id}</td><td>${설비.name}</td><td>${설비.line}</td>` +
+              `<td>${설비.status}</td>` +
+              `<td><button class="지우기" data-id="${설비.id}">삭제</button></td></tr>`
+          )
+          .join("");
+      }
+
+      // 삭제는 표가 다시 그려지므로 위임으로 답니다. (JS자료 11단원)
+      본문.addEventListener("click", async (이벤트) => {
+        const 버튼 = 이벤트.target.closest(".지우기");
+        if (!버튼) return;
+
+        버튼.disabled = true;
+
+        try {
+          await api.del(`/api/v1/equipments/${버튼.dataset.id}`);
+          알림.className = "성공";
+          알림.textContent = "삭제했습니다.";
+          불러오기();
+        } catch (에러) {
+          알림.className = "에러";
+          알림.textContent = 에러.message;
+          버튼.disabled = false;
+        }
+      });
+
+      폼.addEventListener("submit", async (이벤트) => {
+        이벤트.preventDefault();
+        오류지우기();
+        보내기.disabled = true;
+
+        try {
+          const 답 = await api.post("/api/v1/equipments", Object.fromEntries(new FormData(폼)));
+          알림.className = "성공";
+          알림.textContent = `${답.data.name} 을(를) 등록했습니다.`;
+          폼.reset();
+          상태.page = 1;
+          불러오기();
+        } catch (에러) {
+          알림.className = "에러";
+          알림.textContent = 에러.message;
+
+          if (에러.code === "VALIDATION_FAILED") {
+            for (const 하나 of 에러.details ?? []) {
+              const 오류칸 = document.querySelector(`#오류-${하나.키}`);
+              if (!오류칸) continue;
+              오류칸.textContent = 하나.이유;
+              document.querySelector(`#${하나.키}`)?.classList.add("입력오류");
+            }
+          } else if (에러.code === "DUPLICATED") {
+            document.querySelector("#오류-name").textContent = 에러.message;
+          }
+        } finally {
+          보내기.disabled = false;
+        }
+      });
+
+      function 조건바뀜() {
+        상태.page = 1;
+        불러오기();
+      }
+
+      let 타이머 = null;
+      document.querySelector("#검색").addEventListener("input", (이벤트) => {
+        상태.q = 이벤트.target.value.trim();
+        clearTimeout(타이머);
+        타이머 = setTimeout(조건바뀜, 250);
+      });
+
+      document.querySelector("#라인거르기").addEventListener("change", (이벤트) => {
+        상태.line = 이벤트.target.value;
+        조건바뀜();
+      });
+
+      이전쪽.addEventListener("click", () => { 상태.page -= 1; 불러오기(); });
+      다음쪽.addEventListener("click", () => { 상태.page += 1; 불러오기(); });
+
+      불러오기();
+    </script>
+  </body>
+</html>

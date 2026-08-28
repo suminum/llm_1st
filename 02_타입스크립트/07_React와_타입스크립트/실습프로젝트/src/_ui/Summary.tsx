@@ -1,0 +1,26 @@
+// ============================================================
+// 정리 상자 — 각 개념 파일 맨 아래에서 씁니다
+// ------------------------------------------------------------
+// 이 파일은 자료가 미리 만들어 둔 '틀'입니다. 읽지 않아도 됩니다.
+//
+// 쓰는 법:
+//   import Summary from "../_ui/Summary.tsx";
+//   <Summary items={["첫째 줄", "둘째 줄"]} />
+// ============================================================
+
+type SummaryProps = {
+  items: string[];
+};
+
+export default function Summary({ items }: SummaryProps) {
+  return (
+    <div className="summary">
+      <h2>정리</h2>
+      <ol>
+        {items.map((text, index) => (
+          <li key={index}>{text}</li>
+        ))}
+      </ol>
+    </div>
+  );
+}

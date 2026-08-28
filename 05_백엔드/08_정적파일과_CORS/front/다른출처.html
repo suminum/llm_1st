@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>다른 출처에서 부르기</title>
+    <style>
+      body { font-family: "맑은 고딕", sans-serif; line-height: 1.7; max-width: 700px; margin: 40px auto; padding: 0 20px; }
+      h1 { border-bottom: 3px solid #333; padding-bottom: 8px; }
+      .안내 { background: #fff8dc; border-left: 4px solid #f0c040; padding: 12px 16px; }
+      button { font-size: 14px; padding: 8px 14px; margin: 4px 4px 4px 0; cursor: pointer; }
+      pre { background: #f5f5f5; border: 1px solid #ddd; padding: 12px; white-space: pre-wrap; word-break: break-all; }
+      .실패 { color: #c00; }
+      .성공 { color: #060; }
+    </style>
+  </head>
+  <body>
+    <h1>다른 출처에서 API 부르기</h1>
+
+    <p class="안내">
+      <strong>이 파일은 API 서버가 준 것이 아닙니다.</strong><br />
+      VS Code 의 Live Server 로 열거나, 다른 포트로 띄워서 여세요.<br />
+      주소창이 <code>http://localhost:3000</code> 이 <strong>아니어야</strong> 실험이 됩니다.<br /><br />
+      <strong>F12 → Console 탭을 반드시 함께 여세요.</strong>
+      진짜 원인은 콘솔에만 나옵니다.
+    </p>
+
+    <p>API 주소: <code id="api주소"></code></p>
+
+    <button data-종류="단순">① 단순 GET</button>
+    <button data-종류="본문">② POST + JSON 본문</button>
+    <button data-종류="증표">③ Authorization 헤더</button>
+    <button data-종류="삭제">④ DELETE</button>
+    <button data-종류="헤더읽기">⑤ 응답 헤더 읽기</button>
+
+    <pre id="결과">버튼을 누르세요.</pre>
+
+    <script>
+      // ★ 여기를 여러분의 API 서버 주소로 바꾸세요.
+      const API = "http://localhost:3000";
+      document.querySelector("#api주소").textContent = API;
+
+      const 결과 = document.querySelector("#결과");
+
+      const 요청들 = {
+        단순: ["/api/v1/equipments", {}],
+        본문: ["/api/v1/equipments", { method: "POST", headers: { "Content-Type": "application/json" }, body: '{"name":"용접로봇","line":"C"}' }],
+        증표: ["/api/v1/equipments", { headers: { Authorization: "Bearer key-user-1" } }],
+        삭제: ["/api/v1/equipments/1", { method: "DELETE" }],
+        헤더읽기: ["/api/v1/equipments-with-count", {}],
+      };
+
+      document.querySelectorAll("button").forEach((버튼) => {
+        버튼.addEventListener("click", async () => {
+          const [경로, 옵션] = 요청들[버튼.dataset.종류];
+          결과.textContent = "요청 중...";
+          결과.className = "";
+
+          try {
+            const 응답 = await fetch(API + 경로, 옵션);
+            const 글자 = await 응답.text();
+            const 개수헤더 = 응답.headers.get("X-Total-Count");
+
+            결과.className = "성공";
+            결과.textContent =
+              `성공 ${응답.status}\n` +
+              `X-Total-Count 헤더: ${개수헤더 === null ? "못 읽음 (null)" : 개수헤더}\n\n` +
+              글자.slice(0, 300);
+          } catch (에러) {
+            결과.className = "실패";
+            결과.textContent =
+              `실패: ${에러.name}: ${에러.message}\n\n` +
+              "★ 이 메시지만 봐서는 원인을 알 수 없습니다.\n" +
+              "  F12 → Console 탭을 보세요. 진짜 이유가 빨간 글씨로 나옵니다.";
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>14단원 개념05 - 안 되는 경우들</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 8px 16px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 6px;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+        min-height: 24px;
+        word-break: break-all;
+        font-size: 13px;
+      }
+      ul {
+        padding-left: 22px;
+        margin: 0;
+      }
+      li {
+        margin: 4px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 05 — 안 되는 경우들</h1>
+
+    <p class="guide">
+      <strong>일부러 실패시키는 파일입니다.</strong> 빨간 오류가 나는 게 정상입니다.
+      <strong>F12 → Console</strong> 을 꼭 열고 누르세요. 오류를 보는 게 목적입니다.
+      <br /><br />
+      ①은 인터넷이 필요합니다. ②③④는 없어도 됩니다.
+    </p>
+
+    <div class="demo">
+      <h3>① CORS 에 막히기</h3>
+      <button id="b1">막히는 곳 불러 보기</button>
+      <div class="output" id="out1">버튼을 눌러 보세요</div>
+
+      <h3>② JSON 이 아닌 것을 .json() 하기</h3>
+      <button id="b2">HTML 을 파싱해 보기</button>
+      <div class="output" id="out2">버튼을 눌러 보세요</div>
+
+      <h3>③ 너무 많이 부르기 (429)</h3>
+      <button id="b3">429 를 받아 보기</button>
+      <div class="output" id="out3">버튼을 눌러 보세요</div>
+
+      <h3>④ 시간이 오래 걸릴 때</h3>
+      <button id="b4">1밀리초 만에 끊기</button>
+      <div class="output" id="out4">버튼을 눌러 보세요</div>
+    </div>
+
+    <script>
+      // ── 섹션 1: ★★★ CORS — 브라우저만 막습니다 ──
+      //
+      // 개념03 에서 예고한 그것입니다.
+      //
+      //   Postman 에서는 200 이 옵니다.
+      //   같은 주소를 브라우저에서 부르면 빨간 오류가 납니다.
+      //
+      // ★ 코드가 틀린 게 아닙니다. **브라우저가 스스로 막는 것**입니다.
+      //
+      //   브라우저는 "지금 보고 있는 사이트가 아닌 곳" 에 요청을 보낼 때
+      //   그 서버에게 먼저 물어봅니다. "얘가 나한테 요청해도 되나요?"
+      //   서버가 된다고 답해야 브라우저가 응답을 코드에 넘겨 줍니다.
+      //
+      //   그 대답이 `Access-Control-Allow-Origin` 헤더입니다.
+      //
+      // ★★ 이걸 왜 하냐 —
+      //   내가 어떤 사이트를 보고 있는데, 그 사이트의 코드가 몰래
+      //   내 은행 사이트에 요청을 보내면 안 되기 때문입니다.
+      //   ★ 나를 지키려고 있는 것입니다. 개발을 방해하려는 게 아닙니다.
+
+      async function 불러보기(주소) {
+        try {
+          const 응답 = await fetch(주소);
+          return { 됐나: true, 상태: 응답.status };
+        } catch (오류) {
+          return { 됐나: false, 이름: 오류.name, 메시지: 오류.message };
+        }
+      }
+
+      document.getElementById("b1").addEventListener("click", async () => {
+        const 칸 = document.getElementById("out1");
+        칸.textContent = "부르는 중...";
+
+        // 열려 있는 곳 (Access-Control-Allow-Origin: *)
+        const 열린곳 = await 불러보기(
+          "https://api.open-meteo.com/v1/forecast?latitude=37&longitude=127&current=temperature_2m",
+        );
+
+        // 안 열어 준 곳 (그 헤더를 아예 안 보냅니다)
+        const 막힌곳 = await 불러보기("https://example.com");
+
+        console.log("열린 곳:", JSON.stringify(열린곳));
+        console.log("막힌 곳:", JSON.stringify(막힌곳));
+
+        칸.innerHTML =
+          `<b>open-meteo</b> ${JSON.stringify(열린곳)}<br><br>` +
+          `<b>example.com</b> ${JSON.stringify(막힌곳)}`;
+      });
+
+      // ★ 브라우저에서 누르면 이렇게 나옵니다.
+      //
+      //   열린 곳: {"됐나":true,"상태":200}
+      //   막힌 곳: {"됐나":false,"이름":"TypeError","메시지":"Failed to fetch"}
+      //
+      //   그리고 콘솔에 빨간 줄이 하나 더 뜹니다.
+      //
+      //     Access to fetch at 'https://example.com/' from origin 'null'
+      //     has been blocked by CORS policy: No 'Access-Control-Allow-Origin'
+      //     header is present on the requested resource.
+      //
+      // ★★ 같은 코드를 node 로 돌려 보면 **둘 다 200** 이 나옵니다. 실제로 재 봤습니다.
+      //
+      //     열린 곳: {"됐나":true,"상태":200}
+      //     막힌 곳: {"됐나":true,"상태":200}
+      //
+      //   example.com 은 아무것도 안 바뀌었는데 브라우저에서만 막힙니다.
+      //   ★ "CORS 는 브라우저가 거는 제한" 이라는 말이 이 뜻입니다.
+      //
+      // ★★★ 코드가 받는 것은 `Failed to fetch` 뿐입니다.
+      //   **왜 막혔는지는 코드에서 알 수 없습니다.** 콘솔에만 나옵니다.
+      //   일부러 그렇게 만들어 놨습니다. 알려 주면 그것도 정보가 되니까요.
+      //
+      //   ★ 그래서 `catch` 만 보고 있으면 원인을 못 찾습니다. **콘솔을 보세요.**
+      //
+      // ★★ `from origin 'null'` 에 주목하세요.
+      //   이 파일을 **더블클릭해서 열었기 때문**입니다. 그때 출처가 `null` 입니다.
+      //   open-meteo 는 `*` (아무나) 라서 `null` 도 통과합니다.
+      //   ★ 어떤 서버는 `null` 을 막습니다. 그럴 땐 간단한 로컬 서버로 여세요.
+      //     (VS Code 의 Live Server 확장 같은 것)
+
+      // ✏️ 직접 해보기 1 — example.com 을 다른 주소로 바꿔 눌러 보세요.
+      //                      어떤 곳이 되고 어떤 곳이 막힙니까?
+
+      // ── 섹션 2: CORS 는 어떻게 푸나 ──
+      //
+      // ★★ 내가 못 풉니다. **서버가 열어 줘야** 합니다.
+      //
+      //   브라우저 설정으로 끄는 방법이 인터넷에 돌아다닙니다. 쓰지 마세요.
+      //   내 브라우저만 뚫리는 것이고, 다른 사이트에도 구멍이 뚫립니다.
+      //
+      // ★★★ 진짜 해법은 **서버를 하나 두는 것**입니다. 개념04 섹션6 과 같습니다.
+      //
+      //     브라우저 → 내 서버 → 남의 API
+      //
+      //   서버끼리는 CORS 가 없습니다. 브라우저만 있는 규칙이니까요.
+      //   그리고 내 서버는 내가 CORS 를 열어 줄 수 있습니다.
+      //
+      //   ★ **PART 3 에서 그 서버를 만듭니다.** 지금은 못 합니다.
+      //     공공데이터포털이 브라우저에서 안 되는 이유가 이것입니다.
+      //
+      // ★ 지금 당장 확인만 하고 싶다면 Postman·curl·node 를 쓰세요. (개념03 섹션7)
+
+      // ✏️ 직접 해보기 2 — 콘솔의 빨간 줄을 **끝까지** 읽어 보세요.
+      //                      어느 출처에서 어느 주소로 갔다가 막혔다고 적혀 있습니까?
+
+      // ── 섹션 3: JSON 이 아닌 것을 받았을 때 ──
+
+      document.getElementById("b2").addEventListener("click", async () => {
+        // 서버가 오류 페이지(HTML)를 준 상황을 그대로 만들어 봅니다
+        const 가짜응답 = new Response("<!doctype html>\n<html><body>404 Not Found</body></html>", {
+          status: 404,
+          headers: { "Content-Type": "text/html" },
+        });
+
+        try {
+          await 가짜응답.json();
+        } catch (오류) {
+          console.log(오류.name + ": " + 오류.message);
+          // 콘솔: SyntaxError: Unexpected token '<', "<!doctype "... is not valid JSON
+          document.getElementById("out2").textContent = 오류.name + ": " + 오류.message;
+        }
+
+        // 빈 응답도 흔합니다 (204 No Content 등)
+        try {
+          await new Response("").json();
+        } catch (오류) {
+          console.log(오류.name + ": " + 오류.message);
+          // 콘솔: SyntaxError: Unexpected end of JSON input
+        }
+      });
+
+      // ★★★ `Unexpected token '<'` 는 **HTML 을 받았다는 뜻**입니다.
+      //   `<` 는 `<!doctype html>` 의 첫 글자입니다.
+      //
+      //   왜 HTML 이 왔나 —
+      //     · 주소를 틀려서 404 오류 **페이지**가 왔다
+      //     · 로그인 페이지로 넘겨졌다
+      //     · 서버가 죽어서 nginx 의 502 페이지가 왔다
+      //
+      //   ★ 전부 "JSON 을 줄 줄 알았는데 아니었다" 입니다.
+      //
+      // ★★ `Unexpected end of JSON input` 은 **빈 응답**입니다.
+      //   204 처럼 본문이 없는 응답에 `.json()` 을 부르면 이렇게 됩니다.
+      //
+      // ★★★ 막는 방법 — `.json()` 전에 두 가지를 봅니다.
+      //
+      //     const 응답 = await fetch(주소);
+      //
+      //     if (!응답.ok) {
+      //       throw new Error(`서버가 ${응답.status} 를 보냈습니다`);
+      //     }
+      //
+      //     const 종류 = 응답.headers.get("content-type") ?? "";
+      //     if (!종류.includes("application/json")) {
+      //       throw new Error(`JSON 이 아닙니다: ${종류}`);
+      //     }
+      //
+      //     const 자료 = await 응답.json();
+      //
+      //   ★ `응답.ok` 만으로는 부족합니다. 200 인데 HTML 인 경우가 있습니다.
+      //     (개념03 섹션3 에서 Headers 탭을 보라고 한 이유입니다)
+
+      // ✏️ 직접 해보기 3 — 가짜응답의 본문을 빈 글자("")로 바꿔 보세요.
+      //                      오류 메시지가 어떻게 달라집니까?
+
+      // ── 섹션 4: 너무 많이 불렀을 때 (429) ──
+
+      document.getElementById("b3").addEventListener("click", async () => {
+        // 429 응답을 그대로 만들어 봅니다
+        const 가짜응답 = new Response(JSON.stringify({ error: "Too Many Requests" }), {
+          status: 429,
+          headers: { "Content-Type": "application/json", "Retry-After": "60" },
+        });
+
+        console.log("상태:", 가짜응답.status);
+        // 콘솔: 상태: 429
+        console.log("ok 인가:", 가짜응답.ok);
+        // 콘솔: ok 인가: false
+        console.log("얼마나 기다리라고?", 가짜응답.headers.get("Retry-After") + "초");
+        // 콘솔: 얼마나 기다리라고? 60초
+
+        document.getElementById("out3").textContent =
+          `${가짜응답.status} — ${가짜응답.headers.get("Retry-After")}초 뒤에 다시 오라고 합니다`;
+      });
+
+      // ★ `429 Too Many Requests` 는 "너무 자주 불렀다" 는 뜻입니다.
+      //   `Retry-After` 헤더에 몇 초 뒤에 오라고 적혀 있을 때가 있습니다.
+      //
+      // ★★ 언제 나오나
+      //   · 반복문 안에서 fetch 를 돌렸을 때  ← ★ 제일 흔합니다
+      //   · 버튼을 여러 번 눌렀을 때
+      //   · 무료 등급의 하루 한도를 다 썼을 때
+      //
+      // ★★★ 반복문에서 fetch 를 돌리면 **동시에 수십 개**가 나갑니다.
+      //
+      //     for (const 도시 of 도시들) {
+      //       const 답 = await fetch(주소(도시));   // 하나씩 (그나마 낫습니다)
+      //     }
+      //
+      //     await Promise.all(도시들.map((도시) => fetch(주소(도시))));  // ★ 한꺼번에
+      //
+      //   `Promise.all` 은 빠르지만 한도에 잘 걸립니다.
+      //   ★ 목록이 길면 몇 개씩 끊어서 보내세요.
+      //
+      // ★ 429 를 받으면 **바로 다시 보내지 마세요.** 더 심해집니다.
+      //   기다렸다가 한 번만 다시 보내는 게 예의입니다.
+
+      // ✏️ 직접 해보기 4 — Retry-After 헤더를 지우고 눌러 보세요. 무엇이 나옵니까?
+      //                      그 값이 없을 때 코드는 어떻게 해야 할까요?
+
+      // ── 섹션 5: 시간이 오래 걸릴 때 ──
+
+      document.getElementById("b4").addEventListener("click", async () => {
+        const 칸 = document.getElementById("out4");
+        칸.textContent = "부르는 중...";
+
+        try {
+          // 1밀리초 안에 못 끝내면 끊습니다. 당연히 못 끝냅니다.
+          await fetch("https://api.open-meteo.com/v1/forecast?latitude=37&longitude=127", {
+            signal: AbortSignal.timeout(1),
+          });
+          칸.textContent = "★ 1밀리초 만에 성공했습니다. 그럴 리가 없는데요?";
+        } catch (오류) {
+          console.log("이름:", 오류.name);
+          // 콘솔: 이름: TimeoutError
+          console.log("메시지:", 오류.message);
+          // 콘솔: 메시지: The operation was aborted due to timeout
+          칸.textContent = `${오류.name} — ${오류.message}`;
+        }
+      });
+
+      // ★ `AbortSignal.timeout(밀리초)` 하나면 됩니다. 따로 설치할 게 없습니다.
+      //
+      //     const 응답 = await fetch(주소, { signal: AbortSignal.timeout(5000) });
+      //
+      // ★★ 왜 필요하냐 — fetch 는 **기본으로 안 끊습니다.**
+      //   서버가 답을 안 주면 몇 분이고 기다립니다.
+      //   그동안 화면은 "불러오는 중..." 인 채로 멈춰 있습니다.
+      //
+      // ★★★ 끊긴 것과 실패한 것을 갈라야 합니다.
+      //
+      //     catch (오류) {
+      //       if (오류.name === "TimeoutError") {
+      //         알림("서버가 느립니다. 다시 시도해 주세요.");
+      //       } else if (오류.name === "TypeError") {
+      //         알림("연결할 수 없습니다. 인터넷을 확인해 주세요.");
+      //       } else {
+      //         알림("알 수 없는 문제입니다.");
+      //       }
+      //     }
+      //
+      //   ★ `오류.name` 을 보세요. `오류.message` 는 브라우저마다 다릅니다.
+
+      // ✏️ 직접 해보기 5 — 제한을 1 에서 5000 으로 늘려 눌러 보세요. 이번엔 성공합니까?
+      //                      그 다음 인터넷을 끄고 다시 눌러 오류 이름을 비교하세요.
+
+      // ── 섹션 6: ★★ 안 될 때 보는 순서 ──
+      //
+      // 이 단원에서 나온 것을 순서로 묶으면 이렇습니다.
+      //
+      //   1. F12 → Console 에 빨간 줄이 있나
+      //        `CORS policy` 라고 쓰여 있으면    → 섹션 1·2
+      //        `Unexpected token '<'` 이면       → 섹션 3
+      //
+      //   2. F12 → Network 에서 그 요청을 찾습니다
+      //        · 요청이 아예 없다               → 코드가 안 불린 것입니다
+      //        · 주소가 이상하다                → 개념02
+      //        · 상태가 401·403                → 키 문제 (개념04)
+      //        · 상태가 429                    → 섹션 4
+      //        · 상태가 200 인데 값이 없다       → 응답 모양 (개념01 섹션4)
+      //
+      //   3. 같은 요청을 Postman 으로 보내 봅니다 (개념03)
+      //        · Postman 은 되고 브라우저만 안 됨  → CORS 입니다
+      //        · Postman 도 안 됨                → 요청이 틀린 것입니다
+      //
+      // ✏️ 직접 해보기 6 — 섹션 6의 순서를 종이에 옮겨 적어 모니터 옆에 붙이세요.
+      //                      PART 3·4 에서도 그대로 씁니다.
+
+      // ★★★ 3번이 갈림길입니다. 여기서 **어디를 고칠지**가 정해집니다.
+      //   코드를 먼저 고치기 시작하면 시간을 많이 씁니다.
+      //
+      // ★ 이 순서를 종이에 적어 옆에 두세요. 배포하고 나서도 그대로 씁니다.
+    </script>
+  </body>
+</html>

@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>09단원 개념03 - 줄과 간격</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* 이 파일에서 '가르치는' CSS 만 여기에 씁니다. */
+
+      /* ── 섹션 1: line-height 기본 ── */
+      #lh-normal {
+        line-height: normal;
+        background-color: #eef2f7;
+      }
+      #lh-1 {
+        line-height: 1;
+        background-color: #eef2f7;
+      }
+      #lh-15 {
+        line-height: 1.5;
+        background-color: #eef2f7;
+      }
+      #lh-2 {
+        line-height: 2;
+        background-color: #eef2f7;
+      }
+      /* 화면: 1 → 1.5 → 2 로 갈수록 줄 사이가 넓어지고 상자도 세로로 길어집니다.
+               normal 은 1 보다 넓고 1.5 보다 좁습니다 */
+
+      /* ── 섹션 2: 단위 없는 숫자를 쓰는 이유 ── */
+      #lh-num-parent {
+        font-size: 16px;
+        line-height: 1.5;
+        background-color: #f0f7ff;
+      }
+      #lh-num-child {
+        font-size: 30px;
+      }
+      /* 화면: 자식의 줄 간격이 자식 글자 크기에 맞춰 함께 넓어집니다 */
+
+      #lh-pct-parent {
+        font-size: 16px;
+        line-height: 150%;
+        background-color: #fff6f6;
+      }
+      #lh-pct-child {
+        font-size: 30px;
+      }
+      /* 화면: 자식의 줄 간격이 부모 기준으로 계산된 24px 에 묶여서 글자끼리 겹칩니다 */
+
+      /* ── 섹션 3: 읽기 좋은 줄 간격 ── */
+      #read-10 {
+        line-height: 1;
+        background-color: #f4f4f4;
+      }
+      #read-15 {
+        line-height: 1.5;
+        background-color: #f4f4f4;
+      }
+      #read-18 {
+        line-height: 1.8;
+        background-color: #f4f4f4;
+      }
+      #read-30 {
+        line-height: 3;
+        background-color: #f4f4f4;
+      }
+      /* 화면: 1 은 답답하고, 1.5 와 1.8 은 편하고, 3 은 줄끼리 따로 노는 느낌입니다 */
+
+      /* ── 섹션 4: 자간과 단어 간격 ── */
+      #ls-2 {
+        letter-spacing: 2px;
+      }
+      #ls-neg {
+        letter-spacing: -1px;
+      }
+      #ls-title {
+        font-size: 24px;
+        font-weight: bold;
+        letter-spacing: 6px;
+      }
+      #wsp-10 {
+        word-spacing: 10px;
+      }
+      /* 화면: 글자 사이 또는 단어 사이가 눈에 띄게 벌어지거나 좁아집니다 */
+
+      /* ── 섹션 5: 첫 줄 들여쓰기 ── */
+      #ti-2em {
+        text-indent: 2em;
+        background-color: #fff8dc;
+      }
+      #ti-0 {
+        background-color: #fff8dc;
+      }
+      /* 화면: 첫 줄만 오른쪽으로 밀리고 둘째 줄부터는 왼쪽 끝에 붙습니다 */
+
+      /* ── 섹션 6: white-space ── */
+      #ws-normal {
+        background-color: #f4f4f4;
+      }
+      #ws-pre {
+        white-space: pre;
+        background-color: #f4f4f4;
+      }
+      #ws-preline {
+        white-space: pre-line;
+        background-color: #f4f4f4;
+      }
+      /* 화면: 기본은 여러 칸이 한 칸으로 줄고, pre 는 공백과 줄바꿈을 그대로 지킵니다 */
+
+      /* ── 섹션 7: 자주 하는 실수 ── */
+      #miss-lh-parent {
+        font-size: 16px;
+        line-height: 24px;
+      }
+      #miss-lh-child {
+        font-size: 30px;
+      }
+      /* 화면: 자식 글자가 커졌는데 줄 높이는 24px 에 묶여 글자끼리 겹칩니다 */
+
+      #miss-comma {
+        line-height: 1,5;
+      }
+      /* 화면: 아무 일도 일어나지 않습니다. 물려받은 1.7 그대로입니다 */
+
+      #miss-ls {
+        letter-spacing: 3;
+      }
+      /* 화면: 아무 일도 일어나지 않습니다 */
+
+      #miss-indent {
+        text-indent: 30px;
+        background-color: #fff6f6;
+      }
+      /* 화면: 첫 줄만 들어가고 나머지 줄은 그대로입니다 */
+
+      #miss-pre {
+        white-space: pre;
+        background-color: #fff6f6;
+      }
+      /* 화면: 코드에 쓴 줄바꿈과 들여쓰기 공백이 화면에 그대로 나옵니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         09단원 · 개념 03 — 줄과 간격
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         앞의 두 파일에서 글자의 크기와 모양을 정했습니다.
+         이번에는 글자와 글자 '사이', 줄과 줄 '사이' 입니다.
+
+         읽기 편한 글의 조건은 사실 글꼴이 아니라 간격입니다.
+         같은 글이라도 줄 간격만 바꾸면 읽는 느낌이 완전히 달라집니다.
+
+         이 파일에서 배울 속성은 다섯 개입니다.
+
+             line-height      줄과 줄 사이 (가장 중요합니다)
+             letter-spacing   글자와 글자 사이 (자간)
+             word-spacing     단어와 단어 사이
+             text-indent      문단 첫 줄 들여쓰기
+             white-space      공백과 줄바꿈을 어떻게 다룰지
+
+         먼저 line-height 가 무엇인지 그림으로 봅시다.
+         한 줄이 차지하는 세로 공간 전체를 줄 높이라고 합니다.
+
+             ┌──────────────────────┐  ┐
+             │                      │  │ ← 남는 공간의 절반이 위로
+             │   안녕하세요           │  │   줄 높이 (line-height)
+             │                      │  │ ← 나머지 절반이 아래로
+             └──────────────────────┘  ┘
+
+         글자 크기가 16px 인데 줄 높이를 24px 로 주면, 글자가 차지하는 높이보다 줄이 높아집니다.
+         남는 공간을 브라우저가 위아래로 반씩 나눠 붙입니다.
+         그래서 줄 높이를 키우면 줄 사이가 벌어져 보이는 것입니다.
+
+         "글자가 차지하는 높이" 는 글자 크기와 딱 같지 않습니다.
+         글꼴마다 위아래로 여유를 조금씩 더 갖고 있어서, 맑은 고딕 16px 은 21px 을 씁니다.
+         그래서 줄 높이를 16px(= 1배) 로 줄이면 남는 공간이 없는 정도가 아니라
+         줄끼리 살짝 파고들게 됩니다.
+         섹션 1 의 두 번째 상자(line-height: 1) 가 유난히 답답해 보이는 이유입니다.
+
+         한 가지 미리 알아 둘 것이 있습니다.
+         이 자료의 공통.css 는 body 에 이미 이렇게 걸어 두었습니다.
+
+             body { line-height: 1.7; }
+
+         line-height 는 상속되는 속성입니다. 그래서 이 페이지의 모든 글자는
+         따로 지정하지 않아도 1.7 을 물려받고 있습니다.
+         즉 이 페이지에서 "아무것도 안 준 상태" 는 normal 이 아니라 1.7 입니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 03 — 줄과 간격</h1>
+    <p class="doc-sub">09단원 · 텍스트와 폰트</p>
+
+    <p class="doc-guide">
+      이 파일은 <strong>글자 사이의 빈 공간</strong>을 다룹니다.
+      아래 상자들을 볼 때는 글자가 아니라 <strong>글자 사이의 여백</strong>을 보세요.
+      특히 섹션 2 는 "왜 <code>line-height</code> 에는 단위를 안 붙이는가" 라는
+      실무에서 매우 자주 나오는 질문의 답입니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: line-height ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — line-height, 줄과 줄 사이</h2>
+      <p class="doc-desc">
+        <code>line-height</code> 는 <strong>한 줄이 차지하는 세로 높이</strong>입니다.
+      </p>
+
+      <!--
+        값을 주는 방법은 세 가지입니다.
+
+            line-height: normal;   브라우저가 알아서 (글자 크기의 1.2 ~ 1.3 배쯤)
+            line-height: 1.5;      글자 크기의 1.5배            ← 이 방법을 씁니다
+            line-height: 24px;     무조건 24px
+
+        아래 상자에는 이렇게 썼습니다. 글자 크기는 모두 16px 로 같습니다.
+
+            #lh-normal { line-height: normal; }
+            #lh-1      { line-height: 1; }
+            #lh-15     { line-height: 1.5; }
+            #lh-2      { line-height: 2; }
+
+        결과를 보면 줄 사이만 달라집니다. 글자 크기는 넷 다 같습니다.
+        line-height 는 글자를 키우는 속성이 아니라 줄이 차지하는 자리를 키우는 속성입니다.
+
+        line-height: 1 은 "글자 크기와 줄 높이가 같다" 는 뜻입니다.
+        남는 공간이 없다 못해 줄끼리 살짝 파고들어서 답답해 보입니다(도입부 설명 참고).
+
+        첫 상자의 normal 이 둘째 상자(1) 보다 넓다는 점도 같이 보세요.
+        맑은 고딕에서 normal 은 16px 글자에 21px 을 줍니다. 1 과 1.5 사이쯤입니다.
+        그래서 네 상자의 세로 길이는 1(48px) < normal(63px) < 1.5(72px) < 2(96px) 순입니다.
+        (세 줄짜리 문단이라 한 줄 높이에 3 을 곱한 값입니다)
+
+        회색 배경을 깔아 둔 이유는 상자가 세로로 얼마나 길어지는지 보라는 것입니다.
+        줄 높이를 키우면 그만큼 상자도 길어집니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 (글자 크기는 모두 16px 로 같습니다)</p>
+        <p id="lh-normal">
+          normal 입니다. 문장을 길게 써서 여러 줄이 되게 만듭니다. 줄과 줄 사이의 빈 공간을 보세요.
+          같은 글자 크기인데도 줄 높이만 달라지면 읽는 느낌이 크게 달라집니다.
+          네 상자에 넣은 글은 완전히 같고 줄 높이만 다릅니다. 계속 이어 쓰는 문장입니다.
+        </p>
+        <p id="lh-1">
+          1 입니다. 문장을 길게 써서 여러 줄이 되게 만듭니다. 줄과 줄 사이의 빈 공간을 보세요.
+          같은 글자 크기인데도 줄 높이만 달라지면 읽는 느낌이 크게 달라집니다.
+          네 상자에 넣은 글은 완전히 같고 줄 높이만 다릅니다. 계속 이어 쓰는 문장입니다.
+        </p>
+        <p id="lh-15">
+          1.5 입니다. 문장을 길게 써서 여러 줄이 되게 만듭니다. 줄과 줄 사이의 빈 공간을 보세요.
+          같은 글자 크기인데도 줄 높이만 달라지면 읽는 느낌이 크게 달라집니다.
+          네 상자에 넣은 글은 완전히 같고 줄 높이만 다릅니다. 계속 이어 쓰는 문장입니다.
+        </p>
+        <p id="lh-2">
+          2 입니다. 문장을 길게 써서 여러 줄이 되게 만듭니다. 줄과 줄 사이의 빈 공간을 보세요.
+          같은 글자 크기인데도 줄 높이만 달라지면 읽는 느낌이 크게 달라집니다.
+          네 상자에 넣은 글은 완전히 같고 줄 높이만 다릅니다. 계속 이어 쓰는 문장입니다.
+        </p>
+        <!-- 화면: 네 상자 모두 글자 크기가 같고 글도 같으며, 모두 세 줄로 접힙니다.
+                  1 짜리 상자는 줄이 서로 붙어서 답답하고, 1.5 → 2 로 갈수록 줄 사이가 넓어집니다.
+                  첫 상자(normal) 는 1 보다 넓고 1.5 보다 좁습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>normal</code> 은 대략 1.2 ~ 1.3 배쯤이지만 정확한 값은 글꼴이 정합니다.
+        이 페이지의 맑은 고딕에서는 16px 글자에 <strong>21px</strong>, 곧 1.3배쯤입니다.
+        글꼴을 바꾸면 <code>normal</code> 의 실제 높이도 달라집니다.
+        그래서 읽는 느낌을 내가 정하고 싶으면 숫자를 직접 적는 편이 좋습니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — <code>#lh-2</code> 를 <code>line-height: 4;</code> 로 바꿔 보세요.
+        글자 크기는 그대로인데 상자만 훨씬 길어지는 것을 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 단위 없는 숫자 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 왜 단위 없는 숫자를 쓰는가</h2>
+      <p class="doc-desc">
+        단위를 붙이면 <strong>계산된 결과가 상속</strong>되고, 안 붙이면 <strong>비율이 상속</strong>됩니다.
+      </p>
+
+      <!--
+        이것이 이 파일에서 가장 중요한 내용입니다.
+
+        line-height 는 상속되는 속성입니다. 그런데 무엇이 상속되는지가 값의 형태에 따라 다릅니다.
+
+            line-height: 1.5;     ← 1.5 라는 '비율' 이 자식에게 그대로 갑니다
+            line-height: 150%;    ← 부모에서 계산이 끝난 '결과 px' 이 자식에게 갑니다
+            line-height: 24px;    ← 마찬가지로 계산된 24px 이 자식에게 갑니다
+
+        말로만 보면 사소해 보입니다. 실제로 무슨 일이 벌어지는지 봅시다.
+
+        [비율을 물려주는 경우]
+            부모 : font-size 16px, line-height 1.5
+            자식 : font-size 30px
+            자식이 물려받는 것은 숫자 1.5 입니다.
+            자식의 줄 높이 = 30px × 1.5 = 45px      ← 자식 글자에 맞게 커집니다
+
+        [계산된 결과를 물려주는 경우]
+            부모 : font-size 16px, line-height 150%
+            부모의 줄 높이 = 16px × 1.5 = 24px
+            자식 : font-size 30px
+            자식이 물려받는 것은 24px 이라는 결과입니다.
+            자식의 줄 높이 = 24px                   ← 글자(30px)보다 줄이 낮습니다
+
+        줄 높이가 글자 크기보다 작으면 어떻게 될까요.
+        글자가 서로 겹쳐서 읽을 수 없게 됩니다. 아래 붉은 상자가 바로 그 결과입니다.
+
+        그래서 규칙은 하나입니다.
+
+            line-height 에는 단위 없는 숫자를 씁니다.
+
+        px 이나 % 로 써야만 하는 특별한 이유가 없다면 언제나 이쪽입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">단위 없는 숫자 — line-height: 1.5</p>
+        <div id="lh-num-parent">
+          부모입니다. 16px 이고 줄 높이는 1.5 입니다.
+          <p id="lh-num-child">
+            자식은 30px 입니다. 줄이 여러 줄이 되도록 문장을 길게 씁니다.
+            글자가 서로 겹치지 않고 잘 읽힙니다.
+          </p>
+        </div>
+        <!-- 화면: 파란 상자 안의 큰 글자가 겹치지 않고 편하게 읽힙니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">퍼센트 — line-height: 150%</p>
+        <div id="lh-pct-parent">
+          부모입니다. 16px 이고 줄 높이는 150% 입니다.
+          <p id="lh-pct-child">
+            자식은 30px 입니다. 줄이 여러 줄이 되도록 문장을 길게 씁니다.
+            글자가 위아래로 서로 닿아서 읽기가 힘듭니다.
+          </p>
+        </div>
+        <!-- 화면: 붉은 상자 안의 큰 글자들이 위아래로 서로 겹쳐서 획이 뒤엉켜 보입니다.
+                  윗줄의 받침과 아랫줄의 윗부분이 맞닿아 읽기가 힘듭니다 -->
+      </div>
+
+      <p class="doc-note">
+        두 상자에서 부모의 설정은 <strong>1.5 와 150% 로 사실상 같은 값</strong>입니다.
+        자식은 아예 건드리지도 않았습니다. 그런데 결과가 이렇게 다릅니다.
+        <strong>물려주는 것이 비율인가, 계산이 끝난 px 인가</strong>의 차이뿐입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — <code>#lh-pct-parent</code> 의 <code>150%</code> 를
+        <code>1.5</code> 로 바꿔 보세요. 자식은 손대지 않았는데 붉은 상자의 글자가
+        겹치지 않게 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 읽기 좋은 줄 간격 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 읽기 좋은 줄 간격은 1.5 에서 1.8</h2>
+      <p class="doc-desc">
+        본문 줄 간격은 <strong>1.5 ~ 1.8</strong> 사이가 무난합니다. 한글은 조금 넉넉한 편이 좋습니다.
+      </p>
+
+      <!--
+        아래 네 상자는 글자와 문장이 완전히 같고 줄 높이만 다릅니다.
+        직접 읽어 보고 어느 것이 편한지 느껴 보세요. 이건 계산이 아니라 감각입니다.
+
+            1     줄이 붙어서 어디까지가 한 줄인지 눈이 헷갈립니다
+            1.5   편합니다
+            1.8   더 편합니다. 한글 본문에서 특히 좋습니다
+            3     줄끼리 너무 멀어서 다음 줄을 찾느라 눈이 헤맵니다
+
+        한글이 영문보다 넉넉한 줄 간격을 좋아하는 이유가 있습니다.
+        한글은 네모 칸을 꽉 채우는 글자라서 위아래 여백이 적습니다.
+        그래서 같은 1.4 라도 영문보다 답답하게 느껴집니다.
+
+        참고로 이 자료의 공통.css 는 1.7 을 쓰고 있습니다. 이 범위 안입니다.
+        지금 읽고 있는 이 설명 글이 바로 1.7 입니다.
+
+        제목처럼 짧고 큰 글자는 오히려 좁게 잡습니다.
+        큰 글자는 그 자체로 이미 세로 공간을 많이 차지하기 때문입니다.
+
+            본문 제목        line-height: 1.2 ~ 1.3
+            본문             line-height: 1.5 ~ 1.8
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 (글과 글자 크기는 모두 같습니다)</p>
+        <p id="read-10">
+          줄 높이 1 입니다. 웹에서 글을 읽는 사람은 한 줄을 다 읽고 나면 눈을 왼쪽으로
+          되돌려 다음 줄의 시작을 찾습니다. 이때 줄 간격이 적당해야 눈이 헤매지 않습니다.
+        </p>
+        <p id="read-15">
+          줄 높이 1.5 입니다. 웹에서 글을 읽는 사람은 한 줄을 다 읽고 나면 눈을 왼쪽으로
+          되돌려 다음 줄의 시작을 찾습니다. 이때 줄 간격이 적당해야 눈이 헤매지 않습니다.
+        </p>
+        <p id="read-18">
+          줄 높이 1.8 입니다. 웹에서 글을 읽는 사람은 한 줄을 다 읽고 나면 눈을 왼쪽으로
+          되돌려 다음 줄의 시작을 찾습니다. 이때 줄 간격이 적당해야 눈이 헤매지 않습니다.
+        </p>
+        <p id="read-30">
+          줄 높이 3 입니다. 웹에서 글을 읽는 사람은 한 줄을 다 읽고 나면 눈을 왼쪽으로
+          되돌려 다음 줄의 시작을 찾습니다. 이때 줄 간격이 적당해야 눈이 헤매지 않습니다.
+        </p>
+        <!-- 화면: 첫 상자는 줄이 붙어 답답하고, 둘째와 셋째가 읽기 편하며,
+                  마지막 상자는 줄끼리 너무 멀어 하나의 글로 안 보입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>#read-15</code> 와 <code>#read-18</code> 사이에
+        여러분이 가장 편하다고 느끼는 값을 하나 골라 <code>#read-30</code> 에 넣어 보세요.
+        1.6 이나 1.65 처럼 소수점을 자유롭게 써도 됩니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 자간과 단어 간격 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — letter-spacing 과 word-spacing</h2>
+      <p class="doc-desc">
+        <code>letter-spacing</code> 은 <strong>글자 사이</strong>,
+        <code>word-spacing</code> 은 <strong>단어 사이</strong>를 벌립니다.
+      </p>
+
+      <!--
+            letter-spacing: 2px;    글자마다 오른쪽에 2px 씩 더 붙입니다
+            letter-spacing: -1px;   음수도 됩니다. 글자를 서로 당깁니다
+            word-spacing: 10px;     띄어쓰기 자리에 10px 을 더 붙입니다
+
+        둘 다 단위가 필요합니다. 숫자만 쓰면 그 줄은 버려집니다.
+        기본값은 0 이 아니라 normal 입니다. 크롬에서는 0 이라고 써도 normal 로 돌아옵니다.
+
+        쓸 때 주의할 점이 있습니다.
+
+            한글 본문에 letter-spacing 을 크게 주면 오히려 읽기 어려워집니다.
+            한글은 이미 글자마다 네모 칸이 꽉 차 있어서 여백이 필요 없습니다.
+
+        그래서 자간은 보통 이런 곳에만 씁니다.
+
+            큰 제목을 시원하게 벌릴 때        letter-spacing: 4px ~ 8px
+            아주 작은 안내 글씨를 또렷하게    letter-spacing: 0.5px ~ 1px
+
+        참고로 공통.css 의 .doc-demo-label(위의 '실제 결과' 라는 작은 회색 글씨) 에도
+        letter-spacing: 1px 이 들어가 있습니다. 작은 글씨를 또렷하게 만드는 용도입니다.
+
+        word-spacing 은 영어처럼 단어 사이가 뚜렷한 글에서 쓸모가 있습니다.
+        한글에서는 띄어쓰기 자리가 그대로 벌어져서 문장이 흩어져 보이기 쉽습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p id="ls-default">기본입니다. 글자 사이가 보통입니다. Spacing Test</p>
+        <p id="ls-2">letter-spacing: 2px 입니다. 글자 사이가 벌어집니다. Spacing Test</p>
+        <p id="ls-neg">letter-spacing: -1px 입니다. 글자가 서로 붙습니다. Spacing Test</p>
+        <p id="ls-title">큰 제목에 자간 6px</p>
+        <p id="wsp-10">word-spacing: 10px 입니다. 단어 사이만 벌어집니다. Spacing Test</p>
+        <!-- 화면: 둘째 줄은 글자마다 사이가 벌어지고, 셋째 줄은 글자가 서로 붙습니다.
+                  넷째 줄은 큰 제목이 시원하게 벌어져 보입니다.
+                  마지막 줄은 글자끼리는 붙어 있고 띄어쓰기 자리만 넓어집니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>letter-spacing</code> 과 <code>word-spacing</code> 의 차이를 헷갈리면
+        마지막 두 줄을 비교해 보세요. 하나는 <strong>모든 글자 사이</strong>가 벌어지고,
+        다른 하나는 <strong>띄어쓰기 자리만</strong> 벌어집니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — <code>#ls-title</code> 의 자간을 <code>1px</code> 로 줄여 보세요.
+        6px 일 때와 어느 쪽이 제목답게 보이는지 비교해 보세요. 정답은 없습니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: text-indent ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — text-indent, 첫 줄만 들여쓰기</h2>
+      <p class="doc-desc">
+        <code>text-indent</code> 는 문단의 <strong>첫 줄만</strong> 안쪽으로 밉니다.
+      </p>
+
+      <!--
+        종이책에서 문단이 바뀔 때 첫 칸을 비우는 그 들여쓰기입니다.
+
+            #ti-2em { text-indent: 2em; }
+
+        여기서 em 을 쓴 이유가 있습니다. 다만 한 가지를 정확히 해 두어야 합니다.
+
+        개념01 에서 em 을 "부모의 글자 크기를 1 로 놓고 재는 자" 라고 배웠습니다.
+        그건 font-size 에 em 을 쓸 때의 이야기입니다.
+        font-size 가 아닌 다른 속성에 쓴 em 은 기준이 하나 다릅니다.
+
+            font-size 에 쓴 em      부모의 글자 크기가 기준
+            그 밖의 속성에 쓴 em     그 요소 자신의 글자 크기가 기준
+
+        왜 이렇게 나뉘냐면, font-size 는 아직 자기 크기가 정해지기 전이라
+        자기를 기준으로 삼을 수가 없기 때문입니다. 그래서 부모를 봅니다.
+        text-indent 를 계산할 때는 자기 글자 크기가 이미 정해져 있으니 그것을 씁니다.
+
+        아래 문단은 글자 크기가 16px 이라 2em 이 32px 이 됩니다.
+        이 문단의 글자를 32px 로 키우면 들여쓰기도 64px 로 같이 커집니다.
+        "글자 두 칸만큼" 이라는 뜻이 유지되는 것입니다. px 로 쓰면 이 관계가 깨집니다.
+
+        이름을 잘 기억해 두세요. 첫 줄만입니다.
+        모든 줄을 밀고 싶다면 이 속성이 아니라 10단원의 padding 을 씁니다.
+
+        음수도 쓸 수 있습니다. 첫 줄만 왼쪽으로 튀어나오게 됩니다.
+        목록에서 번호를 바깥으로 빼는 모양을 만들 때 씁니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p id="ti-0">
+          들여쓰기가 없는 문단입니다. 문장을 길게 써서 두 줄 이상이 되도록 만듭니다.
+          모든 줄이 왼쪽 끝에서 시작합니다. 계속 이어 쓰는 문장입니다.
+        </p>
+        <p id="ti-2em">
+          들여쓰기가 2em 인 문단입니다. 문장을 길게 써서 두 줄 이상이 되도록 만듭니다.
+          첫 줄만 안으로 들어가 있습니다. 계속 이어 쓰는 문장입니다.
+        </p>
+        <!-- 화면: 둘째 상자의 첫 줄만 오른쪽으로 밀려 있고,
+                  둘째 줄부터는 첫 상자와 똑같이 왼쪽 끝에 붙습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>#ti-2em</code> 의 값을 <code>4em</code> 으로 바꿔 보세요.
+        몇 px 이 될지 먼저 계산해 보고 확인하세요. (힌트: 글자 크기가 16px 입니다)
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: white-space ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — white-space 맛보기</h2>
+      <p class="doc-desc">
+        HTML 은 원래 <strong>공백을 여러 칸 써도 한 칸으로 줄입니다.</strong>
+        그 규칙을 바꾸는 속성입니다.
+      </p>
+
+      <!--
+        02단원에서 "스페이스를 여러 번 눌러도 한 칸으로 보인다" 는 것을 배웠습니다.
+        그래서 &nbsp; 라는 특수문자를 써야 했습니다.
+        그 규칙을 통째로 바꾸는 것이 white-space 입니다.
+
+            normal     (기본) 여러 칸 공백은 한 칸으로, 줄바꿈도 공백 한 칸으로.
+                       줄은 상자 폭에 맞춰 알아서 바뀝니다
+            pre        공백도 줄바꿈도 코드에 쓴 그대로. 줄은 저절로 안 바뀝니다
+            pre-line   여러 칸 공백은 한 칸으로 줄이되, 줄바꿈은 그대로 지킵니다
+            pre-wrap   공백은 그대로 지키고, 줄은 상자 폭에 맞춰 바뀌기도 합니다
+            nowrap     줄을 절대 안 바꿉니다 (개념05 에서 자세히 봅니다)
+
+        pre 는 preformatted(미리 서식이 정해진) 의 줄임말입니다.
+        시나 주소처럼 줄바꿈 자체가 내용인 글에 씁니다.
+
+        아래 세 상자에는 완전히 똑같은 글자를 넣었습니다.
+        코드에서는 낱말 사이를 여러 칸 띄우고 중간에 줄바꿈을 한 번 넣었습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">기본 (normal)</p>
+        <p id="ws-normal">공백    네 칸    그리고 아래에서 줄바꿈
+한 번 했습니다</p>
+        <!-- 화면: 공백이 전부 한 칸으로 줄고, 줄바꿈도 무시되어 한 줄로 이어집니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">white-space: pre</p>
+        <p id="ws-pre">공백    네 칸    그리고 아래에서 줄바꿈
+한 번 했습니다</p>
+        <!-- 화면: 공백 네 칸이 그대로 보이고, 줄도 코드에 쓴 자리에서 바뀝니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">white-space: pre-line</p>
+        <p id="ws-preline">공백    네 칸    그리고 아래에서 줄바꿈
+한 번 했습니다</p>
+        <!-- 화면: 공백은 한 칸으로 줄었지만 줄바꿈은 그대로 살아 있어 두 줄로 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>nowrap</code> 은 줄을 아예 안 바꾸는 값이라 글자가 상자를 뚫고 나갑니다.
+        그 이야기는 <strong>개념05</strong> 에서 상자 폭과 함께 제대로 다룹니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — <code>#ws-preline</code> 을 <code>pre-wrap</code> 으로
+        바꿔 보세요. 공백 네 칸이 다시 살아나는 것을 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        간격은 <strong>틀렸는지 아닌지 눈으로만 알 수 있는</strong> 영역입니다.
+        아래 상자들은 전부 실제로 그렇게 그려진 결과입니다.
+      </p>
+
+      <!-- [실수 1] line-height 에 단위를 붙임 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — line-height 에 px 을 붙여서 글자가 겹침</span>
+        <div class="doc-code">#miss-lh-parent { font-size: 16px; line-height: 24px; }
+#miss-lh-child  { font-size: 30px; }</div>
+        <div id="miss-lh-parent">
+          부모입니다. 16px, 줄 높이 24px.
+          <p id="miss-lh-child">
+            자식은 30px 입니다. 줄이 여러 줄이 되도록 길게 씁니다.
+            글자보다 줄 높이가 낮아서 위아래가 서로 닿습니다.
+          </p>
+        </div>
+        <p>
+          자식은 아무것도 안 건드렸는데 글자가 겹칩니다.
+          <strong>계산이 끝난 24px 이 그대로 상속</strong>되었기 때문입니다.
+          섹션 2 에서 본 그대로입니다. 고치는 방법은 단위를 빼는 것 하나입니다.
+        </p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">#miss-lh-parent { font-size: 16px; line-height: 1.5; }</div>
+      </div>
+
+      <!-- [실수 2] 소수점을 쉼표로 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 소수점을 쉼표로 씀</span>
+        <div class="doc-code">line-height: 1,5;</div>
+        <p id="miss-comma">이 줄에는 line-height: 1,5; 가 걸려 있습니다.</p>
+        <p>
+          <strong>아무 일도 일어나지 않습니다.</strong> 물려받은 1.7 그대로입니다.
+          CSS 에서 소수점은 <strong>마침표</strong>입니다. 쉼표는 값을 나누는 기호라서
+          브라우저가 이 줄을 이해하지 못하고 버립니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] letter-spacing 에 단위를 빠뜨림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 자간에 단위를 빠뜨림</span>
+        <div class="doc-code">letter-spacing: 3;</div>
+        <p id="miss-ls">이 줄에는 letter-spacing: 3; 이 걸려 있습니다.</p>
+        <p>
+          <strong>아무 일도 일어나지 않습니다.</strong> 자간은 길이라서 단위가 꼭 필요합니다.
+          <code>line-height</code> 만 단위 없는 숫자를 허락하는 예외입니다.
+          이 둘을 헷갈려서 <code>letter-spacing: 3;</code> 이라고 쓰는 일이 아주 잦습니다.
+        </p>
+      </div>
+
+      <!-- [실수 4] text-indent 로 모든 줄을 밀려고 함 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — text-indent 로 문단 전체를 밀려고 함</span>
+        <div class="doc-code">text-indent: 30px;</div>
+        <p id="miss-indent">
+          모든 줄을 안으로 밀고 싶어서 text-indent 를 걸었습니다.
+          그런데 문장을 길게 써서 두 줄이 되면 이렇게 됩니다.
+          둘째 줄부터는 왼쪽 끝에 그대로 붙습니다.
+        </p>
+        <p>
+          <strong>첫 줄만 들어가고 나머지는 그대로입니다.</strong> 속성이 원래 그런 것입니다.
+          문단 전체를 밀고 싶다면 10단원에서 배울 <code>padding</code> 을 씁니다.
+        </p>
+      </div>
+
+      <!-- [실수 5] white-space: pre 를 본문에 걸음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 본문에 white-space: pre 를 걸음</span>
+        <div class="doc-code">white-space: pre;</div>
+        <p id="miss-pre">코드에서
+          줄을 바꾸고
+            들여쓰기까지 한 글입니다.</p>
+        <p>
+          <strong>코드의 줄바꿈과 들여쓰기 공백이 그대로 화면에 나옵니다.</strong>
+          코드를 보기 좋게 정리하려고 넣은 들여쓰기까지 내용으로 취급되기 때문입니다.
+          게다가 <code>pre</code> 는 줄을 저절로 바꾸지 않아서
+          긴 문장을 넣으면 상자 밖으로 뚫고 나갑니다(개념05).
+          줄바꿈만 살리고 싶으면 <code>pre-line</code> 을 쓰세요.
+        </p>
+      </div>
+
+      <!-- [실수 6] 줄 간격을 너무 좁게 줌 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 6 — 예뻐 보이려고 줄 간격을 너무 좁게 줌</span>
+        <div class="doc-code">line-height: 1;</div>
+        <p>
+          디자인 시안에서 글이 짧을 때는 좁은 줄 간격이 깔끔해 보입니다.
+          그런데 실제 본문처럼 여러 줄이 되면 <strong>어디까지가 한 줄인지 눈이 헷갈립니다.</strong>
+          섹션 1 의 첫 상자를 다시 읽어 보세요.
+          제목에는 좁게, 본문에는 1.5 이상으로 나눠 주는 것이 안전합니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>line-height</code> 는 한 줄이 차지하는 세로 높이입니다.</p>
+      <p>2. <strong>단위 없는 숫자</strong>로 쓰세요. 그래야 자식이 자기 글자 크기에 맞춰 계산합니다.</p>
+      <p>3. <code>%</code> 나 <code>px</code> 로 쓰면 계산이 끝난 값이 상속되어 글자가 겹칠 수 있습니다.</p>
+      <p>4. 본문 줄 간격은 <strong>1.5 ~ 1.8</strong>, 제목은 1.2 ~ 1.3 이 무난합니다.</p>
+      <p>5. <code>letter-spacing</code> 은 글자 사이, <code>word-spacing</code> 은 단어 사이입니다. 단위 필수입니다.</p>
+      <p>6. <code>text-indent</code> 는 <strong>첫 줄만</strong> 밉니다. 문단 전체는 10단원의 여백으로 합니다.</p>
+      <p>7. <code>white-space</code> 로 공백과 줄바꿈을 그대로 살릴 수 있습니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) #lh-2 를 이렇게 바꿉니다.
+
+                #lh-2 { line-height: 4; background-color: #eef2f7; }
+
+            → 글자 크기는 그대로인데 회색 상자만 세로로 크게 늘어납니다.
+              한 줄이 16 × 4 = 64px 을 차지하게 되었기 때문입니다.
+              세 줄짜리 문단이라 상자는 96px 에서 64 × 3 = 192px 이 됩니다.
+
+         2) #lh-pct-parent 를 이렇게 바꿉니다.
+
+                #lh-pct-parent { font-size: 16px; line-height: 1.5; ... }
+
+            → 자식은 손대지 않았는데 붉은 상자의 큰 글자가 겹치지 않습니다.
+              자식이 물려받는 것이 24px 이라는 결과에서 1.5 라는 비율로 바뀌었고,
+              자식의 줄 높이가 30 × 1.5 = 45px 로 다시 계산되었기 때문입니다.
+
+         3) 예를 들어 1.65 를 골랐다면 이렇게 씁니다.
+
+                #read-30 { line-height: 1.65; background-color: #f4f4f4; }
+
+            → 마지막 상자가 위의 두 상자와 비슷한 느낌이 됩니다.
+              값에 정답은 없지만 본문에서는 1.5 아래로 내려가지 않는 편이 좋습니다.
+
+         4) #ls-title 을 이렇게 바꿉니다.
+
+                #ls-title { font-size: 24px; font-weight: bold; letter-spacing: 1px; }
+
+            → 제목이 훨씬 촘촘해 보입니다. 6px 쪽이 시원하고 1px 쪽이 단정합니다.
+              한글 제목에서는 2px ~ 4px 정도가 무난합니다.
+
+         5) #ti-2em 을 이렇게 바꿉니다.
+
+                #ti-2em { text-indent: 4em; background-color: #fff8dc; }
+
+            → 16 × 4 = 64px 이 됩니다. 첫 줄이 더 깊게 들어갑니다.
+
+         6) #ws-preline 을 이렇게 바꿉니다.
+
+                #ws-preline { white-space: pre-wrap; background-color: #f4f4f4; }
+
+            → 공백 네 칸이 다시 살아나고 줄바꿈도 그대로입니다.
+              pre 와 다른 점은 상자 폭이 좁아지면 줄이 알아서 바뀐다는 것입니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      body | line-height | 27.2px
+      #lh-normal | line-height | normal
+      #lh-normal | ~height | 63
+      #lh-1 | line-height | 16px
+      #lh-1 | ~height | 48
+      #lh-15 | line-height | 24px
+      #lh-15 | ~height | 72
+      #lh-2 | line-height | 32px
+      #lh-2 | ~height | 96
+      #lh-num-parent | line-height | 24px
+      #lh-num-child | line-height | 45px
+      #lh-pct-parent | line-height | 24px
+      #lh-pct-child | line-height | 24px
+      #read-10 | line-height | 16px
+      #read-18 | line-height | 28.8px
+      #read-30 | line-height | 48px
+      #ls-default | letter-spacing | normal
+      #ls-2 | letter-spacing | 2px
+      #ls-neg | letter-spacing | -1px
+      #ls-title | letter-spacing | 6px
+      #wsp-10 | word-spacing | 10px
+      #ti-0 | text-indent | 0px
+      #ti-2em | text-indent | 32px
+      #ws-normal | white-space | normal
+      #ws-pre | white-space | pre
+      #ws-preline | white-space | pre-line
+      #miss-lh-child | line-height | 24px
+      #miss-comma | line-height | 27.2px
+      #miss-ls | letter-spacing | normal
+      #miss-indent | text-indent | 30px
+      #miss-pre | white-space | pre
+    -->
+  </body>
+</html>

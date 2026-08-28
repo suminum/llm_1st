@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>00단원 개념05 - 브랜치와 충돌</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         00단원 · 개념 05 — 브랜치와 충돌
+         ------------------------------------------------------------
+         실행: 이 파일을 브라우저로 열고, 터미널도 같이 여세요.
+         ============================================================
+
+         지금까지는 한 줄로만 갔습니다.
+
+             첫 페이지 → 설명 문단 → 색 바꾸기 → …
+
+         그런데 이런 일이 생깁니다.
+
+             "새 기능을 만들어 보고 싶은데, 잘 안 되면 버리고 싶다"
+             "둘이 각자 다른 걸 만드는데 서로 안 부딪히게 하고 싶다"
+
+         브랜치(가지)가 그것을 합니다.
+         원래 줄기는 그대로 두고, 옆으로 하나 뻗어서 거기서 일합니다.
+         잘 되면 합치고, 아니면 버립니다.
+
+         ★ 이 단원의 진짜 목적은 **충돌을 한 번 내 보는 것**입니다.
+
+           충돌은 고장이 아닙니다. 정상입니다.
+           그런데 처음 보면 파일이 이상해져서 다들 당황합니다.
+           여기서 일부러 한 번 내고, 풀어 보고 넘어갑니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 05 — 브랜치와 충돌</h1>
+    <p class="doc-sub">00단원 · 개발환경과 Git</p>
+
+    <p class="doc-guide">
+      <strong>연습 폴더에서 같이 따라 하세요.</strong> 특히 섹션 4·5는 눈으로 봐야 합니다.
+      <br /><br />
+      <strong>충돌이 나도 아무 일 없습니다.</strong> 이 단원에서는 일부러 냅니다.
+      <br /><br />
+      아래 결과는 <strong>실제로 쳐 본 것</strong>입니다. 커밋 번호만 다릅니다.
+    </p>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 가지를 하나 냅니다</h2>
+
+      <div class="doc-code">$ git branch
+* main
+
+$ git switch -c 색바꾸기
+Switched to a new branch '색바꾸기'</div>
+
+      <p class="doc-note">
+        <code>-c</code> 는 create 입니다. <strong>만들면서 그리로 옮겨 갑니다.</strong>
+        <code>*</code> 는 "지금 여기" 라는 표시입니다.
+        <br />
+        ★ 가지를 내도 <strong>파일은 하나도 안 바뀝니다.</strong>
+        폴더를 봐도 똑같습니다. 바뀌는 것은 "지금 어느 줄에 서 있는가" 뿐입니다.
+      </p>
+
+      <p class="doc-desc">여기서 파일을 고치고 커밋합니다.</p>
+
+      <div class="doc-code">$ git commit -am "글자를 파랗게"
+[색바꾸기 73859b6] 글자를 파랗게
+ 1 file changed, 1 insertion(+)</div>
+
+      <p class="doc-note">
+        대괄호 안이 <code>main</code> 이 아니라 <strong><code>색바꾸기</code></strong> 입니다.
+        이 커밋은 그 가지에만 있습니다.
+        <br />
+        <code>-am</code> 은 <code>-a</code>(고친 것 전부 담기) + <code>-m</code>(메시지) 입니다.
+        <strong>새로 만든 파일은 <code>-a</code> 로 안 담깁니다.</strong> 그건 <code>git add</code> 를 해야 합니다.
+      </p>
+
+      <p class="doc-desc">원래 줄기로 돌아가 봅니다.</p>
+
+      <div class="doc-code">$ git switch -
+Switched to branch 'main'</div>
+
+      <p class="doc-note">
+        <code>-</code> 는 "바로 전에 있던 곳" 입니다. <code>git switch main</code> 과 같습니다.
+        <br />
+        ★★ <strong>돌아온 순간 파일 내용이 바뀝니다.</strong> VS Code 를 열어 두고 해 보세요.
+        방금 넣은 파란 줄이 사라져 있습니다. <strong>지워진 게 아니라 그 가지에 있는 것</strong>입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — VS Code 에 <code>index.html</code> 을 열어 둔 채로
+        <code>git switch</code> 로 가지를 오가 보세요. 화면이 저절로 바뀌는 것을 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 어떻게 생겼는지 봅니다</h2>
+
+      <div class="doc-code">$ git log --oneline --all --graph
+* 73859b6 글자를 파랗게
+* 6d15fca 설명 문단을 넣었습니다
+* ae4c0c2 첫 페이지를 만들었습니다</div>
+
+      <p class="doc-note">
+        <code>--all</code> 은 모든 가지를, <code>--graph</code> 는 그림으로 보여 줍니다.
+        <br />
+        ★ 지금은 <strong>한 줄로 나옵니다.</strong> <code>main</code> 에서 뻗어 나온 뒤
+        <code>main</code> 은 가만히 있었기 때문입니다. 갈라진 게 아니라 앞서 나간 것뿐입니다.
+        <br />
+        섹션 4에서 진짜로 갈라진 모양을 봅니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — <code>--all</code> 을 빼고 쳐 보세요. 무엇이 사라집니까?
+        (지금 서 있는 가지에서 보이는 것만 나옵니다)
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 합칩니다 (merge)</h2>
+
+      <div class="doc-code">$ git merge 색바꾸기
+Updating 6d15fca..73859b6
+Fast-forward
+ index.html | 1 +
+ 1 file changed, 1 insertion(+)
+
+$ git log --oneline
+73859b6 글자를 파랗게
+6d15fca 설명 문단을 넣었습니다
+ae4c0c2 첫 페이지를 만들었습니다</div>
+
+      <p class="doc-note">
+        <strong><code>Fast-forward</code></strong> 는 "그냥 따라가면 된다" 는 뜻입니다.
+        <code>main</code> 이 그동안 가만히 있었으니, 표시만 앞으로 옮기면 끝입니다.
+        <strong>새 커밋이 안 생깁니다.</strong>
+        <br />
+        ★ 합칠 때 이 말이 나오면 <strong>충돌이 날 수가 없습니다.</strong> 제일 편한 경우입니다.
+      </p>
+
+      <p class="doc-note">
+        다 쓴 가지는 지웁니다. <code>git branch -d 색바꾸기</code>
+        <br />
+        <code>-d</code> 는 "합쳐진 것만 지워라" 입니다. 안 합쳐진 가지면 거부합니다.
+        <strong>그 거부가 안전장치입니다.</strong> (<code>-D</code> 는 무조건 지웁니다. 조심하세요)
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 합친 뒤 <code>git branch</code> 로 가지 목록을 보고,
+        <code>-d</code> 로 지워 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — ★ 일부러 충돌을 냅니다</h2>
+
+      <p class="doc-desc">
+        <strong>같은 파일의 같은 줄</strong>을 양쪽에서 다르게 고치면 충돌이 납니다.
+        만들어 보겠습니다.
+      </p>
+
+      <div class="doc-code">$ git switch -c 제목바꾸기
+Switched to a new branch '제목바꾸기'
+
+   (index.html 의 '안녕하세요' 를 '반갑습니다' 로 고칩니다)
+
+$ git commit -am "인사말을 반갑습니다로"
+[제목바꾸기 cb46bb8] 인사말을 반갑습니다로
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+$ git switch -
+Switched to branch 'main'
+
+   (같은 줄의 '안녕하세요' 를 '환영합니다' 로 고칩니다)
+
+$ git commit -am "인사말을 환영합니다로"
+[main b53be6a] 인사말을 환영합니다로
+ 1 file changed, 1 insertion(+), 1 deletion(-)</div>
+
+      <p class="doc-note">
+        <strong>줄 하나가 바뀌었는데 <code>1 insertion(+), 1 deletion(-)</code> 입니다.</strong>
+        Git 은 "줄을 고쳤다" 를 <strong>"옛 줄을 지우고 새 줄을 넣었다"</strong> 로 봅니다.
+        <br />
+        ★ 그래서 개념02의 <code>git diff</code> 에서도 <code>-</code> 와 <code>+</code> 가 짝으로 나옵니다.
+      </p>
+
+      <p class="doc-desc">이제 합쳐 봅니다.</p>
+
+      <div class="doc-code">$ git merge 제목바꾸기
+Auto-merging index.html
+CONFLICT (content): Merge conflict in index.html
+Automatic merge failed; fix conflicts and then commit the result.
+
+$ git status --short
+UU index.html</div>
+
+      <p class="doc-note">
+        <strong><code>CONFLICT</code></strong> 가 났습니다. <code>UU</code> 는 개념02 섹션4의
+        그 기호입니다. <strong>양쪽이 다 고쳤다</strong>는 뜻입니다.
+        <br />
+        ★ <strong>고장이 아닙니다.</strong> Git 이 "둘 중 뭐가 맞는지 나는 모르겠다,
+        네가 정해라" 라고 하는 것입니다. 사람이 정할 수밖에 없는 일입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 순서를 그대로 해서 충돌을 내 보세요.
+        무섭지 않다는 것을 손으로 확인하는 게 목적입니다.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 충돌을 풉니다</h2>
+
+      <p class="doc-desc">파일을 열어 봅니다. 이렇게 되어 있습니다.</p>
+
+      <div class="doc-code">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+&lt;h1&gt;환영합니다&lt;/h1&gt;
+=======
+&lt;h1&gt;반갑습니다&lt;/h1&gt;
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 제목바꾸기
+&lt;p&gt;처음 만든 페이지입니다.&lt;/p&gt;
+&lt;p style='color:blue'&gt;파랑&lt;/p&gt;</div>
+
+      <p class="doc-note">
+        <strong>읽는 법</strong>
+        <div class="doc-code">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD          여기부터가 '지금 내가 서 있는 가지' 의 것
+   (내 쪽 내용)
+=======                    경계선
+   (상대 쪽 내용)
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 제목바꾸기      여기까지가 '합치려는 가지' 의 것</div>
+        <code>HEAD</code> 는 지금 서 있는 곳입니다. 여기서는 <code>main</code> 입니다.
+      </p>
+
+      <p class="doc-desc">
+        <strong>고치는 방법은 그냥 "파일을 원하는 모양으로 만드는 것"</strong>입니다.
+        특별한 명령이 없습니다. 편집기에서 지우면 됩니다.
+      </p>
+
+      <div class="doc-code">   (기호 세 줄과 안 쓸 쪽을 지웁니다)
+
+&lt;h1&gt;환영합니다&lt;/h1&gt;
+&lt;p&gt;처음 만든 페이지입니다.&lt;/p&gt;
+&lt;p style='color:blue'&gt;파랑&lt;/p&gt;</div>
+
+      <div class="doc-bad">
+        <strong>★ 제일 흔한 실수 — 기호를 안 지움</strong>
+        <p class="doc-desc">
+          <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> 나 <code>=======</code> 를 남긴 채로 커밋합니다.
+          그러면 그 기호가 <strong>화면에 그대로 보입니다.</strong>
+          <br />
+          ★ 커밋하기 전에 파일에서 <code>&lt;&lt;&lt;&lt;</code> 를 검색해 보세요. 하나도 없어야 합니다.
+        </p>
+      </div>
+
+      <p class="doc-desc">다 고쳤으면 담고 커밋합니다.</p>
+
+      <div class="doc-code">$ git add index.html
+
+$ git commit -m "인사말 충돌을 풀었습니다"
+[main 7c6d6e7] 인사말 충돌을 풀었습니다
+
+$ git log --oneline
+7c6d6e7 인사말 충돌을 풀었습니다
+b53be6a 인사말을 환영합니다로
+cb46bb8 인사말을 반갑습니다로
+73859b6 글자를 파랗게
+6d15fca 설명 문단을 넣었습니다
+ae4c0c2 첫 페이지를 만들었습니다</div>
+
+      <p class="doc-note">
+        <strong>이번에는 <code>1 file changed</code> 같은 줄이 안 나왔습니다.</strong>
+        합치는 커밋은 그 줄을 안 보여 줍니다. <strong>정상입니다.</strong>
+        <br />
+        그리고 <code>cb46bb8</code>(상대 가지의 커밋)이 목록에 들어와 있습니다.
+        합쳤으니 이제 <code>main</code> 의 역사이기도 합니다.
+      </p>
+
+      <div class="doc-good">
+        <strong>중간에 그만두고 싶으면</strong>
+        <div class="doc-code">$ git merge --abort</div>
+        합치기 전 상태로 되돌립니다. <strong>충돌이 무서우면 이걸 먼저 외워 두세요.</strong>
+        빠져나갈 길이 있다는 걸 알면 덜 무섭습니다.
+      </div>
+
+      <p class="doc-note">
+        <strong>VS Code 를 쓰면 훨씬 편합니다.</strong> 충돌 난 파일을 열면
+        <code>Accept Current Change</code> / <code>Accept Incoming Change</code> /
+        <code>Accept Both Changes</code> 버튼이 위에 나옵니다. 눌러서 고르면 됩니다.
+        <br />
+        ★ 그래도 <strong>기호를 직접 지워 보는 것을 한 번은 해 보세요.</strong>
+        버튼이 뭘 하는지 알고 눌러야 합니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 충돌을 손으로 풀어 커밋하고, <code>git log --oneline</code> 으로
+        양쪽 커밋이 다 들어와 있는지 확인하세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — 충돌을 한 번 더 내고 이번에는 <code>git merge --abort</code> 로
+        빠져나와 보세요. <code>git status</code> 가 깨끗해집니까?
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+
+      <p class="doc-desc"><strong>[실수 1] 충돌 기호를 안 지우고 커밋</strong></p>
+      <p class="doc-note">
+        화면에 <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> 가 그대로 보입니다. (섹션 5)
+      </p>
+
+      <p class="doc-desc"><strong>[실수 2] 가지를 안 만들고 <code>main</code> 에서 다 함</strong></p>
+      <p class="doc-note">
+        틀린 것은 아닙니다. 혼자 연습할 때는 그래도 됩니다.
+        다만 <strong>실험하다 망가지면 되돌리기가 번거롭습니다.</strong>
+      </p>
+
+      <p class="doc-desc"><strong>[실수 3] 고친 것을 안 커밋한 채 <code>switch</code></strong></p>
+      <p class="doc-note">
+        <code>error: Your local changes … would be overwritten by checkout</code> 이 나옵니다.
+        <strong>커밋하거나 되돌린 뒤에</strong> 옮기세요.
+      </p>
+
+      <p class="doc-desc"><strong>[실수 4] <code>-am</code> 으로 새 파일도 담길 줄 앎</strong></p>
+      <p class="doc-note">
+        <code>-a</code> 는 <strong>이미 알고 있는 파일</strong>만 담습니다.
+        새로 만든 파일은 <code>git add</code> 를 해야 합니다. (섹션 1)
+      </p>
+
+      <p class="doc-desc"><strong>[실수 5] <code>git branch -D</code> 로 함부로 지움</strong></p>
+      <p class="doc-note">
+        <code>-d</code> 는 안 합쳐졌으면 거부합니다. <code>-D</code> 는 그냥 지웁니다.
+        <strong>거부당했으면 이유가 있는 것</strong>입니다. <code>-D</code> 로 밀어붙이지 마세요.
+      </p>
+
+      <p class="doc-desc"><strong>[실수 6] 충돌이 나면 뭔가 망가진 줄 앎</strong></p>
+      <p class="doc-note">
+        정상입니다. 그리고 <code>git merge --abort</code> 로 언제든 되돌아갈 수 있습니다.
+      </p>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">정리</p>
+      <ul>
+        <li><code>git switch -c 이름</code> 으로 가지를 만들며 옮겨 갑니다. <code>git switch -</code> 로 돌아옵니다.</li>
+        <li>가지를 오가면 <strong>파일 내용이 저절로 바뀝니다.</strong> 지워진 게 아닙니다.</li>
+        <li><code>git merge 가지</code> 로 합칩니다. <code>Fast-forward</code> 면 충돌이 날 수 없습니다.</li>
+        <li>★ <strong>같은 파일의 같은 줄</strong>을 양쪽에서 고치면 충돌입니다. 고장이 아닙니다.</li>
+        <li><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> 가 내 쪽, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> 쪽이 상대 쪽입니다.
+          <strong>기호를 지우고 원하는 모양으로 만들면</strong> 끝입니다.</li>
+        <li>무서우면 <code>git merge --abort</code>. 빠져나갈 길이 있습니다.</li>
+        <li><code>-am</code> 은 <strong>새 파일을 안 담습니다.</strong></li>
+      </ul>
+    </div>
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      .doc-head | text | 개념 05 — 브랜치와 충돌
+      .doc-sub | text | 00단원 · 개발환경과 Git
+      .doc-summary-title | text | 정리
+      .doc-guide | ?visible | yes
+      .doc-code | white-space | pre
+      .doc-bad | ?visible | yes
+      .doc-good | ?visible | yes
+      body | color | rgb(34, 34, 34)
+    -->
+  </body>
+</html>

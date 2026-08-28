@@ -1,0 +1,581 @@
+// ============================================================
+// 06단원 연습문제 정답 — 폼과 입력
+// ------------------------------------------------------------
+// 실행: 실습프로젝트에서 npm run dev → 왼쪽 목록에서 이 예제를 고르세요.
+//       직접 쳐 보세요. F12 → Console 도 함께.
+// ============================================================
+
+// ───── 문제 1 ─────
+
+import { useState } from "react";
+
+function Q1() {
+  const [text, setText] = useState("");
+
+  return (
+    <div className="demo">
+      <h3>문제 1 — 제어 컴포넌트</h3>
+      <input
+        value={text}
+        onChange={(e) => setText(e.target.value)}
+        placeholder="이름을 입력하세요"
+      />
+      <div className="output">입력한 값: {text}</div>
+    </div>
+  );
+}
+
+// 화면: 입력한 값:
+// "김민준" 을 치면 → 화면: 입력한 값: 김민준
+//
+// value 와 onChange 는 한 세트입니다.
+//   value    state 를 칸에 내보내는 길
+//   onChange 친 글자를 state 로 들이는 길
+// 한쪽만 있으면 값이 돌지 않습니다.
+// onChange 를 빼면 한 글자도 안 써집니다. 문제 15 에서 직접 확인합니다.
+
+// ───── 문제 2 ─────
+
+function Q2() {
+  const [memo, setMemo] = useState("");
+
+  return (
+    <div className="demo">
+      <h3>문제 2 — 글자 수 세기</h3>
+      <input value={memo} onChange={(e) => setMemo(e.target.value)} />
+      <div className="output">{memo.length}자</div>
+    </div>
+  );
+}
+
+// 화면: 0자
+// "김민준" 을 치면 → 화면: 3자
+//
+// 글자 수를 state 로 따로 두지 않았습니다. memo 만 있으면 세어지니까요.
+// 계산할 수 있는 값을 state 로 두면 두 값이 어긋납니다. (07단원 개념05)
+
+// ───── 문제 3 ─────
+
+function Q3() {
+  const [text, setText] = useState("아메리카노");
+
+  return (
+    <div className="demo">
+      <h3>문제 3 — 지우기 버튼</h3>
+      <input value={text} onChange={(e) => setText(e.target.value)} />
+      <button onClick={() => setText("")}>지우기</button>
+      <div className="output">지금 값: {text}</div>
+    </div>
+  );
+}
+
+// 화면: 지금 값: 아메리카노
+// 화면(누르면): 입력칸이 비고 → 지금 값:
+//
+// 입력칸을 직접 붙잡는 코드가 한 줄도 없습니다.
+// value={text} 로 묶어 뒀으니 state 를 비우면 칸도 따라 비워집니다.
+// 이것이 value 를 붙이는 가장 큰 이득입니다.
+
+// ───── 문제 4 ─────
+
+function Q4() {
+  const [form, setForm] = useState({ name: "김민준", memo: "" });
+
+  function handleMemo(e) {
+    setForm({ ...form, memo: e.target.value });
+  }
+
+  return (
+    <div className="demo">
+      <h3>문제 4 — 객체 state 와 스프레드</h3>
+      <div>
+        이름 <input value={form.name} readOnly />
+      </div>
+      <div>
+        메모 <input value={form.memo} onChange={handleMemo} />
+      </div>
+      <div className="output">
+        {form.name} / {form.memo}
+      </div>
+    </div>
+  );
+}
+
+// 화면: 김민준 /
+// 메모에 "라떼" 를 치면 → 화면: 김민준 / 라떼
+//
+// ...form 이 없으면 setForm({ memo: ... }) 가 되어 name 이 통째로 사라집니다.
+// 에러는 안 납니다. 이름 자리만 조용히 비어 버립니다.
+// 객체 state 는 "나머지는 하던 대로" 를 먼저 적는 습관을 들이세요.
+
+// ───── 문제 5 ─────
+
+function Q5() {
+  const [form, setForm] = useState({ id: "", pw: "" });
+
+  function handleChange(e) {
+    setForm({ ...form, [e.target.name]: e.target.value });
+  }
+
+  return (
+    <div className="demo">
+      <h3>문제 5 — 핸들러 하나로 두 칸</h3>
+      <div>
+        아이디 <input name="id" value={form.id} onChange={handleChange} />
+      </div>
+      <div>
+        비밀번호 <input name="pw" value={form.pw} onChange={handleChange} />
+      </div>
+      <div className="output">
+        {form.id} / {form.pw}
+      </div>
+    </div>
+  );
+}
+
+// 화면: /
+// 아이디에 "minjun", 비밀번호에 "1234" 를 치면 → 화면: minjun / 1234
+//
+// [e.target.name] 의 대괄호가 핵심입니다.
+// 대괄호가 없으면 name 이라는 글자 그대로가 키가 되어,
+// 어느 칸을 쳐도 form.name 만 생기고 화면은 그대로입니다.
+// 아이디 칸에서 오면 "id", 비밀번호 칸에서 오면 "pw" 가 됩니다.
+
+// ───── 문제 6 ─────
+
+function Q6() {
+  const [item, setItem] = useState({ price: "4000", count: "2" });
+
+  function handleChange(e) {
+    setItem({ ...item, [e.target.name]: e.target.value });
+  }
+
+  const total = Number(item.price) * Number(item.count);
+
+  return (
+    <div className="demo">
+      <h3>문제 6 — 숫자 칸 합계</h3>
+      <div>
+        가격 <input type="number" name="price" value={item.price} onChange={handleChange} />
+      </div>
+      <div>
+        개수 <input type="number" name="count" value={item.count} onChange={handleChange} />
+      </div>
+      <div className="output">합계: {total}원</div>
+    </div>
+  );
+}
+
+// 화면: 합계: 8000원
+// 개수를 3 으로 바꾸면 → 화면: 합계: 12000원
+//
+// type="number" 여도 e.target.value 는 문자열입니다.
+// 곱하기는 Number 를 안 씌워도 우연히 맞습니다. 자바스크립트가 알아서 숫자로 보거든요.
+// 그런데 더하기는 "4000" + "2" 가 "40002" 가 됩니다.
+// 그래서 계산 직전에 Number( ) 를 씌우는 것을 습관으로 하세요.
+
+// ───── 문제 7 ─────
+
+function Q7() {
+  const [agree, setAgree] = useState(false);
+
+  return (
+    <div className="demo">
+      <h3>문제 7 — 체크박스</h3>
+      <label>
+        <input
+          type="checkbox"
+          checked={agree}
+          onChange={(e) => setAgree(e.target.checked)}
+        />
+        약관에 동의합니다
+      </label>
+      <div className="output">동의: {agree ? "함" : "안 함"}</div>
+    </div>
+  );
+}
+
+// 화면: 동의: 안 함
+// 화면(누르면): 체크하면 → 동의: 함 / 다시 풀면 → 동의: 안 함
+//
+// 체크박스는 value 가 아니라 checked 입니다. 두 자리 모두 그렇습니다.
+//   붙일 때  checked={agree}
+//   읽을 때  e.target.checked
+// e.target.value 를 읽으면 켜도 꺼도 "on" 이 들어옵니다.
+// "on" 은 truthy 라서 한 번 켜면 영원히 "함" 이 됩니다.
+
+// ───── 문제 8 ─────
+
+function Q8() {
+  const [size, setSize] = useState("M");
+
+  return (
+    <div className="demo">
+      <h3>문제 8 — select</h3>
+      <select value={size} onChange={(e) => setSize(e.target.value)}>
+        <option value="S">작은 것</option>
+        <option value="M">보통</option>
+        <option value="L">큰 것</option>
+      </select>
+      <div className="output">고른 사이즈: {size}</div>
+    </div>
+  );
+}
+
+// 화면: 목록에 '보통' 이 골라져 있고 → 고른 사이즈: M
+// 화면(누르면): '큰 것' 을 고르면 → 고른 사이즈: L
+//
+// value 는 option 이 아니라 select 에 줍니다.
+// option 에 selected 를 붙이면 React 가 콘솔로 그러지 말라고 알려 줍니다.
+// 고른 값은 option 의 value 입니다. 화면에 보이는 "큰 것" 이 아닙니다.
+
+// ───── 문제 9 ─────
+
+function Q9() {
+  const [pay, setPay] = useState("카드");
+
+  return (
+    <div className="demo">
+      <h3>문제 9 — 라디오</h3>
+      <label>
+        <input
+          type="radio"
+          name="pay"
+          value="카드"
+          checked={pay === "카드"}
+          onChange={(e) => setPay(e.target.value)}
+        />
+        카드
+      </label>
+      <label>
+        <input
+          type="radio"
+          name="pay"
+          value="현금"
+          checked={pay === "현금"}
+          onChange={(e) => setPay(e.target.value)}
+        />
+        현금
+      </label>
+      <div className="output">결제 방법: {pay}</div>
+    </div>
+  );
+}
+
+// 화면: '카드' 가 켜져 있고 → 결제 방법: 카드
+// 화면(누르면): '현금' 을 누르면 → 결제 방법: 현금
+//
+// checked 자리에 비교식을 그대로 넣었습니다. pay === "카드" 는 true 아니면 false 입니다.
+// 라디오가 두 개여도 state 는 하나면 됩니다. 골라진 것이 하나뿐이니까요.
+// 읽을 때는 e.target.value 입니다. 체크박스와 다릅니다.
+// "켜졌나" 가 아니라 "무엇을 골랐나" 가 알고 싶은 것이니까요.
+
+// ───── 문제 10 ─────
+
+const Q10_TOPPINGS = ["시럽", "휘핑크림"];
+
+function Q10() {
+  const [picked, setPicked] = useState([]);
+
+  function handleChange(e) {
+    const value = e.target.value;
+
+    if (e.target.checked) {
+      setPicked([...picked, value]); // 켜짐 → 더한 새 배열
+    } else {
+      setPicked(picked.filter((item) => item !== value)); // 꺼짐 → 뺀 새 배열
+    }
+  }
+
+  return (
+    <div className="demo">
+      <h3>문제 10 — 여러 개 체크</h3>
+      {Q10_TOPPINGS.map((topping) => (
+        <label key={topping} style={{ marginRight: "12px" }}>
+          <input
+            type="checkbox"
+            value={topping}
+            checked={picked.includes(topping)}
+            onChange={handleChange}
+          />
+          {topping}
+        </label>
+      ))}
+      <div className="output">고른 것: {picked.join(", ")}</div>
+      <div className="output">모두 {picked.length}개</div>
+    </div>
+  );
+}
+
+// 화면: 고른 것:  / 모두 0개
+// 화면(누르면): '시럽' 을 켜면 → 고른 것: 시럽 / 모두 1개
+// 화면(누르면): '휘핑크림' 도 켜면 → 고른 것: 시럽, 휘핑크림 / 모두 2개
+// 화면(누르면): '시럽' 을 끄면 → 고른 것: 휘핑크림 / 모두 1개
+//
+// 여기서는 e.target.checked 와 e.target.value 를 둘 다 씁니다.
+//   checked → 켰나 껐나
+//   value   → 어느 토핑인가
+// 체크박스에 value 를 안 적으면 전부 "on" 이라 구분이 안 됩니다.
+// 끌 때 filter 를 빼먹으면 같은 토핑이 계속 쌓입니다. 에러는 안 납니다.
+
+// ───── 문제 11 ─────
+
+function Q11() {
+  const [name, setName] = useState("김민준");
+  const [message, setMessage] = useState("아직 제출 전입니다");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setMessage(name + "님 환영합니다");
+  }
+
+  return (
+    <div className="demo">
+      <h3>문제 11 — onSubmit</h3>
+      <form onSubmit={handleSubmit}>
+        <input value={name} onChange={(e) => setName(e.target.value)} />
+        <button type="submit">확인</button>
+      </form>
+      <div className="output">{message}</div>
+    </div>
+  );
+}
+
+// 화면: 아직 제출 전입니다
+// 화면(누르면): '확인' 을 누르면 → 김민준님 환영합니다
+// 입력칸에서 Enter 만 쳐도 결과가 같습니다.
+//
+// 버튼의 onClick 이 아니라 form 의 onSubmit 에 붙였습니다.
+// 그래야 버튼을 누른 사람과 Enter 를 친 사람이 같은 곳으로 옵니다.
+// e.preventDefault() 를 빼면 페이지가 새로고침되어 state 가 처음 값으로 돌아갑니다.
+
+// ───── 문제 12 ─────
+
+function Q12() {
+  const [text, setText] = useState("우유 사기");
+  const [todos, setTodos] = useState(["장보기"]);
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    setTodos([...todos, text]);
+  }
+
+  return (
+    <div className="demo">
+      <h3>문제 12 — 목록에 더하기</h3>
+      <form onSubmit={handleSubmit}>
+        <input value={text} onChange={(e) => setText(e.target.value)} />
+        <button type="submit">추가</button>
+      </form>
+      <ul>
+        {todos.map((todo, index) => (
+          <li key={index}>{todo}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// 화면: 목록에 장보기 한 줄
+// 화면(누르면): '추가' 를 누르면 → 장보기 / 우유 사기 두 줄
+//
+// [...todos, text] 는 "todos 를 그대로 펼쳐 담고 뒤에 하나 더" 라는 뜻입니다.
+// 대괄호를 빠뜨려 setTodos(text) 라고 쓰면 목록이 글자 하나로 덮여 버립니다.
+// push 를 쓰면 화면이 아예 안 바뀝니다. 이유는 07단원 개념01 에서 다룹니다.
+//
+// 여기서는 입력칸을 안 비웠습니다. 그래서 한 번 더 누르면 같은 것이 또 들어갑니다.
+// 비우는 것은 문제 13·14 에서 합니다.
+
+// ───── 문제 13 ───── [응용]
+
+function Q13() {
+  const [text, setText] = useState("");
+  const [error, setError] = useState("");
+  const [saved, setSaved] = useState("(아직 없음)");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const value = text.trim(); // 앞뒤 공백 제거
+
+    if (!value) {
+      setError("후기를 입력해 주세요");
+      return; // ★ return 이 없으면 아래 줄이 그대로 실행됩니다
+    }
+
+    if (value.length > 10) {
+      setError("10자 이내로 써 주세요");
+      return;
+    }
+
+    setSaved(value);
+    setError("");
+    setText("");
+  }
+
+  return (
+    <div className="demo">
+      <h3>문제 13 — [응용] 검사하고 에러 보여 주기</h3>
+      <form onSubmit={handleSubmit}>
+        <input value={text} onChange={(e) => setText(e.target.value)} />
+        <button type="submit">저장</button>
+        <button type="button" onClick={() => setText("")}>
+          지우기
+        </button>
+      </form>
+      <div className="error">{error}</div>
+      <div className="output">저장된 후기: {saved}</div>
+    </div>
+  );
+}
+
+// 화면: 저장된 후기: (아직 없음)
+// 화면(누르면): 빈 칸에서 '저장' → 후기를 입력해 주세요
+// 스페이스 세 칸만 치고 '저장' → 화면: 후기를 입력해 주세요
+// "맛있어요" 를 치고 '저장' → 화면: 저장된 후기: 맛있어요 (입력칸이 비워집니다)
+// "아메리카노가 정말 맛있어요" 를 치고 '저장' → 화면: 10자 이내로 써 주세요
+//
+// 검사를 위에서 하나씩 하고 안 맞으면 바로 return 합니다. 조기 반환입니다.
+// else 가 하나도 없어서 읽기 쉽습니다.
+//
+// 지우기 버튼에는 type="button" 을 붙였습니다.
+// 안 붙이면 form 안이라 기본이 submit 이 되어, 지우면서 제출까지 합니다.
+// 그러면 방금 비운 값 때문에 "후기를 입력해 주세요" 가 함께 뜹니다.
+//
+// trim( ) 한 value 로 검사하고 value 로 저장했습니다.
+// 검사한 값과 저장하는 값이 다르면 검사가 헛돕니다.
+
+// ───── 문제 14 ───── [도전]
+
+function Q14() {
+  const [text, setText] = useState("");
+  const [orders, setOrders] = useState([{ id: 1, text: "아메리카노" }]);
+  const [nextId, setNextId] = useState(2);
+  const [error, setError] = useState("");
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const value = text.trim(); // (1)
+
+    if (!value) {
+      setError("메뉴를 입력해 주세요"); // (2)
+      return;
+    }
+
+    setOrders([...orders, { id: nextId, text: value }]); // (3)
+    setNextId(nextId + 1); // (4)
+    setError(""); // (5)
+    setText(""); // (5)
+  }
+
+  return (
+    <div className="demo">
+      <h3>문제 14 — [도전] id 를 붙여 담기</h3>
+      <form onSubmit={handleSubmit}>
+        <input value={text} onChange={(e) => setText(e.target.value)} />
+        <button type="submit">담기</button>
+      </form>
+      <div className="error">{error}</div>
+      <div className="output">모두 {orders.length}잔</div>
+      <ul>
+        {orders.map((order) => (
+          <li key={order.id}>
+            {order.id}번 — {order.text}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+// 화면: 모두 1잔 / 목록에 "1번 — 아메리카노"
+// 화면(누르면): 빈 칸에서 '담기' → 메뉴를 입력해 주세요
+// "라떼" 를 치고 '담기' → 화면: 모두 2잔 / "2번 — 라떼" 가 붙고 입력칸이 비워집니다
+// "라떼" 를 한 번 더 담으면 → 화면: 모두 3잔 / "3번 — 라떼" 가 또 붙습니다
+//
+// set 함수를 네 번이나 불렀지만 화면은 한 번만 다시 그려집니다.
+// React 가 모아서 한 번에 처리하기 때문입니다.
+//
+// nextId 를 안 올리면 두 번째 항목도 2번이 되고, 그 다음도 2번이 됩니다.
+// key 가 겹치면 콘솔에 "same key" 경고가 나옵니다.
+//
+// id 덕분에 같은 글자를 여러 번 담아도 됩니다.
+// 글자 자체를 key 로 썼다면 "라떼" 를 두 번 담는 순간 경고가 났을 것입니다.
+
+// ───── 문제 15 ───── (에러 확인)
+
+function Q15() {
+  const [text, setText] = useState("김민준");
+
+  function handleChange(e) {
+    setText(e.target.value);
+  }
+
+  return (
+    <div className="demo">
+      <h3>문제 15 — 에러 확인</h3>
+      <input value={text} onChange={handleChange} />
+      <div className="output">지금 값: {text}</div>
+    </div>
+  );
+}
+
+// onChange={handleChange} 를 지우면 이렇게 됩니다.
+//
+// 왜 안 써지나:
+//   value={text} 는 "이 칸에 보이는 글자는 언제나 text 다" 라는 약속입니다.
+//   키를 눌러도 setText 를 부르는 코드가 없으니 text 는 그대로입니다.
+//   React 는 이 약속을 지키려고, 키를 누를 때마다 입력칸의 DOM 값을
+//   곧바로 text 값으로 되돌려 놓습니다. 컴포넌트를 다시 그리는 것과는 다른 일입니다.
+//   ★ 화면은 state 를 그대로 비춥니다. state 가 안 바뀌면 화면도 안 바뀝니다.
+//
+// 경고 첫 문장:
+//   You provided a `value` prop to a form field without an
+//   `onChange` handler.
+//
+//   이어지는 문장까지 옮기면 이렇습니다.
+//     This will render a read-only field. If the field should be mutable
+//     use `defaultValue`. Otherwise, set either `onChange` or `readOnly`.
+//
+//   우리말로: "value 는 줬는데 onChange 를 안 줬습니다. 읽기 전용 칸이 됩니다.
+//             고칠 수 있어야 하면 defaultValue 를, 아니면 onChange 나 readOnly 를
+//             붙이세요."
+//
+// 이 경고는 에러가 아닙니다. 화면은 계속 돌아갑니다. 그래서 더 잘 놓칩니다.
+// "입력칸에 글자가 안 써져요" 를 만나면 제일 먼저 onChange 를 찾으세요.
+
+// ── 화면 조립 ──
+
+export default function ExerciseAnswers() {
+  return (
+    <div>
+      <h1>06단원 연습문제 정답 — 폼과 입력</h1>
+
+      <p className="guide">
+        정답 파일입니다. <strong>먼저 직접 풀어 보고</strong> 나서 여세요.
+        <br />
+        <br />
+        코드만 보지 말고 <strong>왜 그런지</strong> 적어 둔 줄을 함께 읽으세요. 답이 맞았어도 이유가 다르면 다음 문제에서 또 틀립니다.
+      </p>
+
+      <div>
+        <Q1 />
+        <Q2 />
+        <Q3 />
+        <Q4 />
+        <Q5 />
+        <Q6 />
+        <Q7 />
+        <Q8 />
+        <Q9 />
+        <Q10 />
+        <Q11 />
+        <Q12 />
+        <Q13 />
+        <Q14 />
+        <Q15 />
+      </div>
+    </div>
+  );
+}

@@ -1,0 +1,582 @@
+// ============================================================
+// 05단원 · 개념 04 — 걸러서 그리기
+// ------------------------------------------------------------
+// 실행: 실습프로젝트에서 npm run dev → 왼쪽 목록에서 이 예제를 고르세요.
+//       F12 → Console 도 함께 보세요.
+// ============================================================
+//
+// 개념02에서는 배열에 든 것을 전부 그렸습니다.
+// 실제 화면은 대부분 그렇지 않습니다.
+//
+//   할 일 목록에서 "안 끝난 것만" 보기
+//   메뉴판을 "싼 것부터" 정렬해서 보기
+//   "몇 개 남았는지" 세어 보여 주기
+//
+// 세 가지 모두 JS자료 08단원에서 이미 배운 도구로 합니다.
+//   filter  조건에 맞는 것만 남긴다
+//   sort    순서를 바꾼다 (JS자료 06단원)
+//   .length 개수를 센다
+//
+// 새로 배우는 것은 "그 결과를 화면에 어떻게 얹느냐" 뿐입니다.
+
+// 이 파일에서 계속 쓸 데이터입니다.
+
+import { useState } from "react";
+import Summary from "../_ui/Summary.jsx";
+
+const todos = [
+  { id: 1, text: "우유 사기", done: true },
+  { id: 2, text: "책 반납", done: false },
+  { id: 3, text: "청소하기", done: false },
+  { id: 4, text: "메모 정리", done: true },
+];
+
+const menu = [
+  { id: "americano", name: "아메리카노", price: 4000 },
+  { id: "latte", name: "라떼", price: 4500 },
+  { id: "cake", name: "케이크", price: 6000 },
+  { id: "gimbap", name: "삼각김밥", price: 1200 },
+];
+
+// ── 섹션 1: filter 로 고르고 map 으로 그린다 ──
+
+// 먼저 콘솔에서 확인합시다. JS자료 08단원 개념04 그대로입니다.
+
+console.log(todos.filter((todo) => !todo.done).map((todo) => todo.text));
+// 콘솔: ['책 반납', '청소하기']
+
+// filter 로 고르고, 그 결과에 map 을 이어 붙였습니다.
+// 이렇게 이어 쓰는 것을 체이닝이라고 배웠습니다.
+//
+// 화면에서도 똑같이 합니다. map 이 돌려주는 값만 화면 조각으로 바꾸면 됩니다.
+//
+//     {todos.filter((todo) => !todo.done).map((todo) => <li ...>)}
+//
+// 순서가 중요합니다. 반드시 filter 가 먼저입니다.
+//   filter → 개수를 줄인다
+//   map    → 남은 것의 모양을 바꾼다
+// 순서를 바꾸면 화면 조각을 걸러야 해서 조건을 쓸 수 없습니다.
+// 섹션 5의 [실수 4] 에서 실제로 어떻게 되는지 봅니다.
+//
+// 왜 이 순서인지 한 번 더 생각해 봅시다.
+// filter 의 콜백은 항목을 받아 "남길까?" 를 판단합니다.
+// 판단하려면 todo.done 처럼 항목 '안의 값' 을 볼 수 있어야 합니다.
+// 그런데 map 을 먼저 돌리면 항목이 화면 조각으로 바뀌어 버립니다.
+// 화면 조각에는 done 이 없습니다. 볼 수 있는 값이 사라지는 것입니다.
+//
+// 그래서 규칙은 이렇게 외우는 게 아니라 이렇게 이해하면 됩니다.
+//   ★ 값을 보고 판단하는 일은, 아직 값일 때 끝낸다.
+//
+// 참고로 filter 를 두 번 이어 써도 됩니다. 조건이 서로 다른 성격일 때 읽기 좋습니다.
+//   todos.filter((t) => !t.done).filter((t) => t.text.length > 3).map(...)
+// 물론 조건 하나에 && 로 묶어도 됩니다. 어느 쪽이든 결과는 같습니다.
+
+function UndoneList() {
+  return (
+    <div className="demo">
+      <h3>섹션 1 — 안 끝난 것만 그리기</h3>
+
+      <div className="output">
+        <p>전체 목록</p>
+        <ul>
+          {todos.map((todo) => (
+            <li key={todo.id} className={todo.done ? "done" : ""}>
+              {todo.text}
+            </li>
+          ))}
+        </ul>
+
+        <p>안 끝난 것만</p>
+        <ul>
+          {todos
+            .filter((todo) => !todo.done)
+            .map((todo) => (
+              <li key={todo.id}>{todo.text}</li>
+            ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+// 화면: 전체 목록 — 우유 사기(줄 그어짐) / 책 반납 / 청소하기 / 메모 정리(줄 그어짐)
+// 화면: 안 끝난 것만 — 책 반납 / 청소하기
+
+// 줄이 길어져서 filter 와 map 을 각각 다른 줄에 썼습니다.
+// 한 줄로 쭉 이어 써도 똑같이 동작합니다. 읽기 좋은 쪽을 고르세요.
+//
+// key 는 filter 를 거쳐도 그대로 todo.id 를 씁니다.
+// 걸러 낸 뒤에도 항목은 자기 id 를 그대로 들고 있기 때문입니다.
+// 여기서 index 를 쓰면 안 되는 이유가 하나 더 생깁니다.
+// 필터를 바꿀 때마다 같은 항목의 index 가 달라지기 때문입니다.
+
+// ✏️ 직접 해보기 1 — 위 UndoneList 에 "끝난 것만" 보여 주는 목록을
+//                    하나 더 추가해 보세요.
+
+// ── 섹션 2: 버튼으로 조건 갈아 끼우기 ──
+
+// 조건을 코드에 박아 두지 말고 state 에 담으면, 버튼으로 바꿀 수 있습니다.
+// 04단원에서 배운 useState 를 그대로 씁니다.
+//
+// 여기서 중요한 것은 '목록을 만들어 두고 갈아 끼우는 게 아니라는' 점입니다.
+// 원본 배열 todos 는 하나뿐입니다. 손대지 않습니다.
+// 바뀌는 것은 filter 조건을 담은 state 하나뿐입니다.
+// 화면은 그릴 때마다 원본에서 다시 걸러 냅니다.
+
+function FilterDemo() {
+  // "all" · "todo" · "done" 중 하나를 담습니다
+  const [mode, setMode] = useState("all");
+
+  // 개념01 섹션 3에서 배운 대로 return 밖에서 골라 둡니다.
+  let shown;
+  if (mode === "todo") {
+    shown = todos.filter((todo) => !todo.done);
+  } else if (mode === "done") {
+    shown = todos.filter((todo) => todo.done);
+  } else {
+    shown = todos;
+  }
+
+  return (
+    <div className="demo">
+      <h3>섹션 2 — 버튼으로 조건 갈아 끼우기</h3>
+
+      <button className={mode === "all" ? "on" : ""} onClick={() => setMode("all")}>
+        전체
+      </button>
+      <button className={mode === "todo" ? "on" : ""} onClick={() => setMode("todo")}>
+        안 끝난 것
+      </button>
+      <button className={mode === "done" ? "on" : ""} onClick={() => setMode("done")}>
+        끝난 것
+      </button>
+
+      <div className="output">
+        <ul>
+          {shown.map((todo) => (
+            <li key={todo.id} className={todo.done ? "done" : ""}>
+              {todo.text}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+// 화면: 네 줄 모두 (전체 버튼이 파랗게 켜져 있습니다)
+// 화면(안 끝난 것을 누르면): 책 반납 / 청소하기 두 줄
+// 화면(끝난 것을 누르면): 우유 사기 / 메모 정리 두 줄
+
+// 눌린 버튼에 className={...} 으로 on 클래스를 붙였습니다.
+// 개념02 섹션 4에서 본 방법입니다. 지금 무엇을 보고 있는지 알려 줍니다.
+//
+// ★ 목록을 그리는 map 코드는 한 벌뿐입니다.
+//   버튼마다 목록을 따로 만들지 않았습니다.
+//   "무엇을 보여 줄지" 를 state 로 두고, 화면은 그 state 를 보고 한 번만 그립니다.
+//
+// 이게 왜 중요한지 반대로 해 보면 알 수 있습니다.
+// 만약 버튼마다 목록을 미리 만들어 두면 이렇게 됩니다.
+//
+//     const allList = todos;
+//     const todoList = todos.filter((todo) => !todo.done);
+//     const doneList = todos.filter((todo) => todo.done);
+//
+// 지금은 잘 돌아갑니다. 그런데 나중에 todos 에 항목을 추가하는 기능이 붙으면
+// 세 목록을 전부 다시 만들어 줘야 합니다. 하나라도 빠뜨리면 화면이 어긋납니다.
+// JS자료 13단원 종합03에서 겪었던 그 문제입니다.
+//
+// 반면 위 FilterDemo 는 원본 todos 하나만 맞으면 화면이 저절로 맞습니다.
+// 걸러 낸 결과를 어디에도 저장해 두지 않았기 때문입니다.
+//
+// 이것을 "화면에 필요한 것을 저장하지 말고, 그릴 때마다 계산한다" 고 합니다.
+// React 자료 전체를 관통하는 사고방식입니다. 07단원에서 다시 만납니다.
+//
+// 그리고 여기서 눈여겨볼 것이 하나 더 있습니다.
+// 화면에 보이는 줄 수가 4개에서 2개로 바뀌는데, 우리는 줄을 지우는 코드를
+// 한 줄도 쓰지 않았습니다. shown 이 달라지니 React 가 알아서 맞춰 준 것입니다.
+// 그런데 이때 '어느 줄을 지울지' 를 React 가 어떻게 알까요? key 입니다.
+// 필터를 바꿀 때마다 같은 항목의 자리 번호가 달라지므로,
+// 여기서 key 를 index 로 썼다면 개념03 섹션 4의 문제가 그대로 생깁니다.
+
+// ✏️ 직접 해보기 2 — 버튼을 하나 더 만들어 "제목이 네 글자 이하인 것" 만
+//                    보여 주게 해 보세요. (text.length 를 씁니다)
+//                    공백도 한 글자로 셉니다. "책 반납" 은 네 글자입니다.
+
+// ── 섹션 3: 정렬해서 그리기 — 원본을 건드리지 않게 ──
+
+// 정렬은 sort 로 합니다. JS자료 06단원에서 배웠습니다.
+// 그런데 sort 에는 조심할 점이 하나 있습니다. 원본을 바꿔 버립니다.
+// filter 나 map 과 다릅니다. 콘솔로 확인해 봅시다.
+
+const nums = [3, 1, 2];
+const sortedNums = nums.sort((a, b) => a - b);
+
+console.log(sortedNums);
+// 콘솔: [1, 2, 3]
+console.log(nums);
+// 콘솔: [1, 2, 3]
+// 결과만 정렬된 게 아니라 원본 nums 까지 정렬됐습니다.
+
+// filter 와 map 은 이러지 않습니다. 비교해 보세요.
+const nums2 = [3, 1, 2];
+console.log(nums2.filter((n) => n > 1));
+// 콘솔: [3, 2]
+console.log(nums2);
+// 콘솔: [3, 1, 2]
+// 원본이 그대로입니다.
+
+// 원본을 지키려면 복사해서 정렬하면 됩니다.
+// JS자료 09단원의 스프레드로 새 배열을 만든 다음 정렬합니다.
+const nums3 = [3, 1, 2];
+const sortedCopy = [...nums3].sort((a, b) => a - b);
+
+console.log(sortedCopy);
+// 콘솔: [1, 2, 3]
+console.log(nums3);
+// 콘솔: [3, 1, 2]
+// 이번에는 원본이 그대로입니다.
+
+// React 에서 이게 왜 중요할까요? 두 가지 때문입니다.
+//
+// [하나] 같은 배열을 보는 다른 화면까지 바뀝니다.
+//   화면 A 는 정렬해서 보여 주고 화면 B 는 원래 순서로 보여 준다고 합시다.
+//   A 가 원본을 정렬해 버리면 B 도 같이 정렬됩니다.
+//   B 를 만든 사람은 자기 코드를 아무리 봐도 원인을 못 찾습니다.
+//   "내 코드에는 sort 가 없는데 왜 순서가 바뀌지?" 가 되는 것입니다.
+//
+// [둘] 되돌릴 방법이 없어집니다.
+//   원래 순서는 원본에만 들어 있습니다. 그걸 덮어썼으니 어디에도 안 남습니다.
+//   아래 데모의 [원래 순서] 버튼이 동작하는 이유가 바로 원본을 지켰기 때문입니다.
+//
+// 그 배열이 state 라면 문제가 더 커집니다. 화면이 아예 안 바뀌기도 합니다.
+// 그 이야기는 07단원에서 제대로 합니다.
+//
+// 지금은 규칙 하나만 지키면 됩니다.
+//   ★ 화면을 그리려고 정렬할 때는 항상 [...배열] 로 복사한 다음 sort 한다.
+//
+// 원본을 바꾸는 메소드가 sort 만 있는 것은 아닙니다.
+// JS자료 06단원에서 배운 push · pop · splice · reverse 도 원본을 바꿉니다.
+// 반대로 filter · map · slice · concat 은 새 배열을 돌려줍니다.
+// 화면을 그릴 때는 뒤쪽 것만 쓰면 안전합니다.
+
+function SortDemo() {
+  const [order, setOrder] = useState("none");
+
+  let shown;
+  if (order === "cheap") {
+    shown = [...menu].sort((a, b) => a.price - b.price);
+  } else if (order === "name") {
+    shown = [...menu].sort((a, b) => a.name.localeCompare(b.name));
+  } else {
+    shown = menu;
+  }
+
+  return (
+    <div className="demo">
+      <h3>섹션 3 — 정렬해서 그리기</h3>
+
+      <button className={order === "none" ? "on" : ""} onClick={() => setOrder("none")}>
+        원래 순서
+      </button>
+      <button className={order === "cheap" ? "on" : ""} onClick={() => setOrder("cheap")}>
+        싼 것부터
+      </button>
+      <button className={order === "name" ? "on" : ""} onClick={() => setOrder("name")}>
+        이름순
+      </button>
+
+      <div className="output">
+        <ul>
+          {shown.map((item) => (
+            <li key={item.id}>
+              {item.name} — {item.price}원
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+// 화면: 아메리카노 4000 / 라떼 4500 / 케이크 6000 / 삼각김밥 1200
+// 화면(싼 것부터를 누르면): 삼각김밥 1200 / 아메리카노 4000 / 라떼 4500 / 케이크 6000
+// 화면(이름순을 누르면): 라떼 / 삼각김밥 / 아메리카노 / 케이크
+
+// 이름순 정렬에 쓴 localeCompare 는 JS자료 08단원 개념06에서 배운 그대로입니다.
+// 글자를 사전 순서로 비교해 줍니다.
+//
+// 복사할 때 [...menu] 대신 menu.slice() 를 써도 똑같습니다.
+// JS자료 08단원 개념06에서는 slice() 를 썼습니다. 둘 다 새 배열을 만듭니다.
+//
+// ★ 원래 순서 버튼을 눌러 보세요. 처음 순서가 그대로 돌아옵니다.
+//   [...menu] 로 복사해서 정렬했기 때문에 원본 menu 가 안 망가진 것입니다.
+//   만약 menu.sort(...) 라고 썼다면 한 번 정렬한 뒤로는
+//   "원래 순서" 를 눌러도 돌아오지 않습니다.
+
+// ✏️ 직접 해보기 3 — "비싼 것부터" 버튼을 하나 더 만들어 보세요.
+//                    (a.price - b.price 를 뒤집으면 됩니다)
+
+// ── 섹션 4: 개수 세기 ──
+
+// 개수는 filter 결과에 .length 를 붙이면 끝입니다. JS자료 08단원에서 한 그대로입니다.
+
+console.log(todos.length);
+// 콘솔: 4
+console.log(todos.filter((todo) => todo.done).length);
+// 콘솔: 2
+console.log(todos.filter((todo) => !todo.done).length);
+// 콘솔: 2
+
+// 화면에서도 그대로 씁니다. 중괄호 안에는 계산식이 들어가도 되니까요(02단원).
+
+function CountDemo() {
+  const [mode, setMode] = useState("all");
+
+  const doneCount = todos.filter((todo) => todo.done).length;
+  const undoneCount = todos.length - doneCount;
+
+  const shown = mode === "undone" ? todos.filter((todo) => !todo.done) : todos;
+
+  return (
+    <div className="demo">
+      <h3>섹션 4 — 개수 세기</h3>
+
+      <button className={mode === "all" ? "on" : ""} onClick={() => setMode("all")}>
+        전체 보기
+      </button>
+      <button className={mode === "undone" ? "on" : ""} onClick={() => setMode("undone")}>
+        남은 것만 보기
+      </button>
+
+      <div className="output">
+        <p>
+          전체 {todos.length}개 · 완료 {doneCount}개 · 남음 {undoneCount}개
+        </p>
+        <p>지금 보고 있는 줄: {shown.length}개</p>
+        <ul>
+          {shown.map((todo) => (
+            <li key={todo.id} className={todo.done ? "done" : ""}>
+              {todo.text}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+// 화면: 전체 4개 · 완료 2개 · 남음 2개
+// 화면: 지금 보고 있는 줄: 4개
+// 화면(남은 것만 보기를 누르면): 지금 보고 있는 줄: 2개
+
+// ★ doneCount 를 useState 로 따로 만들지 않았습니다.
+//   개수는 todos 만 있으면 언제든 다시 셀 수 있는 값입니다.
+//   state 로 따로 들고 있으면 목록과 개수가 어긋날 수 있습니다.
+//   (목록만 고치고 개수 고치는 걸 깜빡하는 식입니다)
+//   "계산할 수 있는 값은 state 로 두지 않는다" 는 07단원에서 자세히 배웁니다.
+//
+//   JS자료 13단원 종합03에서 할 일 목록을 만들 때를 떠올려 보세요.
+//   할 일을 추가하는 곳, 지우는 곳, 완료로 바꾸는 곳마다
+//   "남은 개수" 를 고치는 줄을 하나씩 더 적어야 했습니다.
+//   한 군데라도 빠뜨리면 목록과 숫자가 안 맞았습니다.
+//   지금은 그런 줄이 한 줄도 없습니다.
+//   화면을 그릴 때마다 todos 를 보고 그 자리에서 다시 세기 때문입니다.
+//
+//   "매번 다시 세면 느리지 않나요?" 하는 걱정은 지금 하지 않아도 됩니다.
+//   항목이 수천 개가 넘어가면 그때 생각합니다. 그 방법은 10단원에서 배웁니다.
+
+// ✏️ 직접 해보기 4 — CountDemo 에 "완료율" 을 보여 주세요.
+//                    완료 2개 / 전체 4개면 50% 입니다.
+
+// ── 섹션 5: 자주 하는 실수 ──
+
+// 이 섹션에는 SyntaxError 항목이 없습니다.
+// 전부 에러 없이 조용히 틀리는 것들이라 더 조심해야 합니다.
+
+// [실수 1] map 으로 걸러내려고 함
+//
+// map 은 개수를 바꾸지 않습니다(JS자료 08단원 개념03 실수 3).
+// 조건에 안 맞는 자리에 null 을 넣어도 개수는 그대로입니다.
+
+console.log(todos.map((todo) => (todo.done ? todo.text : null)));
+// 콘솔: ['우유 사기', null, null, '메모 정리']
+console.log(todos.map((todo) => (todo.done ? todo.text : null)).length);
+// 콘솔: 4
+console.log(todos.filter((todo) => todo.done).length);
+// 콘솔: 2
+
+// 무서운 것은 화면입니다. null 은 안 그려지므로(개념01 섹션 4)
+// 화면만 보면 제대로 걸러진 것처럼 보입니다.
+
+function MapFilterMistake() {
+  return (
+    <div className="demo">
+      <h3>섹션 5 — [실수 1] map 으로 걸러낸 척하기</h3>
+
+      <div className="output">
+        <p>① map + 삼항 (화면은 맞아 보입니다)</p>
+        <ul>
+          {todos.map((todo) =>
+            todo.done ? <li key={todo.id}>{todo.text}</li> : null
+          )}
+        </ul>
+        <p>
+          ① 이 만든 배열의 길이:{" "}
+          {todos.map((todo) => (todo.done ? todo.text : null)).length}개 ← 틀렸습니다
+        </p>
+
+        <p>② filter + map</p>
+        <ul>
+          {todos
+            .filter((todo) => todo.done)
+            .map((todo) => (
+              <li key={todo.id}>{todo.text}</li>
+            ))}
+        </ul>
+        <p>
+          ② 가 만든 배열의 길이: {todos.filter((todo) => todo.done).length}개 ← 맞습니다
+        </p>
+      </div>
+    </div>
+  );
+}
+// 화면: ① 우유 사기 / 메모 정리 두 줄 · 길이는 4개
+// 화면: ② 우유 사기 / 메모 정리 두 줄 · 길이는 2개
+
+// 실수: 두 목록이 똑같아 보입니다. 그래서 ①을 쓰고도 문제를 못 느낍니다.
+//       그런데 "몇 개 남았습니다" 를 보여 주는 순간 4개라고 나옵니다.
+//       걸러 낼 때는 filter 를 쓰세요. map 은 모양을 바꾸는 도구입니다.
+
+// [실수 2] 원본을 정렬해 버림
+//
+//   const shown = menu.sort((a, b) => a.price - b.price);
+//
+// 실수: 섹션 3에서 본 대로 원본 menu 가 정렬됩니다.
+//       "원래 순서" 로 돌아갈 방법이 없어집니다.
+//       그 배열을 쓰는 다른 화면도 같이 바뀝니다.
+// 고치는 법: [...menu].sort(...) 처럼 복사한 뒤 정렬하세요.
+
+// [실수 3] filter 에 조건이 아니라 계산식을 넣음
+
+console.log(menu.filter((item) => item.price - 4000).map((item) => item.name));
+// 콘솔: ['라떼', '케이크', '삼각김밥']
+console.log(menu.filter((item) => item.price >= 4000).map((item) => item.name));
+// 콘솔: ['아메리카노', '라떼', '케이크']
+
+// 실수: 위 줄은 "4000원짜리를 뺀 목록" 이 됐습니다.
+//       item.price - 4000 은 아메리카노일 때만 0(거짓)이고 나머지는 전부 참이라서요.
+//       filter 는 "이 값을 남길까?" 를 묻는 것입니다. 참·거짓이 나오는 식을 쓰세요.
+//       JS자료 08단원 개념04 실수 3에서 본 것과 같습니다.
+
+// [실수 4] filter 와 map 의 순서를 바꿈
+
+function OrderMistake() {
+  return (
+    <div className="demo">
+      <h3>섹션 5 — [실수 4] map 을 먼저 하면</h3>
+
+      <div className="output">
+        <p>① map 먼저, filter 나중 (빈 목록이 됩니다)</p>
+        <ul>
+          {menu
+            .map((item) => <li key={item.id}>{item.name}</li>)
+            .filter((item) => item.price >= 4500)}
+        </ul>
+
+        <p>② filter 먼저, map 나중</p>
+        <ul>
+          {menu
+            .filter((item) => item.price >= 4500)
+            .map((item) => (
+              <li key={item.id}>{item.name}</li>
+            ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+// 화면: ① 아래에는 아무 줄도 없습니다
+// 화면: ② 라떼 / 케이크 두 줄
+
+// 실수: ①에서 map 이 먼저 돌면서 항목이 전부 화면 조각으로 바뀝니다.
+//       그다음 filter 가 받는 것은 { name, price } 객체가 아니라 화면 조각입니다.
+//       화면 조각에는 price 가 없으므로 item.price 는 undefined 입니다.
+//       undefined >= 4500 은 undefined 가 숫자로 바뀌며 NaN 이 되고,
+//       NaN 과의 비교는 항상 false 라서 전부 걸러져 빈 목록이 됩니다.
+//       에러도 경고도 안 납니다. 그냥 목록이 사라집니다.
+// 고치는 법: 항상 filter 를 먼저 하세요.
+//       "값을 보고 고르는 일" 은 값이 아직 값일 때 해야 합니다.
+
+// ── 전체 화면 그리기 ──
+
+export default function Concept04() {
+  return (
+    <div>
+      <h1>개념 04 — 걸러서 그리기</h1>
+
+      <p className="guide">
+        왼쪽 목록에서 이 예제를 고르면 이 화면이 나옵니다. <strong>F12 → Console</strong> 도 함께 보세요.
+      </p>
+
+      <div>
+        <UndoneList />
+        <FilterDemo />
+        <SortDemo />
+        <CountDemo />
+        <MapFilterMistake />
+        <OrderMistake />
+      </div>
+
+      <Summary
+        items={[
+          <>걸러서 그릴 때는 <code>filter</code> 를 먼저, <code>map</code> 을 나중에 씁니다. 순서를 바꾸면 조용히 빈 목록이 됩니다.</>,
+          <>보여 줄 조건은 <strong>state 에 담습니다.</strong> 원본 배열은 손대지 않고, 그릴 때마다 다시 걸러 냅니다.</>,
+          <><code>sort</code> 는 <strong>원본을 바꿉니다.</strong> <code>filter</code>·<code>map</code> 과 다릅니다.</>,
+          <>그래서 정렬은 항상 <code>[...배열].sort(...)</code> 처럼 복사한 뒤에 합니다.</>,
+          <>개수는 <code>filter(...).length</code> 로 셉니다. 따로 state 에 담아 두지 않습니다. 어긋날 수 있기 때문입니다.</>,
+          <><code>map</code> 은 개수를 안 바꿉니다. 걸러 낸 것처럼 보여도 길이는 그대로입니다.</>,
+        ]}
+      />
+    </div>
+  );
+}
+
+console.log("개념04 화면을 그렸습니다");
+// 콘솔: 개념04 화면을 그렸습니다
+
+// ============================================================
+// 직접 해보기 정답
+// ============================================================
+//
+// 1) <p>끝난 것만</p>
+//    <ul>
+//      {todos
+//        .filter((todo) => todo.done)
+//        .map((todo) => (
+//          <li key={todo.id}>{todo.text}</li>
+//        ))}
+//    </ul>
+//    // 화면: 우유 사기 / 메모 정리
+//    → 조건에서 ! 를 뺐을 뿐입니다. done 이 true 인 것만 남습니다.
+//
+// 2) <button className={mode === "short" ? "on" : ""} onClick={() => setMode("short")}>
+//      짧은 것
+//    </button>
+//    그리고 if 에 갈래를 하나 더 넣습니다.
+//    } else if (mode === "short") {
+//      shown = todos.filter((todo) => todo.text.length <= 4);
+//    }
+//    // 화면: 책 반납 / 청소하기 두 줄
+//    → "책 반납" 과 "청소하기" 가 네 글자입니다.
+//      "우유 사기" 와 "메모 정리" 는 다섯 글자라 빠집니다.
+//      공백도 한 글자로 셉니다. "책 반납" 을 세 글자로 세면 결과가 빈 목록이 됩니다.
+//
+// 3) } else if (order === "expensive") {
+//      shown = [...menu].sort((a, b) => b.price - a.price);
+//    }
+//    // 화면: 케이크 6000 / 라떼 4500 / 아메리카노 4000 / 삼각김밥 1200
+//    → a 와 b 의 자리를 바꾸면 순서가 뒤집힙니다. JS자료 06단원에서 배운 그대로입니다.
+//
+// 4) <p>완료율 {Math.round((doneCount / todos.length) * 100)}%</p>
+//    // 화면: 완료율 50%
+//    → 나눗셈 결과가 0.5 이므로 100 을 곱해 50 으로 만들었습니다.
+//      소수가 나올 수 있으니 Math.round 로 다듬었습니다(JS자료 02단원).
+//      todos 가 빈 배열이면 0 으로 나누게 되어 NaN 이 나옵니다.
+//      그 경우를 어떻게 막는지는 개념05에서 다룹니다.

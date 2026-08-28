@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>① fetch 로 API 부르기</title>
+    <link rel="stylesheet" href="/공통.css" />
+  </head>
+  <body>
+    <h1>① fetch 로 API 부르기</h1>
+
+    <p class="안내">
+      <strong>F12 → Console 과 Network 를 함께 열어 두세요.</strong><br />
+      버튼을 누를 때마다 어떤 요청이 나가는지 보면서 하세요.
+    </p>
+
+    <h2>성공하는 경우</h2>
+    <button data-할일="목록">GET 목록</button>
+    <button data-할일="하나">GET 하나 (id 1)</button>
+    <button data-할일="만들기">POST 만들기</button>
+    <button data-할일="지우기">DELETE (204)</button>
+
+    <h2>실패하는 경우</h2>
+    <button data-할일="없음">404 — 없는 설비</button>
+    <button data-할일="검증">400 — 값이 잘못됨</button>
+    <button data-할일="터짐">500 — 서버가 터짐</button>
+    <button data-할일="html">JSON 이 아닌 응답</button>
+    <button data-할일="끊김">서버에 못 닿음</button>
+
+    <pre id="결과">버튼을 누르세요.</pre>
+
+    <script src="/api.js"></script>
+    <script>
+      const 결과 = document.querySelector("#결과");
+
+      const 할일들 = {
+        목록: () => api.get("/api/v1/equipments"),
+        하나: () => api.get("/api/v1/equipments/1"),
+        만들기: () => api.post("/api/v1/equipments", { name: "용접로봇 1호", line: "C" }),
+        지우기: () => api.del("/api/v1/equipments/1"),
+        없음: () => api.get("/api/v1/equipments/99"),
+        검증: () => api.post("/api/v1/equipments", { name: "용" }),
+        터짐: () => api.get("/api/v1/boom"),
+        html: () => api.get("/api/v1/html"),
+        끊김: () => api.get("http://localhost:59999/없는서버"),
+      };
+
+      function 보이기(글, 종류) {
+        결과.textContent = 글;
+        결과.className = 종류 ?? "";
+      }
+
+      document.querySelectorAll("button").forEach((버튼) => {
+        버튼.addEventListener("click", async () => {
+          보이기("요청 중...", "로딩");
+
+          try {
+            const 답 = await 할일들[버튼.dataset.할일]();
+
+            보이기("성공\n\n" + JSON.stringify(답, null, 2), "성공");
+          } catch (에러) {
+            // ★ 여기서 에러 하나만 잡으면 모든 실패가 처리됩니다.
+            //   api.js 가 상태코드든 네트워크든 전부 API에러 로 바꿔 주기 때문입니다.
+            보이기(
+              "실패\n\n" +
+                `status : ${에러.status}\n` +
+                `code   : ${에러.code}\n` +
+                `message: ${에러.message}\n` +
+                (에러.details ? `details: ${JSON.stringify(에러.details, null, 2)}` : ""),
+              "에러"
+            );
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

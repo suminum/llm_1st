@@ -1,0 +1,30 @@
+{
+  "name": "ts-jaryo",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "타입스크립트 기초 자료 - JS자료/React자료 후속",
+  "scripts": {
+    "typecheck": "tsc --noEmit",
+    "check": "tsc --noEmit -p tsconfig.exercises.json",
+    "grade": "node _검증도구/grade.js",
+    "verify": "node _검증도구/verify.js",
+    "verify:claims": "node _검증도구/verify_claims.js",
+    "verify:react": "node _검증도구/verify_tsx.js",
+    "drive:react": "node _검증도구/drive_07.js",
+    "audit": "node _검증도구/audit.js",
+    "audit:exercises": "node _검증도구/check_exercises.js",
+    "forward": "node _검증도구/check_forward.js",
+    "xref": "node _검증도구/check_xref.js",
+    "stats": "node _검증도구/stats.js",
+    "verify:all": "npm run verify && npm run verify:claims && npm run audit && npm run audit:exercises && npm run forward && npm run xref && npm run verify:react",
+    "density": "node _검증도구/check_density.js",
+    "class": "node _검증도구/check_class.js",
+    "fix:names": "node _검증도구/fix_names.js"
+  },
+  "devDependencies": {
+    "@types/node": "^24.10.1",
+    "puppeteer-core": "^25.6.0",
+    "typescript": "^7.0.2"
+  }
+}

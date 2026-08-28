@@ -1,0 +1,17 @@
+{
+  // 옮기기 1단계 — '확장자는 그대로 두고 검사만 켜 보기' 를 위한 설정입니다.
+  //
+  //     npx tsc --noEmit -p 08_기존_프로젝트에_타입_입히기/옮기기_예제
+  //
+  // allowJs  : .js 파일도 봐 준다
+  // checkJs  : .js 파일도 '검사' 한다  ← 이 한 줄이 1단계의 전부입니다
+  //
+  // 이렇게 하면 파일 이름을 하나도 안 바꾸고 무엇이 문제인지 먼저 볼 수 있습니다.
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true
+  },
+  "include": ["*.js", "*.ts"],
+  "exclude": []
+}

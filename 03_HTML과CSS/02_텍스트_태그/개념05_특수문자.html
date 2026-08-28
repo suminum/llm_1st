@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>02단원 개념05 - 특수문자</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         02단원 · 개념 05 — 특수문자
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         01단원 개념02 의 마지막에 이런 실수를 봤습니다.
+
+             p>안녕하세요</p>
+
+         여는 꺾쇠를 빠뜨렸더니 태그가 안 되고 글자가 그대로 화면에 나왔습니다.
+         "코드가 화면에 글자로 보이면 꺾쇠가 빠진 것" 이라고 배웠습니다.
+
+         이번에는 정반대 사고를 다룹니다.
+
+             글자로 쓰고 싶었는데 태그로 먹혀 버리는 경우
+
+         예를 들어 HTML 을 설명하는 글을 쓴다고 합시다.
+         "p 태그는 <p> 처럼 생겼습니다" 라고 쓰고 싶습니다.
+         그대로 쓰면 브라우저는 가운데 <p> 를 진짜 태그로 읽어 버립니다.
+         글자로 보여 주려던 것이 명령으로 실행되는 것입니다.
+
+         브라우저는 꺾쇠를 보면 무조건 "태그가 시작되나 보다" 하고 생각합니다.
+         꺾쇠에게 그런 일을 시켜 놓았으니 어쩔 수 없습니다.
+
+         그래서 HTML 에는 이런 글자들을 위한 대체 표기가 준비되어 있습니다.
+
+             &lt;    →  화면에 <  로 보입니다
+             &gt;    →  화면에 >  로 보입니다
+             &amp;   →  화면에 &  로 보입니다
+             &quot;  →  화면에 "  로 보입니다
+
+         이것을 특수문자 표기라고 부릅니다.
+         정확한 이름은 문자 참조(character reference) 인데,
+         "글자를 직접 쓰지 않고 이름으로 가리킨다" 는 뜻입니다.
+
+         생김새는 셋으로 정해져 있습니다.
+
+             &  amp  ;
+             │   │   └ 세미콜론으로 끝냅니다
+             │   └ 글자의 이름
+             └ 앰퍼샌드로 시작합니다
+
+         이 파일에서는 왜 필요한지, 무엇을 알아야 하는지, 그리고
+         공백을 남기는 &nbsp; 와 저작권 기호 같은 것들을 배웁니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 05 — 특수문자</h1>
+    <p class="doc-sub">02단원 · 텍스트 태그</p>
+
+    <p class="doc-guide">
+      이 파일은 <strong>글자로 쓰고 싶은데 태그로 먹혀 버리는 문제</strong>를 해결합니다.
+      <code>&amp;lt;</code> <code>&amp;gt;</code> <code>&amp;amp;</code>
+      <code>&amp;quot;</code> <code>&amp;nbsp;</code> <code>&amp;copy;</code> 를 배우고,
+      이모지를 넣는 법도 함께 봅니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: 왜 필요한가 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 꺾쇠를 그대로 쓰면 태그로 먹힙니다</h2>
+      <p class="doc-desc">
+        브라우저는 <code>&lt;</code> 를 보는 순간 <strong>태그가 시작된다</strong>고 판단합니다.
+        글자로 쓴 것인지 아닌지는 구분해 주지 않습니다.
+      </p>
+
+      <!--
+        아래 첫 번째 상자 안에는 이렇게 썼습니다. 꺾쇠를 그대로 쳤습니다.
+
+            <p id="raw-demo">p 태그는 <p> 처럼 생겼습니다</p>
+
+        의도는 "p 태그는 <p> 처럼 생겼습니다" 라는 한 문장이었습니다.
+        하지만 브라우저는 가운데 <p> 를 진짜 태그로 읽습니다.
+
+        개념02 에서 배웠듯이 p 안에 p 가 들어오면 바깥 p 가 강제로 닫힙니다.
+        그래서 실제로는 이런 일이 벌어집니다.
+
+            문단 1  "p 태그는"
+            문단 2  "처럼 생겼습니다"
+
+        한 문장이 두 문단으로 쪼개졌고, 보여 주려던 <p> 는 사라졌습니다.
+        에러는 물론 나지 않습니다.
+
+        두 번째 상자에는 꺾쇠를 특수문자로 바꿔서 이렇게 썼습니다.
+
+            <p id="esc-demo">p 태그는 &lt;p&gt; 처럼 생겼습니다</p>
+
+        이제 한 문단으로 제대로 나오고 <p> 도 글자로 보입니다.
+
+        [중요] 이 자료의 검은 코드 상자들이 전부 이 방법으로 만들어져 있습니다.
+               VS Code 에서 이 파일의 doc-code 를 열어 보면
+               모든 꺾쇠가 &lt; 와 &gt; 로 적혀 있는 것을 볼 수 있습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">꺾쇠를 그대로 쓴 결과</p>
+        <p id="raw-demo">p 태그는 <p> 처럼 생겼습니다</p>
+        <!-- 화면: "p 태그는" 과 "처럼 생겼습니다" 가 두 줄로 쪼개져 보입니다.
+                  보여 주려던 꺾쇠 표기는 어디에도 없습니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">특수문자로 바꾼 결과</p>
+        <p id="esc-demo">p 태그는 &lt;p&gt; 처럼 생겼습니다</p>
+        <!-- 화면: "p 태그는 <p> 처럼 생겼습니다" 가 한 줄로 제대로 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        01단원 개념02 의 실수 4 는 <strong>꺾쇠를 빠뜨려서 코드가 글자로 보인</strong> 경우였고,
+        여기는 <strong>꺾쇠를 그대로 써서 글자가 코드로 먹힌</strong> 경우입니다.
+        같은 꺾쇠 때문에 생기는 정반대 사고입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 두 번째 상자의 <code>&amp;lt;p&amp;gt;</code> 를
+        <code>&amp;lt;strong&amp;gt;</code> 으로 바꿔 보세요. 저장하고(Ctrl+S)
+        새로고침(F5) 하면 화면에 다른 태그 이름이 글자로 보입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: 꼭 알아야 할 네 가지 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 꼭 알아야 할 네 가지</h2>
+      <p class="doc-desc">
+        수십 개가 있지만 <strong>이 넷만 외우면 됩니다.</strong> 나머지는 필요할 때 찾아 쓰세요.
+      </p>
+
+      <!--
+        표기와 결과를 나란히 놓으면 이렇습니다.
+
+            표기       화면    이름의 유래                  언제 쓰나
+            &lt;       <       less than (작다)             태그를 글자로 보여 줄 때
+            &gt;       >       greater than (크다)          위와 같음
+            &amp;      &       ampersand (앰퍼샌드)         회사 이름, 조건식 등
+            &quot;     "       quotation mark (따옴표)      속성 값 안에 따옴표를 쓸 때
+
+        [&lt; 와 &gt;]
+        이 둘은 짝으로 외우세요. l 은 left(왼쪽), g 는 great 로 기억해도 됩니다.
+        실무에서는 &lt; 를 훨씬 자주 씁니다. 여는 꺾쇠만 조심하면 되기 때문입니다.
+
+        [&amp;]
+        앰퍼샌드는 특수문자 표기의 시작 신호입니다.
+        그러니 앰퍼샌드 자신을 글자로 쓰려면 표기가 필요합니다.
+        &amp; 는 "여기 앰퍼샌드는 시작 신호가 아니라 그냥 글자다" 라는 표시입니다.
+
+        여기서 재미있는 일이 하나 있습니다.
+        화면에 &lt; 라는 글자를 그대로 보여 주고 싶으면 어떻게 할까요.
+
+            &amp;lt;   →  화면에 &lt; 로 보입니다
+
+        &amp; 가 & 가 되고, 뒤의 lt; 는 그냥 글자라서 그대로 남습니다.
+        이 자료가 "이렇게 씁니다" 하고 표기 자체를 보여 줄 때 쓰는 방법입니다.
+
+        [&quot;]
+        속성 값을 감싸는 큰따옴표 안에 큰따옴표를 또 쓰면 값이 거기서 끊깁니다.
+        그럴 때 &quot; 를 씁니다. 속성은 03단원의 colspan, 04단원의 href 처럼
+        뒤로 갈수록 자주 쓰게 됩니다.
+        지금은 문장 안의 따옴표를 안전하게 쓰는 용도만 익혀 두세요.
+
+        [알아 두면 편한 것]
+        브라우저는 앰퍼샌드가 혼자 있으면 대체로 그냥 글자로 봐 줍니다.
+        "Tom & Jerry" 도 그대로 나옵니다.
+        하지만 항상 그렇지는 않습니다. 섹션 5 의 실수 1 에서 실제로 깨지는 경우를 봅니다.
+        그래서 앰퍼샌드는 습관적으로 &amp; 로 쓰는 편이 안전합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p id="lt-demo">조건은 1 &lt; 2 이고 3 &gt; 2 입니다.</p>
+        <p id="amp-demo">Tom &amp; Jerry</p>
+        <p id="quot-demo">그는 &quot;안녕&quot; 이라고 했습니다</p>
+        <p id="double-demo">&amp;lt; 라고 쓰면 꺾쇠가 글자로 보입니다</p>
+        <!-- 화면: 네 줄이 차례로 보입니다.
+                  1) "조건은 1 < 2 이고 3 > 2 입니다."
+                  2) "Tom & Jerry"
+                  3) 그는 "안녕" 이라고 했습니다
+                  4) "&lt; 라고 쓰면 꺾쇠가 글자로 보입니다" -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위 상자에
+        <code>&amp;lt;h1&amp;gt;제목&amp;lt;/h1&amp;gt;</code> 을 담은 문단을
+        한 줄 넣어 보세요. 화면에 h1 태그가 글자 그대로 보이면 성공입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: nbsp ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — &amp;nbsp; 는 접히지 않는 공백입니다</h2>
+      <p class="doc-desc">
+        개념02 에서 <strong>공백은 여러 개를 써도 한 칸으로 접힌다</strong>고 배웠습니다.
+        접히지 않는 공백이 <code>&amp;nbsp;</code> 입니다.
+      </p>
+
+      <!--
+        nbsp 는 non-breaking space 의 줄임말입니다.
+        우리말로 옮기면 "끊어지지 않는 공백" 입니다.
+
+        성질이 두 가지입니다.
+
+            [1] 여러 개를 써도 접히지 않습니다.
+                보통 스페이스는 네 칸을 쳐도 한 칸이 되지만
+                &nbsp; 는 네 개를 쓰면 네 칸이 그대로 남습니다.
+
+            [2] 그 자리에서 줄이 바뀌지 않습니다.
+                "홍&nbsp;길동" 이라고 쓰면 오른쪽 끝에 닿아도
+                "홍" 과 "길동" 이 위아래로 갈라지지 않습니다.
+                이름이나 "10 kg" 같은 단위에서 쓸모가 있습니다.
+
+        아래 상자에서 성질 [1] 을 눈으로 봅니다. 소스는 이렇습니다.
+
+            가<span id="nbsp-span">&nbsp;&nbsp;&nbsp;&nbsp;</span>나
+            가<span id="plain-span">    </span>나
+
+        위는 &nbsp; 네 개, 아래는 스페이스 네 칸입니다.
+        크롬에서 그 사이 폭을 재 보면 이렇습니다.
+
+            &nbsp; 네 개   →  23px
+            스페이스 네 칸 →   6px
+
+        네 배 가까이 차이가 납니다. 아래쪽은 한 칸으로 접혀 버린 것입니다.
+
+        [중요한 주의]
+        이 성질 때문에 &nbsp; 를 들여쓰기나 간격 조절에 쓰는 사람이 아주 많습니다.
+        개념02 의 br 남용과 정확히 같은 잘못입니다.
+
+            &nbsp;&nbsp;&nbsp;&nbsp;여기부터 본문
+
+        이렇게 쓰면 들여쓴 것처럼 보이기는 합니다. 하지만
+        "여기 공백이 네 칸 있다" 라는 뜻일 뿐 들여쓰기라는 뜻이 아닙니다.
+        들여쓰기는 10단원의 padding 이나 margin 으로 합니다.
+
+        &nbsp; 는 이런 데만 쓰세요.
+
+            홍&nbsp;길동          이름이 갈라지면 안 될 때
+            10&nbsp;kg            숫자와 단위가 갈라지면 안 될 때
+            2026.&nbsp;8.&nbsp;11 날짜가 갈라지면 안 될 때
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 위는 &amp;nbsp; 네 개, 아래는 스페이스 네 칸</p>
+        <p>가<span id="nbsp-span">&nbsp;&nbsp;&nbsp;&nbsp;</span>나</p>
+        <p>가<span id="plain-span">    </span>나</p>
+        <!-- 화면: 위 줄은 "가" 와 "나" 사이가 눈에 띄게 벌어져 있고,
+                  아래 줄은 한 칸만 띄어져 있습니다 -->
+      </div>
+
+      <div class="doc-bad">
+        <span class="doc-bad-tag">잘못된 예</span>
+        <div class="doc-code">&lt;p&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;
+  여기부터 본문&lt;/p&gt;</div>
+        <p>들여쓰기처럼 보이지만 뜻은 "공백 네 칸" 입니다. 들여쓰기라는 뜻이 아닙니다.</p>
+      </div>
+      <div class="doc-good">
+        <span class="doc-good-tag">이렇게 쓰세요</span>
+        <div class="doc-code">&lt;p&gt;홍&amp;nbsp;길동 님, 10&amp;nbsp;kg 짐이 도착했습니다&lt;/p&gt;</div>
+        <p>
+          이름과 단위가 줄 끝에서 갈라지지 않게 붙잡아 두는 것이
+          <strong>&amp;nbsp; 의 원래 용도</strong>입니다.
+        </p>
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 상자 아래 줄의 스페이스 네 칸을
+        <code>&amp;nbsp;</code> 네 개로 바꿔 보세요. 두 줄의 간격이 같아집니다.
+        확인했으면 되돌려 놓으세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: 기호와 이모지 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — 자판에 없는 기호와 이모지</h2>
+      <p class="doc-desc">
+        저작권 기호, 화살표, 수학 기호처럼 <strong>자판에 없는 글자</strong>도
+        같은 방법으로 씁니다.
+      </p>
+
+      <!--
+        자주 쓰는 것만 모으면 이 정도입니다.
+
+            표기         화면    쓰는 곳
+            &copy;       ©       저작권 표시
+            &reg;        ®       등록 상표
+            &trade;      ™       상표
+            &middot;     ·       가운뎃점
+            &hellip;     …       말줄임표
+            &rarr;       →       오른쪽 화살표
+            &larr;       ←       왼쪽 화살표
+            &star;       ☆       별표
+            &times;      ×       곱하기
+            &divide;     ÷       나누기
+            &deg;        °       도(온도, 각도)
+            &plusmn;     ±       플러스마이너스
+            &ldquo;      “       여는 곡선 큰따옴표
+            &rdquo;      ”       닫는 곡선 큰따옴표
+            &mdash;      —       긴 줄표
+            &bull;       •       가운데 점
+
+        이름을 전부 외울 필요는 없습니다. 필요할 때 찾아 쓰면 됩니다.
+        다만 &copy; 정도는 페이지 맨 아래 저작권 줄에 늘 쓰게 되니 외워 두면 편합니다.
+
+        [숫자로 쓰는 방법]
+        이름 대신 번호로도 쓸 수 있습니다.
+
+            &copy;   와  &#169;   는 똑같습니다
+            &hearts; 와  &#9829;  는 똑같습니다
+
+        모든 글자에는 세계 공통 번호가 붙어 있습니다.
+        이름이 없는 글자는 번호로 씁니다. 이름이 있으면 이름 쪽이 읽기 좋습니다.
+
+        [이모지는 그냥 붙여넣으세요]
+        이모지도 특수문자 표기가 필요할 것 같지만 그렇지 않습니다.
+
+            <p>🍎 사과를 좋아합니다</p>
+
+        이렇게 그냥 붙여넣으면 그대로 나옵니다.
+        01단원에서 배운 이 한 줄 덕분입니다.
+
+            <meta charset="UTF-8" />
+
+        charset 은 "이 파일의 글자를 어떤 규칙으로 읽어라" 를 알려 주는 표시입니다.
+        UTF-8 은 세상의 거의 모든 글자를 담는 규칙이라 한글도 이모지도 다 들어 있습니다.
+        이 줄이 없으면 한글이 깨지고 이모지도 깨집니다.
+
+        [주의] 이모지를 뜻 전달에 기대지 마세요.
+               화면 낭독기는 이모지를 이름으로 읽습니다.
+               🍎 는 "붉은 사과" 라고 읽힙니다. 장식으로 여러 개 늘어놓으면
+               그 이름이 전부 소리로 나와서 듣기 괴로워집니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p id="sym-demo">&copy; &reg; &trade; &rarr; &star; &middot; &hellip;</p>
+        <p id="math-demo">&times; &divide; &plusmn; &deg; 30&deg;C</p>
+        <p id="num-demo">&copy; 와 &#169; 는 같은 글자입니다</p>
+        <p id="emoji-demo">🍎 🌙 ⭐ 이모지는 그냥 붙여넣으면 됩니다</p>
+        <p id="copy-demo">&copy; 2026 우리 동네 빵집 &middot; 모든 권리 보유</p>
+        <!-- 화면: 다섯 줄이 차례로 보입니다.
+                  1) 저작권 기호, 등록상표, 상표, 오른쪽 화살표, 별, 가운뎃점, 말줄임표
+                  2) 곱하기, 나누기, 플러스마이너스, 도 기호, 그리고 30도씨
+                  3) "© 와 © 는 같은 글자입니다"
+                  4) 사과와 달과 별 이모지가 그림으로 보입니다
+                  5) 페이지 맨 아래에 흔히 넣는 저작권 한 줄 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 상자에 여러분 이름으로 저작권 줄을 한 줄 만들어 보세요.
+        <code>&amp;copy;</code> 와 <code>&amp;middot;</code> 를 써 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        특수문자 실수는 <strong>글자가 엉뚱하게 보이는 것</strong>으로 나타납니다.
+        여기서도 에러는 나지 않습니다.
+      </p>
+
+      <!-- [실수 1] 앰퍼샌드를 날것으로 씀 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 앰퍼샌드를 그대로 씀</span>
+        <div class="doc-code">&lt;p&gt;AT&amp;copy 라는 회사&lt;/p&gt;</div>
+        <p>
+          회사 이름을 그대로 쳤을 뿐인데 브라우저는
+          <code>&amp;copy</code> 를 <strong>저작권 기호로 읽어 버립니다.</strong>
+          화면에 "AT© 라는 회사" 가 나옵니다. 아래가 실제 결과입니다.
+          앰퍼샌드 뒤에 우연히 특수문자 이름이 오면 이런 일이 생깁니다.
+        </p>
+        <div class="doc-demo">
+          <p class="doc-demo-label">앰퍼샌드를 그대로 쓴 실제 결과</p>
+          <p id="mis-amp">AT&copy 라는 회사</p>
+          <!-- 화면: "AT© 라는 회사" 로 보입니다. copy 라는 글자가 통째로 사라지고
+                    그 자리에 저작권 기호가 들어왔습니다 -->
+        </div>
+        <p>
+          <strong>해결은 간단합니다.</strong> 앰퍼샌드를
+          <code>&amp;amp;</code> 로 쓰면 됩니다.
+        </p>
+      </div>
+
+      <!-- [실수 2] 세미콜론을 빠뜨림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 세미콜론을 빠뜨림</span>
+        <div class="doc-code">&amp;nbsp   &amp;lt   &amp;copy</div>
+        <p>
+          세미콜론 <code>;</code> 은 "이름이 여기서 끝난다" 는 표시입니다.
+          빠뜨리면 브라우저가 어디까지가 이름인지 몰라서
+          <strong>뒤에 오는 글자까지 이름으로 삼켜 버릴 수 있습니다.</strong>
+          실수 1 의 <code>AT&amp;copy 라는</code> 이 정확히 그 경우입니다.
+          <strong>세미콜론은 항상 붙이세요.</strong>
+        </p>
+      </div>
+
+      <!-- [실수 3] 철자를 틀림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 이름의 철자를 틀림</span>
+        <div class="doc-code">&amp;nbps;   &amp;NBSP;</div>
+        <p>
+          <code>nbsp</code> 를 <code>nbps</code> 로 치거나 대문자로 치는 실수입니다.
+          그런 이름은 없으니 브라우저는 <strong>쓴 그대로 화면에 보여 줍니다.</strong>
+          아래가 실제 결과입니다. 이름은 <strong>대소문자를 가립니다.</strong>
+          "이상한 글자가 화면에 보인다" 면 철자부터 확인하세요.
+        </p>
+        <div class="doc-demo">
+          <p class="doc-demo-label">철자를 틀린 실제 결과</p>
+          <p id="mis-typo">&nbps; 철자를 틀렸습니다</p>
+          <p id="mis-upper">&NBSP; 대문자로 썼습니다</p>
+          <!-- 화면: 두 줄 모두 앞부분이 앰퍼샌드부터 세미콜론까지 글자 그대로 보입니다.
+                    공백으로 바뀌지 않았습니다 -->
+        </div>
+      </div>
+
+      <!-- [실수 4] nbsp 로 여백을 만듦 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — &amp;nbsp; 를 늘어놓아 여백을 만듦</span>
+        <div class="doc-code">&lt;p&gt;제목&amp;nbsp;&amp;nbsp;&amp;nbsp;
+  &amp;nbsp;&amp;nbsp;&amp;nbsp;내용&lt;/p&gt;</div>
+        <p>
+          간격이 벌어지기는 합니다. 하지만 뜻은 "공백 여섯 칸" 일 뿐입니다.
+          <strong>글자 크기를 바꾸면 간격도 같이 흔들립니다.</strong>
+          개념02 의 <code>&lt;br /&gt;</code> 남용과 똑같은 문제입니다.
+          간격은 10단원의 CSS 로 조절하세요.
+        </p>
+      </div>
+
+      <!-- [실수 5] 이미 바꾼 것을 또 바꿈 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — 이미 바꾼 것을 한 번 더 바꿈</span>
+        <div class="doc-code">&amp;amp;lt;p&amp;amp;gt;</div>
+        <p>
+          <code>&amp;lt;</code> 라고 쓰려다가 앰퍼샌드까지 한 번 더 바꿔 버린 경우입니다.
+          화면에는 <strong><code>&amp;lt;p&amp;gt;</code> 라는 글자가 그대로</strong> 나옵니다.
+          꺾쇠가 아니라 표기 자체가 보이는 것입니다.
+          아래가 실제 결과입니다. 이 자료가 표기를 설명할 때 일부러 쓰는 방법이기도 합니다.
+        </p>
+        <div class="doc-demo">
+          <p class="doc-demo-label">두 번 바꾼 실제 결과</p>
+          <p id="mis-double">&amp;lt;p&amp;gt;</p>
+          <!-- 화면: "&lt;p&gt;" 라는 글자가 그대로 보입니다.
+                    꺾쇠 모양이 아니라 표기 그대로입니다 -->
+        </div>
+      </div>
+
+      <!-- [실수 6] charset 을 빠뜨림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 6 — meta charset 을 빠뜨리고 이모지를 씀</span>
+        <div class="doc-code">&lt;head&gt;
+  &lt;title&gt;내 페이지&lt;/title&gt;
+&lt;/head&gt;</div>
+        <p>
+          <code>&lt;meta charset="UTF-8" /&gt;</code> 가 없습니다.
+          이러면 한글과 이모지가 <strong>알아볼 수 없는 글자로 깨져서</strong> 나올 수 있습니다.
+          01단원에서 이 줄을 왜 넣는지 배웠습니다. 여기서 그 이유가 눈에 보입니다.
+          이 파일에도 맨 위에 그 줄이 들어 있습니다.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. 브라우저는 <code>&lt;</code> 를 보면 태그가 시작된다고 판단합니다.
+        <strong>꺾쇠를 글자로 쓰려면 특수문자 표기가 필요합니다.</strong></p>
+      <p>2. 표기는 <strong>앰퍼샌드 + 이름 + 세미콜론</strong> 모양입니다.
+        세미콜론을 빠뜨리면 뒷글자까지 삼킬 수 있습니다.</p>
+      <p>3. 꼭 알아야 할 넷은 <code>&amp;lt;</code> <code>&amp;gt;</code>
+        <code>&amp;amp;</code> <code>&amp;quot;</code> 입니다.</p>
+      <p>4. <code>&amp;nbsp;</code> 는 <strong>접히지 않는 공백</strong>입니다.
+        이름이나 단위가 갈라지면 안 될 때만 쓰고, 여백 만들기에는 쓰지 않습니다.</p>
+      <p>5. <code>&amp;copy;</code> 처럼 자판에 없는 기호도 같은 방법으로 씁니다.
+        이름 대신 <code>&amp;#169;</code> 처럼 번호로도 쓸 수 있습니다.</p>
+      <p>6. <strong>이모지는 그냥 붙여넣으면 됩니다.</strong>
+        <code>&lt;meta charset="UTF-8" /&gt;</code> 가 있기 때문입니다.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 섹션 1 의 두 번째 상자를 이렇게 바꿉니다.
+
+                <p id="esc-demo">p 태그는 &lt;strong&gt; 처럼 생겼습니다</p>
+
+            → 화면에 "p 태그는 <strong> 처럼 생겼습니다" 가 한 줄로 보입니다.
+              굵어지지 않습니다. 태그가 아니라 글자이기 때문입니다.
+
+         2) 섹션 2 상자의 마지막 p 아래에 이렇게 넣습니다.
+
+                <p>&lt;h1&gt;제목&lt;/h1&gt;</p>
+
+            → 화면에 "<h1>제목</h1>" 이 글자 그대로 보입니다.
+              글자가 커지지 않는 것으로 태그가 아님을 확인할 수 있습니다.
+
+         3) 섹션 3 상자의 아래 줄을 이렇게 바꿉니다.
+
+                <p>가<span id="plain-span">&nbsp;&nbsp;&nbsp;&nbsp;</span>나</p>
+
+            → 아래 줄의 간격이 위 줄과 똑같이 벌어집니다.
+              폭을 재면 6px 이던 것이 23px 가 됩니다.
+              확인했으면 스페이스 네 칸으로 되돌려 놓으세요.
+
+         4) 섹션 4 상자의 마지막 p 아래에 이렇게 넣습니다.
+
+                <p>&copy; 2026 김민준 &middot; 개인 연습용</p>
+
+            → "© 2026 김민준 · 개인 연습용" 이 한 줄 보입니다.
+              저작권 기호와 가운뎃점이 자판에 없는데도 나옵니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #raw-demo | text | p 태그는
+      #esc-demo | text | p 태그는 <p> 처럼 생겼습니다
+      #lt-demo | text | 조건은 1 < 2 이고 3 > 2 입니다.
+      #amp-demo | text | Tom & Jerry
+      #quot-demo | text | 그는 "안녕" 이라고 했습니다
+      #double-demo | text | &lt; 라고 쓰면 꺾쇠가 글자로 보입니다
+      #nbsp-span | ~width | 23
+      #plain-span | ~width | 6
+      #sym-demo | text | © ® ™ → ☆ · …
+      #math-demo | text | × ÷ ± ° 30°C
+      #emoji-demo | ?visible | yes
+      #mis-amp | text | AT© 라는 회사
+      #mis-typo | text | &nbps; 철자를 틀렸습니다
+      #mis-upper | text | &NBSP; 대문자로 썼습니다
+      #mis-double | text | &lt;p&gt;
+    -->
+  </body>
+</html>

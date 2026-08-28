@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>00단원 연습문제 정답 - 개발환경과 Git</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         00단원 연습문제 정답 — 개발환경과 Git
+         ------------------------------------------------------------
+         ★ 명령만 보지 말고 아래 설명을 읽으세요.
+           이 단원의 문제는 답을 아는 것보다 **왜 그런지**가 중요합니다.
+
+         ★★ 그리고 정답을 본 뒤에 반드시 **한 번 더 직접 쳐 보세요.**
+           읽어서 아는 것과 손이 아는 것은 다릅니다.
+         ============================================================ -->
+
+    <h1 class="doc-head">00단원 연습문제 정답</h1>
+    <p class="doc-sub">00단원 · 개발환경과 Git</p>
+
+    <p class="doc-guide">
+      <strong>명령만 보고 넘어가지 마세요.</strong> 아래 설명이 본론입니다.
+      <br /><br />
+      아래 결과는 <strong>실제로 쳐 본 것</strong>입니다. 커밋 번호만 여러분과 다릅니다.
+    </p>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 1 — 깔린 것 확인하기</h2>
+      <div class="doc-code">$ git --version
+git version 2.55.0.windows.3
+
+$ node --version
+v24.18.0</div>
+      <p class="doc-note">
+        ★ <code>--version</code> 은 거의 모든 명령줄 프로그램이 알아듣습니다.
+        앞으로 뭘 깔든 이걸로 확인하세요.
+        <br />
+        못 찾는다고 나오면 <strong>터미널을 껐다 켜는 것이 먼저</strong>입니다. (개념01 섹션2)
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 2 — 이름과 메일 확인하기</h2>
+      <div class="doc-code">$ git config user.name
+홍길동
+
+$ git config user.email
+hong@example.com</div>
+      <p class="doc-note">
+        <strong>값 없이 이름만 주면 "지금 값이 뭐냐" 는 뜻이 됩니다.</strong>
+        값을 같이 주면 설정하는 것이고요. 같은 명령이 둘 다 합니다.
+        <br />
+        ★ 전부 보려면 <code>git config --global --list</code> 입니다.
+        (긴 목록이 나오면 <code>q</code> 로 빠져나옵니다)
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 3 — 저장소 만들고 첫 커밋</h2>
+      <div class="doc-code">$ git init
+Initialized empty Git repository in …/.git/
+
+   (index.html 을 만들고 &lt;h1&gt;안녕하세요&lt;/h1&gt; 를 씁니다)
+
+$ git add .
+
+$ git commit -m "첫 페이지를 만들었습니다"
+[main (root-commit) ae4c0c2] 첫 페이지를 만들었습니다
+ 1 file changed, 1 insertion(+)
+ create mode 100644 index.html
+
+$ git log --oneline
+ae4c0c2 첫 페이지를 만들었습니다</div>
+      <p class="doc-note">
+        <code>git add .</code> 의 <code>.</code> 은 "지금 폴더 아래 전부" 입니다.
+        파일 이름을 하나씩 적어도 됩니다.
+        <br />
+        ★ <code>root-commit</code> 은 첫 커밋에만 붙습니다. 두 번째부터는 안 나옵니다.
+      </p>
+      <p class="doc-note">
+        <strong>여기서 막혔다면</strong> — <code>Author identity unknown</code> 이 나왔을 것입니다.
+        문제 2의 설정을 먼저 하세요. (개념01 섹션4)
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 4 — 기호 읽기</h2>
+      <div class="doc-code">①  M index.html      ← 첫째 칸이 공백 = 아직 안 담김
+② M  index.html      ← 둘째 칸이 공백 = 담겼고, 담은 뒤로는 안 고침
+③ (아무것도 없음)     ← 커밋됐으니 달라진 게 없음</div>
+      <p class="doc-note">
+        <strong>왼쪽 두 칸이 각각 다른 자리를 가리킵니다.</strong>
+        첫째 칸은 <strong>담는 곳</strong>, 둘째 칸은 <strong>작업 폴더</strong>입니다. (개념02 섹션4)
+        <br />
+        ★ 이걸 못 읽으면 "커밋했는데 왜 안 들어갔지?" 를 평생 겪습니다.
+        <strong>담기지 않은 것은 커밋되지 않습니다.</strong>
+      </p>
+      <p class="doc-note">
+        ★★ <code>git add</code> 뒤에 <strong>또 고치면</strong> <code>MM</code> 이 됩니다.
+        "담아 둔 것도 있고, 담은 뒤에 또 고친 것도 있다" 는 뜻입니다.
+        해 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 5 — 무엇이 바뀌었나</h2>
+      <div class="doc-code">$ git diff
+diff --git a/index.html b/index.html
+index 6944b17..87d06c9 100644
+--- a/index.html
++++ b/index.html
+@@ -1 +1,2 @@
+ &lt;h1&gt;안녕하세요&lt;/h1&gt;
++&lt;p&gt;시험&lt;/p&gt;</div>
+      <p class="doc-note">
+        <code>+</code> 는 새로 생긴 줄입니다. 앞에 공백만 있는 줄은 그대로인 줄입니다.
+        <br />
+        ★ <strong><code>git add</code> 를 한 뒤에 치면 아무것도 안 나옵니다.</strong>
+        고장이 아닙니다. <code>git diff</code> 는 <strong>안 담은 것</strong>만 보여 줍니다.
+        담긴 것은 <code>git diff --staged</code> 입니다. (개념02 섹션5)
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 6 — 되돌리기</h2>
+      <div class="doc-code">$ git restore index.html
+
+$ git status --short
+(아무것도 안 나옵니다)</div>
+      <p class="doc-note">
+        ★★ <strong>되돌린 내용은 되찾을 수 없습니다.</strong> 휴지통에 안 갑니다.
+        커밋을 안 했으니 Git 도 모르는 내용이기 때문입니다. (개념03 섹션1)
+        <br />
+        그래서 <strong>애매하면 일단 커밋해 두는 것</strong>이 낫습니다.
+        커밋은 얼마든지 되돌릴 수 있습니다.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 7 — 담은 것 무르기</h2>
+      <div class="doc-code">$ git add .
+
+$ git status --short
+M  index.html
+
+$ git restore --staged index.html
+
+$ git status --short
+ M index.html</div>
+      <p class="doc-note">
+        <strong><code>M</code> 이 왼쪽에서 오른쪽으로 옮겨 갔습니다.</strong>
+        담는 곳에서 빠지고 작업 폴더에만 남은 것입니다.
+        <strong>고친 내용은 그대로 있습니다.</strong>
+        <br />
+        ★ 완전히 없애려면 <code>--staged</code> 로 뺀 뒤 <code>--staged</code> 없이 한 번 더 (문제 6).
+        두 단계인 이유가 자리가 둘이기 때문입니다.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 8 — .gitignore</h2>
+      <div class="doc-code">   (.gitignore 파일을 만들고 한 줄만 씁니다)
+   .env
+
+$ git status --short
+?? .gitignore              ← .env 는 사라졌습니다
+
+$ git check-ignore -v .env
+.gitignore:1:.env	.env</div>
+      <p class="doc-note">
+        <code>check-ignore -v</code> 는 <strong>몇 번째 줄의 어느 규칙에 걸렸는지</strong> 알려 줍니다.
+        규칙을 여러 개 쓰다 보면 어느 것이 먹었는지 헷갈리는데, 이걸로 확인합니다.
+        <br />
+        ★ <code>.gitignore</code> 자신은 <strong>같이 올려야 합니다.</strong>
+        팀원 모두가 같은 것을 무시해야 하니까요.
+      </p>
+      <p class="doc-note">
+        ★★ 그리고 <strong>이미 커밋한 파일에는 안 먹습니다.</strong> 문제 13에서 다룹니다.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 9 — 가지 만들고 합치기</h2>
+      <div class="doc-code">$ git switch -c 인사말
+Switched to a new branch '인사말'
+
+   (파일을 고칩니다)
+
+$ git commit -am "인사말을 고쳤습니다"
+[인사말 73859b6] 인사말을 고쳤습니다
+ 1 file changed, 1 insertion(+)
+
+$ git switch main
+Switched to branch 'main'
+
+$ git merge 인사말
+Updating 6d15fca..73859b6
+Fast-forward
+ index.html | 1 +
+ 1 file changed, 1 insertion(+)</div>
+      <p class="doc-note">
+        <strong><code>Fast-forward</code></strong> 는 "표시만 앞으로 옮기면 된다" 는 뜻입니다.
+        <code>main</code> 이 그동안 가만히 있었기 때문입니다. <strong>새 커밋이 안 생깁니다.</strong>
+        <br />
+        ★ 이 말이 나오면 <strong>충돌이 날 수가 없습니다.</strong>
+      </p>
+      <p class="doc-note">
+        <strong><code>-am</code> 이 안 먹었다면</strong> — 새로 만든 파일이라서입니다.
+        <code>-a</code> 는 <strong>이미 알고 있는 파일</strong>만 담습니다. (개념05 섹션1)
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 10 — 충돌 내고 풀기</h2>
+      <div class="doc-code">$ git switch -c 가
+   (&lt;h1&gt; 안의 글자를 '가나다' 로 고칩니다)
+$ git commit -am "가나다로"
+
+$ git switch main
+   (같은 줄을 '라마바' 로 고칩니다)
+$ git commit -am "라마바로"
+
+$ git merge 가
+Auto-merging index.html
+CONFLICT (content): Merge conflict in index.html
+Automatic merge failed; fix conflicts and then commit the result.</div>
+
+      <p class="doc-desc">파일을 열면 이렇게 되어 있습니다.</p>
+
+      <div class="doc-code">&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
+&lt;h1&gt;라마바&lt;/h1&gt;
+=======
+&lt;h1&gt;가나다&lt;/h1&gt;
+&gt;&gt;&gt;&gt;&gt;&gt;&gt; 가</div>
+
+      <p class="doc-desc">
+        <strong>기호 세 줄과 안 쓸 쪽을 지웁니다.</strong> 그리고 담고 커밋합니다.
+      </p>
+
+      <div class="doc-code">$ git add index.html
+$ git commit -m "인사말 충돌을 풀었습니다"
+[main 7c6d6e7] 인사말 충돌을 풀었습니다</div>
+
+      <p class="doc-note">
+        <code>HEAD</code> 쪽이 <strong>지금 서 있는 가지(main)</strong>, 아래쪽이
+        <strong>합치려는 가지</strong>입니다.
+        <br />
+        ★ 커밋 전에 파일에서 <code>&lt;&lt;&lt;&lt;</code> 를 검색해 보세요.
+        하나도 없어야 합니다. 남기고 커밋하는 것이 제일 흔한 실수입니다.
+      </p>
+      <p class="doc-note">
+        ★★ 이 커밋에는 <code>1 file changed</code> 줄이 안 나옵니다.
+        <strong>합치는 커밋은 원래 그렇습니다.</strong> 빠뜨린 게 아닙니다.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 11 — [손으로] 못 찾는다고 합니다</h2>
+      <p class="doc-desc">
+        <strong>(1) 터미널을 껐다 다시 켜게 합니다.</strong>
+      </p>
+      <p class="doc-note">
+        <strong>(2)</strong> 프로그램을 깔면 "어디에 있는지" 목록(PATH)이 바뀝니다.
+        그런데 <strong>이미 켜져 있던 터미널은 옛 목록을 들고 있습니다.</strong>
+        새로 켜야 새 목록을 읽습니다.
+        <br />
+        ★ 다시 깐다고 해결이 안 되는 이유가 이것입니다. 터미널이 문제지 설치가 문제가 아닙니다.
+      </p>
+      <p class="doc-note">
+        <strong>(3)</strong> 그래도 안 되면 —
+        <br />
+        · 컴퓨터를 다시 켭니다 (VS Code 안의 터미널이면 VS Code 를 껐다 켜야 합니다)
+        <br />
+        · <strong>어느 셸에서 쳤는지</strong> 봅니다. PowerShell 인지 Git Bash 인지.
+        <br />
+        · 설치할 때 "PATH 에 추가" 항목을 안 골랐는지 봅니다. 다시 깔면서 확인합니다.
+      </p>
+      <p class="doc-note">
+        ★★ <strong>이건 Git 만의 이야기가 아닙니다.</strong> Node, Python, 뭘 깔든 같습니다.
+        "깔았는데 못 찾는다" = "터미널을 껐다 켜라" 로 외워 두세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 12 — [손으로] 커밋했는데 안 들어갔습니다</h2>
+      <p class="doc-desc">
+        <strong>(1)</strong> "커밋할 것이 담겨 있지 않다. 대신 Git 이 모르는 파일은 있다" 는 뜻입니다.
+      </p>
+      <p class="doc-note">
+        <strong>(2) <code>git add</code> 를 빠뜨렸습니다.</strong>
+        고친 것과 담은 것은 다릅니다. <strong>담지 않은 것은 커밋되지 않습니다.</strong>
+        <br />
+        ★ 자리가 셋이라는 것(개념02 섹션2)을 모르면 계속 겪습니다.
+      </p>
+      <p class="doc-note">
+        <strong>(3)</strong> <code>?? 파일이름</code> 이 보입니다.
+        <code>??</code> 는 "양쪽 다 모르는 새 파일" 입니다.
+        <br />
+        ★ 만약 <code> M</code> 이 보였다면 메시지가 조금 달랐을 것입니다.
+        <strong>메시지를 끝까지 읽으면 어느 경우인지 알 수 있습니다.</strong>
+        <code>untracked files present</code> 라고 적혀 있으니 새 파일인 것입니다.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 13 — [손으로] .env 를 올려 버렸습니다 ★</h2>
+      <p class="doc-desc">
+        <strong>(1) 이미 추적 중인 파일이라서입니다.</strong>
+      </p>
+      <p class="doc-note">
+        <code>.gitignore</code> 는 <strong>"아직 모르는 파일"</strong> 에만 먹습니다.
+        한 번 커밋해서 Git 이 알고 있는 파일은 계속 따라다닙니다.
+        <br />
+        ★ <code>git check-ignore -v .env</code> 를 쳤을 때 <strong>아무것도 안 나오는 것</strong>이
+        신호입니다. 규칙이 틀린 게 아니라 검사 대상이 아닌 것입니다.
+        규칙이 맞는지 보려면 <code>--no-index</code> 를 붙입니다. (개념03 섹션6)
+      </p>
+      <p class="doc-desc"><strong>(2) 추적에서 뺍니다.</strong></p>
+      <div class="doc-code">$ git rm --cached .env
+rm '.env'
+
+$ git commit -m ".env 를 추적에서 뺐습니다"</div>
+      <p class="doc-note">
+        <code>--cached</code> 는 <strong>"저장소에서만 빼고 내 파일은 두라"</strong> 입니다.
+        <br />
+        ★★ <strong><code>--cached</code> 를 빼면 진짜 파일이 지워집니다.</strong> 조심하세요.
+      </p>
+      <p class="doc-desc"><strong>(3) ★ 안 끝납니다.</strong></p>
+      <p class="doc-note">
+        <strong>옛 커밋에는 그대로 남아 있습니다.</strong>
+        누구든 옛 기록을 꺼내 보면 그 키가 보입니다. GitHub 에도 남아 있습니다.
+        <br />
+        기록에서 완전히 지우는 방법이 있기는 하지만 어렵고, 이미 받아 간 사람에게서는
+        못 지웁니다. <strong>한 번 나간 비밀은 나간 것입니다.</strong>
+      </p>
+      <p class="doc-desc"><strong>(4) 순서가 정해져 있습니다.</strong></p>
+      <div class="doc-code">1. ★ 그 키를 먼저 폐기합니다 (발급한 곳에서 못 쓰게 만듭니다)
+2. 새 키를 발급받습니다
+3. .gitignore 에 넣고 git rm --cached 로 뺍니다
+4. 커밋하고 push 합니다
+5. 사용량·청구서를 확인합니다 (누가 썼는지)</div>
+      <p class="doc-note">
+        ★★★ <strong>1번이 제일 먼저입니다.</strong>
+        코드를 먼저 고치고 키를 나중에 폐기하면, 그 사이에도 옛 키는 살아 있습니다.
+        <br />
+        "지우면 되지 않나요?" — 안 됩니다. <strong>폐기 말고 방법이 없습니다.</strong>
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 14 — [손으로] push 가 거부됐습니다</h2>
+      <p class="doc-desc">
+        <strong>(1) 누군가(또는 다른 컴퓨터의 내가) 먼저 올렸습니다.</strong>
+      </p>
+      <p class="doc-note">
+        내가 모르는 커밋이 GitHub 에 있습니다. 그대로 밀면 그 커밋이 사라지므로
+        Git 이 막은 것입니다. <strong>막아 준 것이 고마운 일입니다.</strong>
+        <br />
+        ★ <code>hint:</code> 줄에 답이 적혀 있습니다. <strong>use 'git pull' before pushing again.</strong>
+      </p>
+      <p class="doc-desc"><strong>(2) 먼저 받아 옵니다.</strong></p>
+      <div class="doc-code">$ git pull
+$ git push</div>
+      <p class="doc-note">
+        ★ <code>git push --force</code> 라는 것이 있습니다. <strong>쓰지 마세요.</strong>
+        저쪽 커밋을 지우고 덮어씁니다. 남의 하루가 사라질 수 있습니다.
+      </p>
+      <p class="doc-desc"><strong>(3) 충돌이 났다면 개념05 섹션5 대로 풉니다.</strong></p>
+      <p class="doc-note">
+        <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</code> 쪽이 내 것, <code>&gt;&gt;&gt;&gt;&gt;&gt;&gt;</code> 쪽이 받아 온 것입니다.
+        기호를 지우고 원하는 모양으로 만든 뒤 <code>add</code> → <code>commit</code> → <code>push</code>.
+        <br />
+        무서우면 <code>git merge --abort</code> 로 언제든 빠져나올 수 있습니다.
+      </p>
+      <p class="doc-desc"><strong>(4) ★ 습관 두 가지</strong></p>
+      <div class="doc-code">· 작업을 시작하기 전에 git pull
+· 조금씩 자주 커밋하고 자주 push</div>
+      <p class="doc-note">
+        <strong>하루치를 모아서 한 번에 올리면 충돌이 크게 납니다.</strong>
+        조금씩 자주 주고받으면 부딪히는 범위가 작아서 풀기도 쉽습니다.
+        <br />
+        ★ 그리고 팀에서 <strong>같은 파일을 동시에 고치지 않게</strong> 나눠 맡는 것이
+        제일 좋은 예방입니다.
+      </p>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">다 봤으면</p>
+      <p>1. 정답을 덮고 <strong>1~10번을 다시 한 번 손으로</strong> 치세요.</p>
+      <p>2. 특히 <strong>10번(충돌)</strong> 은 두 번 이상 해 보세요. 실무에서 계속 만납니다.</p>
+      <p>3. 이 단원의 명령은 앞으로 560시간 내내 씁니다. 지금 손에 붙여 두는 게 이득입니다.</p>
+    </div>
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      .doc-head | text | 00단원 연습문제 정답
+      .doc-sub | text | 00단원 · 개발환경과 Git
+      .doc-summary-title | text | 다 봤으면
+      .doc-guide | ?visible | yes
+      .doc-code | white-space | pre
+      body | color | rgb(34, 34, 34)
+    -->
+  </body>
+</html>

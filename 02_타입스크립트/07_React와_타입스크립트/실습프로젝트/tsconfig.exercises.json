@@ -1,0 +1,10 @@
+{
+  // 07단원 연습문제 전용 검사 설정입니다.
+  //
+  //     npm run check
+  //
+  // 안 푼 문제가 있으면 시끄럽고, 다 풀면 조용해집니다.
+  "extends": "./tsconfig.json",
+  "include": ["src/**/연습문제.tsx", "src/09_종합_실습/종합04_주문_화면.tsx", "src/_ui"],
+  "exclude": []
+}

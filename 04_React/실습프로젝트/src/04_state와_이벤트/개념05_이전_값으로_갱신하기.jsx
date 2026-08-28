@@ -1,0 +1,458 @@
+// ============================================================
+// 04단원 · 개념 05 — 이전 값으로 갱신하기
+// ------------------------------------------------------------
+// 실행: 실습프로젝트에서 npm run dev → 왼쪽 목록에서 이 예제를 고르세요.
+//       버튼을 눌러 보세요. F12 → Console 도 함께.
+// ============================================================
+//
+// 여기까지 setCount(count + 1) 로 잘 세어 왔습니다.
+// 그런데 이 방식이 통하지 않는 자리가 있습니다.
+//
+//     setCount(count + 1);
+//     setCount(count + 1);   // 두 번 불렀으니 2가 오를까요?
+//
+// 안 오릅니다. 1만 오릅니다.
+// 왜 그런지, 그리고 어떻게 고치는지가 이 파일의 전부입니다.
+//
+// 이 내용은 React 를 배울 때 가장 많이 걸려 넘어지는 곳입니다.
+// 에러가 안 나기 때문입니다. 그냥 값이 하나 모자랄 뿐입니다.
+
+// ── 섹션 1: 두 번 불렀는데 1만 오릅니다 ──
+
+import { useState } from "react";
+import Summary from "../_ui/Summary.jsx";
+
+function TwiceBroken() {
+  const [count, setCount] = useState(0);
+
+  function addTwice() {
+    setCount(count + 1);
+    setCount(count + 1);
+
+    console.log("setCount 를 두 번 불렀습니다. 이번 렌더의 count:", count);
+    // 콘솔: setCount 를 두 번 불렀습니다. 이번 렌더의 count: 0
+  }
+
+  return (
+    <div className="demo">
+      <h3>① setCount 를 두 번 불러 봅니다</h3>
+      <div className="output" id="twiceOut">
+        개수: {count}
+      </div>
+      <button id="btnTwice" onClick={addTwice}>
+        +1 을 두 번 부르기
+      </button>
+    </div>
+  );
+}
+
+// 화면(누르면): 개수: 1
+//
+// 한 번 더 누르면 2가 됩니다. 세 번 누르면 3입니다.
+// 누를 때마다 2씩 오를 것 같은데 1씩 오릅니다. 절반이 사라진 셈입니다.
+//
+// 코드를 다시 보면 이상한 곳이 없습니다. 오타도 없습니다.
+// 그러니 코드를 노려보지 말고, 값이 실제로 어떻게 흘러가는지 봅시다.
+
+// ✏️ 직접 해보기 1 — setCount(count + 1) 을 세 줄로 늘려 보세요.
+//                    한 번 누르면 몇이 될까요? 예상하고 확인하세요.
+
+// ── 섹션 2: set 을 부른 직후의 값을 찍어 보기 ──
+
+// 실마리는 "set 을 부른 뒤에 count 가 얼마인가" 입니다. 직접 찍어 봅시다.
+
+function ReadAfterSet() {
+  const [count, setCount] = useState(0);
+
+  function handleClick() {
+    console.log("① set 부르기 전:", count);
+    // 콘솔: ① set 부르기 전: 0
+
+    setCount(count + 1);
+
+    console.log("② set 부른 직후:", count);
+    // 콘솔: ② set 부른 직후: 0
+  }
+
+  console.log("③ 다시 그린 뒤:", count);
+  // 콘솔: ③ 다시 그린 뒤: 0
+  // 콘솔: ③ 다시 그린 뒤: 1
+
+  return (
+    <div className="demo">
+      <h3>② set 직후에는 아직 옛날 값입니다</h3>
+      <div className="output" id="readOut">
+        개수: {count}
+      </div>
+      <button id="btnRead" onClick={handleClick}>
+        눌러서 ①②③ 을 확인
+      </button>
+    </div>
+  );
+}
+
+// 버튼을 한 번 누르면 콘솔에 이렇게 나옵니다.
+//
+//   ① set 부르기 전: 0
+//   ② set 부른 직후: 0      ← 1이 아닙니다!
+//   ③ 다시 그린 뒤: 1
+//
+// ②가 핵심입니다. setCount(1) 을 불렀는데도 바로 다음 줄의 count 는 0입니다.
+//
+// set 함수는 값을 '지금 당장' 바꾸지 않습니다.
+// "다음 화면은 1로 그려 주세요" 라고 React 에게 부탁만 하고 돌아옵니다.
+// 실제로 값이 바뀐 모습은 ③, 즉 다음 렌더링에서 보입니다.
+//
+// 이 성질을 한 줄로 적으면 이렇습니다.
+//
+//     state 는 즉시 바뀌지 않는다. 다음 렌더링에서 바뀐다.
+
+// ✏️ 직접 해보기 2 — ② 자리에서 count 대신 count + 1 을 찍어 보세요.
+//                    이 값은 화면에 보이는 다음 값과 같을까요?
+
+// ── 섹션 3: 왜 두 번이 한 번이 되는가 ──
+
+// 이제 섹션 1의 코드를 다시 봅시다.
+// 버튼을 처음 눌렀을 때, 이번 렌더의 count 는 0입니다.
+// count 는 const 로 받은 값이라 이 함수가 도는 동안 절대 안 바뀝니다.
+//
+//     setCount(count + 1);   →   setCount(0 + 1);   →   setCount(1);
+//     setCount(count + 1);   →   setCount(0 + 1);   →   setCount(1);
+//
+// 두 줄 다 "1로 만들어 주세요" 입니다. 그래서 결과는 1입니다.
+// 두 번째 줄은 첫 번째 줄이 부탁한 1을 알지 못합니다.
+//
+// 비유하면 count 는 이번 렌더링 때 찍어 둔 '사진' 입니다.
+// 사진 속 숫자는 나중에 실제 값이 바뀌어도 그대로입니다.
+//
+// 비유를 걷어내고 실제로 무슨 일이 일어나는지 보면 이렇습니다.
+// 컴포넌트 함수가 실행될 때 count 라는 변수에 0이 담겼고,
+// 그 안에서 만들어진 addTwice 함수는 그 0을 계속 보고 있습니다.
+// JS자료 05단원에서 배운 스코프 이야기 그대로입니다.
+// 함수는 자기가 만들어진 자리의 변수를 기억합니다.
+//
+// 눈으로 확인해 봅시다.
+
+function WhyOnlyOne() {
+  const [count, setCount] = useState(0);
+
+  function show() {
+    console.log("이번 렌더에서 count + 1 은:", count + 1);
+    // 콘솔: 이번 렌더에서 count + 1 은: 1
+
+    console.log("한 줄 아래에서 또 계산해도:", count + 1);
+    // 콘솔: 한 줄 아래에서 또 계산해도: 1
+
+    setCount(count + 1);
+  }
+
+  return (
+    <div className="demo">
+      <h3>③ 같은 렌더 안에서는 몇 번을 계산해도 같은 값</h3>
+      <div className="output" id="whyOut">
+        개수: {count}
+      </div>
+      <button id="btnWhy" onClick={show}>
+        계산해 보기
+      </button>
+    </div>
+  );
+}
+
+// 두 줄 다 1이 나옵니다. 사이에서 아무리 set 을 불러도 마찬가지입니다.
+// 필요한 것은 "지금 이 순간의 진짜 값" 을 아는 방법입니다.
+
+// ✏️ 직접 해보기 3 — ③ 을 세 번 누른 뒤 다시 한 번 누르면
+//                    콘솔에 어떤 숫자가 나올까요? 예상하고 확인하세요.
+
+// ── 섹션 4: 함수형 갱신 — 이전 값을 React 에게 받아 쓴다 ──
+
+// set 함수에는 값 대신 '함수' 를 넣을 수도 있습니다.
+//
+//     setCount((prev) => prev + 1);
+//               ^^^^      ^^^^^^^^
+//               직전 값    다음 값
+//
+// 이렇게 넣으면 React 가 그 함수를 나중에 부르면서
+// '그 시점의 진짜 값' 을 prev 자리에 넣어 줍니다.
+// 내가 사진 속 숫자를 쓰는 게 아니라, React 가 현재 값을 건네주는 것입니다.
+//
+// prev 라는 이름은 규칙이 아닙니다. previous(이전)의 줄임말로 많이 쓸 뿐입니다.
+// p, prevCount, c 무엇이든 됩니다.
+//
+// 정말 다른 값이 들어오는지 찍어 봅시다.
+
+function FunctionalUpdate() {
+  const [count, setCount] = useState(0);
+
+  function addTwice() {
+    setCount((prev) => {
+      console.log("첫 번째 갱신 함수가 받은 prev:", prev);
+      // 콘솔: 첫 번째 갱신 함수가 받은 prev: 0
+      return prev + 1;
+    });
+
+    setCount((prev) => {
+      console.log("두 번째 갱신 함수가 받은 prev:", prev);
+      // 콘솔: 두 번째 갱신 함수가 받은 prev: 1
+      return prev + 1;
+    });
+  }
+
+  return (
+    <div className="demo">
+      <h3>④ 함수형 갱신 — 두 번 부르면 2가 오릅니다</h3>
+      <div className="output" id="fnOut">
+        개수: {count}
+      </div>
+      <button id="btnFnTwice" onClick={addTwice}>
+        함수형으로 +1 두 번
+      </button>
+    </div>
+  );
+}
+
+// 화면(누르면): 개수: 2
+//
+// 첫 번째 함수는 0을 받아 1을 돌려주고,
+// 두 번째 함수는 그 1을 받아 2를 돌려줍니다.
+// 앞의 결과가 뒤로 이어집니다. 그래서 두 번 부르면 2가 오릅니다.
+//
+// React 는 set 을 부를 때마다 그 요청을 줄 세워 두고,
+// 이벤트 처리가 끝난 뒤 줄 선 순서대로 하나씩 적용합니다.
+//   값을 넣으면   → "무조건 이 값으로" 라는 요청
+//   함수를 넣으면 → "앞의 결과를 받아 이렇게 바꿔라" 라는 요청
+//
+// 갱신 함수 안에서는 계산만 하고 값을 돌려주세요.
+// return 을 빠뜨리면 undefined 가 새 값이 되어 화면이 빕니다.
+//
+// 짧게 쓰면 이렇게 한 줄입니다. 위 코드는 prev 를 찍어 보려고 길게 쓴 것입니다.
+//
+//     setCount((prev) => prev + 1);
+
+// ✏️ 직접 해보기 4 — 섹션 1의 TwiceBroken 을 함수형으로 고쳐 보세요.
+//                    한 번 누르면 2씩 오르면 성공입니다.
+
+// ── 섹션 5: 어느 쪽을 언제 쓰나 ──
+
+// 규칙은 간단합니다.
+//
+//   지금 값과 상관없는 값을 넣을 때        →  setMenu("라떼")       그냥 값
+//   지금 값을 바탕으로 다음 값을 만들 때   →  setCount(p => p + 1)  함수형
+//
+// 한 이벤트에서 set 을 한 번만 부른다면 둘 다 같은 결과가 나옵니다.
+// 그래서 setCount(count + 1) 도 대부분은 잘 돕니다.
+// 다만 이런 자리에서는 함수형만 안전합니다.
+//
+//   ① 한 이벤트에서 같은 state 를 두 번 이상 바꿀 때 (섹션 1)
+//   ② 나중에 실행될 코드 안에서 바꿀 때
+//      예: 타이머 안, 서버 응답이 도착한 뒤. 09단원에서 다시 만납니다.
+//
+// 함수형은 숫자에만 쓰는 게 아닙니다. 이전 값이 필요한 곳이면 어디든 됩니다.
+
+function PrevOthers() {
+  const [isOn, setIsOn] = useState(false);
+  const [value, setValue] = useState(1);
+
+  function toggleTwice() {
+    setIsOn((prev) => !prev);
+    setIsOn((prev) => !prev);
+
+    console.log("두 번 뒤집었으니 원래대로 돌아옵니다");
+    // 콘솔: 두 번 뒤집었으니 원래대로 돌아옵니다
+  }
+
+  function doubleTwice() {
+    setValue((prev) => prev * 2);
+    setValue((prev) => prev * 2);
+
+    console.log("두 번 곱했으니 네 배가 됩니다");
+    // 콘솔: 두 번 곱했으니 네 배가 됩니다
+  }
+
+  const onText = isOn ? "켜짐" : "꺼짐";
+
+  return (
+    <div className="demo">
+      <h3>⑤ 숫자 말고도 이전 값이 필요합니다</h3>
+      <div className="output" id="prevOut">
+        불: {onText} / 값: {value}
+      </div>
+      <button id="btnPrevToggle" onClick={toggleTwice}>
+        두 번 뒤집기
+      </button>
+      <button id="btnDouble" onClick={doubleTwice}>
+        두 번 곱하기
+      </button>
+    </div>
+  );
+}
+
+// 화면(누르면): 불: 꺼짐 / 값: 4
+//
+// '두 번 뒤집기' 는 눌러도 불이 그대로입니다. 그게 맞는 결과입니다.
+// false → true → false 로 두 번 뒤집혔기 때문입니다.
+// 만약 setIsOn(!isOn) 을 두 번 썼다면 둘 다 "true 로 해 달라" 가 되어
+// 한 번 뒤집힌 것처럼 보였을 것입니다. 이것도 조용히 틀리는 경우입니다.
+//
+// '두 번 곱하기' 는 1 → 2 → 4 가 됩니다. 한 번 더 누르면 16입니다.
+
+// ✏️ 직접 해보기 5 — '두 번 곱하기' 를 세 번 부르도록 고치면
+//                    한 번 눌렀을 때 값이 얼마가 될까요?
+
+// ── 섹션 6: 자주 하는 실수 ──
+
+// ⚠️ [SyntaxError] 라고 적힌 것은 주석을 풀지 말고 눈으로만 보세요.
+//    풀면 파일 전체가 멈춰서 화면이 통째로 비어 버립니다. 다시 // 를 붙이면 돌아옵니다.
+
+// [실수 1] 함수형으로 쓰긴 했는데 prev 를 안 썼다
+//   setCount((prev) => count + 1);
+// 실수: 에러가 안 납니다. 모양은 함수형인데 안에서 옛날 count 를 쓰고 있습니다.
+//       그래서 두 번 불러도 1만 오릅니다. 고친 것 같은데 그대로인 상황입니다.
+//       아래 데모 ⑥ 에서 직접 확인하세요.
+
+function WrongFunctional() {
+  const [count, setCount] = useState(0);
+
+  function addTwice() {
+    setCount((prev) => count + 1); // prev 를 안 쓰고 count 를 씀
+    setCount((prev) => count + 1);
+
+    console.log("함수형처럼 보이지만 안에서 옛날 값을 씁니다");
+    // 콘솔: 함수형처럼 보이지만 안에서 옛날 값을 씁니다
+  }
+
+  return (
+    <div className="demo">
+      <h3>⑥ [실수 1] 모양만 함수형</h3>
+      <div className="output" id="wrongFnOut">
+        개수: {count}
+      </div>
+      <button id="btnWrongFn" onClick={addTwice}>
+        눌러 보세요 (1만 오릅니다)
+      </button>
+    </div>
+  );
+}
+
+// 화면(누르면): 개수: 1
+
+// [실수 2] set 다음 줄에서 값을 읽고 그 값으로 무언가를 했다
+//   setCount(count + 1);
+//   console.log("지금 개수는", count);        // ← 옛날 값
+//   if (count >= 3) { ... }                   // ← 판단도 옛날 값으로
+// 실수: 에러가 안 납니다. 값이 한 박자씩 늦게 반응합니다.
+//       "3개부터 경고" 를 만들었는데 4개가 돼서야 경고가 뜨는 식입니다.
+//       다음 값이 필요하면 미리 변수에 담아 두고 그걸 쓰세요.
+//         const next = count + 1;
+//         setCount(next);
+//         if (next >= 3) { ... }
+
+// [실수 3] 갱신 함수에서 ++ 를 썼다
+//   setCount((prev) => prev++);
+// 실수: 화면이 아예 안 바뀝니다. prev++ 는 '올리기 전의 값' 을 돌려주기 때문입니다.
+//       돌려준 값이 지금 값과 같아서 React 는 다시 그리지 않습니다. (개념03 섹션 3)
+//       prev + 1 이라고 써야 합니다.
+
+// [실수 4] 갱신 함수에서 return 을 빠뜨렸다
+//   setCount((prev) => {
+//     prev + 1;
+//   });
+// 실수: 새 값이 undefined 가 됩니다. 화면의 숫자 자리가 빈칸이 됩니다.
+//       중괄호를 열었으면 return 을 적어야 합니다. (JS자료 05단원 화살표 함수)
+//       중괄호 없이 (prev) => prev + 1 로 쓰면 return 이 필요 없습니다.
+
+// [실수 5] 갱신 함수 안에서 다른 일까지 했다
+//   setCount((prev) => {
+//     console.log("올립니다");       // 이 파일에서는 배우려고 일부러 했습니다
+//     return prev + 1;
+//   });
+// 실수: 지금은 잘 돕니다. 하지만 이 함수는 React 가 언제 몇 번 부를지 모릅니다.
+//       값을 계산해서 돌려주는 일만 하세요. 화면을 바꾸거나 다른 set 을 부르면 안 됩니다.
+
+// [실수 6] 괄호를 하나 덜 닫았다
+//   setCount((prev) => prev + 1;
+// 실수: [SyntaxError] 입니다. 파일 전체가 안 돌아가고 화면이 통째로 빕니다.
+//         [PARSE_ERROR] Expected `,` or `)` but found `;`
+//       메시지 아래 그림이 짚어 주는 줄부터 보면 됩니다.
+//       함수형 갱신은 괄호가 겹쳐서 짝을 놓치기 쉽습니다.
+//       setCount( ( prev ) => prev + 1 ) 처럼 여는 것과 닫는 것을 세어 보세요.
+
+// ── 마지막: 위에서 만든 컴포넌트를 한 화면에 모으기 ──
+
+export default function Concept05() {
+  return (
+    <div>
+      <h1>개념 05 — 이전 값으로 갱신하기</h1>
+
+      <p className="guide">
+        왼쪽 목록에서 이 예제를 고르면 이 화면이 나옵니다. <strong>F12 → Console</strong> 도 함께 보세요.
+        <br />
+        <br />
+        이 파일은 <strong>"분명히 맞게 썼는데 값이 이상한"</strong> 경우를 다룹니다. 앞부분의 예제는 일부러 틀린 코드입니다.
+      </p>
+
+      <div>
+        <TwiceBroken />
+        <ReadAfterSet />
+        <WhyOnlyOne />
+        <FunctionalUpdate />
+        <PrevOthers />
+        <WrongFunctional />
+      </div>
+
+      <Summary
+        items={[
+          <>set 함수는 값을 즉시 바꾸지 않습니다. <strong>다음 렌더링에서</strong> 바뀝니다.</>,
+          "그래서 set 을 부른 바로 다음 줄에서 읽으면 아직 옛날 값입니다.",
+          "한 렌더 안의 count 는 고정된 숫자입니다. setCount(count + 1) 을 두 번 써도 둘 다 같은 값을 넣습니다.",
+          <><strong>setCount((prev) =&gt; prev + 1)</strong> 로 쓰면 React 가 그 시점의 값을 prev 로 건네줍니다.</>,
+          "함수형은 앞의 결과가 뒤로 이어집니다. 두 번 부르면 2가 오릅니다.",
+          "지금 값을 바탕으로 다음 값을 만들 때는 함수형을 쓰세요. 상관없는 값을 넣을 때는 그냥 값으로 충분합니다.",
+          <>갱신 함수는 계산해서 <strong>값을 돌려주는 일만</strong> 합니다.</>,
+        ]}
+      />
+    </div>
+  );
+}
+
+// ============================================================
+// 직접 해보기 정답
+// ============================================================
+//
+// 1) function addTwice() {
+//      setCount(count + 1);
+//      setCount(count + 1);
+//      setCount(count + 1);
+//    }
+//    // 화면(누르면): 개수: 1
+//    → 세 줄 모두 setCount(0 + 1) 입니다. 몇 줄을 적어도 결과는 1입니다.
+//
+// 2) console.log("② set 부른 직후:", count + 1);
+//    // 콘솔: ② set 부른 직후: 1
+//    → 화면에 보이는 다음 값과 같습니다.
+//      set 에 넣은 값이 count + 1 이었으니 당연합니다.
+//      다음 값이 필요하면 이렇게 미리 계산해서 쓰면 됩니다.
+//
+// 3) 4가 나옵니다.
+//    // 콘솔: 이번 렌더에서 count + 1 은: 4
+//    // 콘솔: 한 줄 아래에서 또 계산해도: 4
+//    → 세 번 눌러 count 가 3이 된 상태에서 다시 누른 것이므로 3 + 1 입니다.
+//      두 줄 모두 같은 값이라는 점이 핵심입니다.
+//
+// 4) function addTwice() {
+//      setCount((prev) => prev + 1);
+//      setCount((prev) => prev + 1);
+//    }
+//    // 화면(누르면): 개수: 2
+//    → 한 번 누를 때마다 2씩 오릅니다. 두 번 누르면 4입니다.
+//
+// 5) 8이 됩니다.
+//    function doubleTwice() {
+//      setValue((prev) => prev * 2);
+//      setValue((prev) => prev * 2);
+//      setValue((prev) => prev * 2);
+//    }
+//    // 화면(누르면): 불: 꺼짐 / 값: 8
+//    → 1 → 2 → 4 → 8 입니다.
+//      값을 넣는 방식(setValue(value * 2))으로 세 줄을 썼다면 2에서 멈춥니다.

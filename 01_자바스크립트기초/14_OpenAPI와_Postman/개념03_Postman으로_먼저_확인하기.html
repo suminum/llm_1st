@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>14단원 개념03 - Postman 으로 먼저 확인하기</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 8px 16px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 6px;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+        min-height: 24px;
+      }
+      pre {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        overflow-x: auto;
+        font-size: 13px;
+        margin-top: 8px;
+        white-space: pre-wrap;
+        word-break: break-all;
+      }
+      ul {
+        padding-left: 22px;
+        margin: 0;
+      }
+      li {
+        margin: 4px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 03 — Postman 으로 먼저 확인하기</h1>
+
+    <p class="guide">
+      <strong>Postman 을 안 깔아도 이 파일은 읽을 수 있습니다.</strong>
+      Postman 이 무슨 일을 대신해 주는지를 코드로 보여 줍니다.
+      <br /><br />
+      깔아서 같이 해 보면 훨씬 좋습니다. <code>https://www.postman.com/downloads/</code>
+      에서 받습니다. <strong>가입 없이도 씁니다.</strong> (건너뛰기 링크가 작게 있습니다)
+      <br /><br />
+      <strong>F12 → Console</strong> 을 열고 버튼을 눌러 보세요.
+    </p>
+
+    <div class="demo">
+      <h3>① Postman 이 만들어 주는 코드</h3>
+      <button id="b1">코드로 내보내기</button>
+      <pre id="out1">버튼을 눌러 보세요</pre>
+
+      <h3>② 환경변수가 하는 일</h3>
+      <button id="b2">{{변수}} 를 채워 보기</button>
+      <pre id="out2">버튼을 눌러 보세요</pre>
+    </div>
+
+    <script>
+      // ── 섹션 1: ★★ 왜 도구를 따로 쓰나 ──
+      //
+      // 코드를 써서 API 를 불렀는데 안 됩니다. 원인이 둘 중 하나입니다.
+      //
+      //   (가) 내 코드가 틀렸다
+      //   (나) 요청 자체가 틀렸다 (주소·값·키)
+      //
+      // ★ 이 둘을 못 가르면 엉뚱한 데를 고칩니다.
+      //   코드를 열 번 고쳐도 (나) 였으면 안 됩니다.
+      //
+      // Postman 은 **(나) 만 따로 시험**해 봅니다.
+      // 코드 없이 요청만 보냅니다. 되면 (가), 안 되면 (나) 입니다.
+      //
+      // ★★ 이게 전부입니다. 나머지는 편의 기능입니다.
+      //   "요청이 맞는지 코드 없이 확인한다" — 이 한 줄만 기억하세요.
+
+      // ✏️ 직접 해보기 1 — 지금 코드가 안 된다면 무엇부터 하겠는지 한 줄로 적어 보세요.
+      //                      이 파일을 다 읽은 뒤에 다시 보면 답이 달라져 있을 것입니다.
+
+      // ── 섹션 2: 첫 요청 보내기 ──
+      //
+      //   1. Postman 을 켭니다
+      //   2. 왼쪽 위 `New` → `HTTP` (또는 `+` 탭)
+      //   3. 방식은 `GET` 그대로 두고, 주소 칸에 이렇게 넣습니다
+      //
+      //        https://api.open-meteo.com/v1/forecast
+      //
+      //   4. 주소 아래 `Params` 탭에서 이름·값을 채웁니다
+      //
+      //        latitude    37.5665
+      //        longitude   126.978
+      //        current     temperature_2m
+      //        timezone    Asia/Seoul
+      //
+      //   5. `Send`
+      //
+      // ★ 4번을 채우면 주소 칸이 저절로 길어집니다.
+      //   `?latitude=37.5665&longitude=126.978&...`
+      //   ★★ 개념02 에서 URLSearchParams 가 해 준 일을 **눈으로 보는 것**입니다.
+      //     Params 표에 한 줄 쓰면 `&이름=값` 이 하나 붙습니다.
+      //
+      // ★ 한글을 값에 넣어 보세요. 주소 칸이 `%ED%98%B8...` 로 바뀝니다.
+      //   개념02 섹션3 에서 본 그것입니다.
+
+      // ✏️ 직접 해보기 2 — Postman(없으면 브라우저 주소창)으로 개념01 의 요청을 직접 보내 보세요.
+      //                      Params 표에 한 줄 넣을 때마다 주소가 어떻게 길어지는지 보세요.
+
+      // ── 섹션 3: 응답에서 볼 것 ──
+      //
+      // Send 를 누르면 아래쪽에 응답이 나옵니다. 네 가지를 봅니다.
+      //
+      //   Status   200 인가. 4xx 면 내가 잘못 보낸 것, 5xx 면 저쪽 문제
+      //   Time     얼마나 걸렸나. 몇 초씩 걸리면 타임아웃을 생각해야 합니다
+      //   Size     얼마나 큰가. 목록 API 는 수 MB 가 오기도 합니다
+      //   Headers  ★ Content-Type 을 꼭 보세요
+      //
+      // ★★ `Headers` 탭을 안 보는 사람이 많습니다. 여기에 답이 자주 있습니다.
+      //
+      //   Content-Type: application/json     → `.json()` 을 쓰면 됩니다
+      //   Content-Type: text/html            → ★ JSON 이 아닙니다. 오류 페이지일 수 있습니다
+      //   Content-Type: text/xml             → 공공데이터포털이 이럴 때가 있습니다
+      //
+      //   ★ 이걸 안 보고 `.json()` 을 쓰면 개념05 의 그 오류가 납니다.
+
+      // ✏️ 직접 해보기 3 — 응답의 Headers 에서 Content-Type 을 찾아보세요.
+      //                      그리고 Access-Control-Allow-Origin 도 있는지 보세요. (개념05)
+
+      // ── 섹션 4: 저장하고 다시 쓰기 ──
+      //
+      // 요청을 저장해 두면 다음에 그대로 다시 보냅니다.
+      //
+      //   `Save` → 컬렉션(Collection) 을 만들어 그 안에 넣습니다
+      //
+      // ★ 컬렉션은 그냥 폴더입니다. `날씨API`, `우리서버` 처럼 만들어 두세요.
+      //
+      // ★★ **환경변수(Environment)** 가 진짜 쓸모 있습니다.
+      //
+      //   오른쪽 위 눈 모양 아이콘 → `Add` 로 환경을 만들고 값을 넣습니다
+      //
+      //     baseUrl   https://api.open-meteo.com
+      //     apiKey    (내 키)
+      //
+      //   그 다음 주소 칸에 이렇게 씁니다.
+      //
+      //     {{baseUrl}}/v1/forecast
+      //
+      // ★★★ 왜 이렇게 하냐 —
+      //
+      //   (1) 개발용 서버와 진짜 서버를 **환경만 바꿔서** 오갑니다
+      //       localhost:3000 ↔ 진짜 주소. 요청은 안 고칩니다.
+      //
+      //   (2) ★ 키를 요청에 직접 안 씁니다.
+      //       컬렉션을 남에게 보내거나 GitHub 에 올릴 때 키가 안 딸려 갑니다.
+      //       (환경은 따로 있고, 안 보내면 안 갑니다)
+      //
+      //   ★ 이건 나중에 배울 `.env` 와 똑같은 생각입니다.
+      //     "값은 코드 밖에 둔다."
+
+      document.getElementById("b2").addEventListener("click", () => {
+        // Postman 이 {{변수}} 를 채우는 일을 흉내 내 봅니다
+        const 환경 = {
+          baseUrl: "https://api.open-meteo.com",
+          lat: "37.5665",
+          lon: "126.978",
+        };
+
+        const 틀 = "{{baseUrl}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&current=temperature_2m";
+
+        const 채운것 = 틀.replace(/\{\{(\w+)\}\}/g, (통째로, 이름) => 환경[이름] ?? 통째로);
+
+        console.log("틀   :", 틀);
+        // 콘솔: 틀   : {{baseUrl}}/v1/forecast?latitude={{lat}}&longitude={{lon}}&current=temperature_2m
+        console.log("채운것:", 채운것);
+        // 콘솔: 채운것: https://api.open-meteo.com/v1/forecast?latitude=37.5665&longitude=126.978&current=temperature_2m
+
+        document.getElementById("out2").textContent = `틀\n  ${틀}\n\n채운 것\n  ${채운것}`;
+      });
+
+      // ✏️ 직접 해보기 4 — 환경 객체에서 `lat` 을 지우고 눌러 보세요.
+      //                      `{{lat}}` 이 그대로 남습니까?
+
+      // ★ `?? 통째로` 를 쓴 이유 — 환경에 없는 이름이면 **그대로 둡니다.**
+      //   Postman 도 그렇게 합니다. 그래서 `{{apiKey}}` 가 주소에 그대로 나가면
+      //   "아, 환경을 안 골랐구나" 하고 바로 압니다.
+      //   ★★ 조용히 빈칸으로 만들었으면 뭐가 잘못됐는지 몰랐을 것입니다.
+
+      // ── 섹션 5: ★★★ 코드로 내보내기 ──
+      //
+      // Postman 에서 요청이 잘 되면, 그걸 **코드로 바꿔 줍니다.**
+      //
+      //   오른쪽의 `</>` 아이콘 (Code) → 언어 목록에서 `JavaScript - Fetch`
+      //
+      // 그러면 이런 코드가 나옵니다.
+
+      document.getElementById("b1").addEventListener("click", () => {
+        // Postman 이 하는 일을 흉내 낸 것입니다
+        const 요청 = {
+          방식: "GET",
+          주소: "https://api.open-meteo.com/v1/forecast",
+          값: { latitude: "37.5665", longitude: "126.978", current: "temperature_2m" },
+          헤더: { Accept: "application/json" },
+        };
+
+        const 주소 = new URL(요청.주소);
+        for (const [이름, 값] of Object.entries(요청.값)) 주소.searchParams.set(이름, 값);
+
+        const 페치코드 = [
+          `const 응답 = await fetch("${주소}", {`,
+          `  method: "${요청.방식}",`,
+          `  headers: ${JSON.stringify(요청.헤더)},`,
+          `});`,
+          `const 자료 = await 응답.json();`,
+        ].join("\n");
+
+        const 컬코드 =
+          `curl -X ${요청.방식} "${주소}"` +
+          Object.entries(요청.헤더)
+            .map(([이름, 값]) => ` \\\n  -H "${이름}: ${값}"`)
+            .join("");
+
+        console.log(페치코드);
+        console.log(컬코드);
+
+        document.getElementById("out1").textContent =
+          `[JavaScript - Fetch]\n${페치코드}\n\n[cURL]\n${컬코드}`;
+      });
+
+      // ★★ 이게 Postman 의 제일 쓸모 있는 기능입니다.
+      //
+      //   Postman 에서 되는 걸 확인 → 코드로 내보냄 → 붙여넣고 다듬음
+      //
+      //   ★ "주소를 잘못 옮겨 적어서 안 됐다" 가 사라집니다.
+      //     손으로 옮기지 마세요. 내보내기를 쓰세요.
+      //
+      // ★★★ 다만 **그대로 쓰면 안 됩니다.** 나온 코드를 반드시 다듬으세요.
+      //
+      //   · 키가 코드에 박혀 나옵니다 → 빼야 합니다 (개념04)
+      //   · 오류 처리가 없습니다 → `응답.ok` 를 봐야 합니다 (12단원 개념05)
+      //   · 주소가 통째로 한 줄입니다 → URL 로 나누는 게 낫습니다 (개념02)
+      //
+      //   ★ 내보내기는 **출발점**입니다. 완성품이 아닙니다.
+
+      // ✏️ 직접 해보기 5 — 요청.헤더 에 한 줄을 더 넣고 눌러 보세요.
+      //                      fetch 코드와 curl 이 어떻게 바뀝니까?
+
+      // ── 섹션 6: Postman 에서는 되는데 브라우저에서 안 됩니다 ──
+      //
+      // ★★★ 이 단원에서 제일 많이 겪을 일입니다.
+      //
+      //   Postman → 200, 잘 옴
+      //   브라우저 → 빨간 CORS 오류
+      //
+      // 코드가 틀린 게 아닙니다. **Postman 은 브라우저가 아니기 때문**입니다.
+      //
+      //   CORS 는 **브라우저가 스스로 거는 제한**입니다.
+      //   Postman·curl·node 에는 그 제한이 없습니다. 그래서 다 됩니다.
+      //
+      // ★ 그러니 Postman 에서 됐다고 "코드로 옮기면 되겠지" 하면 안 됩니다.
+      //   자세한 것은 개념05 에서 봅니다.
+
+      // ✏️ 직접 해보기 6 — 개념05 를 먼저 열어 ① 버튼을 눌러 보고 오세요.
+      //                      브라우저에서 무슨 일이 생기는지 눈으로 보고 오는 게 낫습니다.
+
+      // ── 섹션 7: Postman 없이 하는 방법 ──
+      //
+      // 도구를 못 깔아도 됩니다. 같은 일을 하는 다른 방법이 있습니다.
+      //
+      //   ① 브라우저 주소창
+      //      GET 이고 키가 필요 없으면 주소를 그냥 붙여넣으면 됩니다.
+      //      ★ 크롬은 JSON 을 예쁘게 보여 주지 않습니다.
+      //        F12 → Network 에서 보면 낫습니다.
+      //
+      //   ② curl (터미널)
+      //      curl "https://api.open-meteo.com/v1/forecast?latitude=37.5&longitude=127&current=temperature_2m"
+      //      ★ 윈도우 PowerShell 에서는 `curl` 이 다른 명령입니다.
+      //        `curl.exe` 라고 쓰거나 Git Bash 를 쓰세요.
+      //
+      //   ③ node (터미널)
+      //      node -e "fetch('주소').then(r => r.json()).then(console.log)"
+      //      ★ Node 18 부터 fetch 가 그냥 있습니다. 설치할 게 없습니다.
+      //
+      //   ④ VS Code 확장 (REST Client 등)
+      //      `.http` 파일에 요청을 적어 두고 누르면 보냅니다.
+      //      ★ 요청을 **파일로 저장**하니 git 에 같이 올릴 수 있습니다.
+      //
+      // ★ ②③ 은 브라우저가 아니라서 CORS 가 안 걸립니다. Postman 과 같습니다.
+
+      // ✏️ 직접 해보기 7 — 터미널에서 `node -e "fetch('주소').then(r=>r.json()).then(console.log)"` 로
+      //                      같은 요청을 보내 보세요. 브라우저와 결과가 같습니까?
+
+      // ── 섹션 8: 자주 하는 실수 ──
+      //
+      // [실수 1] Postman 에서 되니 다 된 줄 앎
+      //   → 브라우저는 다릅니다. (섹션 6)
+      //
+      // [실수 2] Params 표에 값을 넣고 주소 칸도 손으로 고침
+      //   → 둘이 어긋나서 이상한 주소가 나갑니다. 한쪽만 고치세요.
+      //
+      // [실수 3] 환경을 안 고르고 Send
+      //   → 주소에 `{{baseUrl}}` 이 그대로 남습니다.
+      //     ★ 오른쪽 위에서 환경이 골라져 있는지 보세요.
+      //
+      // [실수 4] 내보낸 코드에 키가 박힌 채로 GitHub 에 올림
+      //   → ★★ 제일 흔하고 제일 아픕니다. 개념04 를 꼭 읽으세요.
+      //
+      // [실수 5] Postman 계정에 컬렉션을 동기화해 두고 키까지 같이 올림
+      //   → 환경 값은 `Current value` 로 두면 내 컴퓨터에만 남습니다.
+      //     `Initial value` 에 적으면 같이 올라갑니다. ★ 칸이 두 개인 이유입니다.
+    </script>
+  </body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>00단원 개념03 - 되돌리기와 .gitignore</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         00단원 · 개념 03 — 되돌리기와 .gitignore
+         ------------------------------------------------------------
+         실행: 이 파일을 브라우저로 열고, 터미널도 같이 여세요.
+         ============================================================
+
+         Git 을 쓰는 진짜 이유가 이 단원입니다.
+
+             "어제 것으로 돌아가고 싶다"
+
+         파일을 복사해 두는 방식으로는 이게 잘 안 됩니다.
+         Git 은 기록을 다 갖고 있어서 어느 시점으로든 돌아갈 수 있습니다.
+
+         ★ 그런데 되돌리는 방법이 **자리마다 다릅니다.** 이게 헷갈립니다.
+
+             아직 안 담았다   →  git restore
+             담았다           →  git restore --staged
+             커밋했다         →  git revert   (기록을 남기며)
+                              →  git reset    (★ 기록을 지우며 — 위험)
+
+           개념02 섹션2의 '자리 셋' 을 알고 있으면 그대로 이어집니다.
+           모르겠으면 개념02를 먼저 보고 오세요.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 03 — 되돌리기와 .gitignore</h1>
+    <p class="doc-sub">00단원 · 개발환경과 Git</p>
+
+    <p class="doc-guide">
+      <strong>개념02의 <code>깃연습</code> 폴더에서 이어서 하세요.</strong>
+      <br /><br />
+      이 단원에는 <strong>되돌릴 수 없는 명령</strong>이 하나 나옵니다 (섹션 4).
+      연습 폴더에서만 쓰세요.
+    </p>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 아직 안 담았으면 <code>restore</code></h2>
+
+      <p class="doc-desc">
+        파일을 고쳤는데 마음에 안 듭니다. 아직 <code>add</code> 는 안 했습니다.
+      </p>
+
+      <div class="doc-code">$ git status --short
+ M index.html
+
+$ git restore index.html
+
+$ git status --short
+
+$ cat index.html
+&lt;h1&gt;안녕하세요&lt;/h1&gt;</div>
+
+      <p class="doc-note">
+        <code>git status</code> 가 <strong>아무것도 안 찍었습니다.</strong>
+        달라진 게 없다는 뜻입니다. 마지막 커밋 상태로 돌아갔습니다.
+      </p>
+
+      <div class="doc-bad">
+        <strong>★ 고친 내용은 완전히 사라집니다</strong>
+        <p class="doc-desc">
+          <code>git restore</code> 는 <strong>휴지통에 안 갑니다.</strong>
+          Ctrl+Z 로도 못 되돌립니다. 아직 커밋 안 한 것이라 Git 도 모르는 내용이기 때문입니다.
+          <br />
+          <strong>지울 것이 확실할 때만 쓰세요.</strong>
+        </p>
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — <code>index.html</code> 에 아무 줄이나 넣고 저장한 뒤
+        <code>git restore index.html</code> 로 되돌려 보세요.
+        VS Code 에서 파일이 저절로 바뀌는 것을 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 담은 것을 무르기</h2>
+
+      <p class="doc-desc">
+        <code>git add</code> 를 했는데 "아, 이건 이번에 넣지 말걸" 싶을 때입니다.
+      </p>
+
+      <div class="doc-code">$ git add .
+
+$ git status --short
+M  index.html          ← 담겼습니다 (첫째 칸이 M)
+
+$ git restore --staged index.html
+
+$ git status --short
+ M index.html          ← 담는 곳에서만 빠졌습니다 (둘째 칸이 M)</div>
+
+      <p class="doc-note">
+        <strong><code>--staged</code> 를 붙이면 담는 곳에서만 뺍니다.</strong>
+        고친 내용은 그대로 남아 있습니다. 기호가 <code>M </code> 에서 <code> M</code> 으로
+        옮겨 간 것을 보세요. (개념02 섹션4)
+      </p>
+
+      <p class="doc-note">
+        ★ 완전히 없애고 싶으면 두 번 해야 합니다.
+        <br />
+        <code>git restore --staged 파일</code> (담는 곳에서 빼고) →
+        <code>git restore 파일</code> (내용도 되돌리고)
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 파일을 고치고 <code>add</code> 한 뒤,
+        <code>--staged</code> 있는 것과 없는 것을 차례로 써 보세요.
+        <code>git status --short</code> 로 기호가 어떻게 움직이는지 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 커밋한 뒤에는 <code>revert</code></h2>
+
+      <p class="doc-desc">
+        이미 커밋했습니다. 그런데 그 커밋이 잘못됐습니다.
+        <strong>기록은 남겨 두고, 내용만 되돌립니다.</strong>
+      </p>
+
+      <div class="doc-code">$ git log --oneline
+7411c6b 잘못된 줄을 넣었습니다
+cca186a 설명 문단을 넣었습니다
+9480c14 첫 페이지를 만들었습니다
+
+$ git revert --no-edit HEAD
+[main 384ffb0] Revert "잘못된 줄을 넣었습니다"
+ 1 file changed, 1 deletion(-)
+
+$ git log --oneline
+384ffb0 Revert "잘못된 줄을 넣었습니다"
+7411c6b 잘못된 줄을 넣었습니다
+cca186a 설명 문단을 넣었습니다
+9480c14 첫 페이지를 만들었습니다</div>
+
+      <p class="doc-note">
+        <strong>기록이 줄지 않고 하나 늘었습니다.</strong>
+        "그 커밋을 되돌렸다" 는 커밋이 새로 생긴 것입니다.
+        <br />
+        <code>HEAD</code> 는 "지금 있는 자리" 라는 뜻입니다. 제일 최근 커밋을 가리킵니다.
+        <br />
+        <code>--no-edit</code> 은 "메시지를 물어보지 마라" 입니다. 빼면 편집기가 열립니다.
+      </p>
+
+      <p class="doc-note">
+        ★ <strong>기록을 남기는 게 왜 좋으냐</strong> — 남들과 같이 쓸 때 안전하기 때문입니다.
+        내가 기록을 지워 버리면 남의 컴퓨터에는 그 기록이 남아 있어서 서로 엉킵니다.
+        <code>revert</code> 는 그런 일이 없습니다.
+      </p>
+
+      <div class="doc-bad">
+        <strong>고친 것이 남아 있으면 못 합니다</strong>
+        <div class="doc-code">$ git revert --no-edit HEAD
+error: your local changes would be overwritten by revert.
+hint: commit your changes or stash them to proceed.
+fatal: revert failed</div>
+        <strong>"고친 것을 먼저 커밋하든지 치워 두라"</strong> 는 뜻입니다.
+        여기서도 <code>hint:</code> 가 답을 알려 줍니다.
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 아무 줄이나 넣고 커밋한 뒤 <code>git revert --no-edit HEAD</code> 로
+        되돌려 보세요. <code>git log --oneline</code> 이 어떻게 되는지 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — ★ <code>reset --hard</code> 는 지웁니다</h2>
+
+      <p class="doc-desc">
+        인터넷에서 제일 많이 보이는 명령입니다. 그리고 제일 위험합니다.
+      </p>
+
+      <div class="doc-code">$ git reset --hard HEAD~2
+HEAD is now at cca186a 설명 문단을 넣었습니다
+
+$ git log --oneline
+cca186a 설명 문단을 넣었습니다
+9480c14 첫 페이지를 만들었습니다</div>
+
+      <p class="doc-note">
+        <strong>커밋 두 개가 목록에서 사라졌습니다.</strong>
+        <code>HEAD~2</code> 는 "지금 자리에서 두 칸 뒤" 라는 뜻입니다.
+      </p>
+
+      <div class="doc-bad">
+        <strong>★★ 언제 쓰면 안 되나</strong>
+        <p class="doc-desc">
+          <strong>이미 GitHub 에 올린 커밋에는 쓰지 마세요.</strong>
+          내 컴퓨터에서만 기록이 사라지고 GitHub 에는 남아 있어서,
+          다음에 올릴 때 거부당하거나 남의 작업을 지우게 됩니다.
+          <br /><br />
+          <strong>올리기 전, 나 혼자 있는 커밋</strong>에만 쓰세요.
+          남들과 같이 쓰는 것은 <code>revert</code> 입니다. (섹션 3)
+        </p>
+      </div>
+
+      <p class="doc-note">
+        <strong>그래도 완전히 사라지지는 않습니다.</strong>
+        <code>git reflog</code> 를 치면 최근에 있었던 자리들이 나옵니다.
+        거기 적힌 번호로 돌아갈 수 있습니다.
+        <br />
+        ★ 다만 <strong>믿고 함부로 쓰라는 뜻이 아닙니다.</strong>
+        커밋 안 한 것은 reflog 에도 없습니다. 그건 진짜로 사라집니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 연습 폴더에서 <code>git reset --hard HEAD~1</code> 을 해 보고,
+        <code>git reflog</code> 로 사라진 커밋 번호를 찾아 보세요.
+        (돌아가려면 <code>git reset --hard 그번호</code>)
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 기록하면 안 되는 것들</h2>
+
+      <p class="doc-desc">
+        폴더 안의 모든 파일을 기록해야 하는 것은 아닙니다. 오히려 넣으면 안 되는 것이 있습니다.
+      </p>
+
+      <div class="doc-code">node_modules/    남이 만든 것을 받아 온 창고. 수만 개 파일입니다
+.env             비밀번호·API 키가 든 파일 ★
+dist/ build/     빌드 결과. 소스에서 다시 만들 수 있습니다
+.DS_Store        맥이 자동으로 만드는 것
+Thumbs.db        윈도우가 자동으로 만드는 것</div>
+
+      <p class="doc-desc">
+        <code>.gitignore</code> 라는 파일을 만들고 여기에 적으면 Git 이 못 본 척합니다.
+      </p>
+
+      <div class="doc-code">$ git status --short
+?? .env
+?? node_modules/
+
+   (.gitignore 파일을 만들고 두 줄을 씁니다)
+   node_modules/
+   .env
+
+$ git status --short
+?? .gitignore</div>
+
+      <p class="doc-note">
+        <strong><code>.env</code> 와 <code>node_modules/</code> 가 사라졌습니다.</strong>
+        대신 <code>.gitignore</code> 자신이 나타났습니다.
+        <br />
+        ★ <code>.gitignore</code> 는 <strong>같이 올려야 합니다.</strong>
+        팀원 모두가 같은 것을 무시해야 하니까요.
+      </p>
+
+      <p class="doc-note">
+        진짜로 무시되는지 확인하려면 —
+        <div class="doc-code">$ git check-ignore -v .env
+.gitignore:2:.env	.env</div>
+        <strong>"몇 번째 줄의 어느 규칙에 걸렸는지"</strong> 를 알려 줍니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 연습 폴더에 <code>.env</code> 파일을 만들고
+        <code>git status --short</code> 로 보이는 것을 확인한 뒤,
+        <code>.gitignore</code> 에 적어서 사라지게 해 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — ★★ 이미 올린 파일은 <code>.gitignore</code> 가 안 먹습니다</h2>
+
+      <p class="doc-desc">
+        이게 이 단원에서 제일 자주 사고가 나는 곳입니다.
+        <strong>실수로 <code>.env</code> 를 커밋한 뒤에 <code>.gitignore</code> 에 적었습니다.</strong>
+      </p>
+
+      <!--
+        실제로 재현해 본 것입니다.
+        설정.txt 를 커밋한 뒤 .gitignore 에 적고 status 를 쳤습니다.
+      -->
+
+      <div class="doc-bad">
+        <strong>여전히 따라다닙니다</strong>
+        <div class="doc-code">   (.gitignore 에 설정.txt 를 적었습니다)
+
+$ git status --short
+ M 설정.txt          ← ★ 그대로 보입니다
+
+$ git check-ignore -v 설정.txt
+                     ← ★ 아무것도 안 나옵니다</div>
+      </div>
+
+      <p class="doc-note">
+        <strong><code>.gitignore</code> 는 "아직 모르는 파일" 에만 먹습니다.</strong>
+        이미 알고 있는(추적 중인) 파일은 계속 따라다닙니다.
+        <br />
+        ★ <code>check-ignore</code> 가 <strong>아무 말도 안 하는 것</strong>이 신호입니다.
+        규칙이 틀린 게 아니라 <strong>이미 추적 중</strong>이라 검사 대상이 아닌 것입니다.
+        <br />
+        확인하려면 <code>--no-index</code> 를 붙입니다.
+        <div class="doc-code">$ git check-ignore -v --no-index 설정.txt
+.gitignore:3:설정.txt	설정.txt</div>
+        규칙은 멀쩡했습니다.
+      </p>
+
+      <div class="doc-good">
+        <strong>추적에서 빼면 됩니다</strong>
+        <div class="doc-code">$ git rm --cached 설정.txt
+rm '설정.txt'
+
+$ git status --short
+D  설정.txt          ← 저장소에서 지운다는 표시 (D = delete)
+
+$ git check-ignore -v 설정.txt
+.gitignore:3:설정.txt	설정.txt     ← 이제 먹습니다</div>
+        <code>--cached</code> 는 <strong>"저장소에서만 빼고 내 컴퓨터의 파일은 두라"</strong> 입니다.
+        <br />
+        ★ <code>--cached</code> 를 빼면 <strong>진짜 파일이 지워집니다.</strong> 조심하세요.
+      </div>
+
+      <div class="doc-bad">
+        <strong>★★★ 그런데 비밀번호가 샌 것은 이걸로 안 끝납니다</strong>
+        <p class="doc-desc">
+          <code>git rm --cached</code> 를 하고 커밋해도 <strong>옛 기록에는 남아 있습니다.</strong>
+          누구든 옛 커밋을 꺼내 보면 그 비밀번호가 보입니다.
+          <br /><br />
+          <strong>키나 비밀번호가 한 번 올라갔으면, 그 키를 폐기하는 것 말고 방법이 없습니다.</strong>
+          지우는 것으로는 해결되지 않습니다.
+          <br />
+          ★ 그래서 <code>.gitignore</code> 를 <strong>처음에</strong> 만드는 것이 중요합니다.
+        </p>
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — 아무 파일이나 커밋한 뒤 <code>.gitignore</code> 에 적어 보세요.
+        <code>git status</code> 에 계속 보이는 것을 확인하고,
+        <code>git rm --cached</code> 로 빼 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+
+      <p class="doc-desc"><strong>[실수 1] <code>restore</code> 로 지운 것을 되찾으려 함</strong></p>
+      <p class="doc-note">못 찾습니다. 커밋 안 한 것은 Git 도 모릅니다. (섹션 1)</p>
+
+      <p class="doc-desc"><strong>[실수 2] 올린 커밋에 <code>reset --hard</code></strong></p>
+      <p class="doc-note">
+        남들과 엉킵니다. 올린 뒤에는 <code>revert</code> 를 쓰세요. (섹션 3·4)
+      </p>
+
+      <p class="doc-desc"><strong>[실수 3] <code>.gitignore</code> 를 나중에 만듦</strong></p>
+      <p class="doc-note">
+        섹션 6 그대로입니다. <strong>프로젝트를 만들자마자</strong> 만드세요.
+        첫 커밋 전에 만드는 것이 제일 좋습니다.
+      </p>
+
+      <p class="doc-desc"><strong>[실수 4] <code>git rm</code> 에 <code>--cached</code> 를 빼먹음</strong></p>
+      <p class="doc-note">진짜 파일이 지워집니다. 항상 <code>--cached</code> 를 붙였는지 보세요.</p>
+
+      <p class="doc-desc"><strong>[실수 5] <code>.gitignore</code> 에 적었는데 안 먹는다고 규칙을 계속 고침</strong></p>
+      <p class="doc-note">
+        규칙이 아니라 <strong>이미 추적 중</strong>이라서입니다.
+        <code>git check-ignore -v --no-index</code> 로 규칙이 맞는지부터 확인하세요. (섹션 6)
+      </p>
+
+      <p class="doc-desc"><strong>[실수 6] <code>node_modules</code> 를 통째로 올림</strong></p>
+      <p class="doc-note">
+        파일이 수만 개라 올리는 데 한참 걸리고, 받는 사람도 괴롭습니다.
+        <strong><code>package.json</code> 만 있으면 <code>npm install</code> 로 다시 만들어집니다.</strong>
+      </p>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">정리</p>
+      <ul>
+        <li>안 담았으면 <code>git restore 파일</code>. <strong>되찾을 수 없으니</strong> 조심.</li>
+        <li>담았으면 <code>git restore --staged 파일</code>. 내용은 그대로 남습니다.</li>
+        <li>커밋했으면 <code>git revert HEAD</code>. <strong>기록을 남기며</strong> 되돌립니다.</li>
+        <li>★ <code>git reset --hard</code> 는 기록을 지웁니다. <strong>올리기 전, 나 혼자일 때만.</strong></li>
+        <li><code>.gitignore</code> 는 <strong>프로젝트를 만들자마자</strong> 만듭니다.</li>
+        <li>★★ 이미 추적 중인 파일에는 <code>.gitignore</code> 가 안 먹습니다.
+          <code>git rm --cached</code> 로 빼야 합니다.</li>
+        <li>★★★ 비밀번호가 한 번 올라갔으면 <strong>지워도 기록에 남습니다. 키를 폐기하세요.</strong></li>
+      </ul>
+    </div>
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      .doc-head | text | 개념 03 — 되돌리기와 .gitignore
+      .doc-sub | text | 00단원 · 개발환경과 Git
+      .doc-summary-title | text | 정리
+      .doc-guide | ?visible | yes
+      .doc-code | white-space | pre
+      .doc-bad | ?visible | yes
+      .doc-good | ?visible | yes
+      body | color | rgb(34, 34, 34)
+    -->
+  </body>
+</html>

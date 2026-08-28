@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>08단원 연습문제 정답 - 선택자</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ============================================================
+         08단원 연습문제 정답 — 선택자
+         ------------------------------------------------------------
+         문제 파일과 body 는 완전히 같습니다. style 안만 채워져 있습니다.
+         답을 베끼기 전에 먼저 스스로 풀어 보세요.
+         ============================================================ */
+
+      /* ───── 문제 1 ───── (개념01 섹션1)
+         h3 의 글자색을 crimson 으로. */
+      h3 {
+        color: crimson;
+      }
+      /* 화면: 문제 1 상자의 "오늘의 메뉴", "내일의 메뉴" 두 줄이 빨간 글자입니다.
+         태그 선택자는 이름만 그대로 씁니다. 점도 우물정자도 붙이지 않습니다.
+         이 규칙은 이 파일 안의 h3 를 전부 고릅니다.
+         여기서는 h3 가 문제 1 상자에만 있어서 그 두 줄만 바뀐 것입니다. */
+
+      /* ───── 문제 2 ───── (개념01 섹션2)
+         class="notice" 인 두 줄의 배경색을 #fff3a0 으로. */
+      .notice {
+        background-color: #fff3a0;
+      }
+      /* 화면: 문제 2 상자의 첫째 줄과 셋째 줄에 노란 배경이 깔립니다.
+         CSS 에서는 클래스 이름 앞에 점을 붙입니다. HTML 에는 안 붙입니다.
+         같은 클래스를 몇 번이든 다시 쓸 수 있어서 규칙 한 개가 두 줄을 칠합니다. */
+
+      /* ───── 문제 3 ───── (개념01 섹션3)
+         id 가 mainTitle 인 줄의 글자색을 #1a7f5a 로. */
+      #mainTitle {
+        color: #1a7f5a;
+      }
+      /* 화면: "봄내 카페" 한 줄만 초록 글자이고 주소 줄은 검은 글자 그대로입니다.
+         id 는 우물정자를 붙입니다. 한 페이지에 하나뿐이라 딱 한 줄만 걸립니다. */
+
+      /* ───── 문제 4 ───── (개념02 섹션1)
+         tea 와 cake 두 줄만 배경색 #eef7ff 로. 규칙 한 개. */
+      .tea,
+      .cake {
+        background-color: #eef7ff;
+      }
+      /* 화면: "캐모마일차" 와 "치즈케이크" 두 줄이 연한 하늘색 배경이고,
+         가운데 "아메리카노" 줄은 배경색이 없습니다.
+         쉼표는 "또는" 입니다. .tea 뒤의 쉼표를 빠뜨리면
+         "tea 안의 cake" 라는 뜻이 되어 한 줄도 안 바뀝니다. */
+
+      /* ───── 문제 5 ───── (개념02 섹션4)
+         card 와 big 을 둘 다 가진 줄만 배경색 #ffe9e9 로. */
+      .card.big {
+        background-color: #ffe9e9;
+      }
+      /* 화면: 문제 5 상자의 셋째 줄만 연한 분홍 배경입니다.
+         사이에 공백이 없어야 "한 요소가 둘 다 가진 경우" 가 됩니다.
+         공백을 넣으면 "card 안의 big" 이 되어 한 줄도 안 걸립니다. */
+
+      /* ───── 문제 6 ───── (개념03 섹션2)
+         notice-box 안의 문단을 깊이 상관없이 전부 글자색 #c0392b 로. */
+      .notice-box p {
+        color: #c0392b;
+      }
+      /* 화면: 위 두 줄이 빨간 글자가 되고 "상자 밖 문단" 은 검은 글자입니다.
+         공백은 자손 결합자라서 몇 겹 안에 있어도 걸립니다.
+         빨개지는 것은 오른쪽 p 이고, .notice-box 자체는 아무 변화가 없습니다. */
+
+      /* ───── 문제 7 ───── (개념03 섹션3)
+         crumb 의 바로 아래 단계 문단만 배경색 #fff3a0 으로. */
+      .crumb > p {
+        background-color: #fff3a0;
+      }
+      /* 화면: 첫 줄만 노란 배경이고 한 겹 더 들어간 줄은 배경색이 없습니다.
+         부등호는 "바로 한 단계 아래" 만 봅니다.
+         안쪽 문단의 부모는 crumb 가 아니라 가운데 div 라서 안 걸립니다. */
+
+      /* ───── 문제 8 ───── (개념03 섹션5)
+         class="q" 바로 다음 문단 하나만 배경색 #eef7ff 로. */
+      .q + p {
+        background-color: #eef7ff;
+      }
+      /* 화면: "건물 뒤에 두 자리 있습니다." 한 줄만 연한 하늘색 배경입니다.
+         더하기는 바로 다음 형제 하나만 봅니다.
+         물결(~)을 쓰면 "주말에는" 줄까지 두 줄이 칠해집니다. */
+
+      /* ───── 문제 9 ───── (개념04 섹션1)
+         마우스를 올린 동안만 배경색 #2d6cdf, 글자색 white. */
+      .hover-item:hover {
+        background-color: #2d6cdf;
+        color: white;
+      }
+      /* 화면: 평소에는 아무 색도 없다가 마우스를 올린 동안만
+         파란 배경에 흰 글자가 되고, 치우면 곧바로 돌아옵니다.
+         콜론은 반드시 붙여 씁니다. 앞에 공백을 넣으면 뜻이 달라집니다. */
+
+      /* ───── 문제 10 ───── (개념04 섹션5)
+         체크된 체크박스 바로 다음 label 의 배경색을 #fff3a0 으로. */
+      .opt:checked + label {
+        background-color: #fff3a0;
+      }
+      /* 화면: 처음 열면 "얼음을 추가합니다" 글자만 노란 배경입니다.
+         아래 체크박스를 누르면 "시럽을 추가합니다" 에도 노란 배경이 생깁니다.
+         가상 클래스(:checked)와 형제 결합자(+)를 이어 붙여 쓴 것입니다.
+         체크박스 자체는 색이 잘 안 먹어서 옆의 label 을 대신 꾸밉니다. */
+
+      /* ───── 문제 11 ───── (개념05 섹션1)
+         첫 줄은 #fff3a0, 마지막 줄은 #eef7ff. */
+      .rank li:first-child {
+        background-color: #fff3a0;
+      }
+      .rank li:last-child {
+        background-color: #eef7ff;
+      }
+      /* 화면: "1등" 줄은 노란 배경, "3등" 줄은 연한 하늘색 배경이고
+         가운데 "2등" 줄은 배경색이 없습니다.
+         항목을 더 넣거나 빼도 CSS 를 안 고쳐도 됩니다. 브라우저가 다시 셉니다. */
+
+      /* ───── 문제 12 ───── (개념05 섹션3)
+         짝수 번째 줄에만 배경색 #eef2f7. */
+      .stripe li:nth-child(even) {
+        background-color: #eef2f7;
+      }
+      /* 화면: 2, 4, 6번 줄에만 연한 회청색 배경이 깔려 줄무늬가 됩니다.
+         even 대신 2n 이라고 써도 결과가 같습니다.
+         순서는 1 부터 세기 때문에 첫 줄은 홀수입니다. */
+
+      /* ───── 문제 13 ───── [응용] (개념05 섹션5)
+         품절이 아닌 항목만 배경색 #e2f4ea. */
+      .stock li:not(.sold) {
+        background-color: #e2f4ea;
+      }
+      /* 화면: 1번째와 3번째 줄만 연한 초록 배경이고 품절 두 줄은 배경색이 없습니다.
+         :not() 을 쓰면 예외인 것에만 클래스를 붙이면 됩니다.
+         품절이 아닌 항목마다 클래스를 붙일 필요가 없어집니다. */
+
+      /* ───── 문제 14 ───── [응용] (개념05 섹션2)
+         intro 안의 첫 번째 문단만 배경색 #fff3a0. */
+      .intro p:first-of-type {
+        background-color: #fff3a0;
+      }
+      /* 화면: "2019년에 문을 열었습니다." 줄만 노란 배경입니다.
+         :first-child 로 쓰면 한 줄도 안 걸립니다.
+         상자의 첫 자식이 h4 라서 "첫 자식이면서 p 인 것" 이 없기 때문입니다.
+         :first-of-type 은 p 끼리만 세므로 제목이 있어도 잘 걸립니다. */
+
+      /* ───── 문제 15 ───── [도전] (개념06)
+         아래 규칙은 문제 파일에 이미 있던 것입니다. */
+      .tip-area p {
+        color: #8a8a8a;
+      }
+      /* 정답 — 명시도를 한 단계 올려서 이깁니다. */
+      .tip-area p.strong-tip {
+        color: #c0392b;
+      }
+      /* 화면: 아래 줄만 빨간 글자가 되고 위 줄은 흐린 회색 그대로입니다.
+         .tip-area p 는 0-1-1 이고, .strong-tip 만 쓰면 0-1-0 이라 집니다.
+         .tip-area p.strong-tip 은 0-2-1 이라 이깁니다.
+         .tip-area .strong-tip (0-2-0) 으로 써도 이깁니다.
+         !important 나 id 를 쓰지 않고도 이길 수 있다는 것이 이 문제의 요점입니다. */
+
+      /* ───── 문제 16 ───── [확인]
+         (가) 점을 빠뜨렸습니다. 클래스는 앞에 점을 붙입니다. */
+      .menu-item {
+        background-color: #fff3a0;
+      }
+      /* 화면: "(가)" 줄에 노란 배경이 깔립니다.
+         고치기 전에는 menu-item 이라는 태그를 찾다가 못 찾고 규칙이 버려졌습니다. */
+
+      /* (나) 쉼표를 빠뜨렸습니다. 두 요소는 나란히 있는 형제입니다. */
+      .list-a,
+      .list-b {
+        color: crimson;
+      }
+      /* 화면: "(나)" 두 줄이 모두 빨간 글자가 됩니다.
+         고치기 전에는 "list-a 안에 있는 list-b" 를 찾았는데 그런 요소가 없었습니다. */
+
+      /* (다) 콜론 앞에 공백이 있었습니다. 가상 클래스는 붙여 씁니다. */
+      .chk:checked + label {
+        background-color: #fff3a0;
+      }
+      /* 화면: 체크박스 옆 "(다)" 글자에 노란 배경이 깔립니다.
+         고치기 전에는 공백이 자손 결합자라서
+         "chk 안에 있는 체크된 요소" 를 찾았고, 체크박스 안에는 아무것도 없었습니다. */
+    </style>
+  </head>
+  <body>
+    <h1 class="doc-head">08단원 연습문제 정답 — 선택자</h1>
+    <p class="doc-sub">08단원 · 선택자</p>
+
+    <p class="doc-guide">
+      문제 상자 안의 HTML 은 <strong>문제 파일과 한 글자도 다르지 않습니다.</strong>
+      (제목과 이 안내 상자, 맨 아래 정리 상자만 다릅니다)
+      답은 <code>&lt;style&gt;</code> 안에만 채워져 있습니다.
+      답을 보기 전에 먼저 스스로 풀어 보고, 화면이 다르면
+      <code>&lt;style&gt;</code> 의 해설을 읽으세요.
+    </p>
+
+    <!-- ───── 문제 1 ───── (개념01 섹션1) -->
+    <div class="doc-demo" id="q1box">
+      <p class="doc-demo-label">문제 1 — 태그 선택자 (개념01 섹션1)</p>
+      <p class="doc-desc">h3 제목 두 줄을 빨간 글자로 만드세요.</p>
+      <h3>오늘의 메뉴</h3>
+      <p>아메리카노, 카페라떼</p>
+      <h3>내일의 메뉴</h3>
+      <p>딸기라떼, 자몽차</p>
+      <!-- 화면: 제목 두 줄이 빨간 글자, 그 아래 메뉴 문단은 검은 글자입니다 -->
+    </div>
+
+    <!-- ───── 문제 2 ───── (개념01 섹션2) -->
+    <div class="doc-demo" id="q2box">
+      <p class="doc-demo-label">문제 2 — 클래스 선택자 (개념01 섹션2)</p>
+      <p class="doc-desc">notice 를 붙인 두 줄에 노란 배경을 넣으세요.</p>
+      <p class="notice" id="q2notice">문 여는 시간이 바뀌었습니다.</p>
+      <p>평일은 8시에 엽니다.</p>
+      <p class="notice">일요일은 쉽니다.</p>
+      <!-- 화면: 첫째 줄과 셋째 줄만 노란 배경입니다 -->
+    </div>
+
+    <!-- ───── 문제 3 ───── (개념01 섹션3) -->
+    <div class="doc-demo" id="q3box">
+      <p class="doc-demo-label">문제 3 — id 선택자 (개념01 섹션3)</p>
+      <p class="doc-desc">id 가 mainTitle 인 줄만 초록 글자로 만드세요.</p>
+      <p id="mainTitle">봄내 카페</p>
+      <p>강원도 춘천시 봄내로 12</p>
+      <!-- 화면: 첫 줄만 초록 글자입니다 -->
+    </div>
+
+    <!-- ───── 문제 4 ───── (개념02 섹션1) -->
+    <div class="doc-demo" id="q4box">
+      <p class="doc-demo-label">문제 4 — 그룹 선택자 (개념02 섹션1)</p>
+      <p class="doc-desc">차와 케이크 두 줄만 규칙 하나로 하늘색 배경을 넣으세요.</p>
+      <p class="tea" id="q4tea">캐모마일차</p>
+      <p class="coffee" id="q4coffee">아메리카노</p>
+      <p class="cake" id="q4cake">치즈케이크</p>
+      <!-- 화면: 첫 줄과 셋째 줄만 연한 하늘색 배경입니다 -->
+    </div>
+
+    <!-- ───── 문제 5 ───── (개념02 섹션4) -->
+    <div class="doc-demo" id="q5box">
+      <p class="doc-demo-label">문제 5 — 붙여 쓰기 (개념02 섹션4)</p>
+      <p class="doc-desc">card 와 big 을 둘 다 가진 줄만 분홍 배경으로 만드세요.</p>
+      <p class="card" id="q5card">card 만 가진 줄</p>
+      <p class="big" id="q5big">big 만 가진 줄</p>
+      <p class="card big" id="q5both">card 와 big 을 둘 다 가진 줄</p>
+      <!-- 화면: 셋째 줄만 연한 분홍 배경입니다 -->
+    </div>
+
+    <!-- ───── 문제 6 ───── (개념03 섹션2) -->
+    <div class="doc-demo" id="q6box">
+      <p class="doc-demo-label">문제 6 — 자손 선택자 (개념03 섹션2)</p>
+      <p class="doc-desc">notice-box 안의 문단을 깊이 상관없이 전부 빨갛게 만드세요.</p>
+      <div class="notice-box">
+        <p id="q6direct">상자 안에 바로 있는 문단</p>
+        <div>
+          <p id="q6inner">한 겹 더 안에 있는 문단</p>
+        </div>
+      </div>
+      <p id="q6outside">상자 밖 문단</p>
+      <!-- 화면: 위 두 줄이 빨간 글자, 마지막 줄은 검은 글자입니다 -->
+    </div>
+
+    <!-- ───── 문제 7 ───── (개념03 섹션3) -->
+    <div class="doc-demo" id="q7box">
+      <p class="doc-demo-label">문제 7 — 자식 선택자 (개념03 섹션3)</p>
+      <p class="doc-desc">crumb 의 바로 아래 단계 문단만 노란 배경으로 만드세요.</p>
+      <div class="crumb">
+        <p id="q7child">바로 아래 단계 문단</p>
+        <div>
+          <p id="q7grand">한 겹 더 들어간 문단</p>
+        </div>
+      </div>
+      <!-- 화면: 첫 줄만 노란 배경입니다 -->
+    </div>
+
+    <!-- ───── 문제 8 ───── (개념03 섹션5) -->
+    <div class="doc-demo" id="q8box">
+      <p class="doc-demo-label">문제 8 — 인접 형제 (개념03 섹션5)</p>
+      <p class="doc-desc">질문 줄 바로 다음 문단 하나만 하늘색 배경으로 만드세요.</p>
+      <p class="q">주차할 수 있나요?</p>
+      <p id="q8next">건물 뒤에 두 자리 있습니다.</p>
+      <p id="q8later">주말에는 만차일 수 있습니다.</p>
+      <!-- 화면: 가운데 줄만 연한 하늘색 배경입니다 -->
+    </div>
+
+    <!-- ───── 문제 9 ───── (개념04 섹션1) -->
+    <div class="doc-demo" id="q9box">
+      <p class="doc-demo-label">문제 9 — :hover (개념04 섹션1)</p>
+      <p class="doc-desc">마우스를 올린 동안만 파란 배경에 흰 글자가 되게 하세요.</p>
+      <p class="hover-item" id="q9item">여기에 마우스를 올려 보세요</p>
+      <!-- 화면: 평소에는 색이 없고, 마우스를 올린 동안만 파란 배경에 흰 글자입니다 -->
+    </div>
+
+    <!-- ───── 문제 10 ───── (개념04 섹션5) -->
+    <div class="doc-demo" id="q10box">
+      <p class="doc-demo-label">문제 10 — :checked (개념04 섹션5)</p>
+      <p class="doc-desc">체크된 칸의 글자에만 노란 배경을 넣으세요.</p>
+      <input type="checkbox" class="opt" id="q10ice" checked />
+      <label for="q10ice" id="q10label">얼음을 추가합니다</label>
+      <br />
+      <input type="checkbox" class="opt" id="q10syrup" />
+      <label for="q10syrup" id="q10label2">시럽을 추가합니다</label>
+      <!-- 화면: 위 글자만 노란 배경입니다. 아래 체크박스를 누르면 아래도 노래집니다 -->
+    </div>
+
+    <!-- ───── 문제 11 ───── (개념05 섹션1) -->
+    <div class="doc-demo" id="q11box">
+      <p class="doc-demo-label">문제 11 — 첫째와 막내 (개념05 섹션1)</p>
+      <p class="doc-desc">첫 줄은 노란 배경, 마지막 줄은 하늘색 배경으로 만드세요.</p>
+      <ul class="rank" id="q11list">
+        <li>1등 아메리카노</li>
+        <li>2등 카페라떼</li>
+        <li>3등 딸기라떼</li>
+      </ul>
+      <!-- 화면: 1등 줄은 노란 배경, 3등 줄은 연한 하늘색 배경, 2등 줄은 색이 없습니다 -->
+    </div>
+
+    <!-- ───── 문제 12 ───── (개념05 섹션3) -->
+    <div class="doc-demo" id="q12box">
+      <p class="doc-demo-label">문제 12 — :nth-child (개념05 섹션3)</p>
+      <p class="doc-desc">짝수 번째 줄에만 연한 회청색 배경을 깔아 주세요.</p>
+      <ul class="stripe" id="q12list">
+        <li>1번 줄</li>
+        <li>2번 줄</li>
+        <li>3번 줄</li>
+        <li>4번 줄</li>
+        <li>5번 줄</li>
+        <li>6번 줄</li>
+      </ul>
+      <!-- 화면: 2, 4, 6번 줄에만 연한 회청색 배경이 깔립니다 -->
+    </div>
+
+    <!-- ───── 문제 13 ───── [응용] (개념05 섹션5) -->
+    <div class="doc-demo" id="q13box">
+      <p class="doc-demo-label">문제 13 [응용] — :not() (개념05 섹션5)</p>
+      <p class="doc-desc">품절이 아닌 항목만 연한 초록 배경으로 만드세요.</p>
+      <ul class="stock" id="q13list">
+        <li>아메리카노</li>
+        <li class="sold">카페라떼 (품절)</li>
+        <li>딸기라떼</li>
+        <li class="sold">자몽차 (품절)</li>
+      </ul>
+      <!-- 화면: 1번째와 3번째 줄만 연한 초록 배경입니다 -->
+    </div>
+
+    <!-- ───── 문제 14 ───── [응용] (개념05 섹션2) -->
+    <div class="doc-demo" id="q14box">
+      <p class="doc-demo-label">문제 14 [응용] — 첫 문단만 (개념05 섹션2)</p>
+      <p class="doc-desc">제목이 먼저 있는 상자에서 첫 번째 문단만 노란 배경으로 만드세요.</p>
+      <div class="intro">
+        <h4>가게 소개</h4>
+        <p id="q14first">2019년에 문을 열었습니다.</p>
+        <p id="q14second">원두는 매주 볶습니다.</p>
+      </div>
+      <!-- 화면: 제목 아래 첫 문단만 노란 배경입니다 -->
+    </div>
+
+    <!-- ───── 문제 15 ───── [도전] (개념06) -->
+    <div class="doc-demo" id="q15box">
+      <p class="doc-demo-label">문제 15 [도전] — 명시도로 이기기 (개념06)</p>
+      <p class="doc-desc">
+        아래 두 줄은 이미 써 둔 규칙 때문에 흐린 회색입니다.
+        <code>strong-tip</code> 줄만 빨갛게 바꾸세요. <code>!important</code> 와 id 는 금지입니다.
+      </p>
+      <div class="tip-area">
+        <p id="q15normal">보통 안내 문단입니다.</p>
+        <p class="strong-tip" id="q15strong">이 줄만 빨간 글자로 만드세요.</p>
+      </div>
+      <!-- 화면: 위 줄은 흐린 회색, 아래 줄만 빨간 글자입니다 -->
+    </div>
+
+    <!-- ───── 문제 16 ───── [확인] -->
+    <div class="doc-demo" id="q16box">
+      <p class="doc-demo-label">문제 16 [확인] — 왜 아무 일도 안 일어날까요</p>
+      <p class="doc-desc">
+        <code>&lt;style&gt;</code> 맨 아래 세 규칙은 전부 아무 일도 하지 않습니다.
+        각각 한 군데씩 고치세요.
+      </p>
+      <p class="menu-item" id="q16a">(가) 이 줄에 노란 배경이 깔려야 합니다.</p>
+      <p class="list-a" id="q16b">(나) 이 줄이 빨간 글자가 되어야 합니다.</p>
+      <p class="list-b" id="q16c">(나) 이 줄도 빨간 글자가 되어야 합니다.</p>
+      <input type="checkbox" class="chk" id="q16chk" checked />
+      <label for="q16chk" id="q16label">(다) 이 글자에 노란 배경이 깔려야 합니다.</label>
+      <!-- 화면: (가) 줄은 노란 배경, (나) 두 줄은 빨간 글자,
+                (다) 체크박스 옆 글자는 노란 배경입니다 -->
+    </div>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 다시 확인할 것 ──</p>
+      <p>
+        1. 점은 클래스, 우물정자는 id, 아무것도 없으면 태그.
+        <strong>기호가 이름보다 먼저</strong>입니다.
+      </p>
+      <p>
+        2. 쉼표는 <strong>또는</strong>, 붙여 쓰기는 <strong>그리고</strong>,
+        공백은 <strong>안에 있는</strong>.
+      </p>
+      <p>
+        3. <code>:first-child</code> 는 "첫 자식이면서 그 태그인 것" 입니다.
+        제목이 앞에 있으면 <code>:first-of-type</code> 을 쓰세요.
+      </p>
+      <p>
+        4. 가상 클래스의 콜론은 <strong>항상 붙여</strong> 씁니다.
+        앞에 공백이 들어가면 자손 선택자가 되어 버립니다.
+      </p>
+      <p>
+        5. 안 이기면 명시도를 세어 보고 <strong>한 단계만 더 구체적으로</strong> 만드세요.
+        <code>!important</code> 는 최후의 수단입니다.
+      </p>
+    </div>
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #q1box h3 | color | rgb(220, 20, 60)
+      #q2notice | background-color | rgb(255, 243, 160)
+      #q2box p:nth-of-type(4) | background-color | rgba(0, 0, 0, 0)
+      #mainTitle | color | rgb(26, 127, 90)
+      #q4tea | background-color | rgb(238, 247, 255)
+      #q4cake | background-color | rgb(238, 247, 255)
+      #q4coffee | background-color | rgba(0, 0, 0, 0)
+      #q5card | background-color | rgba(0, 0, 0, 0)
+      #q5big | background-color | rgba(0, 0, 0, 0)
+      #q5both | background-color | rgb(255, 233, 233)
+      #q6direct | color | rgb(192, 57, 43)
+      #q6inner | color | rgb(192, 57, 43)
+      #q6outside | color | rgb(34, 34, 34)
+      #q7child | background-color | rgb(255, 243, 160)
+      #q7grand | background-color | rgba(0, 0, 0, 0)
+      #q8next | background-color | rgb(238, 247, 255)
+      #q8later | background-color | rgba(0, 0, 0, 0)
+      #q9item | background-color | rgba(0, 0, 0, 0)
+      #q10label | background-color | rgb(255, 243, 160)
+      #q10label2 | background-color | rgba(0, 0, 0, 0)
+      #q11list li:nth-child(1) | background-color | rgb(255, 243, 160)
+      #q11list li:nth-child(2) | background-color | rgba(0, 0, 0, 0)
+      #q11list li:nth-child(3) | background-color | rgb(238, 247, 255)
+      #q12list li:nth-child(1) | background-color | rgba(0, 0, 0, 0)
+      #q12list li:nth-child(2) | background-color | rgb(238, 242, 247)
+      #q12list li:nth-child(6) | background-color | rgb(238, 242, 247)
+      #q13list li:nth-child(1) | background-color | rgb(226, 244, 234)
+      #q13list li:nth-child(2) | background-color | rgba(0, 0, 0, 0)
+      #q14first | background-color | rgb(255, 243, 160)
+      #q14second | background-color | rgba(0, 0, 0, 0)
+      #q15normal | color | rgb(138, 138, 138)
+      #q15strong | color | rgb(192, 57, 43)
+      #q16a | background-color | rgb(255, 243, 160)
+      #q16b | color | rgb(220, 20, 60)
+      #q16c | color | rgb(220, 20, 60)
+      #q16label | background-color | rgb(255, 243, 160)
+    -->
+  </body>
+</html>

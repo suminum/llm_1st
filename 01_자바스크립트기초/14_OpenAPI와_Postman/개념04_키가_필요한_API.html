@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>14단원 개념04 - 키가 필요한 API</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 8px 16px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 6px;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+        min-height: 24px;
+        word-break: break-all;
+        font-size: 13px;
+      }
+      ul {
+        padding-left: 22px;
+        margin: 0;
+      }
+      li {
+        margin: 4px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 04 — 키가 필요한 API</h1>
+
+    <p class="guide">
+      <strong>인터넷이 없어도 됩니다.</strong> 진짜 키를 쓰지 않습니다.
+      <strong>진짜 키를 이 파일에 적지 마세요.</strong> 여기 있는 것은 전부 가짜입니다.
+      <br /><br />
+      <strong>F12 → Console</strong> 을 열고 버튼을 눌러 보세요.
+    </p>
+
+    <div class="demo">
+      <h3>① 키를 넣는 두 자리</h3>
+      <button id="b1">쿼리와 헤더</button>
+      <div class="output" id="out1">버튼을 눌러 보세요</div>
+
+      <h3>② ★ 브라우저에서는 다 보입니다</h3>
+      <button id="b2">빌드 결과에서 키 찾기</button>
+      <div class="output" id="out2">버튼을 눌러 보세요</div>
+
+      <h3>③ ★ 키를 두 번 인코딩하면</h3>
+      <button id="b3">이중 인코딩 재현</button>
+      <div class="output" id="out3">버튼을 눌러 보세요</div>
+    </div>
+
+    <script>
+      // ── 섹션 1: 키가 왜 필요한가 ──
+      //
+      // 개념01 에서 쓴 Open-Meteo 는 키가 없었습니다. 누구나 그냥 부릅니다.
+      // 그런데 대부분의 API 는 키를 요구합니다. 이유가 있습니다.
+      //
+      //   · 누가 얼마나 썼는지 세야 합니다 (하루 1000번 같은 제한)
+      //   · 돈을 받는 API 면 청구를 해야 합니다
+      //   · 함부로 쓰는 사람을 막아야 합니다
+      //
+      // ★ 키는 **이름표**입니다. 비밀번호와 비슷하지만 조금 다릅니다.
+      //   비밀번호는 "나임을 증명" 하고, 키는 "이 요청이 누구 몫인지" 를 정합니다.
+      //   ★★ 그래서 남이 내 키를 쓰면 **내 몫이 줄고 내가 돈을 냅니다.**
+
+      // ✏️ 직접 해보기 1 — 평소에 쓰는 서비스 중 API 를 여는 곳을 하나 찾아
+      //                      키가 필요한지, 무료 한도가 얼마인지 보세요.
+
+      // ── 섹션 2: 키를 넣는 두 자리 ──
+
+      const 가짜키 = "SAMPLE-KEY-0000-0000";
+
+      document.getElementById("b1").addEventListener("click", () => {
+        // [방법 1] 쿼리스트링에 넣기
+        const 쿼리로 = new URL("https://예시api.com/v1/data");
+        쿼리로.searchParams.set("serviceKey", 가짜키);
+        쿼리로.searchParams.set("지역", "서울");
+
+        // [방법 2] 헤더에 넣기
+        const 헤더로 = {
+          주소: "https://예시api.com/v1/data?지역=서울",
+          헤더: { Authorization: `Bearer ${가짜키}` },
+        };
+
+        console.log("쿼리로:", 쿼리로.toString());
+        // 콘솔: 쿼리로: https://xn--api-oq6n10k.com/v1/data?serviceKey=SAMPLE-KEY-0000-0000&%EC%A7%80%EC%97%AD=%EC%84%9C%EC%9A%B8
+        console.log("헤더로:", JSON.stringify(헤더로));
+        // 콘솔: 헤더로: {"주소":"https://예시api.com/v1/data?지역=서울","헤더":{"Authorization":"Bearer SAMPLE-KEY-0000-0000"}}
+
+        document.getElementById("out1").innerHTML =
+          `<b>쿼리로</b><br>${쿼리로}<br><br><b>헤더로</b><br>${헤더로.주소}<br>Authorization: Bearer ${가짜키}`;
+      });
+
+      // ✏️ 직접 해보기 2 — 가짜키를 헤더 대신 쿼리에 넣어 보세요. 주소가 어떻게 됩니까?
+      //                      그 주소를 남에게 보여 줄 수 있겠습니까?
+
+      // ★ 어느 쪽을 쓰는지는 **API 가 정합니다.** 내가 고르는 게 아닙니다.
+      //   문서를 보세요.
+      //
+      //   공공데이터포털   쿼리   `serviceKey=...`
+      //   카카오          헤더   `Authorization: KakaoAK ...`
+      //   요즘 만든 API    헤더   `Authorization: Bearer ...`
+      //
+      // ★★ 헤더 쪽이 조금 낫습니다. 이유가 두 가지입니다.
+      //
+      //   (1) 주소창·브라우저 기록·서버 접속 기록에 키가 안 남습니다
+      //       쿼리에 넣으면 그 주소가 통째로 여기저기 기록됩니다.
+      //   (2) 주소를 남에게 보여 줄 때 키를 안 지워도 됩니다
+      //
+      //   ★ 그래도 **브라우저에서는 둘 다 위험합니다.** 섹션 4에서 봅니다.
+
+      // ── 섹션 3: 키를 어떻게 받나 (공공데이터포털) ──
+      //
+      // 이 과정의 주제(제조 현장)와 맞는 자료가 많은 곳입니다.
+      //
+      //   1. https://www.data.go.kr 가입
+      //   2. 쓰고 싶은 자료를 찾아 `활용신청`
+      //   3. 승인되면 `마이페이지 → 개발계정` 에서 키를 봅니다
+      //
+      // ★ 자동 승인인 것과 며칠 걸리는 것이 있습니다. 수업 전에 미리 신청하세요.
+      //
+      // ★★ 키가 **두 가지 모양**으로 보입니다.
+      //
+      //     일반 인증키(Encoding)   abc%2Bdef%2Fghi%3D
+      //     일반 인증키(Decoding)   abc+def/ghi=
+      //
+      //   같은 키인데 하나는 **이미 인코딩된 것**입니다.
+      //   ★★★ 여기서 사고가 납니다. 섹션 5에서 봅니다.
+
+      // ✏️ 직접 해보기 3 — data.go.kr 에서 제조·안전과 관련된 자료를 하나 찾아보세요.
+      //                      활용신청이 자동 승인인지 아닌지도 같이 보세요.
+
+      // ── 섹션 4: ★★★ 브라우저에 넣으면 다 보입니다 ──
+
+      document.getElementById("b2").addEventListener("click", () => {
+        // 우리가 쓴 코드가 이렇다고 칩시다
+        const 내코드 = `
+          const 키 = "SAMPLE-KEY-0000-0000";
+          const 주소 = new URL("https://예시api.com/v1/data");
+          주소.searchParams.set("serviceKey", 키);
+          const 응답 = await fetch(주소);
+        `;
+
+        // 남이 F12 → Sources 에서 이 파일을 열고 검색합니다
+        const 찾은것 = 내코드.match(/SAMPLE-[A-Z0-9-]+/);
+
+        console.log("검색 결과:", 찾은것 ? 찾은것[0] : "없음");
+        // 콘솔: 검색 결과: SAMPLE-KEY-0000-0000
+
+        document.getElementById("out2").innerHTML =
+          `누구나 F12 → Sources 에서 이 파일을 열 수 있습니다.<br>` +
+          `Ctrl+F 로 검색하면 → <b>${찾은것 ? 찾은것[0] : "없음"}</b>`;
+      });
+
+      // ★★★ 이건 막을 방법이 없습니다.
+      //
+      //   브라우저에서 도는 코드는 **전부 사용자에게 전달된 파일**입니다.
+      //   숨길 수가 없습니다. 압축하고 이름을 뭉개도 글자는 그대로 남습니다.
+      //
+      //   그리고 코드를 안 보더라도 **F12 → Network** 에 요청이 그대로 보입니다.
+      //   쿼리에 넣었으면 주소에, 헤더에 넣었으면 헤더 목록에 있습니다.
+      //   ★ 헤더에 넣는다고 안 보이는 게 아닙니다. 그냥 덜 남을 뿐입니다.
+      //
+      // ★★ "그럼 브라우저에서 키가 필요한 API 는 못 쓰나요?" — 못 씁니다.
+      //   정확히는 **써도 되지만 키가 공개된다는 걸 알고** 써야 합니다.
+      //
+      //   써도 되는 키가 있습니다.
+      //     · 도메인 제한을 걸 수 있는 키 (내 사이트에서만 되게)
+      //     · 공개용으로 만들어진 키 (지도 표시용 등)
+      //
+      //   절대 안 되는 키
+      //     · 돈이 나가는 것 (LLM API, 문자 발송)
+      //     · 남의 정보를 읽는 것
+      //     · 무언가를 지우거나 바꿀 수 있는 것
+
+      // ✏️ 직접 해보기 4 — F12 → Sources 에서 이 파일을 열고 Ctrl+F 로 SAMPLE-KEY 를 검색해 보세요.
+      //                      정말로 보이는지 직접 확인하세요.
+
+      // ── 섹션 5: ★★ 키를 두 번 인코딩하면 ──
+
+      document.getElementById("b3").addEventListener("click", () => {
+        const 디코딩키 = "abc+def/ghi=";           // 포털의 'Decoding' 칸
+        const 인코딩키 = "abc%2Bdef%2Fghi%3D";     // 포털의 'Encoding' 칸
+
+        const 틀림 = new URLSearchParams();
+        틀림.set("serviceKey", 인코딩키); // 이미 인코딩된 것을 또 넣었습니다
+
+        const 맞음 = new URLSearchParams();
+        맞음.set("serviceKey", 디코딩키);
+
+        console.log("틀림:", 틀림.toString());
+        // 콘솔: 틀림: serviceKey=abc%252Bdef%252Fghi%253D
+        console.log("맞음:", 맞음.toString());
+        // 콘솔: 맞음: serviceKey=abc%2Bdef%2Fghi%3D
+
+        // 서버가 받아서 되읽으면 이렇게 됩니다
+        console.log("서버가 읽는 값(틀림):", new URLSearchParams(틀림.toString()).get("serviceKey"));
+        // 콘솔: 서버가 읽는 값(틀림): abc%2Bdef%2Fghi%3D
+        console.log("서버가 읽는 값(맞음):", new URLSearchParams(맞음.toString()).get("serviceKey"));
+        // 콘솔: 서버가 읽는 값(맞음): abc+def/ghi=
+
+        document.getElementById("out3").innerHTML =
+          `<b>틀림</b> ${틀림}<br>→ 서버가 읽는 값: ${new URLSearchParams(틀림.toString()).get("serviceKey")}<br><br>` +
+          `<b>맞음</b> ${맞음}<br>→ 서버가 읽는 값: ${new URLSearchParams(맞음.toString()).get("serviceKey")}`;
+      });
+
+      // ★★★ `%2B` 의 `%` 가 다시 `%25` 로 바뀌었습니다.
+      //   그래서 서버는 `abc%2Bdef%2Fghi%3D` 라는 **글자 그대로**를 키로 읽습니다.
+      //   그런 키는 없으니 인증 실패입니다.
+      //
+      //   → `SERVICE KEY IS NOT REGISTERED ERROR`
+      //     `등록되지 않은 키` 같은 답이 옵니다.
+      //
+      // ★★ 헷갈리기 쉬운 게, **반대로 해도 틀립니다.**
+      //
+      //   주소를 손으로 이어 붙이면서 Decoding 키를 그대로 넣으면
+      //   `+` 가 공백으로 읽혀서 역시 틀린 키가 됩니다. (개념02 섹션3)
+      //
+      // ★★★ 규칙 하나로 외우세요.
+      //
+      //   **URLSearchParams 를 쓰면 → Decoding 키를 넣는다**
+      //   **주소를 손으로 이어 붙이면 → Encoding 키를 넣는다**
+      //
+      //   그리고 손으로 이어 붙이지 마세요. 앞의 것만 쓰면 됩니다.
+      //
+      // ★ 이게 공공데이터포털을 처음 쓰는 사람이 100% 만나는 벽입니다.
+      //   "키가 맞는데 안 돼요" 는 거의 다 이것입니다.
+
+      // ✏️ 직접 해보기 5 — 틀림/맞음 을 서로 바꿔 넣어 보세요. `%25` 가 어디에 생깁니까?
+
+      // ── 섹션 6: 그럼 어떻게 하나 ──
+      //
+      // ★★★ 답은 **서버를 하나 두는 것**입니다.
+      //
+      //     [지금]  브라우저 ──(키를 들고)──→ 남의 API
+      //             키가 사용자에게 전달됩니다
+      //
+      //     [나중]  브라우저 ──────────→ 내 서버 ──(키를 들고)──→ 남의 API
+      //             키는 내 서버에만 있습니다
+      //
+      //   브라우저는 내 서버만 부릅니다. 키를 아예 모릅니다.
+      //   내 서버가 대신 부르고 결과만 넘겨 줍니다.
+      //
+      // ★ **이 과정 PART 3 에서 그 서버를 만듭니다.** 지금은 못 합니다.
+      //   지금 알아야 할 것은 "왜 서버가 필요한가" 입니다.
+      //   그 이유가 이 섹션입니다. 서버는 데이터베이스 때문만이 아닙니다.
+      //
+      // ★★ 그때까지 이 단원에서는 —
+      //
+      //   · 키가 필요 없는 API 로 연습합니다 (Open-Meteo)
+      //   · 키가 필요한 것은 **Postman 으로만** 불러 봅니다 (개념03)
+      //     Postman 은 내 컴퓨터에서 도니까 키가 안 새어 나갑니다.
+
+      // ✏️ 직접 해보기 6 — 브라우저 → 내 서버 → 남의 API 그림을 종이에 그려 보세요.
+      //                      키가 어디에만 있는지 화살표로 표시하세요.
+
+      // ── 섹션 7: 키가 새는 세 가지 길 ──
+      //
+      //   (1) git 에 올림
+      //       ★★ 지운 뒤 커밋해도 **기록에 남습니다.** 되돌릴 수 없습니다.
+      //         키를 폐기하는 것 말고 방법이 없습니다.
+      //
+      //   (2) 스크린샷·화면 공유
+      //       질문 올리면서 코드 사진을 찍어 올립니다. 주소창에 키가 보입니다.
+      //       ★ 캡처 전에 F12 를 닫고 주소를 지우세요.
+      //
+      //   (3) 배포한 파일
+      //       섹션 4 그대로입니다.
+      //
+      // ★★★ 키가 샜다 싶으면 순서가 정해져 있습니다.
+      //
+      //   1. **키를 먼저 폐기합니다** (재발급이 아니라 폐기)
+      //   2. 새 키를 받습니다
+      //   3. 코드를 고칩니다
+      //   4. 사용량을 확인합니다
+      //
+      //   ★ 1번이 먼저입니다. 코드부터 고치면 그 사이에도 옛 키는 살아 있습니다.
+
+      // ✏️ 직접 해보기 7 — 지금까지 만든 코드에 키나 비밀번호를 적어 둔 곳이 없는지 검색해 보세요.
+      //                      있으면 지금 지우세요. 나중에는 잊어버립니다.
+
+      // ── 섹션 8: 자주 하는 실수 ──
+      //
+      // [실수 1] Encoding 키를 URLSearchParams 에 넣음 (섹션 5) ← ★ 제일 흔합니다
+      //
+      // [실수 2] 헤더에 `Bearer` 를 빼먹음
+      //
+      //   { Authorization: 키 }              → 401
+      //   { Authorization: `Bearer ${키}` }  → 200
+      //   ★ API 마다 앞에 붙이는 말이 다릅니다. `Bearer`, `KakaoAK`, 없는 것도 있습니다.
+      //
+      // [실수 3] 키를 코드에 적어 두고 "나중에 빼야지" 하고 잊음
+      //   → ★ 그 사이에 커밋합니다. 처음부터 적지 마세요.
+      //
+      // [실수 4] 승인 직후에 바로 부름
+      //   → 공공데이터포털은 키가 도는 데 몇십 분 걸리기도 합니다.
+      //     "키가 틀렸다" 는 답이 와도 조금 기다려 보세요.
+      //
+      // [실수 5] 키가 없어서 안 되는 건데 코드를 고침
+      //   → ★ Postman 으로 먼저 확인하세요. (개념03 섹션1)
+    </script>
+  </body>
+</html>

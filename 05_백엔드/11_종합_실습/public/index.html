@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>설비 점검 관리</title>
+    <link rel="stylesheet" href="/공통.css" />
+    <style>
+      .증표 { margin-bottom: 12px; }
+      .상세 { background: #f9f9f9; border: 1px solid #ddd; padding: 12px; margin-top: 12px; }
+      .상세 h3 { margin: 0 0 8px; font-size: 16px; }
+      .상세 h4 { margin: 14px 0 4px; font-size: 14px; color: #555; }
+      td button { font-size: 13px; padding: 3px 8px; margin: 0 2px 0 0; }
+    </style>
+  </head>
+  <body>
+    <h1>설비 점검 관리</h1>
+
+    <p class="안내">
+      오른쪽 위에서 <strong>누구로 로그인할지</strong> 고를 수 있습니다.<br />
+      user 와 admin 으로 각각 해 보면서 무엇이 막히는지 보세요.
+    </p>
+
+    <div class="증표">
+      <label>
+        로그인:
+        <select id="증표">
+          <option value="">로그인 안 함</option>
+          <option value="key-user-1">김민준 (user)</option>
+          <option value="key-admin-1" selected>이서연 (admin)</option>
+        </select>
+      </label>
+    </div>
+
+    <h2>설비 등록 <span style="font-size: 13px; color: #888">(admin 만)</span></h2>
+    <form id="폼">
+      <label class="칸"><span>이름</span><input type="text" id="name" name="name" /></label>
+      <div class="오류글" id="오류-name"></div>
+
+      <label class="칸">
+        <span>라인</span>
+        <select id="line" name="line">
+          <option value="">고르세요</option>
+          <option value="A">A</option>
+          <option value="B">B</option>
+          <option value="C">C</option>
+          <option value="Z">Z (없는 라인)</option>
+        </select>
+      </label>
+      <div class="오류글" id="오류-line"></div>
+
+      <div class="줄"><button type="submit" id="보내기">등록</button></div>
+    </form>
+    <div id="알림"></div>
+
+    <h2>설비 목록</h2>
+    <div class="줄">
+      <input type="text" id="검색" placeholder="이름·라인·상태 검색" />
+      <select id="라인거르기">
+        <option value="">라인 전체</option>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+      </select>
+    </div>
+
+    <div id="요약" class="로딩">불러오는 중...</div>
+
+    <table>
+      <thead>
+        <tr><th>번호</th><th>이름</th><th>라인</th><th>상태</th><th>할 일</th></tr>
+      </thead>
+      <tbody id="본문"></tbody>
+    </table>
+
+    <div class="쪽">
+      <button id="이전쪽">이전</button>
+      <span id="쪽정보">-</span>
+      <button id="다음쪽">다음</button>
+    </div>
+
+    <div id="상세칸"></div>
+
+    <script src="/api.js"></script>
+    <script>
+      // ★ 증표를 어디서 가져올지 api.js 에 알려 줍니다.
+      //   이제 모든 요청에 자동으로 붙습니다.
+      api.증표설정(() => document.querySelector("#증표").value);
+
+      const 상태 = { page: 1, limit: 3, q: "", line: "" };
+      let 마지막번호 = 0;
+
+      const 요약 = document.querySelector("#요약");
+      const 본문 = document.querySelector("#본문");
+      const 쪽정보 = document.querySelector("#쪽정보");
+      const 이전쪽 = document.querySelector("#이전쪽");
+      const 다음쪽 = document.querySelector("#다음쪽");
+      const 알림 = document.querySelector("#알림");
+      const 상세칸 = document.querySelector("#상세칸");
+
+      function 알리기(글, 종류) {
+        알림.textContent = 글;
+        알림.className = 종류 ?? "";
+      }
+
+      function 주소만들기() {
+        const 쿼리 = new URLSearchParams();
+
+        쿼리.set("page", 상태.page);
+        쿼리.set("limit", 상태.limit);
+        쿼리.set("sort", "id");
+
+        if (상태.q) 쿼리.set("q", 상태.q);
+        if (상태.line) 쿼리.set("line", 상태.line);
+
+        return "/api/v1/equipments?" + 쿼리.toString();
+      }
+
+      async function 불러오기() {
+        마지막번호 += 1;
+        const 내번호 = 마지막번호;
+
+        요약.className = "로딩";
+        요약.textContent = "불러오는 중...";
+
+        try {
+          const 답 = await api.get(주소만들기());
+          if (내번호 !== 마지막번호) return;
+          그리기(답.data, 답.meta);
+        } catch (에러) {
+          if (내번호 !== 마지막번호) return;
+          요약.className = "에러";
+          요약.textContent = 에러.message;
+          본문.innerHTML = "";
+        }
+      }
+
+      function 그리기(목록, meta) {
+        이전쪽.disabled = meta.page <= 1;
+        다음쪽.disabled = meta.page >= meta.totalPages;
+        쪽정보.textContent = meta.page + " / " + meta.totalPages;
+
+        if (목록.length === 0) {
+          요약.className = "비었음";
+          요약.textContent = "조건에 맞는 설비가 없습니다.";
+          본문.innerHTML = "";
+          return;
+        }
+
+        요약.className = "";
+        요약.textContent = "전체 " + meta.total + "건 중 " + 목록.length + "건";
+
+        // ★ 실무에서는 사용자가 입력한 값(설비 이름)을 innerHTML 에 그대로 넣으면 안 됩니다(XSS).
+        //   textContent 나 이스케이프를 쓰세요. 여기서는 학습용으로 단순화했습니다.
+        본문.innerHTML = 목록
+          .map(function (설비) {
+            return (
+              "<tr><td>" + 설비.id + "</td><td>" + 설비.name + "</td>" +
+              "<td>" + 설비.line + "</td><td>" + 설비.status + "</td>" +
+              '<td><button class="보기" data-id="' + 설비.id + '">상세</button>' +
+              '<button class="지우기" data-id="' + 설비.id + '">삭제</button></td></tr>'
+            );
+          })
+          .join("");
+      }
+
+      // ★ 표는 다시 그려지므로 tbody 에 위임합니다. (JS자료 11단원)
+      본문.addEventListener("click", async function (이벤트) {
+        const 보기버튼 = 이벤트.target.closest(".보기");
+        if (보기버튼) return 상세보기(Number(보기버튼.dataset.id));
+
+        const 지우기버튼 = 이벤트.target.closest(".지우기");
+        if (!지우기버튼) return;
+
+        지우기버튼.disabled = true;
+
+        try {
+          await api.del("/api/v1/equipments/" + 지우기버튼.dataset.id);
+          알리기("삭제했습니다.", "성공");
+          상세칸.innerHTML = "";
+          불러오기();
+        } catch (에러) {
+          알리기(에러.message, "에러");
+          지우기버튼.disabled = false;
+        }
+      });
+
+      // ── 상세: 점검기록과 사진 ──
+      async function 상세보기(id) {
+        상세칸.innerHTML = '<div class="로딩">불러오는 중...</div>';
+
+        try {
+          // ★ 세 요청을 한꺼번에 보냅니다. 차례로 보내면 세 배 느립니다.
+          const 답들 = await Promise.all([
+            api.get("/api/v1/equipments/" + id),
+            api.get("/api/v1/equipments/" + id + "/logs"),
+            api.get("/api/v1/equipments/" + id + "/photos"),
+          ]);
+
+          const 설비 = 답들[0].data;
+          const 기록들 = 답들[1].data;
+          const 사진들 = 답들[2].data;
+
+          const 상태버튼들 = ["가동", "정지", "점검중"]
+            .map(function (s) {
+              return '<button class="상태" data-id="' + id + '" data-값="' + s + '">' + s + "</button>";
+            })
+            .join("");
+
+          const 기록목록 =
+            기록들.length === 0
+              ? '<li class="비었음">점검기록이 없습니다.</li>'
+              : 기록들
+                  .map(function (r) {
+                    return "<li>[" + r.result + "] " + r.내용 + " — " + r.담당자 + "</li>";
+                  })
+                  .join("");
+
+          const 사진목록 =
+            사진들.length === 0
+              ? '<li class="비었음">사진이 없습니다.</li>'
+              : 사진들
+                  .map(function (p) {
+                    return '<li><a href="' + p.보기 + '" target="_blank">' + p.원래이름 + "</a></li>";
+                  })
+                  .join("");
+
+          상세칸.innerHTML =
+            '<div class="상세">' +
+            '<h3 id="상세이름">' + 설비.name + " (" + 설비.status + ")</h3>" +
+            '<div class="줄">상태 바꾸기: ' + 상태버튼들 + "</div>" +
+            "<h4>점검기록</h4><ul id=\"기록목록\">" + 기록목록 + "</ul>" +
+            '<div class="줄">' +
+            '<select id="결과"><option value="정상">정상</option><option value="이상">이상</option></select> ' +
+            '<input type="text" id="내용" placeholder="점검 내용" /> ' +
+            '<button id="기록등록" data-id="' + id + '">기록 남기기</button></div>' +
+            "<h4>사진</h4><ul id=\"사진목록\">" + 사진목록 + "</ul>" +
+            '<div class="줄"><input type="file" id="사진파일" accept=".png,.jpg,.jpeg,.gif" /> ' +
+            '<button id="사진올리기" data-id="' + id + '">사진 올리기</button></div>' +
+            '<div id="상세알림"></div></div>';
+        } catch (에러) {
+          상세칸.innerHTML = '<div class="에러" id="상세알림">' + 에러.message + "</div>";
+        }
+      }
+
+      function 상세알리기(글) {
+        const 칸 = document.querySelector("#상세알림");
+        if (!칸) return;
+        칸.textContent = 글;
+        칸.className = "에러";
+      }
+
+      상세칸.addEventListener("click", async function (이벤트) {
+        const 상태버튼 = 이벤트.target.closest(".상태");
+
+        if (상태버튼) {
+          try {
+            await api.patch("/api/v1/equipments/" + 상태버튼.dataset.id, {
+              status: 상태버튼.dataset.값,
+            });
+            불러오기();
+            상세보기(Number(상태버튼.dataset.id));
+          } catch (에러) {
+            상세알리기(에러.message);
+          }
+          return;
+        }
+
+        if (이벤트.target.id === "기록등록") {
+          const id = 이벤트.target.dataset.id;
+
+          try {
+            await api.post("/api/v1/equipments/" + id + "/logs", {
+              result: document.querySelector("#결과").value,
+              내용: document.querySelector("#내용").value,
+            });
+            불러오기(); // 결과가 '이상' 이면 설비 상태가 바뀌므로 목록도 새로
+            상세보기(Number(id));
+          } catch (에러) {
+            상세알리기(에러.message);
+          }
+          return;
+        }
+
+        if (이벤트.target.id === "사진올리기") {
+          const id = 이벤트.target.dataset.id;
+          const 파일 = document.querySelector("#사진파일").files[0];
+
+          if (!파일) {
+            상세알리기("사진을 먼저 고르세요.");
+            return;
+          }
+
+          이벤트.target.disabled = true;
+
+          const 폼 = new FormData();
+          폼.append("photo", 파일); // ★ 필드 이름은 영어 (09단원)
+
+          try {
+            await api.올리기("/api/v1/equipments/" + id + "/photos", 폼);
+            상세보기(Number(id));
+          } catch (에러) {
+            상세알리기(에러.message);
+            이벤트.target.disabled = false;
+          }
+        }
+      });
+
+      // ── 등록 폼 ──
+      document.querySelector("#폼").addEventListener("submit", async function (이벤트) {
+        이벤트.preventDefault(); // ★ 없으면 페이지가 새로고침됩니다
+
+        ["name", "line"].forEach(function (이름) {
+          document.querySelector("#오류-" + 이름).textContent = "";
+          document.querySelector("#" + 이름).classList.remove("입력오류");
+        });
+        알리기("");
+
+        const 보내기버튼 = document.querySelector("#보내기");
+        보내기버튼.disabled = true;
+
+        try {
+          const 답 = await api.post(
+            "/api/v1/equipments",
+            Object.fromEntries(new FormData(이벤트.target))
+          );
+
+          알리기(답.data.name + " 을(를) 등록했습니다.", "성공");
+          이벤트.target.reset();
+          상태.page = 1;
+          불러오기();
+        } catch (에러) {
+          알리기(에러.message, "에러");
+
+          if (에러.code === "VALIDATION_FAILED") {
+            (에러.details || []).forEach(function (하나) {
+              const 칸 = document.querySelector("#오류-" + 하나.키);
+              if (!칸) return;
+              칸.textContent = 하나.이유;
+              const 입력 = document.querySelector("#" + 하나.키);
+              if (입력) 입력.classList.add("입력오류");
+            });
+          } else if (에러.code === "DUPLICATED") {
+            document.querySelector("#오류-name").textContent = 에러.message;
+          }
+        } finally {
+          보내기버튼.disabled = false;
+        }
+      });
+
+      // ── 조건 ──
+      function 조건바뀜() {
+        상태.page = 1; // ★ 이걸 빠뜨리면 검색 결과가 있는데도 빈 화면이 나옵니다
+        불러오기();
+      }
+
+      let 타이머 = null;
+
+      document.querySelector("#검색").addEventListener("input", function (이벤트) {
+        상태.q = 이벤트.target.value.trim();
+        clearTimeout(타이머);
+        타이머 = setTimeout(조건바뀜, 250);
+      });
+
+      document.querySelector("#라인거르기").addEventListener("change", function (이벤트) {
+        상태.line = 이벤트.target.value;
+        조건바뀜();
+      });
+
+      document.querySelector("#증표").addEventListener("change", function () {
+        상세칸.innerHTML = "";
+        불러오기();
+      });
+
+      이전쪽.addEventListener("click", function () {
+        상태.page -= 1;
+        불러오기();
+      });
+
+      다음쪽.addEventListener("click", function () {
+        상태.page += 1;
+        불러오기();
+      });
+
+      불러오기();
+    </script>
+  </body>
+</html>

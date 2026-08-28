@@ -1,0 +1,35 @@
+{
+  // 07단원(React) 전용 설정입니다.
+  // 01~06단원과 다른 점 두 가지
+  //   ① "jsx": "react-jsx"  — .tsx 안의 태그를 이해하게 합니다
+  //   ② "lib" 에 DOM 이 있음 — 브라우저에서 도니까 document·window 를 압니다
+  //
+  // 검사: 이 폴더에서 npm run typecheck
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+
+    // import 에 .tsx 확장자를 그대로 쓰기 위한 설정입니다.
+    // React자료에서 "./App.jsx" 라고 쓰던 것을 "./App.tsx" 로 그대로 이어 씁니다.
+    // (tsc 가 파일을 만들지 않으니 — noEmit — 켜도 됩니다)
+    "allowImportingTsExtensions": true,
+
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["vite/client"]
+  },
+  "include": ["src"],
+
+  // 연습문제·종합 문제 파일은 안 푼 상태에서 걸리는 게 정상이라 전체 검사에서 뺍니다.
+  // 그쪽은 npm run check 로 따로 봅니다(tsconfig.exercises.json).
+  // 정답 파일(_정답.tsx)은 여기 남아서 언제나 검사받습니다.
+  "exclude": ["**/연습문제.tsx", "src/09_종합_실습/종합04_주문_화면.tsx"]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "backend-materials",
+  "version": "1.0.0",
+  "description": "백엔드 자료 전체에서 함께 쓰는 패키지 모음",
+  "private": true,
+  "scripts": {
+    "검증": "node _검증도구/전체검증.js",
+    "검증:출력": "node _검증도구/출력검증.js",
+    "검증:서버": "node _검증도구/서버검증.js",
+    "검증:화면": "node _검증도구/화면검증.js",
+    "감사": "node _검증도구/구조감사.js",
+    "검증:정합성": "node _검증도구/정합성검사.js",
+    "검증:브라우저": "node _검증도구/브라우저검증.js",
+    "dev": "nodemon"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "morgan": "^1.11.0",
+    "multer": "^2.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14",
+    "puppeteer-core": "^25.7.0"
+  }
+}

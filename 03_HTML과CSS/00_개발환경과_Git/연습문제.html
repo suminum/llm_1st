@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>00단원 연습문제 - 개발환경과 Git</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         00단원 연습문제 — 개발환경과 Git
+         ------------------------------------------------------------
+         푸는 방법
+           1. 바탕화면에 빈 폴더 하나를 만들고 거기서 하세요.
+              ★ 이 자료 폴더 안에서 하지 마세요. (개념02 섹션1)
+           2. 문제마다 적힌 대로 터미널에서 명령을 칩니다.
+           3. '기대 결과' 와 모양이 같으면 맞은 것입니다.
+              커밋 번호(ae4c0c2 같은 것)는 여러분 것과 다릅니다. 정상입니다.
+           4. 10분 고민해도 안 되면 연습문제_정답.html 을 여세요.
+
+         문제 1~10 은 손으로 치는 문제, 11~14 는 답을 적는 문제입니다.
+
+         ★ 이 단원의 문제는 답을 아는 것보다 **손이 기억하는 것**이 목적입니다.
+           정답을 보고 나서 반드시 한 번 더 직접 쳐 보세요.
+         ============================================================ -->
+
+    <h1 class="doc-head">00단원 연습문제</h1>
+    <p class="doc-sub">00단원 · 개발환경과 Git</p>
+
+    <p class="doc-guide">
+      <strong>빈 폴더를 하나 만들고 거기서 하세요.</strong> 이 자료 폴더 안에서 하면 안 됩니다.
+      <br /><br />
+      1~10번은 터미널에서 직접 치는 문제입니다. 11~14번은 답을 적는 문제입니다.
+      <br /><br />
+      커밋 번호는 사람마다 다릅니다. <strong>모양이 같으면 맞은 것</strong>입니다.
+    </p>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 1 — 깔린 것 확인하기 (개념01 섹션2)</h2>
+      <p class="doc-desc">
+        Git 과 Node 의 버전을 확인하는 명령을 각각 치세요.
+      </p>
+      <div class="doc-code">기대 결과 (숫자는 다릅니다)
+
+git version 2.55.0.windows.3
+v24.18.0</div>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 2 — 이름과 메일 확인하기 (개념01 섹션4)</h2>
+      <p class="doc-desc">
+        지금 설정된 <code>user.name</code> 과 <code>user.email</code> 을 화면에 찍어 보세요.
+        <strong>설정하는 게 아니라 확인하는 것</strong>입니다.
+      </p>
+      <div class="doc-code">기대 결과
+
+홍길동
+hong@example.com</div>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 3 — 저장소 만들고 첫 커밋 (개념02 섹션3)</h2>
+      <p class="doc-desc">
+        빈 폴더에서 저장소를 만들고, <code>index.html</code> 을 하나 만들어
+        <strong>첫 커밋</strong>까지 하세요. 메시지는 <code>첫 페이지를 만들었습니다</code> 로 합니다.
+      </p>
+      <div class="doc-code">기대 결과 (git log --oneline 을 쳤을 때)
+
+ae4c0c2 첫 페이지를 만들었습니다</div>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 4 — 기호 읽기 (개념02 섹션4)</h2>
+      <p class="doc-desc">
+        <code>index.html</code> 에 한 줄을 더 넣고 저장하세요.
+        그 다음 <strong>세 번</strong> <code>git status --short</code> 를 칩니다.
+      </p>
+      <div class="doc-code">① 고치기만 한 직후
+② git add . 를 한 뒤
+③ git commit 을 한 뒤
+
+기대 결과
+
+①  M index.html
+② M  index.html
+③ (아무것도 안 나옵니다)</div>
+      <p class="doc-note">
+        ★ ①과 ②는 <strong>공백의 자리</strong>가 다릅니다. 잘 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 5 — 무엇이 바뀌었나 (개념02 섹션5)</h2>
+      <p class="doc-desc">
+        파일에 <code>&lt;p&gt;시험&lt;/p&gt;</code> 한 줄을 더 넣고, <strong>담기 전에</strong>
+        무엇이 바뀌었는지 보는 명령을 치세요.
+      </p>
+      <div class="doc-code">기대 결과 (마지막 두 줄만 보면 됩니다)
+
+ &lt;h1&gt;안녕하세요&lt;/h1&gt;
++&lt;p&gt;시험&lt;/p&gt;</div>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 6 — 되돌리기 (개념03 섹션1)</h2>
+      <p class="doc-desc">
+        문제 5에서 넣은 줄을 <strong>커밋하지 말고</strong> 원래대로 되돌리세요.
+      </p>
+      <div class="doc-code">기대 결과 (git status --short 를 쳤을 때)
+
+(아무것도 안 나옵니다)</div>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 7 — 담은 것 무르기 (개념03 섹션2)</h2>
+      <p class="doc-desc">
+        파일을 고치고 <code>git add .</code> 까지 한 상태에서,
+        <strong>고친 내용은 남긴 채</strong> 담는 곳에서만 빼세요.
+      </p>
+      <div class="doc-code">기대 결과 (빼기 전 → 뺀 뒤)
+
+M  index.html
+ M index.html</div>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 8 — .gitignore (개념03 섹션5)</h2>
+      <p class="doc-desc">
+        폴더에 <code>.env</code> 파일을 만들고 <code>비밀=1234</code> 라고 씁니다.
+        그 다음 <strong>Git 이 못 본 척하게</strong> 만드세요.
+        그리고 진짜로 무시되는지 확인하는 명령까지 치세요.
+      </p>
+      <div class="doc-code">기대 결과
+
+.gitignore:1:.env	.env</div>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 9 — 가지 만들고 합치기 (개념05 섹션1·3)</h2>
+      <p class="doc-desc">
+        <code>인사말</code> 이라는 가지를 만들고, 거기서 파일을 고쳐 커밋한 뒤,
+        <code>main</code> 으로 돌아와 합치세요.
+      </p>
+      <div class="doc-code">기대 결과 (합칠 때)
+
+Updating 6d15fca..73859b6
+Fast-forward
+ index.html | 1 +
+ 1 file changed, 1 insertion(+)</div>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 10 — 충돌 내고 풀기 ★ (개념05 섹션4·5)</h2>
+      <p class="doc-desc">
+        일부러 충돌을 내고 손으로 푸세요.
+      </p>
+      <div class="doc-code">① 가지 '가' 를 만들고 &lt;h1&gt; 의 글자를 '가나다' 로 고쳐 커밋
+② main 으로 돌아와 같은 줄을 '라마바' 로 고쳐 커밋
+③ main 에서 가지 '가' 를 합치기
+④ 충돌을 풀고 커밋
+
+기대 결과 (③에서)
+
+Auto-merging index.html
+CONFLICT (content): Merge conflict in index.html
+Automatic merge failed; fix conflicts and then commit the result.</div>
+      <p class="doc-note">
+        ★ 다 하고 나면 <code>git merge --abort</code> 로 빠져나오는 것도 한 번 해 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 11 — [손으로] 못 찾는다고 합니다 (개념01)</h2>
+      <p class="doc-desc">
+        같이 실습하는 사람이 이렇게 말합니다.
+      </p>
+      <div class="doc-code">"Git 을 분명히 깔았는데 git --version 이 안 돼요.
+ 다시 깔아 봤는데도 똑같아요."</div>
+      <p class="doc-desc">
+        (1) 무엇부터 시켜 보겠습니까?<br />
+        (2) 왜 그것이 답이 됩니까?<br />
+        (3) 그래도 안 되면 다음으로 무엇을 보겠습니까?
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 12 — [손으로] 커밋했는데 안 들어갔습니다 (개념02)</h2>
+      <p class="doc-desc">
+        파일을 고치고 <code>git commit -m "고침"</code> 을 쳤는데 이렇게 나옵니다.
+      </p>
+      <div class="doc-code">nothing added to commit but untracked files present</div>
+      <p class="doc-desc">
+        (1) 무슨 뜻입니까?<br />
+        (2) 무엇을 빠뜨렸습니까?<br />
+        (3) <code>git status --short</code> 를 치면 무엇이 보이겠습니까?
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 13 — [손으로] .env 를 올려 버렸습니다 ★ (개념03·04)</h2>
+      <p class="doc-desc">
+        API 키가 든 <code>.env</code> 를 실수로 커밋하고 GitHub 에 push 했습니다.
+        어제 일이고 오늘 알았습니다.
+      </p>
+      <p class="doc-desc">
+        (1) <code>.gitignore</code> 에 <code>.env</code> 를 적었는데도
+        <code>git status</code> 에 계속 보입니다. 왜입니까?<br />
+        (2) 어떻게 추적에서 뺍니까?<br />
+        (3) ★ 그렇게 하면 문제가 다 끝납니까?<br />
+        (4) 지금 제일 먼저 해야 할 일은 무엇입니까?
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">문제 14 — [손으로] push 가 거부됐습니다 (개념04)</h2>
+      <p class="doc-desc">
+        <code>git push</code> 를 했더니 이렇게 나옵니다.
+      </p>
+      <div class="doc-code"> ! [rejected]        main -&gt; main (fetch first)
+error: failed to push some refs to '…'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally.</div>
+      <p class="doc-desc">
+        (1) 무슨 일이 있었던 것입니까?<br />
+        (2) 무엇을 해야 합니까?<br />
+        (3) 그 다음에 충돌이 났다면 어디를 보고 풀겠습니까?<br />
+        (4) ★ 이런 일이 덜 생기게 하려면 어떤 습관을 들여야 합니까?
+      </p>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">다 풀었으면</p>
+      <p>1. <strong>연습문제_정답.html</strong> 과 맞춰 보세요.</p>
+      <p>2. 정답을 본 뒤 <strong>다시 손으로 한 번 더</strong> 쳐 보세요.</p>
+      <p>3. 이 단원의 명령은 앞으로 560시간 내내 씁니다. 손이 기억해야 합니다.</p>
+    </div>
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      .doc-head | text | 00단원 연습문제
+      .doc-sub | text | 00단원 · 개발환경과 Git
+      .doc-summary-title | text | 다 풀었으면
+      .doc-guide | ?visible | yes
+      .doc-code | white-space | pre
+      body | color | rgb(34, 34, 34)
+    -->
+  </body>
+</html>

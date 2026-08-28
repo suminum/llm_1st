@@ -1,0 +1,340 @@
+// ============================================================
+// 02단원 연습문제 정답 — JSX
+// ------------------------------------------------------------
+// 실행: 실습프로젝트에서 npm run dev → 왼쪽 목록에서 이 예제를 고르세요.
+//       F12 → Console 도 함께 보세요.
+// ============================================================
+
+// ───── 준비물 ─────
+
+
+import React from "react";
+import Summary from "../_ui/Summary.jsx";
+import * as Babel from "@babel/standalone";
+
+const user = { name: "김민준", age: 20 };
+const menu = ["아메리카노", "라떼", "케이크"];
+const price = 4000;
+const isOpen = true;
+const stock = 0;
+const homepage = "https://example.com";
+
+function toJs(jsxCode) {
+  return Babel.transform(jsxCode, {
+    presets: [["react", { runtime: "classic" }]],
+    generatorOpts: { jsescOption: { minimal: true }, concise: true },
+  }).code;
+}
+
+// ───── 문제 1 ─────
+
+const title = <h2>오늘의 메뉴</h2>;
+
+console.log(title.type);
+// 콘솔: h2
+
+console.log(title.props);
+// 콘솔: { children: '오늘의 메뉴' }
+
+// JSX 는 값입니다. 그래서 변수에 담깁니다.
+// 따옴표로 감싸면 그냥 문자열이 되어 type 이 undefined 가 됩니다.
+
+// ───── 문제 2 ─────
+
+console.log(toJs("<p>라떼 4500원</p>"));
+// 콘솔: /*#__PURE__*/React.createElement("p", null, "라떼 4500원");
+
+// 태그 이름이 첫 번째 인자, 속성이 두 번째(없으니 null),
+// 태그 사이의 글자가 세 번째 인자로 들어갑니다.
+
+// ───── 문제 3 ─────
+
+const answer3 = <p>{user.name}님 안녕하세요</p>;
+
+console.log(answer3.props.children);
+// 콘솔: ['김민준', '님 안녕하세요']
+
+// 중괄호에서 꺼낸 값과 그냥 글자가 배열로 나뉘어 담깁니다.
+// 중괄호를 빼면 children 이 통째로 'user.name님 안녕하세요' 라는 문자열이 됩니다.
+
+// ───── 문제 4 ─────
+
+const answer4 = <p>아메리카노 두 잔은 {price * 2}원입니다</p>;
+
+console.log(answer4.props.children);
+// 콘솔: ['아메리카노 두 잔은 ', 8000, '원입니다']
+
+// 8000 에 따옴표가 없습니다. 계산이 먼저 끝나서 숫자로 들어갔기 때문입니다.
+// 8000 을 직접 적으면 price 가 바뀌었을 때 화면이 따라오지 않습니다.
+
+// ───── 문제 5 ─────
+
+const answer5 = <p>{user.name}님은 {user.age >= 19 ? "성인" : "미성년"}입니다</p>;
+
+console.log(user.age >= 19 ? "성인" : "미성년");
+// 콘솔: 성인
+
+// 중괄호 안에는 '식' 만 들어갑니다. if 문은 값을 남기지 않아 못 들어갑니다.
+// 삼항 연산자는 값 하나가 남으므로 들어갑니다.
+//
+// if 문을 꼭 쓰고 싶으면 중괄호 밖에서 미리 변수에 담아 두면 됩니다.
+let grade;
+if (user.age >= 19) {
+  grade = "성인";
+} else {
+  grade = "미성년";
+}
+console.log(grade);
+// 콘솔: 성인
+// 이 방법도 정답입니다. <p>{user.name}님은 {grade}입니다</p> 로 쓰면 됩니다.
+
+// ───── 문제 6 ─────
+
+const answer6 = (
+  <p>
+    메뉴 {menu.length}개: {menu.join(", ")}
+  </p>
+);
+
+console.log(menu.length);
+// 콘솔: 3
+
+console.log(menu.join(", "));
+// 콘솔: 아메리카노, 라떼, 케이크
+
+// 배열을 그냥 {menu} 로 넣으면 사이에 아무것도 안 넣고 이어 붙입니다.
+// "아메리카노라떼케이크" 가 되므로 join 으로 사이를 정해 줘야 합니다.
+
+// ───── 문제 7 ─────
+
+const answer7 = <p className="output on">파란 상자</p>;
+
+console.log(answer7.props.className);
+// 콘솔: output on
+
+// class 는 자바스크립트 예약어라 className 을 씁니다.
+// 클래스 두 개는 className 을 두 번 쓰지 않고 한 문자열에 띄어쓰기로 이어 씁니다.
+
+// ───── 문제 8 ─────
+
+const answer8 = (
+  <p style={{ color: "#c00", backgroundColor: "#fff8dc" }}>노란 바탕에 빨간 글자</p>
+);
+
+console.log(answer8.props.style);
+// 콘솔: { color: '#c00', backgroundColor: '#fff8dc' }
+
+// 중괄호가 두 개인 이유입니다.
+//   바깥 중괄호 — "여기는 자바스크립트다"
+//   안쪽 중괄호 — "이건 객체다"
+//
+// 객체를 미리 만들어 두면 중괄호가 하나로 줄어듭니다. 이것도 정답입니다.
+const answer8Style = { color: "#c00", backgroundColor: "#fff8dc" };
+console.log(answer8Style.backgroundColor);
+// 콘솔: #fff8dc
+// <p style={answer8Style}>노란 바탕에 빨간 글자</p>
+
+// ───── 문제 9 ─────
+
+const answer9 = <a href={homepage}>홈페이지로 가기</a>;
+
+console.log(answer9.props.href);
+// 콘솔: https://example.com
+
+// 따옴표를 같이 쓰면(href="{homepage}") "{homepage}" 라는 글자가 주소가 됩니다.
+// 따옴표와 중괄호는 둘 중 하나만 씁니다.
+
+// ───── 문제 10 ─────
+
+const answer10 = <button disabled={stock === 0}>담기</button>;
+
+console.log(answer10.props.disabled);
+// 콘솔: true
+
+// stock 이 0 이므로 stock === 0 이 true 가 되어 버튼이 잠깁니다.
+// disabled="false" 라고 쓰면 안 됩니다. 글자 "false" 는 참으로 취급됩니다.
+console.log(Boolean("false"));
+// 콘솔: true
+
+// ───── 문제 11 ─────
+
+const answer11 = (
+  <>
+    <h4>아메리카노</h4>
+    <p>4000원</p>
+  </>
+);
+
+console.log(answer11.type === React.Fragment);
+// 콘솔: true
+
+// 두 태그를 나란히 두면 [SyntaxError] 가 납니다. 하나로 묶어야 합니다.
+// <div> 로 감싸도 화면은 같지만 실제 화면에 div 가 하나 남습니다.
+// "감싸는 태그가 남으면 안 된다" 는 조건이 있었으니 Fragment 가 답입니다.
+
+// ───── 문제 12 ───── [응용]
+
+const answer12 = (
+  <div className="output">
+    <h4>{user.name}님의 주문</h4>
+    <p>아메리카노 {price.toLocaleString()}원</p>
+    <p>세 잔 합계 {(price * 3).toLocaleString()}원</p>
+  </div>
+);
+
+console.log(price.toLocaleString());
+// 콘솔: 4,000
+
+console.log((price * 3).toLocaleString());
+// 콘솔: 12,000
+
+// 여러 줄이라 소괄호로 감쌌습니다. 소괄호가 없으면 const 는 동작하지만
+// 이 모양 그대로 return 뒤에 쓰면 undefined 가 됩니다. (개념05)
+//
+// toLocaleString 은 숫자에 세 자리마다 쉼표를 넣어 줍니다.
+// 숫자 하나에 바로 붙일 때는 (4000).toLocaleString() 처럼 소괄호가 필요합니다.
+// 4000.toLocaleString() 은 소수점으로 오해받아 에러가 납니다.
+
+// ───── 문제 13 ───── [도전]
+
+const answer13 = (
+  <>
+    <p style={{ color: isOpen ? "green" : "gray" }}>{isOpen ? "영업 중" : "준비 중"}</p>
+    <p>{menu.length}종류를 팝니다</p>
+  </>
+);
+
+console.log(isOpen ? "green" : "gray");
+// 콘솔: green
+
+console.log(answer13.props.children[0].props.style);
+// 콘솔: { color: 'green' }
+
+// 이 문제가 어려운 이유는 삼항 연산자가 두 군데에 들어가기 때문입니다.
+//   글자 자리   — 태그 사이의 중괄호 안
+//   색깔 자리   — style 객체의 값 자리
+//
+// 둘 다 '값이 하나 남는 자리' 라서 삼항 연산자가 들어갑니다.
+// style 안쪽은 그냥 객체이므로, 객체의 값 자리에 무엇이든 넣을 수 있습니다.
+//
+// 감싸는 태그가 남으면 안 되므로 <> </> 를 썼습니다.
+
+// ───── 문제 14 ───── (에러 확인)
+//
+// const badLine = <p>{user}</p>;
+// ReactDOM.createRoot(document.querySelector("#root")).render(badLine);
+//
+// 콘솔의 빨간 글씨 첫 줄:
+//   Objects are not valid as a React child (found: object with keys {name, age}).
+//   If you meant to render a collection of children, use an array instead.
+//
+// 왜 이렇게 되나:
+//   중괄호 안에 넣은 user 는 객체입니다.
+//   React 는 객체를 화면에 그릴 방법이 없습니다.
+//   객체를 글자로 바꾸면 아래처럼 되기 때문입니다.
+console.log(String(user));
+// 콘솔: [object Object]
+//   화면에 [object Object] 라고 나와도 아무 도움이 안 됩니다.
+//   그래서 React 는 조용히 이상하게 그리는 대신 에러를 내서 알려 줍니다.
+//
+// 고치는 방법:
+//   (1) 필요한 속성만 꺼내서 넣습니다 — 대부분 이쪽입니다.
+//       <p>{user.name}</p>
+//   (2) 통째로 보고 싶으면 글자로 만들어서 넣습니다.
+//       <p>{JSON.stringify(user)}</p>
+console.log(user.name);
+// 콘솔: 김민준
+console.log(JSON.stringify(user));
+// 콘솔: {"name":"김민준","age":20}
+//
+// 배열은 에러가 안 납니다. 하나씩 이어서 그립니다.
+// 그래서 에러 문구가 "여러 개를 그리려던 거면 배열을 쓰세요" 라고 알려 준 것입니다.
+
+// ───── 화면에 늘어놓기 ─────
+
+function App() {
+  return (
+    <div>
+      <div className="output">
+        <h4>문제 3</h4>
+        {answer3}
+      </div>
+      <div className="output">
+        <h4>문제 4</h4>
+        {answer4}
+      </div>
+      <div className="output">
+        <h4>문제 5</h4>
+        {answer5}
+      </div>
+      <div className="output">
+        <h4>문제 6</h4>
+        {answer6}
+      </div>
+      <div className="output">
+        <h4>문제 7</h4>
+        {answer7}
+      </div>
+      <div className="output">
+        <h4>문제 8</h4>
+        {answer8}
+      </div>
+      <div className="output">
+        <h4>문제 9</h4>
+        {answer9}
+      </div>
+      <div className="output">
+        <h4>문제 10</h4>
+        {answer10}
+      </div>
+      <div className="output">
+        <h4>문제 11</h4>
+        {answer11}
+      </div>
+      <div className="output">
+        <h4>문제 12 [응용]</h4>
+        {answer12}
+      </div>
+      <div className="output">
+        <h4>문제 13 [도전]</h4>
+        {answer13}
+      </div>
+    </div>
+  );
+}
+
+// 화면: 문제 3부터 13까지의 답이 흰 상자에 하나씩 담겨 나옵니다.
+// 화면: 문제 7은 파란 상자, 문제 8은 노란 바탕에 빨간 글자,
+// 화면: 문제 10의 담기 버튼은 회색으로 잠겨 있고, 문제 13은 초록 글씨입니다.
+
+export default function ExerciseAnswers() {
+  return (
+    <div>
+      <h1>02단원 연습문제 정답 — JSX</h1>
+
+      <p className="guide">
+        먼저 스스로 풀어 본 다음에 보세요. 화면과 함께 <strong>F12 → Console</strong> 도 확인하세요.
+      </p>
+
+      <div className="demo">
+        <h3>정답이 만든 화면</h3>
+        <div id="root">
+          <App />
+        </div>
+      </div>
+
+      <Summary
+        제목="이 연습문제에서 확인한 것"
+        items={[
+          <>JSX 는 값입니다. 변수에 담기고 <code>type</code>·<code>props</code> 를 가집니다.</>,
+          <>값을 넣을 때는 중괄호를 씁니다. 중괄호 안에는 <strong>식</strong>만 들어갑니다.</>,
+          <><code>class</code> 는 <code>className</code>, CSS 이름은 카멜케이스, <code>style</code> 에는 객체를 넣습니다.</>,
+          "속성 값에 변수를 넣을 때는 중괄호만 씁니다. 따옴표와 같이 쓰면 글자가 됩니다.",
+          <>태그 두 개는 하나로 감쌉니다. 화면에 남기기 싫으면 <code>&lt;&gt;...&lt;/&gt;</code> 를 씁니다.</>,
+          <>여러 줄 JSX 는 소괄호로 감쌉니다. <code>return</code> 뒤에서 줄을 바꾸지 않습니다.</>,
+          "객체는 화면에 못 넣습니다. 속성을 꺼내거나 글자로 바꿔서 넣습니다.",
+        ]}
+      />
+    </div>
+  );
+}

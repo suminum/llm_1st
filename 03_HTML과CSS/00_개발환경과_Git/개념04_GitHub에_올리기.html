@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>00단원 개념04 - GitHub 에 올리기</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         00단원 · 개념 04 — GitHub 에 올리기
+         ------------------------------------------------------------
+         실행: 이 파일을 브라우저로 열고, 터미널과 GitHub 을 같이 여세요.
+         ============================================================
+
+         지금까지는 전부 내 컴퓨터 안의 일이었습니다.
+         컴퓨터가 고장 나면 기록도 같이 사라집니다.
+
+         GitHub 은 그 기록을 인터넷에 하나 더 두는 곳입니다.
+         그리고 그것 말고도 하는 일이 많습니다.
+
+             · 컴퓨터가 죽어도 남습니다
+             · 다른 컴퓨터에서 이어서 할 수 있습니다
+             · 남에게 보여 줄 수 있습니다 (포트폴리오)
+             · 여럿이 같이 고칠 수 있습니다
+
+         ★ Git 과 GitHub 은 다른 것입니다.
+
+             Git      내 컴퓨터에서 기록하는 프로그램
+             GitHub   그 기록을 올려 두는 웹사이트
+
+           Git 없이 GitHub 을 쓸 수 없고, GitHub 없이도 Git 은 잘 돕니다.
+           비슷한 사이트로 GitLab, Bitbucket 도 있습니다.
+
+         ★★ 이 파일의 명령 결과는 **진짜로 밀어 보고 옮긴 것**입니다.
+           다만 남의 계정을 쓸 수 없어서, GitHub 대신
+           **내 컴퓨터 안의 폴더를 원격 삼아** 재 봤습니다.
+           주소가 적힌 줄만 GitHub 주소로 바꿔 적었고, 나머지는 그대로입니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 04 — GitHub 에 올리기</h1>
+    <p class="doc-sub">00단원 · 개발환경과 Git</p>
+
+    <p class="doc-guide">
+      <strong>GitHub 계정이 필요합니다.</strong> <code>https://github.com</code> 에서
+      가입하세요. 무료입니다.
+      <br /><br />
+      <strong>가입할 때 쓴 메일을 개념01의 <code>user.email</code> 과 같게 하세요.</strong>
+      다르면 내가 한 작업으로 안 세어 줍니다.
+      <br /><br />
+      아이디는 <strong>나중에 이력서에 적을 것</strong>이라 생각하고 지으세요.
+      <code>hong-gildong</code> 은 괜찮고 <code>xxx-gamer-1234</code> 는 다시 생각해 보세요.
+    </p>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 인터넷에 빈 저장소를 하나 만듭니다</h2>
+
+      <p class="doc-desc">
+        GitHub 오른쪽 위 <code>+</code> → <code>New repository</code> 를 누릅니다.
+      </p>
+
+      <div class="doc-code">Repository name    깃연습
+Description        (비워도 됩니다)
+Public / Private   Public 이면 아무나 볼 수 있습니다
+                   ★ 처음에는 Private 으로 하세요
+
+Add a README file          ← ★ 체크하지 마세요
+Add .gitignore             ← ★ 체크하지 마세요
+Choose a license           ← ★ 고르지 마세요</div>
+
+      <p class="doc-note">
+        <strong>왜 아무것도 체크하지 말라고 하나</strong> —
+        체크하면 GitHub 이 파일을 먼저 만들어 버립니다.
+        그러면 내 컴퓨터의 기록과 GitHub 의 기록이 <strong>출발점이 달라져서</strong>
+        첫 push 에서 막힙니다. (섹션 5의 그 오류입니다)
+        <br />
+        ★ 빈 저장소로 만들고 내 것을 밀어 넣는 게 제일 쉽습니다.
+      </p>
+
+      <p class="doc-note">
+        <strong>Private 으로 시작하세요.</strong> 실수로 비밀번호를 올려도 남이 못 봅니다.
+        포트폴리오로 보여 줄 때 Public 으로 바꾸면 됩니다.
+        (설정 → 맨 아래 Danger Zone → Change visibility)
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — <code>깃연습</code> 이라는 이름으로 <strong>빈</strong> Private 저장소를
+        하나 만드세요. 만든 뒤 나오는 안내 화면을 그대로 두세요. 섹션 2에서 씁니다.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 내 폴더와 이어 줍니다</h2>
+
+      <p class="doc-desc">
+        내 컴퓨터의 <code>깃연습</code> 폴더에게 "인터넷 쪽 주소는 여기다" 라고 알려 줍니다.
+      </p>
+
+      <div class="doc-code">$ git remote -v
+                                  ← 아무것도 없습니다
+
+$ git remote add origin https://github.com/hong/깃연습.git
+
+$ git remote -v
+origin	https://github.com/hong/깃연습.git (fetch)
+origin	https://github.com/hong/깃연습.git (push)</div>
+
+      <p class="doc-note">
+        <code>origin</code> 은 <strong>그냥 별명</strong>입니다. 관례로 이렇게 씁니다.
+        <code>remote</code> 는 "멀리 있는 것" 이라는 뜻입니다.
+        <br />
+        <code>fetch</code> 는 받아올 때, <code>push</code> 는 보낼 때 쓰는 주소입니다.
+        보통 같습니다.
+      </p>
+
+      <p class="doc-note">
+        <strong>주소는 GitHub 화면에 그대로 적혀 있습니다.</strong>
+        저장소를 만들면 나오는 안내에 <code>…or push an existing repository</code> 밑에
+        복사할 수 있게 나옵니다. <strong>손으로 치지 말고 복사하세요.</strong>
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — GitHub 화면의 주소를 복사해 <code>git remote add origin …</code> 을
+        치고, <code>git remote -v</code> 로 제대로 들어갔는지 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 밀어 올립니다 (push)</h2>
+
+      <div class="doc-code">$ git branch --show-current
+main
+
+$ git push -u origin main
+To https://github.com/hong/깃연습.git
+ * [new branch]      main -> main
+branch 'main' set up to track 'origin/main'.</div>
+
+      <p class="doc-note">
+        <code>-u</code> 는 "앞으로 이 가지는 저기로 보낸다" 고 정해 두는 것입니다.
+        <strong>한 번만 붙이면 됩니다.</strong> 다음부터는 <code>git push</code> 만 치면 됩니다.
+      </p>
+
+      <div class="doc-code">$ git push
+To https://github.com/hong/깃연습.git
+   9e1ad61..f3bec9d  main -&gt; main</div>
+
+      <p class="doc-note">
+        <code>9e1ad61..f3bec9d</code> 는 "이 커밋부터 이 커밋까지 보냈다" 는 뜻입니다.
+      </p>
+
+      <div class="doc-bad">
+        <strong>가지 이름이 다르면 막힙니다</strong>
+        <p class="doc-desc">
+          내 것이 <code>master</code> 인데 GitHub 은 <code>main</code> 을 씁니다.
+          개념01 섹션4의 <code>init.defaultBranch main</code> 을 안 했으면 여기서 걸립니다.
+          <br />
+          고치는 법: <code>git branch -m main</code> (지금 가지의 이름을 바꿉니다)
+        </p>
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>git push -u origin main</code> 을 치고,
+        GitHub 페이지를 새로고침해서 파일이 올라갔는지 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — ★ 비밀번호를 물어보면</h2>
+
+      <p class="doc-desc">
+        처음 push 할 때 로그인 창이 뜹니다. <strong>여기서 많이 막힙니다.</strong>
+      </p>
+
+      <div class="doc-bad">
+        <strong>GitHub 비밀번호는 안 통합니다</strong>
+        <p class="doc-desc">
+          <code>Support for password authentication was removed.</code> 같은 말이 나옵니다.
+          <strong>2021년부터 비밀번호로는 안 됩니다.</strong>
+        </p>
+      </div>
+
+      <p class="doc-desc">방법이 둘입니다. <strong>둘 중 하나만</strong> 하면 됩니다.</p>
+
+      <div class="doc-good">
+        <strong>방법 1 — 창이 뜨면 Sign in with your browser (제일 쉽습니다)</strong>
+        <p class="doc-desc">
+          윈도우에서 Git 을 깔면 <strong>Git Credential Manager</strong> 가 같이 깔립니다.
+          push 할 때 창이 뜨고, 거기서 브라우저로 로그인하면 끝입니다.
+          <strong>한 번만 하면 다음부터 안 물어봅니다.</strong>
+        </p>
+      </div>
+
+      <div class="doc-good">
+        <strong>방법 2 — 토큰(Personal Access Token)</strong>
+        <div class="doc-code">GitHub → 오른쪽 위 프로필 → Settings
+  → Developer settings (맨 아래)
+  → Personal access tokens → Tokens (classic)
+  → Generate new token (classic)
+
+     Note        내노트북
+     Expiration  90 days
+     Scopes      repo 만 체크
+
+  → Generate token</div>
+        <p class="doc-desc">
+          나온 글자를 복사해서 <strong>비밀번호 자리에 붙여 넣습니다.</strong>
+          <br />
+          ★★ <strong>이 글자는 그 화면을 떠나면 다시 못 봅니다.</strong>
+          창을 닫기 전에 복사하세요. 잃어버리면 새로 만들면 됩니다.
+        </p>
+      </div>
+
+      <div class="doc-bad">
+        <strong>★★★ 토큰은 비밀번호와 같습니다</strong>
+        <p class="doc-desc">
+          코드에 적지 마세요. 카톡으로 보내지 마세요. 화면 공유할 때 조심하세요.
+          <br />
+          <strong>남에게 보였다 싶으면 바로 지우세요.</strong>
+          (Settings → Tokens → Delete) 지우면 그 자리에서 못 쓰게 됩니다.
+        </p>
+      </div>
+
+      <p class="doc-note">
+        <strong>기억시켜 두는 곳을 확인하려면</strong> —
+        윈도우는 <code>제어판 → 자격 증명 관리자 → Windows 자격 증명</code> 에
+        <code>git:https://github.com</code> 이 있습니다. 잘못 저장됐으면 여기서 지우고 다시 하세요.
+        <br />
+        ★ "예전 계정으로 로그인돼요" 의 답이 이것입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — push 를 해서 로그인 창을 띄워 보세요.
+        방법 1로 되면 그걸로 끝입니다. 안 되면 방법 2로 토큰을 만드세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — 받아 오기 (clone · pull)</h2>
+
+      <p class="doc-desc">
+        다른 컴퓨터에서 이어서 하려면 <strong>통째로 받아 옵니다.</strong>
+      </p>
+
+      <div class="doc-code">$ git clone https://github.com/hong/깃연습.git 깃연습
+Cloning into '깃연습'...
+done.</div>
+
+      <p class="doc-note">
+        <code>clone</code> 은 <code>init</code> + <code>remote add</code> + 내려받기를 한 번에 합니다.
+        <strong><code>git init</code> 을 따로 안 해도 됩니다.</strong>
+      </p>
+
+      <p class="doc-desc">
+        이미 받아 둔 폴더에서 <strong>새로 올라온 것만</strong> 가져올 때는 <code>pull</code> 입니다.
+      </p>
+
+      <div class="doc-code">$ git pull</div>
+
+      <div class="doc-bad">
+        <strong>★★ 남이 먼저 올렸으면 push 가 거부됩니다</strong>
+        <div class="doc-code">$ git push
+To https://github.com/hong/깃연습.git
+ ! [rejected]        main -&gt; main (fetch first)
+error: failed to push some refs to 'https://github.com/hong/깃연습.git'
+hint: Updates were rejected because the remote contains work that you do not
+hint: have locally. This is usually caused by another repository pushing to
+hint: the same ref. If you want to integrate the remote changes, use
+hint: 'git pull' before pushing again.</div>
+        <strong>"저쪽에 네가 모르는 게 있다. pull 먼저 해라"</strong> 는 뜻입니다.
+        <br />
+        ★ 여기서도 <code>hint:</code> 가 답을 그대로 알려 줍니다.
+      </div>
+
+      <p class="doc-desc">그래서 <code>pull</code> 을 먼저 합니다. 그런데 —</p>
+
+      <div class="doc-code">$ git pull --no-rebase
+From https://github.com/hong/깃연습.git
+   f3bec9d..5b9d53a  main       -&gt; origin/main
+Auto-merging index.html
+CONFLICT (content): Merge conflict in index.html
+Automatic merge failed; fix conflicts and then commit the result.</div>
+
+      <p class="doc-note">
+        같은 줄을 둘이 고쳤으면 <strong>충돌</strong>이 납니다.
+        푸는 법은 개념05 섹션 5에 있습니다. <strong>여기서 그 이야기가 이어집니다.</strong>
+      </p>
+
+      <p class="doc-note">
+        ★ <strong>습관 하나만 들이세요 — 작업 시작 전에 <code>git pull</code>.</strong>
+        그러면 충돌이 훨씬 줄어듭니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — GitHub 웹에서 파일을 직접 고쳐 커밋하고(연필 아이콘),
+        내 컴퓨터에서 <code>git pull</code> 로 받아 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — ★ 절대 올리면 안 되는 것</h2>
+
+      <p class="doc-desc">
+        개념03 섹션6에서 말한 것을 다시 짚습니다. <strong>여기서는 진짜로 공개됩니다.</strong>
+      </p>
+
+      <div class="doc-code">API 키 · 토큰            ★★★ 돈이 나갑니다
+비밀번호                  .env 파일 통째로
+개인정보                  주민번호·전화번호·주소가 든 파일
+회사 자료                 계약서·고객 명단
+node_modules/            용량만 잡아먹습니다</div>
+
+      <div class="doc-bad">
+        <strong>Public 저장소는 로봇이 항상 훑고 있습니다</strong>
+        <p class="doc-desc">
+          AWS 키를 올리면 <strong>몇 분 안에</strong> 발견되는 일이 실제로 있습니다.
+          누군가 그 키로 서버를 잔뜩 켜고, 요금은 올린 사람이 냅니다.
+          <br /><br />
+          ★ 그래서 <strong>Private 으로 시작</strong>하고,
+          <strong><code>.gitignore</code> 를 처음에</strong> 만듭니다.
+          <br />
+          ★★ <strong>지워도 옛 기록에 남습니다.</strong> 새어 나갔으면 그 키를 폐기하세요.
+          (개념03 섹션6)
+        </p>
+      </div>
+
+      <p class="doc-note">
+        <strong>올리기 전에 한 번 보는 습관</strong> — <code>git status</code> 로
+        무엇이 담겼는지 확인하고 밀으세요. 5초면 됩니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — 내 저장소를 GitHub 웹에서 열어 파일 목록을 눈으로 훑어보세요.
+        올리면 안 되는 것이 섞여 있지 않습니까?
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — 자주 하는 실수</h2>
+
+      <p class="doc-desc"><strong>[실수 1] README 를 체크해서 저장소를 만듦</strong></p>
+      <p class="doc-note">
+        첫 push 가 거부됩니다. 출발점이 달라서입니다. (섹션 1)
+        이미 그랬으면 <code>git pull origin main --allow-unrelated-histories</code> 로 붙일 수 있습니다.
+      </p>
+
+      <p class="doc-desc"><strong>[실수 2] 비밀번호를 넣고 계속 실패</strong></p>
+      <p class="doc-note">비밀번호는 안 됩니다. 브라우저 로그인이나 토큰을 쓰세요. (섹션 4)</p>
+
+      <p class="doc-desc"><strong>[실수 3] 토큰을 안 복사하고 창을 닫음</strong></p>
+      <p class="doc-note">다시 못 봅니다. 새로 만드세요. 흔한 일입니다.</p>
+
+      <p class="doc-desc"><strong>[실수 4] <code>git push</code> 만 치고 커밋을 안 함</strong></p>
+      <p class="doc-note">
+        <code>Everything up-to-date</code> 가 나오는데 GitHub 에는 아무것도 없습니다.
+        <strong>커밋하지 않은 것은 올라가지 않습니다.</strong>
+        push 는 커밋을 보내는 것이지 파일을 보내는 게 아닙니다.
+      </p>
+
+      <p class="doc-desc"><strong>[실수 5] 가지 이름이 <code>master</code></strong></p>
+      <p class="doc-note">
+        GitHub 은 <code>main</code> 을 기본으로 씁니다. <code>git branch -m main</code> 으로 바꾸세요. (섹션 3)
+      </p>
+
+      <p class="doc-desc"><strong>[실수 6] pull 안 하고 push 만 하다가 거부됨</strong></p>
+      <p class="doc-note">
+        섹션 5 그대로입니다. <strong>시작 전에 pull</strong> 을 습관으로 만드세요.
+      </p>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">정리</p>
+      <ul>
+        <li>Git 은 프로그램, GitHub 은 웹사이트입니다. 다른 것입니다.</li>
+        <li>저장소는 <strong>아무것도 체크하지 않고 비어 있게</strong> 만듭니다. 처음에는 Private.</li>
+        <li><code>git remote add origin 주소</code> → <code>git push -u origin main</code>.
+          <code>-u</code> 는 한 번만.</li>
+        <li>★ <strong>비밀번호는 안 통합니다.</strong> 브라우저 로그인 또는 토큰을 쓰세요.</li>
+        <li>남이 먼저 올렸으면 push 가 거부됩니다. <strong>시작 전에 <code>git pull</code>.</strong></li>
+        <li>★★ 키·비밀번호를 올리면 <strong>몇 분 안에 발견됩니다.</strong>
+          지워도 기록에 남으니 폐기하세요.</li>
+        <li>커밋 안 한 것은 push 해도 안 올라갑니다.</li>
+      </ul>
+    </div>
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      .doc-head | text | 개념 04 — GitHub 에 올리기
+      .doc-sub | text | 00단원 · 개발환경과 Git
+      .doc-summary-title | text | 정리
+      .doc-guide | ?visible | yes
+      .doc-code | white-space | pre
+      .doc-bad | ?visible | yes
+      .doc-good | ?visible | yes
+      body | color | rgb(34, 34, 34)
+    -->
+  </body>
+</html>

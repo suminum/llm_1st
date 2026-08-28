@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>15단원 연습문제 - localStorage</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      input[type="text"] {
+        padding: 6px 8px;
+        font-size: 15px;
+        width: 200px;
+      }
+      button {
+        padding: 6px 12px;
+        font-size: 14px;
+        font-family: inherit;
+        cursor: pointer;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+      }
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+      li {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 8px 12px;
+        margin: 4px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>15단원 연습문제 — localStorage</h1>
+
+    <p class="guide">
+      script 안의 TODO 자리에 코드를 쓰고 저장한 뒤, 브라우저를 <strong>새로고침</strong>
+      하세요. <strong>F12 → Console</strong> 도 함께 보세요.<br />
+      1~5는 기본, 6은 응용, 7은 [도전]입니다.
+
+      <br /><br />
+      <strong>이 파일은 앞의 연습문제.js 와 따로입니다.</strong> localStorage 는 브라우저에만
+      있어서 node 로는 못 돌립니다.
+
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 이 파일 위쪽의
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      이 자료에서는 가르치지 않습니다. <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>문제 6 — 마지막 검색어 기억하기</h3>
+      <input type="text" id="searchInput" placeholder="아무거나 입력하고 Enter" />
+      <div class="output" id="out6">아직 검색한 적이 없습니다</div>
+
+      <h3>문제 7 — 방문 횟수 세기</h3>
+      <div class="output" id="out7">-</div>
+      <button id="resetBtn">횟수 초기화</button>
+    </div>
+
+    <script>
+      // ============================================================
+      // 15단원 연습문제 — localStorage
+      // ------------------------------------------------------------
+      // 실행: 브라우저로 열고 F12 → Console 탭
+      // ============================================================
+
+      // 문제를 여러 번 풀어도 결과가 같도록 1~5에서 쓸 것만 먼저 비웁니다.
+      // (문제 6·7이 쓰는 값은 남겨 둡니다. 새로고침해도 남아야 하니까요)
+      ["nickname", "point", "user", "colors"].forEach((k) => localStorage.removeItem(k));
+
+      // ───── 문제 1 ───── (개념02 저장하고 꺼내기)
+      // "nickname" 이라는 이름으로 "김민준" 을 저장한 뒤, 꺼내서 콘솔에 찍으세요.
+      //
+      // 기대 결과 (콘솔): 김민준
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 2 ───── (개념02 없는 값)
+      // 저장한 적 없는 "phone" 을 꺼내서 콘솔에 찍으세요.
+      //
+      // 기대 결과 (콘솔): null
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 3 ───── (개념02 문자열 함정)
+      // "point" 라는 이름으로 숫자 100 을 저장하세요.
+      // 그다음 꺼내서 '값' 과 '자료형' 을 한 줄에 함께 찍고,
+      // 다음 줄에 거기에 50 을 더한 값을 찍으세요.
+      //
+      // 기대 결과 (콘솔):
+      // 100 string
+      // 150
+      //
+      // 두 번째 줄이 10050 이 나왔다면 Number 로 바꾸는 것을 빠뜨린 것입니다.
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 4 ───── (개념02 객체 저장)
+      // 아래 객체를 "user" 라는 이름으로 저장했다가 꺼내서, city 만 찍으세요.
+
+      const user = { name: "이서연", age: 22, city: "부산" };
+
+      // 기대 결과 (콘솔): 부산
+      //
+      // 그냥 setItem 으로 넣으면 [object Object] 가 됩니다. 개념02 섹션 3을 보세요.
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 5 ───── (개념02 배열 저장)
+      // 아래 배열을 "colors" 라는 이름으로 저장했다가 꺼내서,
+      // 진짜 배열로 돌아왔는지 확인하고 개수를 찍으세요.
+
+      const colors = ["빨강", "초록", "파랑"];
+
+      // 기대 결과 (콘솔):
+      // true
+      // 3
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 6 ───── [응용] 마지막 검색어 기억하기
+      // searchInput 에 글자를 치고 Enter 를 누르면
+      //   - 그 값을 "lastSearch" 라는 이름으로 저장하고
+      //   - out6 에 "마지막 검색어: OOO" 를 넣으세요.
+      // 그리고 페이지를 열 때 저장된 값이 있으면 out6 에 바로 보여 주세요.
+      //
+      // 기대 결과 (화면):
+      //   "커피" 치고 Enter → 마지막 검색어: 커피
+      //   F5 로 새로고침해도 "마지막 검색어: 커피" 가 그대로 보입니다
+      //   저장된 게 없으면 처음 글자("아직 검색한 적이 없습니다")를 그대로 둡니다
+      //
+      // 힌트: Enter 는 11단원 개념02의 keydown 을 씁니다.
+
+      // TODO: 여기에 코드를 쓰세요
+
+      // ───── 문제 7 ───── [도전] 방문 횟수 세기
+      // 페이지를 열 때마다 1씩 올라가는 방문 횟수를 만들어
+      // out7 에 "3번째 방문입니다" 처럼 보여 주세요.
+      // resetBtn 을 누르면 0으로 되돌리고 화면도 갱신하세요.
+      //
+      // 기대 결과 (화면):
+      //   처음 열면 → 1번째 방문입니다
+      //   F5 → 2번째 방문입니다
+      //   F5 → 3번째 방문입니다
+      //   초기화 버튼 → 0번째 방문입니다  (그다음 F5 면 다시 1번째)
+      //
+      // 힌트: 저장된 값은 문자열입니다. Number 로 바꿔서 +1 한 뒤 다시 저장하세요.
+      //       처음 열었을 때는 저장된 게 없어 null 입니다. 그때를 처리해야 합니다.
+
+      // TODO: 여기에 코드를 쓰세요
+    </script>
+  </body>
+</html>

@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>00단원 개념01 - 무엇을 깔고 어떻게 확인하나</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         00단원 · 개념 01 — 무엇을 깔고 어떻게 확인하나
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              그리고 터미널을 하나 열어 두세요. 같이 씁니다.
+         ============================================================
+
+         이 단원은 코드를 배우는 단원이 아닙니다.
+         앞으로 560시간 동안 쓸 도구를 깔고, 제대로 깔렸는지 확인하는 단원입니다.
+
+         재미없어 보이지만 여기서 안 잡으면 나중에 두 배로 걸립니다.
+         "제 컴퓨터에서만 안 돼요" 의 절반이 이 단원의 내용입니다.
+
+         ★ 이 단원이 끝나면 이런 상태가 됩니다.
+
+             · 편집기로 파일을 만들고 브라우저로 열 수 있다
+             · 터미널에서 명령을 칠 수 있다
+             · 고친 내용을 Git 이 기억하게 할 수 있다
+             · 그것을 GitHub 에 올려 남에게 보여 줄 수 있다
+
+         ★★ 이 화면에 적힌 명령 결과는 전부 **진짜로 쳐 보고 옮긴 것**입니다.
+           여러분 화면과 글자가 조금 다를 수 있습니다. 버전이 다르면 그렇습니다.
+           **모양이 같으면 맞은 것**입니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 01 — 무엇을 깔고 어떻게 확인하나</h1>
+    <p class="doc-sub">00단원 · 개발환경과 Git</p>
+
+    <p class="doc-guide">
+      <strong>터미널을 하나 열어 두고 읽으세요.</strong> 여기 나오는 명령을 직접 쳐 봐야 합니다.
+      <br /><br />
+      윈도우는 <strong>시작 → "terminal"</strong> 또는 <strong>Windows 터미널</strong>,
+      맥은 <strong>Spotlight → "터미널"</strong> 입니다.
+      <br /><br />
+      <strong>아직 아무것도 안 깔았어도 괜찮습니다.</strong> 섹션 2에서 확인부터 합니다.
+    </p>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — 네 가지를 깝니다</h2>
+
+      <p class="doc-desc">
+        이 과정에서 쓰는 도구는 넷입니다. 전부 무료입니다.
+      </p>
+
+      <!--
+        무엇을 왜 까는지 먼저 말합니다. 이유를 모르고 깔면 나중에 문제가 생겼을 때
+        어디를 봐야 하는지 모릅니다.
+
+            크롬          만든 화면을 보는 곳. 그리고 F12 로 잘못된 곳을 찾는 곳
+            VS Code       파일을 쓰는 곳. 메모장으로도 되지만 훨씬 편합니다
+            Git           고친 내용을 기억해 주는 것. 개념02부터
+            Node.js       02단원(JS)부터 씁니다. 지금 같이 깔아 둡니다
+
+        Node 는 지금 안 써도 됩니다. 그런데 나중에 따로 깔면
+        "왜 나만 안 되지" 하는 학생이 꼭 나옵니다. 처음에 같이 해 두는 게 낫습니다.
+      -->
+
+      <div class="doc-code">크롬        https://www.google.com/chrome/
+VS Code     https://code.visualstudio.com/
+Git         https://git-scm.com/downloads
+Node.js     https://nodejs.org/       ← LTS 라고 적힌 쪽</div>
+
+      <p class="doc-note">
+        <strong>Node 는 LTS 를 받으세요.</strong> 옆에 있는 숫자 큰 쪽(Current)은
+        새 기능이 들어간 대신 덜 안정적입니다. 수업에서는 LTS 로 충분합니다.
+      </p>
+
+      <p class="doc-note">
+        <strong>Git 을 깔 때 물어보는 것이 많습니다.</strong> 거의 다 그냥
+        <strong>Next</strong> 를 눌러도 됩니다. 딱 하나만 신경 쓰세요 —
+        <code>Adjusting your line ending conventions</code> 화면에서
+        가운데(<code>Checkout as-is, commit Unix-style</code>) 또는 맨 위 기본값이면 됩니다.
+        <br />
+        왜 그런지는 개념02 섹션 6에서 봅니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 네 개를 다 깔고, 각각을 한 번씩 켜 보세요.
+        VS Code 는 켜면 창이 뜨고, Git 은 켜지는 창이 없습니다(당연합니다).
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — 터미널에서 확인합니다</h2>
+
+      <p class="doc-desc">
+        깔았다고 끝이 아닙니다. <strong>깔린 것을 컴퓨터가 찾을 수 있는지</strong>가 중요합니다.
+        확인하는 방법은 언제나 같습니다. <code>--version</code> 을 붙여 물어봅니다.
+      </p>
+
+      <!--
+        이 세 줄이 앞으로 계속 나옵니다.
+        "안 된다" 는 학생이 있으면 제일 먼저 이걸 시킵니다.
+
+        아래 결과는 이 자료를 만든 컴퓨터에서 실제로 친 것입니다.
+        숫자는 여러분 것과 다릅니다. 그게 정상입니다.
+      -->
+
+      <div class="doc-code">$ git --version
+git version 2.55.0.windows.3
+
+$ node --version
+v24.18.0
+
+$ npm --version
+11.16.0</div>
+
+      <p class="doc-note">
+        <strong>맨 앞의 <code>$</code> 는 치는 게 아닙니다.</strong>
+        "여기부터 여러분이 치는 명령" 이라는 표시입니다.
+        윈도우 터미널에는 <code>C:\Users\이름&gt;</code> 처럼 나올 것입니다.
+      </p>
+
+      <div class="doc-bad">
+        <strong>이렇게 나오면 못 찾은 것입니다</strong>
+        <div class="doc-code">'git' is not recognized as an internal or external command
+git : 용어 'git'이(가) cmdlet, 함수, 스크립트 파일 …로 인식되지 않습니다
+bash: git: command not found</div>
+        글자는 셋 다 다르지만 뜻은 하나입니다. <strong>git 이라는 것을 못 찾겠다.</strong>
+      </div>
+
+      <p class="doc-desc">
+        못 찾을 때 할 일은 순서가 정해져 있습니다.
+      </p>
+
+      <div class="doc-code">1. 터미널을 껐다 다시 켠다        ← 이걸로 대부분 해결됩니다
+2. 컴퓨터를 다시 켠다
+3. 그래도 안 되면 다시 깐다</div>
+
+      <p class="doc-note">
+        <strong>1번이 왜 되냐면</strong> — 프로그램을 깔면 "어디에 있는지" 를 적어 두는
+        목록(PATH)이 바뀝니다. 그런데 <strong>이미 켜져 있던 터미널은 옛 목록을 들고 있습니다.</strong>
+        새로 켜야 새 목록을 읽습니다.
+        <br />
+        ★ 이건 Git 만의 이야기가 아닙니다. 앞으로 뭘 깔든 똑같습니다.
+        "깔았는데 못 찾는다" 면 일단 터미널을 다시 켜세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 세 명령을 다 쳐 보고 버전 숫자를 종이에 적어 두세요.
+        나중에 "버전이 뭐예요?" 라는 질문을 반드시 받습니다.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 터미널이 두 가지입니다 (윈도우)</h2>
+
+      <p class="doc-desc">
+        윈도우에는 터미널이 여러 개 있습니다. 이 과정에서는 두 개를 씁니다.
+      </p>
+
+      <!--
+        여기서 헷갈리는 학생이 아주 많습니다.
+        "인터넷에서 본 명령이 안 돼요" 의 대부분이 셸이 달라서입니다.
+
+        굳이 둘 다 쓰는 이유:
+          · PowerShell 은 윈도우에 이미 있고 npm 같은 것을 돌리기 좋습니다
+          · Git Bash 는 인터넷의 예제(리눅스·맥 기준)가 그대로 돕니다
+      -->
+
+      <div class="doc-code">PowerShell    윈도우에 원래 있는 것. npm 명령을 여기서 씁니다
+Git Bash      Git 을 깔면 같이 들어옵니다. 리눅스·맥과 같은 명령을 씁니다</div>
+
+      <p class="doc-desc">
+        같은 일을 하는데 명령이 다릅니다. 몇 개만 보면 이렇습니다.
+      </p>
+
+      <div class="doc-code">하려는 일          PowerShell        Git Bash
+────────────────────────────────────────────────
+지금 폴더 보기      ls (또는 dir)      ls
+폴더 옮기기         cd 이름            cd 이름
+파일 내용 보기      cat 이름           cat 이름
+빈 파일 만들기      ni 이름            touch 이름
+화면 지우기         cls                clear</div>
+
+      <p class="doc-note">
+        <strong>겹치는 것이 많아 보이지만 다릅니다.</strong> PowerShell 의 <code>ls</code> 는
+        진짜 <code>ls</code> 가 아니라 별명입니다. 그래서 <code>ls -la</code> 같은 것을 붙이면
+        안 먹거나 다르게 동작합니다.
+        <br />
+        ★ <strong>인터넷에서 명령을 복사해 왔는데 안 되면 셸부터 의심하세요.</strong>
+        대부분의 예제는 리눅스·맥 기준입니다. 그럴 땐 Git Bash 에서 해 보세요.
+      </p>
+
+      <p class="doc-note">
+        <strong>VS Code 안에서도 터미널이 열립니다.</strong>
+        <code>Ctrl + `</code> (숫자 1 왼쪽의 키) 를 누르면 아래쪽에 뜹니다.
+        오른쪽 위 <code>+</code> 옆 화살표로 PowerShell 과 Git Bash 를 골라 열 수 있습니다.
+        <br />
+        ★ 편집기와 터미널을 한 창에서 보는 게 훨씬 편합니다. 이걸 쓰세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — VS Code 를 켜고 <code>Ctrl + `</code> 로 터미널을 여세요.
+        PowerShell 과 Git Bash 를 하나씩 열고 양쪽에서 <code>git --version</code> 을 쳐 보세요.
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — Git 에게 내가 누구인지 알려 줍니다</h2>
+
+      <p class="doc-desc">
+        Git 은 "누가 이 변경을 했는지" 를 기록으로 남깁니다.
+        그래서 이름과 메일을 먼저 알려 줘야 합니다. <strong>안 하면 첫 커밋에서 막힙니다.</strong>
+      </p>
+
+      <!--
+        진짜로 안 알려 주고 커밋해 본 결과입니다. 옮겨 적은 것이 아닙니다.
+      -->
+
+      <div class="doc-bad">
+        <strong>안 알려 주고 커밋하면</strong>
+        <div class="doc-code">$ git commit -m "시험"
+Author identity unknown
+
+*** Please tell me who you are.
+
+Run
+
+  git config --global user.email "you@example.com"
+  git config --global user.name "Your Name"
+
+to set your account's default identity.
+Omit --global to set the identity only in this repository.
+
+fatal: unable to auto-detect email address</div>
+        ★ <strong>고치는 법을 오류 메시지가 그대로 알려 줍니다.</strong>
+        그대로 따라 치면 됩니다. 영어라고 겁내지 말고 읽으세요.
+      </div>
+
+      <p class="doc-desc">그래서 처음에 이렇게 해 둡니다. <strong>컴퓨터마다 한 번만</strong> 하면 됩니다.</p>
+
+      <div class="doc-code">$ git config --global user.name "홍길동"
+$ git config --global user.email "hong@example.com"</div>
+
+      <p class="doc-note">
+        <code>--global</code> 은 "이 컴퓨터 전체에" 라는 뜻입니다.
+        붙이지 않으면 지금 폴더에서만 적용됩니다.
+        <br />
+        <strong>메일은 GitHub 에 가입할 때 쓸 것과 같게 하세요.</strong> (개념04)
+        다르면 GitHub 에서 내 기여로 안 세어 줍니다.
+      </p>
+
+      <p class="doc-desc">
+        그리고 하나 더 해 둡니다. <strong>처음 만드는 가지의 이름</strong>입니다.
+      </p>
+
+      <div class="doc-code">$ git config --global init.defaultBranch main</div>
+
+      <!--
+        이 설정을 안 하면 어떻게 되는지 실제로 재 봤습니다.
+        전역 설정을 비운 채 git init 을 한 결과입니다.
+      -->
+
+      <div class="doc-note">
+        <strong>안 하면 이런 안내가 매번 나옵니다.</strong>
+        <div class="doc-code">$ git init
+hint: Using 'master' as the name for the initial branch. This default branch name
+hint: will change to "main" in Git 3.0. To configure the initial branch name
+hint: to use in all of your new repositories, which will suppress this warning,
+hint: call:
+hint:
+hint: 	git config --global init.defaultBranch &lt;name&gt;
+hint:
+hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+hint: 'development'.</div>
+        틀린 것이 아닙니다. 그냥 안내입니다. 그래도 매번 보면 번거로우니 정해 둡니다.
+        <br />
+        ★ 요즘은 <code>main</code> 을 씁니다. GitHub 도 <code>main</code> 이 기본입니다.
+        이름이 다르면 나중에 <code>git push</code> 할 때 한 번 더 헷갈립니다.
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 세 줄을 치고, <code>git config --global --list</code> 로
+        제대로 들어갔는지 확인하세요. (나올 때는 <code>q</code> 를 누릅니다)
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — ★ 한글 파일 이름이 깨져 보입니다</h2>
+
+      <p class="doc-desc">
+        한국에서 Git 을 쓰면 반드시 만나는 것입니다.
+        한글 이름의 파일을 만들고 <code>git status</code> 를 치면 이렇게 나옵니다.
+      </p>
+
+      <!--
+        진짜로 재 본 것입니다. 설정.txt 라는 파일을 만들고 친 결과입니다.
+      -->
+
+      <div class="doc-bad">
+        <strong>기본 상태</strong>
+        <div class="doc-code">$ git status --short
+ M "\354\204\244\354\240\225.txt"</div>
+        <code>설정.txt</code> 인데 알아볼 수가 없습니다.
+      </div>
+
+      <div class="doc-good">
+        <strong>설정 하나로 고쳐집니다</strong>
+        <div class="doc-code">$ git config --global core.quotepath false
+
+$ git status --short
+?? 한글파일.txt</div>
+      </div>
+
+      <p class="doc-note">
+        <strong>파일이 깨진 게 아닙니다.</strong> Git 이 화면에 보여 줄 때만 그렇게 바꾼 것입니다.
+        내용도 이름도 멀쩡합니다. <code>core.quotepath false</code> 는
+        "그대로 보여 줘" 라는 뜻입니다.
+        <br />
+        ★ 이 자료는 폴더와 파일 이름이 전부 한글입니다. 이 설정을 꼭 해 두세요.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 아무 폴더에서 한글 이름의 파일을 하나 만들고
+        설정 전후로 <code>git status --short</code> 를 쳐서 차이를 보세요.
+        (아직 <code>git init</code> 을 안 배웠으면 개념02를 먼저 보고 오세요)
+      </p>
+    </section>
+
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+
+      <p class="doc-desc"><strong>[실수 1] 깔고 나서 터미널을 안 껐다 켬</strong></p>
+      <p class="doc-note">
+        섹션 2 그대로입니다. 이게 압도적으로 많습니다.
+        "다시 깔았는데도 안 돼요" 하는 학생의 터미널은 아침에 켠 그 창입니다.
+      </p>
+
+      <p class="doc-desc"><strong>[실수 2] <code>$</code> 를 같이 침</strong></p>
+      <p class="doc-note">
+        <code>$ git --version</code> 을 통째로 복사해 붙입니다.
+        <code>$</code> 는 표시일 뿐입니다. <code>git</code> 부터 치세요.
+      </p>
+
+      <p class="doc-desc"><strong>[실수 3] 명령을 오타 낸 줄 모름</strong></p>
+      <p class="doc-note">
+        <code>git --varsion</code> 처럼 치면 다른 오류가 납니다.
+        <strong>오류 글자를 끝까지 읽으세요.</strong> "못 찾겠다" 인지 "그런 옵션 없다" 인지
+        전혀 다른 이야기입니다.
+      </p>
+
+      <p class="doc-desc"><strong>[실수 4] PowerShell 과 Git Bash 를 섞음</strong></p>
+      <p class="doc-note">
+        인터넷 예제를 PowerShell 에 붙였는데 안 됩니다. 셸이 다릅니다. (섹션 3)
+      </p>
+
+      <p class="doc-desc"><strong>[실수 5] <code>--global</code> 을 빼먹음</strong></p>
+      <p class="doc-note">
+        이름·메일을 설정했는데 다른 폴더에서 또 물어봅니다.
+        <code>--global</code> 없이 하면 그 폴더에서만 적용됩니다.
+      </p>
+
+      <p class="doc-desc"><strong>[실수 6] 회사 메일로 설정해 두고 개인 저장소에 씀</strong></p>
+      <p class="doc-note">
+        커밋 기록에 메일이 그대로 남습니다. <strong>지워도 기록에는 남습니다.</strong>
+        공개 저장소에 올릴 것이면 처음부터 공개해도 되는 메일을 쓰세요.
+      </p>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">정리</p>
+      <ul>
+        <li>크롬 · VS Code · Git · Node 넷을 깝니다. Node 는 LTS 쪽입니다.</li>
+        <li>깔린 것은 <code>--version</code> 으로 확인합니다. 못 찾으면 <strong>터미널을 껐다 켜세요.</strong></li>
+        <li>윈도우는 PowerShell 과 Git Bash 가 다릅니다. 인터넷 예제가 안 되면 셸부터 의심합니다.</li>
+        <li>Git 에 <code>user.name</code> · <code>user.email</code> 을 알려 줍니다. 안 하면 첫 커밋에서 막힙니다.</li>
+        <li><code>init.defaultBranch main</code> 을 정해 둡니다. 안 하면 <code>master</code> 가 되고 매번 안내가 뜹니다.</li>
+        <li>★ <code>core.quotepath false</code> 를 꼭 하세요. 안 하면 한글 파일 이름이 <code>\354\204\244…</code> 로 나옵니다.</li>
+      </ul>
+    </div>
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      .doc-head | text | 개념 01 — 무엇을 깔고 어떻게 확인하나
+      .doc-sub | text | 00단원 · 개발환경과 Git
+      .doc-summary-title | text | 정리
+      .doc-guide | ?visible | yes
+      .doc-code | white-space | pre
+      body | color | rgb(34, 34, 34)
+    -->
+  </body>
+</html>

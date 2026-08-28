@@ -1,0 +1,24 @@
+{
+  "name": "db-materials",
+  "version": "1.0.0",
+  "description": "데이터베이스와 SQL 자료 (PostgreSQL 중심 · MySQL 비교)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "검증": "node _검증도구/전체검증.cjs",
+    "검증:출력": "node _검증도구/출력검증.cjs",
+    "검증:정합성": "node _검증도구/정합성검사.cjs",
+    "디비:켜기": "docker compose up -d",
+    "디비:끄기": "docker compose down",
+    "디비:지우기": "docker compose down -v"
+  },
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.5.7",
+    "mysql2": "^3.24.2",
+    "pg": "^8.23.0"
+  }
+}

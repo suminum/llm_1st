@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>02단원 개념03 - 강조와 의미</title>
+    <link rel="stylesheet" href="../공통.css" />
+  </head>
+  <body>
+    <!-- ============================================================
+         02단원 · 개념 03 — 강조와 의미
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              동시에 VS Code 로도 열어 두고, 코드와 화면을 나란히 보세요.
+         ============================================================
+
+         지금까지 배운 태그는 글을 덩어리로 나누는 태그였습니다.
+         이번에는 문단 안의 한두 단어에 이름표를 붙이는 태그를 배웁니다.
+
+             오늘 회의는 <strong>3시</strong>입니다.
+                          └ "3시" 만 굵게
+
+         여기서 이 단원 전체에서 가장 중요한 이야기가 나옵니다.
+
+         HTML 에는 화면 결과가 똑같은 태그 쌍이 있습니다.
+
+             strong 과 b   →  둘 다 굵게 보입니다
+             em     과 i   →  둘 다 기울어 보입니다
+
+         화면이 똑같은데 왜 두 개씩 있을까요.
+         모양은 같고 뜻이 다르기 때문입니다.
+
+             strong  "이 부분이 중요하다"           ← 뜻
+             b       "이 부분을 굵게 그려라"         ← 모양
+
+             em      "이 부분을 힘주어 읽어라"       ← 뜻
+             i       "이 부분을 기울여 그려라"       ← 모양
+
+         뜻을 적는 태그와 모양을 적는 태그가 따로 있는 것입니다.
+         그리고 HTML 에서는 거의 언제나 뜻을 적는 쪽을 씁니다.
+
+         왜 그런지는 섹션 3 에서 셋으로 나누어 설명합니다.
+         지금은 이 한 줄만 기억하세요.
+
+             태그는 뜻으로 고르고, 모양은 CSS 로 바꿉니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 03 — 강조와 의미</h1>
+    <p class="doc-sub">02단원 · 텍스트 태그</p>
+
+    <p class="doc-guide">
+      이 파일은 문단 안의 단어에 뜻을 붙이는 태그들을 다룹니다.
+      <code>strong</code> <code>b</code> <code>em</code> <code>i</code>
+      <code>mark</code> <code>small</code> <code>del</code> <code>ins</code>
+      <code>sub</code> <code>sup</code> <code>q</code> <code>blockquote</code> 입니다.
+      개수가 많아 보이지만 <strong>모양이 아니라 뜻으로 고른다</strong>는 원칙 하나로 전부 통합니다.
+    </p>
+
+    <!-- ══════════ 섹션 1: strong 과 b ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — strong 과 b</h2>
+      <p class="doc-desc">
+        둘 다 굵게 보입니다. <code>strong</code> 은 <strong>중요하다</strong>는 뜻이고,
+        <code>b</code> 는 <strong>굵게 그려라</strong>는 모양 지시입니다.
+      </p>
+
+      <!--
+        strong 은 strong importance(강한 중요도) 의 줄임말입니다.
+        b 는 bold(굵은) 의 첫 글자입니다.
+
+        이름부터 다릅니다. 하나는 중요도 이야기이고 하나는 굵기 이야기입니다.
+
+            <p>내일은 <strong>휴무</strong>입니다.</p>
+                        └ 이 정보를 놓치면 안 된다는 뜻
+
+            <p>주인공의 이름은 <b>홍길동</b>입니다.</p>
+                                └ 중요하다기보다 눈에 띄게 두고 싶은 이름
+
+        크롬에서 재 보면 둘 다 굵기 값이 700 으로 똑같습니다.
+        보통 글자의 굵기 값은 400 입니다. 그러니까 화면상으로는 완전히 같습니다.
+
+        그러면 초보자는 어느 쪽을 써야 할까요. 판단 기준은 아주 간단합니다.
+
+            소리 내어 읽을 때 그 부분을 힘주어 읽게 되는가?
+              그렇다  →  strong
+              아니다  →  b (그리고 사실 이런 경우는 드뭅니다)
+
+        실무에서 쓰는 굵은 글씨의 대부분은 strong 입니다.
+        b 를 써야 하는 경우는 상품 이름, 사람 이름처럼
+        "중요해서가 아니라 관례상 굵게 쓰는" 자리 정도입니다.
+        헷갈리면 strong 을 쓰세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p>내일은 <strong id="s-strong">휴무</strong>입니다.</p>
+        <p>주인공의 이름은 <b id="s-b">홍길동</b>입니다.</p>
+        <!-- 화면: 두 줄 모두 가운데 두세 글자만 굵게 보이고 나머지는 보통 굵기입니다.
+                  두 줄의 굵기는 서로 완전히 똑같아 보입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — 위 상자에
+        <code>&lt;p&gt;준비물은 &lt;strong&gt;신분증&lt;/strong&gt;입니다.&lt;/p&gt;</code> 를
+        한 줄 더 넣어 보세요. 저장하고(Ctrl+S) 새로고침(F5) 하면 굵은 단어가 하나 늘어납니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: em 과 i ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — em 과 i</h2>
+      <p class="doc-desc">
+        둘 다 기울어 보입니다. <code>em</code> 은 <strong>힘주어 읽으라</strong>는 뜻이고,
+        <code>i</code> 는 <strong>기울여 그려라</strong>는 모양 지시입니다.
+      </p>
+
+      <!--
+        em 은 emphasis(강조) 의 줄임말입니다. i 는 italic(기울임꼴) 의 첫 글자입니다.
+
+        em 의 강조는 strong 의 강조와 종류가 다릅니다.
+
+            strong  중요도가 높다        →  놓치면 안 되는 정보
+            em      말의 억양이 바뀐다   →  이 단어에 힘을 주어 읽는다
+
+        예를 하나 보면 확실합니다. 같은 문장인데 힘주는 곳이 다르면 뜻이 달라집니다.
+
+            나는 <em>오늘</em> 간다.     →  내일이 아니라 오늘 간다
+            <em>나는</em> 오늘 간다.     →  다른 사람 말고 내가 간다
+
+        문장을 소리 내어 읽어 보면 차이가 들립니다. 그게 em 입니다.
+
+        i 는 배 이름, 학명, 외국어처럼 "관례상 기울여 쓰는" 자리에 씁니다.
+        힘주어 읽지는 않는데 기울여 적는 것이 관습인 경우입니다.
+
+        [한글에서 주의할 점]
+        크롬에서 재 보면 em 과 i 모두 font-style 값이 italic 으로 같습니다.
+        그런데 맑은 고딕 같은 한글 글꼴에는 진짜 기울임꼴이 들어 있지 않습니다.
+        그래서 브라우저가 글자를 억지로 비스듬히 눕혀서 그립니다.
+        이것을 가짜 기울임이라고 부릅니다. 영어보다 어색해 보이고 읽기도 조금 불편합니다.
+        그래서 한글 페이지에서는 em 을 아껴 쓰는 편이 좋습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p>나는 <em id="s-em">오늘</em> 간다.</p>
+        <p>배 이름은 <i id="s-i">이순신함</i>입니다.</p>
+        <!-- 화면: 두 줄 모두 가운데 몇 글자가 오른쪽으로 비스듬히 기울어 보입니다.
+                  굵어지지는 않았습니다. 두 줄의 기울기는 서로 똑같아 보입니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>strong</code> 과 <code>em</code> 은 겹쳐 쓸 수 있습니다.
+        <code>&lt;strong&gt;&lt;em&gt;글자&lt;/em&gt;&lt;/strong&gt;</code> 처럼 쓰면
+        굵으면서 기울어집니다. 두 태그의 효과가 둘 다 적용되기 때문입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — 위 상자의 첫 줄을
+        <code>&lt;p&gt;&lt;em&gt;나는&lt;/em&gt; 오늘 간다.&lt;/p&gt;</code> 로 바꿔 보세요.
+        기울어지는 단어가 옮겨 가고, 문장을 소리 내어 읽었을 때 뜻이 달라지는지 확인해 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 같아 보여도 뜻이 다릅니다 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — 화면이 같은데 왜 구분하나요</h2>
+      <p class="doc-desc">
+        이 파일에서 가장 중요한 섹션입니다.
+        아래 상자에서 <strong>어느 쪽이 strong 이고 어느 쪽이 b 인지 맞혀 보세요.</strong>
+      </p>
+
+      <!--
+        아래 상자에는 같은 글자가 두 번 들어 있습니다.
+        하나는 strong 으로, 하나는 b 로 썼습니다. 순서는 알려 드리지 않습니다.
+
+        화면만 보고 구분할 수 있나요. 못 합니다.
+        크롬에서 재 보면 둘 다 굵기 값이 정확히 700 입니다.
+        em 과 i 도 마찬가지로 둘 다 italic 입니다.
+
+        이것이 요점입니다. 차이는 화면에 없습니다. 화면 밖에 있습니다.
+        어디에 있는지 셋으로 나눠 보겠습니다.
+
+            [1] 화면 낭독기
+                눈이 불편한 사람은 화면을 소리로 바꿔 주는 프로그램으로 웹을 읽습니다.
+                이 프로그램은 strong 을 만나면 목소리를 바꾸거나 힘주어 읽습니다.
+                b 는 그냥 읽습니다. 굵은 것은 소리로 옮길 수 없으니까요.
+                strong 으로 써 둔 글만 강조가 전달됩니다.
+
+            [2] 검색 사이트
+                검색 프로그램은 페이지에서 무엇이 중요한지 찾습니다.
+                strong 은 "글쓴이가 중요하다고 표시한 부분" 이라는 힌트가 됩니다.
+                b 는 그냥 굵은 글씨라 힌트가 되지 않습니다.
+
+            [3] 나중에 CSS 로 꾸밀 때
+                이게 가장 피부에 와닿는 이유입니다.
+                08단원에서 배우는 선택자로 "중요한 부분만 빨갛게" 를 하려고 하면
+                이렇게 씁니다.
+
+                    strong { color: red; }
+
+                strong 으로 써 둔 곳만 빨개집니다. b 로 써 둔 곳은 그대로입니다.
+                뜻을 기준으로 태그를 골라 두지 않으면 나중에 골라낼 방법이 없습니다.
+                (위 CSS 는 07단원부터 배웁니다. 지금은 이렇게 생겼다는 것만 보세요)
+
+        그래서 결론은 하나입니다.
+
+            굵게 보이고 싶어서 태그를 고르지 말고,
+            중요해서 굵어지도록 태그를 고르세요.
+
+        모양이 마음에 안 들면 09단원에서 CSS 로 바꾸면 됩니다.
+        뜻은 나중에 되돌릴 수 없지만 모양은 언제든 바꿀 수 있습니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">둘 중 하나는 strong, 하나는 b 입니다</p>
+        <p><span id="cmp-strong-wrap"><strong id="cmp-strong">중요합니다</strong></span>
+          그리고 <span id="cmp-b-wrap"><b id="cmp-b">중요합니다</b></span></p>
+        <p><em id="cmp-em">기울입니다</em> 그리고 <i id="cmp-i">기울입니다</i></p>
+        <!-- 화면: 첫 줄의 굵은 두 덩어리가 서로 완전히 똑같아 보입니다.
+                  둘째 줄의 기울어진 두 덩어리도 서로 완전히 똑같아 보입니다.
+                  어느 쪽이 어느 태그인지 화면만으로는 구분할 수 없습니다 -->
+      </div>
+
+      <p class="doc-note">
+        정답은 앞쪽이 <code>strong</code> 과 <code>em</code>, 뒤쪽이 <code>b</code> 와
+        <code>i</code> 입니다. VS Code 에서 소스를 보면 바로 알 수 있습니다.
+        <strong>소스에는 차이가 있고 화면에는 차이가 없다</strong>는 것이 이 섹션의 전부입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — 위 상자의 <code>&lt;b&gt;</code> 와 <code>&lt;/b&gt;</code> 를
+        <code>&lt;strong&gt;</code> 과 <code>&lt;/strong&gt;</code> 로 바꿔 보세요.
+        화면이 하나도 안 바뀌는 것을 눈으로 확인하는 것이 목적입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: mark 와 small ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — mark 와 small</h2>
+      <p class="doc-desc">
+        <code>mark</code> 는 <strong>형광펜으로 칠한 부분</strong>,
+        <code>small</code> 은 <strong>작게 덧붙이는 말</strong>입니다.
+      </p>
+
+      <!--
+        [mark]
+        책을 읽다가 형광펜으로 칠하는 그 동작입니다.
+        중요해서가 아니라 "지금 이 맥락에서 눈여겨볼 곳" 이라는 뜻입니다.
+
+        strong 과 헷갈리기 쉬우니 이렇게 갈라 두세요.
+
+            strong  글쓴이가 원래부터 중요하다고 여기는 부분
+            mark    지금 읽는 사람 사정 때문에 눈여겨볼 부분
+
+        검색 결과에서 찾던 단어가 노랗게 칠해져 나오는 것이 mark 의 대표적인 쓰임입니다.
+        글이 중요해서가 아니라 그 사람이 그 단어를 찾았기 때문에 칠해진 것입니다.
+
+        크롬에서 재 보면 mark 는 배경색이 노랑 rgb(255, 255, 0),
+        글자색이 검정 rgb(0, 0, 0) 으로 바뀝니다.
+        이 자료의 보통 글자색은 rgb(34, 34, 34) 이라 mark 안의 글자만 더 새까맣습니다.
+
+        [small]
+        글자를 작게 그립니다. 뜻은 "곁다리로 덧붙이는 말" 입니다.
+        저작권 표시, 단서 조항, 주석 같은 것에 씁니다.
+
+        크롬에서 재 보면 13.3333px 입니다. 보통 글자가 16px 이니 조금 작습니다.
+
+        여기서도 같은 함정이 있습니다.
+        "글씨를 작게 하고 싶어서" small 을 쓰면 안 됩니다.
+        크기는 09단원의 CSS 로 바꿉니다. small 은 곁다리 말일 때만 씁니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p>검색어 <mark id="s-mark">김치찌개</mark> 가 들어간 글입니다.</p>
+        <p>가격 12,000원 <small id="s-small">(부가세 포함)</small></p>
+        <!-- 화면: 첫 줄의 "김치찌개" 네 글자 뒤에 노란 형광펜 칠이 되어 있습니다.
+                  둘째 줄의 "(부가세 포함)" 은 앞의 글자보다 눈에 띄게 작습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 위 상자 첫 줄의 <code>&lt;mark&gt;</code> 를
+        <code>&lt;strong&gt;</code> 으로 바꿔 보세요. 노란 칠이 사라지고 굵어집니다.
+        확인했으면 다시 <code>&lt;mark&gt;</code> 로 되돌리세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: del 과 ins ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — del 과 ins</h2>
+      <p class="doc-desc">
+        <code>del</code> 은 <strong>지운 내용</strong>,
+        <code>ins</code> 는 <strong>새로 넣은 내용</strong>입니다.
+      </p>
+
+      <!--
+        del 은 delete(지우다), ins 는 insert(넣다) 의 줄임말입니다.
+
+        문서를 고칠 때 "무엇을 지웠고 무엇을 새로 넣었는지" 를 남겨 두는 태그입니다.
+        가격이 바뀐 상품, 수정된 공지, 규정 개정문 같은 데 씁니다.
+
+            원래 가격 <del>30,000원</del> 할인가 <ins>19,000원</ins>
+
+        크롬에서 재 보면
+            del  →  text-decoration-line 값이 line-through (글자 가운데 줄)
+            ins  →  text-decoration-line 값이 underline (밑줄)
+        입니다.
+
+        [주의] del 을 그냥 취소선 도구로 쓰지 마세요.
+               지운 적이 없는 글에 del 을 붙이면 "이건 지워진 내용" 이라는 거짓말이 됩니다.
+               줄만 긋고 싶으면 09단원의 text-decoration 으로 그으면 됩니다.
+
+        [주의] ins 의 밑줄은 링크의 밑줄과 똑같이 생겼습니다.
+               04단원에서 배우는 링크(a) 도 기본이 밑줄입니다.
+               읽는 사람이 눌러 보려다 안 눌려서 당황할 수 있으니 ins 는 아껴 씁니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p>원래 가격 <del id="s-del">30,000원</del>
+          할인가 <ins id="s-ins">19,000원</ins></p>
+        <!-- 화면: "30,000원" 글자 가운데를 가로지르는 줄이 그어져 있고,
+                  "19,000원" 아래에는 밑줄이 그어져 있습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — 위 상자에
+        <code>&lt;p&gt;모임 시간 &lt;del&gt;오후 2시&lt;/del&gt;
+        &lt;ins&gt;오후 4시&lt;/ins&gt;&lt;/p&gt;</code> 를 한 줄 더 넣어 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: sub 와 sup ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — sub 와 sup</h2>
+      <p class="doc-desc">
+        <code>sub</code> 는 <strong>아래첨자</strong>, <code>sup</code> 는
+        <strong>위첨자</strong>입니다. 화학식과 수식에 씁니다.
+      </p>
+
+      <!--
+        sub 는 subscript(아래첨자), sup 는 superscript(위첨자) 의 줄임말입니다.
+
+            물         H<sub>2</sub>O
+            2의 10제곱  2<sup>10</sup>
+            제곱미터    m<sup>2</sup>
+
+        크롬에서 재 보면 둘 다 글자 크기가 13.3333px 로 작아지고,
+        vertical-align 이라는 값이 각각 sub 와 super 로 바뀝니다.
+        vertical-align 은 "글자를 세로로 어디에 놓을지" 를 정하는 값입니다.
+        브라우저가 sub 와 sup 에 알아서 넣어 주는 값이라 우리가 쓸 일은 없습니다.
+        이 자료에서도 직접 쓰지는 않습니다. 이름만 보고 넘어가세요.
+
+        첨자가 들어간 문단은 줄 높이가 조금 커집니다.
+        위아래로 삐져나온 글자를 담아야 하기 때문입니다.
+        재 보면 보통 문단이 27px 인데 첨자가 있는 문단은 33px 입니다.
+
+        [주의] 첨자는 뜻이 분명한 자리에만 씁니다.
+               글자를 살짝 위로 올리고 싶다는 이유로 sup 를 쓰면 안 됩니다.
+               화면 낭독기가 "위첨자" 라고 읽어 버립니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p id="s-subsup">물은 H<sub id="s-sub">2</sub>O 이고,
+          2<sup id="s-sup">10</sup> 은 1024 입니다.</p>
+        <!-- 화면: "H2O" 의 2 가 글자 아래쪽에 작게 붙어 있고,
+                  "2 10" 의 10 이 글자 위쪽에 작게 붙어 있습니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 6 — 위 상자에
+        <code>&lt;p&gt;넓이는 30m&lt;sup&gt;2&lt;/sup&gt; 입니다.&lt;/p&gt;</code> 를
+        한 줄 더 넣어 제곱미터를 만들어 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 7: q 와 blockquote ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 7 — q 와 blockquote</h2>
+      <p class="doc-desc">
+        남의 말을 옮길 때 씁니다. <code>q</code> 는 <strong>문장 안의 짧은 인용</strong>,
+        <code>blockquote</code> 는 <strong>덩어리로 떨어진 긴 인용</strong>입니다.
+      </p>
+
+      <!--
+        q 는 quotation(인용) 의 첫 글자입니다.
+
+            <p>그는 <q>배고파요</q> 라고 했습니다.</p>
+
+        여기서 아주 재미있는 일이 일어납니다.
+        소스에는 따옴표를 하나도 쓰지 않았는데 화면에는 따옴표가 나옵니다.
+        브라우저가 "이건 인용이구나" 하고 알아서 그려 준 것입니다.
+
+        더 재미있는 것은 그 따옴표가 글자가 아니라는 점입니다.
+        화면에는 보이지만 실제 글자로는 존재하지 않습니다.
+        마우스로 긁어서 복사해 보면 따옴표가 안 딸려 오는 것을 확인할 수 있습니다.
+
+        이게 개념03 전체가 하려던 이야기의 증거입니다.
+        태그는 화면을 꾸미는 물감이 아니라 뜻을 적는 이름표이고,
+        브라우저는 그 뜻을 읽고 자기 나름대로 행동합니다.
+        따옴표를 그려 준 것은 그 행동 중 하나입니다.
+
+        [blockquote]
+        긴 인용은 문단 통째로 떨어져 나옵니다.
+        blockquote 는 block(덩어리) + quote(인용) 입니다. 한 줄을 통째로 차지합니다.
+        크롬에서 재 보면 왼쪽에 40px, 오른쪽에도 40px 만큼 여백이 붙습니다.
+        글이 짧으면 왼쪽만 들어간 것처럼 보이지만, 글이 길어져 줄이 넘어가면
+        오른쪽도 40px 안으로 들어와 있는 것이 눈에 보입니다.
+
+        [주의] 이 들여쓰기 때문에 blockquote 를 "들여쓰기 도구" 로 쓰는 사람이 많습니다.
+               인용이 아닌 글을 blockquote 로 감싸면 "이건 남의 말" 이라는 거짓말이 됩니다.
+               들여쓰기는 10단원의 margin 으로 합니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과</p>
+        <p>그는 <q id="s-q">배고파요</q> 라고 했습니다.</p>
+        <blockquote id="s-bq">인생은 가까이서 보면 비극이지만 멀리서 보면 희극이다.</blockquote>
+        <!-- 화면: 첫 줄의 "배고파요" 양옆에 곡선 큰따옴표가 붙어 있습니다.
+                  아래 인용문은 한 줄을 통째로 차지하면서 왼쪽이 안쪽으로 들여져 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>q</code> 안의 따옴표는 브라우저가 그린 것이라 <strong>글자로는 없습니다.</strong>
+        이 자료의 자동 검사기로 <code>q</code> 안의 글자를 읽어 보면
+        따옴표 없이 <code>배고파요</code> 네 글자만 나옵니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 7 — 위 상자의 인용문을 마우스로 긁어서 복사한 뒤
+        메모장에 붙여넣어 보세요. 그리고 첫 줄의 <code>배고파요</code> 도 따옴표까지 긁어서
+        붙여넣어 보세요. 어느 쪽 따옴표가 따라오는지 확인해 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 8: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 8 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        여기 실수들은 <strong>화면이 원하는 대로 나오기 때문에</strong> 특히 안 들킵니다.
+        에러도 물론 나지 않습니다.
+      </p>
+
+      <!-- [실수 1] 굵게 만들려고 태그를 고름 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 굵게 보이고 싶어서 strong 을 씀</span>
+        <div class="doc-code">&lt;p&gt;&lt;strong&gt;메뉴 안내&lt;/strong&gt;&lt;/p&gt;</div>
+        <p>
+          제목을 굵게 만들고 싶어서 strong 을 썼습니다. 굵어지기는 합니다.
+          하지만 이건 제목이므로 <code>&lt;h2&gt;</code> 를 써야 합니다.
+          <strong>strong 으로 쓴 제목은 목차에 잡히지 않습니다.</strong>
+          개념01 섹션 5 에서 본 것과 똑같은 종류의 잘못입니다.
+        </p>
+      </div>
+
+      <!-- [실수 2] 문단 전체를 strong -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 문단 전체를 strong 으로 감쌈</span>
+        <div class="doc-code">&lt;p&gt;&lt;strong&gt;모든 문장이 다 중요합니다.
+안 중요한 문장이 없습니다.&lt;/strong&gt;&lt;/p&gt;</div>
+        <p>
+          전부 강조하면 <strong>아무것도 강조되지 않습니다.</strong>
+          화면 낭독기에게도 문단 전체가 강조로 들려서 오히려 알아듣기 어려워집니다.
+          강조는 한 문단에 한두 군데면 충분합니다. 아래가 실제 결과입니다.
+        </p>
+        <div class="doc-demo">
+          <p class="doc-demo-label">문단 전체를 감싼 실제 결과</p>
+          <p><strong id="mis-allstrong">모든 문장이 다 중요합니다. 안 중요한 문장이 없습니다.</strong></p>
+          <!-- 화면: 문단 전체가 굵게 나옵니다. 어디가 핵심인지 알 수 없습니다 -->
+        </div>
+      </div>
+
+      <!-- [실수 3] blockquote 를 들여쓰기 도구로 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — 들여쓰려고 blockquote 를 씀</span>
+        <div class="doc-code">&lt;blockquote&gt;여기는 그냥 제 설명입니다&lt;/blockquote&gt;</div>
+        <p>
+          왼쪽으로 40px 들여져서 보기에는 좋습니다. 하지만 뜻은
+          <strong>"이 문장은 남이 한 말을 옮긴 것"</strong> 이 됩니다.
+          내 말인데 남의 말이라고 표시한 셈입니다. 아래가 실제 결과입니다.
+        </p>
+        <div class="doc-demo">
+          <p class="doc-demo-label">들여쓰기 용도로 쓴 실제 결과</p>
+          <p>보통 문단입니다.</p>
+          <blockquote id="mis-bq">여기는 그냥 제 설명입니다.</blockquote>
+          <!-- 화면: 아래 줄만 왼쪽이 안쪽으로 들어가 있습니다.
+                    화면만 보면 잘못된 것이 전혀 없어 보입니다 -->
+        </div>
+      </div>
+
+      <!-- [실수 4] del 을 취소선 도구로 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — 줄만 긋고 싶어서 del 을 씀</span>
+        <div class="doc-code">&lt;del&gt;오늘의 할 일&lt;/del&gt;</div>
+        <p>
+          지운 적이 없는 글에 del 을 붙이면 <strong>"이 내용은 삭제되었다"</strong> 는
+          뜻이 붙습니다. 화면 낭독기는 "삭제됨" 이라고 알려 줍니다.
+          장식으로 줄을 긋고 싶다면 09단원의 <code>text-decoration</code> 을 쓰세요.
+        </p>
+      </div>
+
+      <!-- [실수 5] 태그 이름을 헷갈림 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — strong 을 string 으로 씀</span>
+        <div class="doc-code">&lt;string&gt;중요합니다&lt;/string&gt;</div>
+        <p>
+          <code>string</code> 이라는 태그는 없습니다. 오타인데도 에러가 나지 않습니다.
+          브라우저는 <strong>모르는 태그를 없는 셈 치고</strong> 안의 글자만 그립니다.
+          그래서 <strong>굵어지지 않은 보통 글자</strong>가 나옵니다.
+          "왜 안 굵어지지?" 싶으면 태그 이름 철자부터 확인하세요.
+        </p>
+        <div class="doc-demo">
+          <p class="doc-demo-label">철자를 틀린 실제 결과</p>
+          <p><string id="mis-string">중요합니다</string></p>
+          <!-- 화면: "중요합니다" 가 굵어지지 않은 보통 글자로 보입니다 -->
+        </div>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>1. <code>strong</code>(중요) 과 <code>b</code>(굵게), <code>em</code>(억양) 과
+        <code>i</code>(기울임) 은 <strong>화면이 같고 뜻이 다릅니다.</strong></p>
+      <p>2. 차이는 화면 밖에 있습니다. <strong>화면 낭독기, 검색, 나중의 CSS</strong>
+        세 곳에서 드러납니다.</p>
+      <p>3. <code>mark</code> 는 형광펜, <code>small</code> 은 곁다리 말입니다.</p>
+      <p>4. <code>del</code> 은 지운 내용, <code>ins</code> 는 새로 넣은 내용입니다.</p>
+      <p>5. <code>sub</code> 는 아래첨자, <code>sup</code> 는 위첨자입니다.</p>
+      <p>6. <code>q</code> 의 따옴표는 <strong>브라우저가 그려 준 것이라 글자가 아닙니다.</strong>
+        태그에 뜻이 들어 있다는 증거입니다.</p>
+      <p>7. <strong>태그는 뜻으로 고르고, 모양은 CSS 로 바꿉니다.</strong></p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) 섹션 1 상자의 마지막 p 아래에 이렇게 넣습니다.
+
+                <p>준비물은 <strong>신분증</strong>입니다.</p>
+
+            → 굵은 단어가 하나 늘어납니다. 굵기는 앞의 두 줄과 똑같습니다.
+              strong 이든 b 든 굵기 값이 700 으로 같기 때문입니다.
+
+         2) 섹션 2 상자의 첫 줄을 이렇게 바꿉니다.
+
+                <p><em id="s-em">나는</em> 오늘 간다.</p>
+
+            → 기울어지는 단어가 "오늘" 에서 "나는" 으로 옮겨 갑니다.
+              소리 내어 읽으면 "다른 사람 말고 내가" 라는 뜻으로 들립니다.
+
+         3) 섹션 3 상자의 b 를 strong 으로 바꿉니다.
+
+                <span id="cmp-b-wrap"><strong id="cmp-b">중요합니다</strong></span>
+
+            → 화면이 하나도 바뀌지 않습니다.
+              두 태그의 굵기 값이 똑같아서 눈으로는 구분할 방법이 없기 때문입니다.
+              확인했으면 b 로 되돌려 놓으세요.
+
+         4) 섹션 4 상자의 첫 줄을 이렇게 바꿉니다.
+
+                <p>검색어 <strong id="s-mark">김치찌개</strong> 가 들어간 글입니다.</p>
+
+            → 노란 형광펜 칠이 사라지고 글자가 굵어집니다.
+              mark 는 배경색을 바꾸고 strong 은 굵기를 바꾸기 때문입니다.
+              확인했으면 mark 로 되돌려 놓으세요.
+
+         5) 섹션 5 상자의 마지막 p 아래에 이렇게 넣습니다.
+
+                <p>모임 시간 <del>오후 2시</del> <ins>오후 4시</ins></p>
+
+            → "오후 2시" 에 가운데 줄이, "오후 4시" 에 밑줄이 그어집니다.
+              시간이 바뀌었다는 사실이 화면에도 뜻에도 남습니다.
+
+         6) 섹션 6 상자의 마지막 p 아래에 이렇게 넣습니다.
+
+                <p>넓이는 30m<sup>2</sup> 입니다.</p>
+
+            → m 뒤의 2 가 위쪽에 작게 붙어 제곱미터로 보입니다.
+
+         7) 인용문을 긁어서 붙여넣으면 글자만 따라옵니다.
+            "배고파요" 를 따옴표까지 긁어도 붙여넣기 결과에는 따옴표가 없습니다.
+
+            → 따옴표는 브라우저가 그려 준 것이라 실제 글자가 아니기 때문입니다.
+              태그의 뜻을 브라우저가 읽고 행동한 결과입니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #s-strong | font-weight | 700
+      #s-strong | display | inline
+      #s-b | font-weight | 700
+      #s-em | font-style | italic
+      #s-i | font-style | italic
+      #cmp-strong | font-weight | 700
+      #cmp-b | font-weight | 700
+      #cmp-em | font-style | italic
+      #cmp-i | font-style | italic
+      #s-mark | background-color | rgb(255, 255, 0)
+      #s-mark | color | rgb(0, 0, 0)
+      #s-small | font-size | 13.3333px
+      #s-del | text-decoration-line | line-through
+      #s-del | text-decoration | line-through
+      #s-ins | text-decoration-line | underline
+      #s-ins | text-decoration | underline
+      #s-q | ?visible | yes
+      #s-sub | vertical-align | sub
+      #s-sup | vertical-align | super
+      #s-sup | font-size | 13.3333px
+      #s-subsup | ~height | 33
+      #s-q | text | 배고파요
+      #s-bq | display | block
+      #s-bq | margin-left | 40px
+      #s-bq | margin-right | 40px
+      #mis-allstrong | font-weight | 700
+      #mis-bq | margin-left | 40px
+      #mis-string | font-weight | 400
+    -->
+  </body>
+</html>

@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>14단원 종합04 정답 - 반응형 랜딩페이지</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ============================================================
+         종합 04 정답 — 반응형 랜딩페이지
+         단계 번호는 문제 파일과 똑같습니다. 나란히 열어 놓고 비교하세요.
+
+         읽는 순서가 중요합니다.
+         위에서부터 좁은 화면용 규칙이 먼저 나오고,
+         맨 아래에 @media 두 개가 작은 값 → 큰 값 순서로 붙습니다.
+         이것이 모바일 우선입니다.
+         ============================================================ */
+
+      /* 아래 .width-table 은 이 정답 파일의 설명용 표입니다.
+         연습 내용이 아니니 그냥 넘어가세요. */
+      .width-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 0 0 24px;
+        font-size: 13px;
+      }
+      .width-table th,
+      .width-table td {
+        border: 1px solid #ccd5e0;
+        padding: 6px 8px;
+        text-align: left;
+      }
+      .width-table thead th {
+        background-color: #eef2f7;
+      }
+
+      /* 랜딩 페이지가 놓이는 무대입니다. 문제 파일에 미리 들어 있던 규칙입니다. */
+      .landing {
+        background-color: #ffffff;
+        border: 1px solid #cfd8e6;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      /* ───── 단계 4 ───── 그림이 절대 넘치지 않게 */
+      .landing img {
+        max-width: 100%;
+        height: auto;
+      }
+      /* 화면: 폭 1280 에서는 그림이 384px, 폭 768 에서는 원래 크기인 480px 입니다.
+               폭 375 까지 줄이면 자리에 맞춰 261px 로 줄어듭니다.
+               이 두 줄이 없으면 폭 375 에서 480px 그대로 버텨서 그림 오른쪽이 잘립니다 */
+
+      /* ───── 단계 5 ───── 머리글과 내비게이션 (좁은 화면 기준) */
+      .site-head {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        background-color: #14243d;
+        padding: 16px;
+      }
+      .site-logo {
+        margin: 0;
+        color: #ffffff;
+        font-size: 20px;
+        font-weight: bold;
+        letter-spacing: 2px;
+      }
+      .site-nav {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        width: 100%;
+      }
+      .site-nav a {
+        background-color: #22375a;
+        color: #d8e4f7;
+        padding: 8px 14px;
+        border-radius: 6px;
+        text-align: center;
+        text-decoration: none;
+        font-size: 14px;
+      }
+      .site-nav a:hover {
+        background-color: #2d6cdf;
+        color: #ffffff;
+      }
+      /* 화면: 폭 599 이하에서 남색 머리글 안에 로고가 한 줄, 그 아래 메뉴 세 개가
+               세로로 쌓입니다. 폭 600 이상은 단계 9 가 가로로 되돌립니다 */
+
+      /* ───── 단계 6 ───── 소개 영역 */
+      .hero {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 18px;
+        align-items: center;
+        background-color: #eef3fb;
+        padding: 26px 18px;
+      }
+      .hero-title {
+        margin: 0 0 10px;
+        font-size: clamp(22px, 4vw, 36px);
+        line-height: 1.3;
+        color: #14243d;
+      }
+      .hero-lead {
+        margin: 0 0 18px;
+        font-size: 15px;
+        color: #44506b;
+      }
+      .hero-cta {
+        margin: 0;
+      }
+      .hero-button {
+        display: inline-block;
+        background-color: #2d6cdf;
+        color: #ffffff;
+        padding: 12px 26px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+      }
+      .hero-figure {
+        margin: 0;
+        text-align: center;
+      }
+      /* 화면: 연한 파란 칸에 큰 제목과 설명, 파란 버튼이 놓이고 그 아래 대표 그림이 옵니다.
+               폭 900 이상은 단계 10 이 좌우 두 칸으로 바꿉니다.
+               제목 크기는 폭 1280 에서 36px, 768 에서 30.72px, 375 에서 22px 입니다 */
+
+      /* ───── 단계 7 ───── 특징 카드 (좁은 화면 기준 1단) */
+      .features {
+        padding: 26px 18px;
+      }
+      .features-title {
+        margin: 0 0 16px;
+        font-size: 22px;
+        text-align: center;
+        color: #14243d;
+      }
+      .feature-list {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .feature-card {
+        background-color: #ffffff;
+        border: 1px solid #d6dfee;
+        border-radius: 10px;
+        padding: 18px;
+        text-align: center;
+      }
+      .feature-icon {
+        width: 64px;
+      }
+      .feature-name {
+        margin: 10px 0 6px;
+        font-size: 17px;
+        color: #14243d;
+      }
+      .feature-text {
+        margin: 0;
+        font-size: 14px;
+        line-height: 1.6;
+        color: #55617a;
+      }
+      /* 화면: 폭 599 이하에서 카드 세 장이 한 칸짜리 격자에 세로로 쌓입니다.
+               폭 600 이상은 단계 9 가, 폭 900 이상은 단계 10 이 칸 수를 바꿉니다 */
+
+      /* ───── 단계 8 ───── 바닥글 (미디어쿼리 없이 저절로 접히는 격자) */
+      .site-foot {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 16px;
+        background-color: #14243d;
+        color: #c9d6ea;
+        padding: 22px 18px;
+      }
+      .foot-title {
+        margin: 0 0 6px;
+        color: #ffffff;
+        font-size: 15px;
+        font-weight: bold;
+      }
+      .foot-text {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.6;
+      }
+      /* 화면: 폭 1280 과 768 에서는 세 칸이 가로로, 폭 375 에서는 한 칸씩 세로로 쌓입니다 */
+
+      /* ───── 단계 9 ───── [도전] 600px 이상이면 2단 · 메뉴는 가로 */
+      @media (min-width: 600px) {
+        .site-head {
+          flex-direction: row;
+          justify-content: space-between;
+        }
+        .site-nav {
+          flex-direction: row;
+          width: auto;
+        }
+        .feature-list {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      /* 화면: 폭 768 에서 로고가 왼쪽 끝, 메뉴 세 개가 오른쪽 끝에 한 줄로 붙고
+               특징 카드가 두 칸으로 나뉩니다 */
+
+      /* ───── 단계 10 ───── [도전] 900px 이상이면 3단 · 소개는 좌우 2단 */
+      @media (min-width: 900px) {
+        .hero {
+          grid-template-columns: 1fr 1fr;
+        }
+        .feature-list {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      /* 화면: 폭 1280 에서 소개 영역이 글과 그림 두 칸으로 나뉘고
+               특징 카드가 한 줄에 세 장으로 놓입니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         14단원 · 종합 04 정답 — 반응형 랜딩페이지
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              그리고 브라우저 창의 오른쪽 끝을 잡고 폭을 천천히 줄여 보세요.
+         ============================================================
+
+         답이 글자 하나까지 같을 필요는 없습니다.
+         화면이 같고 F12 로 잰 숫자가 같으면 맞은 것입니다.
+
+         이 파일은 이 자료의 마지막 결과물입니다.
+         01단원의 태그부터 13단원의 미디어쿼리까지 전부 한 장에 들어 있습니다.
+
+             01~06단원   header nav main section article footer a img h2 h3 p 표시
+             07~09단원   색 · 글자 크기 · 정렬 · 링크 밑줄 없애기
+             10단원      padding border border-radius overflow
+             11단원      display
+             12단원      flex 로 만든 머리글과 메뉴
+             13단원      grid · @media · clamp · max-width 100% · 뷰포트 meta
+
+         읽는 순서를 지키세요. style 안이 이렇게 되어 있습니다.
+
+             ① 좁은 화면용 규칙 (미디어쿼리 밖)
+             ② @media (min-width: 600px)
+             ③ @media (min-width: 900px)
+
+         좁은 쪽을 기본으로 삼고 넓어질 때 덧붙이는 것을 모바일 우선이라고 합니다.
+         반대로 쓰면 코드가 길어지고, 무엇보다 휴대폰에서 먼저 깨집니다.
+    ============================================================ -->
+
+    <h1 class="doc-head">종합 04 정답 — 반응형 랜딩페이지</h1>
+    <p class="doc-sub">14단원 · 종합 연습 · 01~13단원</p>
+
+    <p class="doc-guide">
+      아래가 완성된 모습입니다. <strong>브라우저 창의 폭을 줄였다 늘렸다 해 보세요.</strong>
+      특징 카드가 3단 → 2단 → 1단으로 접히고 메뉴도 가로에서 세로로 바뀝니다.
+      각 단계의 <strong>답과 해설</strong>은 이 파일을 VS Code 로 열면
+      <code>&lt;style&gt;</code> 안과 각 단계 주석에 있습니다.
+    </p>
+
+    <div class="doc-demo">
+      <p class="doc-demo-label">완성된 랜딩 페이지</p>
+      <div class="landing">
+        <header class="site-head">
+          <p class="site-logo">파랑학습</p>
+          <nav class="site-nav">
+            <a href="#hero">소개</a>
+            <a href="#features">특징</a>
+            <a href="#contact">문의</a>
+          </nav>
+        </header>
+
+        <main>
+          <section class="hero" id="hero">
+            <div class="hero-text">
+              <h2 class="hero-title">화면 크기에 맞춰 스스로 접히는 페이지</h2>
+              <p class="hero-lead">
+                휴대폰에서는 한 줄로, 태블릿에서는 두 칸으로, 넓은 화면에서는 세 칸으로.
+                HTML 은 그대로 두고 CSS 만 바꿔서 만듭니다.
+              </p>
+              <p class="hero-cta">
+                <a class="hero-button" href="#features">특징 보러 가기</a>
+              </p>
+            </div>
+            <p class="hero-figure">
+              <img
+                class="hero-image"
+                src="이미지/랜딩_대표그림.svg"
+                alt="브라우저 창 안에 제목과 카드 세 장이 놓인 그림"
+              />
+            </p>
+          </section>
+
+          <section class="features" id="features">
+            <h2 class="features-title">이 페이지가 지키는 세 가지</h2>
+            <div class="feature-list">
+              <article class="feature-card">
+                <img
+                  class="feature-icon"
+                  src="이미지/랜딩_아이콘_연필.svg"
+                  alt="연필 아이콘"
+                />
+                <h3 class="feature-name">뜻이 있는 태그</h3>
+                <p class="feature-text">
+                  머리글은 header, 메뉴는 nav, 바닥글은 footer 로 씁니다.
+                  화면 모양은 같아도 읽는 사람과 기계가 구조를 알아봅니다.
+                </p>
+              </article>
+              <article class="feature-card">
+                <img
+                  class="feature-icon"
+                  src="이미지/랜딩_아이콘_팔레트.svg"
+                  alt="색 팔레트 아이콘"
+                />
+                <h3 class="feature-name">한 벌의 색과 글자</h3>
+                <p class="feature-text">
+                  색과 글자 크기를 몇 가지로 정해 두고 그것만 씁니다.
+                  그래야 페이지 전체가 한 사람이 만든 것처럼 보입니다.
+                </p>
+              </article>
+              <article class="feature-card">
+                <img
+                  class="feature-icon"
+                  src="이미지/랜딩_아이콘_화면.svg"
+                  alt="넓은 화면과 좁은 화면 아이콘"
+                />
+                <h3 class="feature-name">어느 폭에서도 안 깨짐</h3>
+                <p class="feature-text">
+                  폭을 줄여도 가로 스크롤바가 생기지 않습니다.
+                  그림에는 상한선을 걸고, 칸 수는 화면 크기에 맡깁니다.
+                </p>
+              </article>
+            </div>
+          </section>
+        </main>
+
+        <footer class="site-foot" id="contact">
+          <div class="foot-col">
+            <p class="foot-title">파랑학습</p>
+            <p class="foot-text">HTML 과 CSS 를 처음부터 배우는 곳입니다.</p>
+          </div>
+          <div class="foot-col">
+            <p class="foot-title">찾아오는 길</p>
+            <p class="foot-text">서울 어딘가 파랑로 13길 14</p>
+          </div>
+          <div class="foot-col">
+            <p class="foot-title">문의</p>
+            <p class="foot-text">전화 02-000-0000 / 평일 10:00 부터 18:00 까지</p>
+          </div>
+        </footer>
+      </div>
+      <!-- 화면: 폭 1280 에서 남색 머리글(로고 왼쪽 · 메뉴 오른쪽), 좌우 두 칸짜리 소개 영역,
+                가로 세 장짜리 특징 카드, 세 칸짜리 남색 바닥글이 차례로 쌓입니다 -->
+    </div>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 폭에 따라 어떻게 달라지나 ──</p>
+      <p>
+        아래 값은 크롬에서 실제로 재 본 것입니다. F12 를 누르고
+        <strong>Ctrl + Shift + M</strong> 을 누르면 폭을 숫자로 정해 놓고 볼 수 있습니다.
+      </p>
+    </div>
+
+    <table class="width-table">
+      <thead>
+        <tr>
+          <th>브라우저 폭</th>
+          <th>1280 (노트북)</th>
+          <th>768 (태블릿)</th>
+          <th>375 (휴대폰)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>머리글</th>
+          <td>가로 한 줄</td>
+          <td>가로 한 줄</td>
+          <td>세로 두 줄</td>
+        </tr>
+        <tr>
+          <th>메뉴</th>
+          <td>오른쪽 끝 가로</td>
+          <td>오른쪽 끝 가로</td>
+          <td>세로로 쌓임</td>
+        </tr>
+        <tr>
+          <th>소개 영역</th>
+          <td>글 + 그림 2단</td>
+          <td>1단 (그림이 아래)</td>
+          <td>1단 (그림이 아래)</td>
+        </tr>
+        <tr>
+          <th>소개 제목 크기</th>
+          <td>36px (상한선)</td>
+          <td>30.72px (4vw)</td>
+          <td>22px (하한선)</td>
+        </tr>
+        <tr>
+          <th>대표 그림 폭</th>
+          <td>384px</td>
+          <td>480px (원래 크기)</td>
+          <td>261px</td>
+        </tr>
+        <tr>
+          <th>특징 카드</th>
+          <td>3단</td>
+          <td>2단</td>
+          <td>1단</td>
+        </tr>
+        <tr>
+          <th>카드 한 장 폭</th>
+          <td>253px</td>
+          <td>320px</td>
+          <td>261px</td>
+        </tr>
+        <tr>
+          <th>바닥글</th>
+          <td>3칸 (251px)</td>
+          <td>3칸 (207px)</td>
+          <td>1칸 (261px)</td>
+        </tr>
+        <tr>
+          <th>가로 스크롤</th>
+          <td>없음</td>
+          <td>없음</td>
+          <td>없음</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 단계 목록 ──</p>
+      <p>단계 1 — 페이지 뼈대를 만듭니다 (HTML)</p>
+      <p>단계 2 — 소개 영역을 채웁니다 (HTML)</p>
+      <p>단계 3 — 특징 카드 세 장과 바닥글을 채웁니다 (HTML)</p>
+      <p>단계 4 — 뷰포트 meta 를 넣고 그림에 상한선을 겁니다</p>
+      <p>단계 5 — 머리글과 메뉴를 좁은 화면 기준으로 만듭니다</p>
+      <p>단계 6 — 소개 영역과 버튼을 만듭니다</p>
+      <p>단계 7 — 특징 카드를 한 칸짜리 격자에 놓습니다</p>
+      <p>단계 8 — 바닥글을 저절로 접히는 격자로 만듭니다</p>
+      <p>단계 9 — [도전] 600px 이상이면 카드 2단, 메뉴는 가로로 바꿉니다</p>
+      <p>단계 10 — [도전] 900px 이상이면 카드 3단, 소개는 좌우 2단으로 바꿉니다</p>
+    </div>
+
+    <!-- ───── 단계 1 ───── (06단원 개념03 페이지 뼈대 태그 · 04단원 개념03 페이지 안 이동) -->
+    <!--
+      답:
+          <header class="site-head">
+            <p class="site-logo">파랑학습</p>
+            <nav class="site-nav">
+              <a href="#hero">소개</a>
+              <a href="#features">특징</a>
+              <a href="#contact">문의</a>
+            </nav>
+          </header>
+          <main>
+            ... 단계 2 와 단계 3 의 내용이 여기 들어갑니다 ...
+          </main>
+          <footer class="site-foot" id="contact">
+            ... 단계 3 ...
+          </footer>
+
+      해설: header · nav · main · footer 는 모양을 하나도 안 바꿉니다.
+            div 로 다 써도 화면은 똑같습니다. 그래도 이 태그를 쓰는 이유는
+            "이 덩어리가 무엇인지" 를 코드에 남기기 위해서입니다.
+            main 은 한 페이지에 하나만 씁니다. 그 페이지의 본론이라는 뜻이기 때문입니다.
+            href 앞에 우물 정(#) 을 붙이면 같은 페이지 안의 그 id 자리로 넘어갑니다.
+            그래서 아래 section 과 footer 에 id 를 붙여 둔 것입니다.
+            메뉴 항목을 ul 과 li 로 감싸는 방식도 많이 씁니다. 여기서는 a 세 개만 넣었습니다.
+    -->
+
+    <!-- ───── 단계 2 ───── (06단원 개념04 section · 02단원 개념01 제목 · 04단원 개념04 img) -->
+    <!--
+      답:
+          <section class="hero" id="hero">
+            <div class="hero-text">
+              <h2 class="hero-title">화면 크기에 맞춰 스스로 접히는 페이지</h2>
+              <p class="hero-lead">휴대폰에서는 한 줄로 ...</p>
+              <p class="hero-cta">
+                <a class="hero-button" href="#features">특징 보러 가기</a>
+              </p>
+            </div>
+            <p class="hero-figure">
+              <img class="hero-image" src="이미지/랜딩_대표그림.svg"
+                   alt="브라우저 창 안에 제목과 카드 세 장이 놓인 그림" />
+            </p>
+          </section>
+
+      해설: 글 덩어리를 div 로 한 번 더 묶은 이유가 있습니다.
+            단계 10 에서 소개 영역을 두 칸짜리 격자로 만들 텐데, 그때 왼쪽 칸에
+            제목 · 설명 · 버튼이 통째로 들어가야 하기 때문입니다.
+            묶지 않으면 세 요소가 각각 한 칸씩 차지해 칸이 모자랍니다.
+            버튼처럼 보이지만 button 이 아니라 a 입니다. 누르면 다른 곳으로 가는 것이
+            링크의 일이고, 폼을 보내는 것이 button 의 일입니다. 여기서는 링크가 맞습니다.
+            그림을 p 로 한 번 감싼 이유는 단계 6 에서 가운데로 보내기 위해서입니다.
+    -->
+
+    <!-- ───── 단계 3 ───── (06단원 개념04 article · 02단원 개념01 제목) -->
+    <!--
+      답: 카드 한 장은 이 모양이고, 세 장을 div 로 감쌉니다.
+
+          <section class="features" id="features">
+            <h2 class="features-title">이 페이지가 지키는 세 가지</h2>
+            <div class="feature-list">
+              <article class="feature-card">
+                <img class="feature-icon" src="이미지/랜딩_아이콘_연필.svg" alt="연필 아이콘" />
+                <h3 class="feature-name">뜻이 있는 태그</h3>
+                <p class="feature-text">머리글은 header, 메뉴는 nav ...</p>
+              </article>
+              ... 두 장 더 ...
+            </div>
+          </section>
+
+          바닥글은 div 세 개입니다.
+
+          <footer class="site-foot" id="contact">
+            <div class="foot-col">
+              <p class="foot-title">파랑학습</p>
+              <p class="foot-text">HTML 과 CSS 를 처음부터 배우는 곳입니다.</p>
+            </div>
+            ... 두 칸 더 ...
+          </footer>
+
+      해설: 제목 순위를 눈여겨보세요. 자료 제목이 h1, 구획 제목이 h2, 카드 이름이 h3 입니다.
+            제목 태그는 글자 크기를 고르는 도구가 아니라 순위를 매기는 도구입니다.
+            크기는 CSS 로 따로 정합니다. 실제로 단계 7 에서 h3 크기를 17px 로 바꿉니다.
+            바닥글 세 칸을 div 로 만든 이유는 그 자체로는 뜻이 없는 배치용 상자이기 때문입니다.
+            반대로 특징 카드 한 장은 그 자체로 뜻이 통하므로 article 을 씁니다.
+    -->
+
+    <!-- ───── 단계 4 ───── (13단원 개념03 뷰포트 meta · 개념04 반응형 이미지) -->
+    <!--
+      답:  head 안에
+             <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+           style 안에
+             .landing img { max-width: 100%; height: auto; }
+
+      해설: 이 두 가지는 반응형 페이지의 안전벨트입니다. 없어도 넓은 화면에서는
+            아무 문제가 없어 보입니다. 그래서 더 자주 빠뜨립니다.
+
+            뷰포트 meta 가 없으면 휴대폰 브라우저가 "이 페이지는 980px 짜리겠지" 하고
+            멋대로 축소해서 보여 줍니다. 그러면 @media 가 전부 넓은 화면 쪽으로 걸려서
+            애써 만든 반응형이 통째로 안 먹습니다. 노트북에서는 멀쩡하니 알아채기 어렵습니다.
+
+            max-width: 100% 는 "부모보다 커지지는 마라" 는 뜻입니다.
+            width: 100% 와 다릅니다. width 는 항상 부모만큼 늘리라는 명령이라
+            작은 그림도 억지로 늘어나 흐릿해집니다. max-width 는 상한선만 걸어 둡니다.
+            height 를 auto 로 두어야 가로가 줄 때 세로도 같은 비율로 줄어듭니다.
+            여기서 그림 파일은 480px 짜리인데, 폭 375 에서는 자리가 261px 뿐이라
+            261px 로 줄어듭니다.
+            폭 768 에서는 자리가 654px 이라 그림이 원래 크기 480px 그대로 나옵니다.
+            max-width 는 "커지지 마라" 일 뿐 "늘어나라" 가 아니기 때문입니다.
+
+            이 줄이 없으면 폭 375 에서 그림이 480px 을 고집해 무대 밖으로 삐져나갑니다.
+            이 페이지에서는 무대(.landing) 에 overflow: hidden 이 미리 걸려 있어서
+            스크롤바 대신 그림 오른쪽이 뭉텅 잘려 나갑니다.
+            무대에 overflow: hidden 마저 없었다면 페이지 전체에 가로 스크롤바가 생겼을 것입니다.
+            어느 쪽이든 고장입니다. 좁은 화면에서 확인해야 보인다는 점이 무서운 것입니다.
+    -->
+
+    <!-- ───── 단계 5 ───── (12단원 개념02 flex-direction · 개념04 align-items) -->
+    <!--
+      답:  .site-head { display: flex; flex-direction: column; align-items: center;
+                        gap: 10px; background-color: #14243d; padding: 16px; }
+           .site-logo { margin: 0; color: #ffffff; font-size: 20px;
+                        font-weight: bold; letter-spacing: 2px; }
+           .site-nav { display: flex; flex-direction: column; gap: 6px; width: 100%; }
+           .site-nav a { background-color: #22375a; color: #d8e4f7; padding: 8px 14px;
+                         border-radius: 6px; text-align: center;
+                         text-decoration: none; font-size: 14px; }
+           .site-nav a:hover { background-color: #2d6cdf; color: #ffffff; }
+
+      해설: 여기가 모바일 우선의 출발점입니다. 미디어쿼리 밖에 쓴 것이 곧 좁은 화면용입니다.
+            좁은 화면에서는 가로로 늘어놓을 자리가 없으니 세로로 쌓는 것이 기본입니다.
+            그래서 flex-direction 을 처음부터 column 으로 둡니다.
+            a 는 인라인이라 원래는 위아래 padding 을 줘도 줄 높이가 안 늘어납니다.
+            그런데 .site-nav 가 flex 컨테이너라 그 자식인 a 가 아이템이 되면서
+            블록처럼 취급됩니다. 그래서 padding 8px 이 위아래로 제대로 먹습니다.
+            width: 100% 는 좁은 화면에서 메뉴 단추가 화면 폭을 꽉 채우게 합니다.
+            손가락으로 누르는 화면에서는 누를 자리가 넓을수록 좋습니다.
+    -->
+
+    <!-- ───── 단계 6 ───── (13단원 개념01 grid · 개념04 clamp · 12단원 개념04 align-items
+         · 11단원 개념02 display) -->
+    <!--
+      답:  .hero { display: grid; grid-template-columns: 1fr; gap: 18px;
+                   align-items: center; background-color: #eef3fb; padding: 26px 18px; }
+           .hero-title { margin: 0 0 10px; font-size: clamp(22px, 4vw, 36px);
+                         line-height: 1.3; color: #14243d; }
+           .hero-lead { margin: 0 0 18px; font-size: 15px; color: #44506b; }
+           .hero-cta { margin: 0; }
+           .hero-button { display: inline-block; background-color: #2d6cdf;
+                          color: #ffffff; padding: 12px 26px; border-radius: 8px;
+                          text-decoration: none; font-weight: bold; }
+           .hero-figure { margin: 0; text-align: center; }
+
+      해설: align-items 는 12단원 개념04 에서 flex 에 쓰던 그 속성입니다.
+            grid 에서도 이름과 뜻이 똑같아서 새로 외울 것이 없습니다.
+            13단원에서는 안 나왔지만 여기서 바로 써도 됩니다.
+            단계 10 에서 소개 영역이 두 칸이 되면 글 덩어리와 그림의 키가 달라지는데,
+            이 한 줄이 둘을 같은 높이 가운데에 맞춰 줍니다.
+
+            grid-template-columns: 1fr 은 "칸 하나짜리 격자" 입니다.
+            칸이 하나뿐이니 지금은 글 덩어리와 그림이 위아래로 쌓입니다.
+            일부러 이렇게 시작합니다. 단계 10 에서 이 한 줄만 고쳐 두 칸으로 만들 것입니다.
+            HTML 은 한 글자도 안 건드리고 CSS 한 줄로 배치가 바뀝니다.
+
+            clamp(22px, 4vw, 36px) 는 "최소 22px, 기준 화면 폭의 4%, 최대 36px" 입니다.
+            폭 1280 에서 4vw 는 51.2px 이지만 상한선 36px 에 걸려 36px 이 됩니다.
+            폭 768 에서는 30.72px, 폭 375 에서는 15px 이 되어 하한선 22px 에 걸립니다.
+            미디어쿼리 세 개를 쓸 일을 한 줄로 대신한 셈입니다.
+
+            a 에 display: inline-block 을 준 이유는 위아래 padding 때문입니다.
+            버튼은 flex 아이템이 아니므로 자동으로 블록이 되지 않습니다.
+            그렇다고 block 으로 만들면 한 줄을 통째로 차지해 버튼이 가로로 쭉 늘어납니다.
+            글자만큼만 차지하면서 크기도 정할 수 있는 절충안이 inline-block 입니다.
+    -->
+
+    <!-- ───── 단계 7 ───── (13단원 개념01 grid · 10단원 개념03 border) -->
+    <!--
+      답:  .features { padding: 26px 18px; }
+           .features-title { margin: 0 0 16px; font-size: 22px;
+                             text-align: center; color: #14243d; }
+           .feature-list { display: grid; grid-template-columns: 1fr; gap: 14px; }
+           .feature-card { background-color: #ffffff; border: 1px solid #d6dfee;
+                           border-radius: 10px; padding: 18px; text-align: center; }
+           .feature-icon { width: 64px; }
+           .feature-name { margin: 10px 0 6px; font-size: 17px; color: #14243d; }
+           .feature-text { margin: 0; font-size: 14px; line-height: 1.6; color: #55617a; }
+
+      해설: 여기도 칸 하나짜리 격자로 시작합니다. 좁은 화면이 기본이기 때문입니다.
+            카드 세 장이 세로로 쌓이고 사이가 14px 씩 벌어집니다.
+            gap 은 칸 사이에만 들어가고 바깥쪽에는 안 붙습니다. 그래서 마지막 카드
+            아래에만 여백이 남는 일이 없습니다. margin 으로 하면 그 처리를 손으로 해야 합니다.
+
+            여기서 flex 대신 grid 를 쓴 이유를 생각해 보세요.
+            카드 목록은 한 줄이 아니라 격자입니다. 칸 수를 내가 정하고 싶습니다.
+            flex 는 "몇 개 들어가는지" 를 브라우저가 폭을 보고 정하지만,
+            grid 는 "몇 칸" 이라고 내가 못 박습니다. 그래서 단계 9·10 처럼
+            폭 구간마다 칸 수를 정확히 3단 · 2단 · 1단으로 바꾸려면 grid 가 편합니다.
+    -->
+
+    <!-- ───── 단계 8 ───── (13단원 개념02 repeat auto-fit 과 minmax) -->
+    <!--
+      답:  .site-foot { display: grid;
+                        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                        gap: 16px; background-color: #14243d; color: #c9d6ea;
+                        padding: 22px 18px; }
+           .foot-title { margin: 0 0 6px; color: #ffffff;
+                         font-size: 15px; font-weight: bold; }
+           .foot-text { margin: 0; font-size: 13px; line-height: 1.6; }
+
+      해설: 이 한 줄은 읽는 법을 알면 어렵지 않습니다.
+
+                repeat( auto-fit , minmax(180px, 1fr) )
+                       └ 칸 수    └ 칸 하나의 크기
+
+            minmax(180px, 1fr) 은 "이 칸은 최소 180px, 남으면 1fr 만큼 더" 입니다.
+            auto-fit 은 "180px 짜리 칸을 들어갈 수 있는 만큼 만들어라" 입니다.
+            그래서 폭이 줄면 칸 수가 저절로 3 → 2 → 1 로 바뀝니다.
+            @media 를 한 줄도 안 썼는데 그렇게 됩니다.
+
+            바닥글 안쪽 폭이 폭 1280 에서 786px 이므로 180px 칸은 넉넉히 세 개가 들어갑니다.
+            칸 하나가 251px 이 됩니다.
+            폭 375 에서는 안쪽 폭이 261px 뿐이라 180 짜리 두 칸(180 + 16 + 180 = 376) 이
+            안 들어가서 한 칸만 남습니다. 그 한 칸이 1fr 로 늘어나 261px 을 다 차지합니다.
+
+            칸 수가 딱 떨어져야 하는 곳(특징 카드) 에는 @media 를 쓰고,
+            아무 수나 괜찮은 곳(바닥글) 에는 auto-fit 을 쓰면 코드가 짧아집니다.
+    -->
+
+    <!-- ───── 단계 9 ───── [도전] (13단원 개념03 미디어쿼리 · 개념05 모바일 우선) -->
+    <!--
+      답:  @media (min-width: 600px) {
+             .site-head { flex-direction: row; justify-content: space-between; }
+             .site-nav { flex-direction: row; width: auto; }
+             .feature-list { grid-template-columns: repeat(2, 1fr); }
+           }
+
+      해설: 중괄호가 두 겹이라는 점을 꼭 보세요. 바깥 중괄호는 @media 것이고,
+            안쪽 중괄호는 선택자 것입니다. 안쪽에 선택자를 빠뜨리고 속성만 쓰면
+            아무 일도 일어나지 않습니다. 에러도 안 납니다.
+
+            min-width: 600px 은 "폭이 600px 이상일 때" 입니다. 경계값 600 도 포함입니다.
+            바꿔야 하는 줄만 씁니다. 배경색과 padding 은 좁을 때와 같으므로 다시 안 씁니다.
+            이것이 모바일 우선의 이점입니다. 데스크톱 우선으로 짰다면
+            여기서 색과 여백까지 전부 다시 써야 했을 것입니다.
+
+            .site-nav 의 width 를 auto 로 되돌리는 줄을 빠뜨리기 쉽습니다.
+            빠뜨리면 메뉴가 100% 를 계속 차지해서 로고를 왼쪽으로 밀어붙입니다.
+            좁은 화면용으로 준 값은 넓어질 때 되돌려야 한다는 것을 기억하세요.
+    -->
+
+    <!-- ───── 단계 10 ───── [도전] (13단원 개념03 미디어쿼리 · 개념01 grid) -->
+    <!--
+      답:  @media (min-width: 900px) {
+             .hero { grid-template-columns: 1fr 1fr; }
+             .feature-list { grid-template-columns: repeat(3, 1fr); }
+           }
+
+      해설: 미디어쿼리는 작은 값부터 큰 값 순서로 위에서 아래로 씁니다.
+            600 짜리와 900 짜리가 둘 다 참일 때(예를 들어 폭 1280) 나중에 쓴 900 짜리가
+            이깁니다. 명시도가 같으면 나중에 쓴 것이 이기기 때문입니다.
+            @media 는 명시도를 올려 주지 않습니다. 순서가 전부입니다.
+            그래서 900 짜리를 600 짜리보다 위에 쓰면 넓은 화면에서 2단이 나옵니다.
+            에러는 안 납니다. 그냥 조용히 틀립니다.
+
+            .hero 에 준 1fr 1fr 은 같은 폭의 두 칸입니다.
+            왼쪽 칸에 글 덩어리(hero-text), 오른쪽 칸에 그림(hero-figure) 이 들어갑니다.
+            단계 2 에서 글 세 줄을 div 로 묶어 둔 것이 여기서 값을 합니다.
+            묶지 않았다면 제목 · 설명 · 버튼 · 그림 네 개가 두 칸에 두 줄로 흩어집니다.
+
+            repeat(3, 1fr) 은 1fr 1fr 1fr 과 같습니다. 괄호 안만 쉼표라는 점을 조심하세요.
+            grid-template-columns 자체는 쉼표로 나누지 않고 띄어쓰기로 나눕니다.
+    -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      .landing | border-radius | 12px
+      .landing | ~width | 824
+      .site-head | background-color | rgb(20, 36, 61)
+      .site-head | display | flex
+      .site-head | flex-direction | row
+      .site-head | justify-content | space-between
+      .site-logo | color | rgb(255, 255, 255)
+      .site-nav | flex-direction | row
+      .site-nav a | text-decoration-line | none
+      .site-nav a | display | block
+      .hero | display | grid
+      .hero-title | font-size | 36px
+      .hero-text | ~width | 384
+      .hero-image | ~width | 384
+      .hero-button | display | inline-block
+      .hero-button | background-color | rgb(45, 108, 223)
+      .feature-list | display | grid
+      .feature-card | ~width | 253
+      .feature-icon | ~width | 64
+      .site-foot | display | grid
+      .foot-col | ~width | 251
+      .width-table | border-collapse | collapse
+      @폭 768
+      .landing | ~width | 692
+      .site-head | flex-direction | row
+      .site-nav | flex-direction | row
+      .hero-title | font-size | 30.72px
+      .hero-text | ~width | 654
+      .hero-image | ~width | 480
+      .feature-card | ~width | 320
+      .foot-col | ~width | 207
+      @폭 375
+      .landing | ~width | 299
+      .site-head | flex-direction | column
+      .site-nav | flex-direction | column
+      .site-nav a | ~width | 265
+      .hero-title | font-size | 22px
+      .hero-image | ~width | 261
+      .feature-card | ~width | 261
+      .foot-col | ~width | 261
+    -->
+  </body>
+</html>

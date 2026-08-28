@@ -1,0 +1,38 @@
+/* 10단원에서 함께 쓰는 최소한의 꾸밈. 이 단원의 주제는 CSS 가 아닙니다. */
+body {
+  font-family: "맑은 고딕", sans-serif;
+  line-height: 1.7;
+  max-width: 720px;
+  margin: 40px auto;
+  padding: 0 20px;
+  color: #222;
+}
+h1 { border-bottom: 3px solid #333; padding-bottom: 8px; }
+h2 { margin-top: 32px; font-size: 18px; color: #444; }
+.안내 { background: #fff8dc; border-left: 4px solid #f0c040; padding: 12px 16px; }
+
+button { font-size: 15px; padding: 8px 16px; cursor: pointer; margin-right: 6px; }
+button:disabled { opacity: 0.5; cursor: not-allowed; }
+input, select, textarea { font-size: 15px; padding: 6px 8px; font-family: inherit; }
+
+pre { background: #f5f5f5; border: 1px solid #ddd; padding: 12px; white-space: pre-wrap; word-break: break-all; }
+
+/* 상태를 눈으로 구별하려고 색을 씁니다 */
+.로딩 { color: #666; }
+.에러 { color: #c00; }
+.성공 { color: #060; }
+.비었음 { color: #888; font-style: italic; }
+
+table { border-collapse: collapse; width: 100%; margin-top: 12px; }
+th, td { border: 1px solid #ccc; padding: 6px 10px; text-align: left; }
+th { background: #eee; }
+
+.줄 { margin: 10px 0; }
+.칸 { display: block; margin: 8px 0; }
+.칸 > span { display: inline-block; width: 90px; }
+.오류글 { color: #c00; font-size: 13px; margin-left: 94px; }
+.입력오류 { border: 2px solid #c00; }
+
+.쪽 { margin-top: 12px; }
+.쪽 button { margin-right: 4px; }
+.지금쪽 { font-weight: bold; text-decoration: underline; }

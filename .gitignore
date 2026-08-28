@@ -1,3 +1,12 @@
 연습지.html
 연습지.css
 연습지.js
+
+# Claude 관련 (커밋 금지)
+.claude/
+CLAUDE.md
+.mcp.json
+
+# 로그·의존성
+node_modules/
+*.log

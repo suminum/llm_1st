@@ -1,0 +1,426 @@
+// ============================================================
+// 03단원 · 개념 05 — 컴포넌트 쪼개기
+// ------------------------------------------------------------
+// 실행: 실습프로젝트에서 npm run dev → 왼쪽 목록에서 이 예제를 고르세요.
+//       F12 → Console 도 함께 보세요.
+// ============================================================
+//
+// 여기까지 컴포넌트를 만들고, props 를 넘기고, children 을 받아 봤습니다.
+// 이제 남은 질문은 하나입니다.
+//
+//     "그래서 화면을 어디서 잘라야 하나요?"
+//
+// 정답은 없습니다. 다만 판단 기준은 있습니다.
+// 그리고 쪼갤 때 꼭 지켜야 하는 규칙이 하나 있습니다. props 는 읽기 전용이라는 것입니다.
+//
+// 이 파일에서 배우는 것
+//   1. 언제 쪼개나 — 기준 세 가지
+//   2. 반복되는 화면을 컴포넌트로 옮기기
+//   3. props 는 읽기 전용이다 — 바꾸면 어떻게 되는지 직접 확인합니다
+//   4. 너무 잘게 쪼개면 오히려 나빠진다
+
+// ── 섹션 1: 안 쪼갠 코드부터 봅시다 ──
+
+// 아래는 메뉴판 화면 전체를 컴포넌트 하나에 다 넣은 것입니다.
+// 돌아가기는 잘 돌아갑니다.
+
+import Summary from "../_ui/Summary.jsx";
+
+function BigMenuBoard() {
+  return (
+    <div className="output">
+      <h4>동네 카페 메뉴판</h4>
+
+      <div>
+        <strong>아메리카노</strong> — 4000원
+        <br />
+        <small>가장 많이 팔립니다</small>
+      </div>
+
+      <div>
+        <strong>라떼</strong> — 4500원
+        <br />
+        <small>가장 많이 팔립니다</small>
+      </div>
+
+      <div>
+        <strong>케이크</strong> — 6000원
+        <br />
+        <small>가장 많이 팔립니다</small>
+      </div>
+    </div>
+  );
+}
+
+// 이 코드의 문제는 '지금' 이 아니라 '나중' 에 나타납니다.
+//
+//   - 같은 모양이 세 번 반복됩니다. 메뉴가 열 개면 열 번이 됩니다.
+//   - <small> 문구를 바꾸려면 세 군데를 전부 고쳐야 합니다.
+//     한 군데를 빠뜨리면 그 줄만 다른 문구가 됩니다. 실제로 아주 자주 일어납니다.
+//   - 함수 하나가 길어져서 "이 화면이 무엇으로 이루어져 있는지" 가 안 보입니다.
+//
+// 쪼갤지 말지 정하는 기준 세 가지입니다.
+//
+//   [기준 1] 같은 모양이 두 번 이상 반복되는가
+//   [기준 2] 그 덩어리에 이름을 붙일 수 있는가 ("메뉴 한 줄", "알림 상자")
+//   [기준 3] 한 화면에 안 들어와서 위아래로 스크롤해야 읽히는가
+//
+// 하나라도 그렇다면 쪼갤 때가 된 것입니다.
+// 세 기준 모두 JS자료 05단원 개념01에서 "왜 함수인가" 를 이야기할 때 나온 것과 같습니다.
+
+// ✏️ 직접 해보기 1 — BigMenuBoard 의 <small> 문구 세 개를 전부
+//                    "오늘의 추천" 으로 바꿔 보세요. 몇 군데를 고쳤나요?
+
+// ── 섹션 2: 반복되는 덩어리를 컴포넌트로 ──
+
+// 위에서 세 번 반복된 덩어리에 이름을 붙입니다. "메뉴 한 줄" 이니 MenuRow 로 하겠습니다.
+// 달라지는 값(이름·가격)은 props 로 받습니다.
+
+function MenuRow({ name, price }) {
+  return (
+    <div>
+      <strong>{name}</strong> — {price}원
+      <br />
+      <small>가장 많이 팔립니다</small>
+    </div>
+  );
+}
+
+function MenuBoard() {
+  return (
+    <div className="output">
+      <h4>동네 카페 메뉴판</h4>
+      <MenuRow name="아메리카노" price={4000} />
+      <MenuRow name="라떼" price={4500} />
+      <MenuRow name="케이크" price={6000} />
+    </div>
+  );
+}
+
+// 화면 ① 과 ② 를 비교해 보세요. 똑같습니다.
+// 달라진 것은 코드입니다.
+//
+//   - <small> 문구는 이제 한 곳에만 있습니다. 고칠 곳이 한 곳입니다.
+//   - MenuBoard 만 읽어도 "제목 하나에 메뉴 세 줄" 이라는 구조가 보입니다.
+//   - 메뉴를 하나 더 넣으려면 한 줄만 추가하면 됩니다.
+//
+// 쪼개는 순서는 늘 같습니다.
+//   1. 반복되는 덩어리를 찾는다
+//   2. 그 덩어리를 새 함수로 옮긴다
+//   3. 줄마다 달라지는 값을 props 로 뺀다
+//   4. 원래 자리에 <MenuRow ... /> 를 넣는다
+
+// ✏️ 직접 해보기 2 — MenuBoard 에 삼각김밥 1200원 줄을 하나 더 넣어 보세요.
+
+// ── 섹션 3: props 로 값만 바꿔 여러 개 만들기 ──
+
+// 같은 컴포넌트에 다른 값을 넣어 여러 개를 만드는 것이 컴포넌트의 핵심 쓸모입니다.
+// 여기에 개념03의 기본값을 더하면 더 편해집니다.
+
+function MenuCard({ name, price, note = "설명 없음" }) {
+  return (
+    <div className="output">
+      <strong>{name}</strong> — {price}원
+      <br />
+      <small>{note}</small>
+    </div>
+  );
+}
+
+// note 를 넘긴 카드와 안 넘긴 카드를 화면 ③ 에서 비교하세요.
+//
+// 지금은 카드를 손으로 네 번 썼습니다.
+// 배열 하나로 여러 개를 자동으로 그리는 방법(map)은 05단원에서 배웁니다.
+// 그때가 되면 이 네 줄이 한 줄로 줄어듭니다. 컴포넌트 쪽은 하나도 안 고칩니다.
+
+// ✏️ 직접 해보기 3 — 화면 ③ 에 <MenuCard name="물" price={0} /> 를 넣어
+//                    note 자리에 무엇이 나오는지 확인하세요.
+
+// ── 섹션 4: props 는 읽기 전용입니다 ──
+
+// ★ 이 섹션이 개념05에서 가장 중요합니다.
+//
+// 컴포넌트를 쪼개면 값이 부모에서 자식으로 내려갑니다.
+// 이때 자식은 받은 props 를 '읽기만' 해야 합니다. 고치면 안 됩니다.
+//
+// 말로만 하면 와닿지 않으니 직접 해 봅시다.
+
+function TryChangeProps(props) {
+  let result = "";
+
+  // JS자료 12단원 개념05에서 배운 try / catch 입니다.
+  // 에러가 나도 파일 전체가 멈추지 않게 감싼 것입니다.
+  try {
+    props.name = "바꿈";
+    result = "조용히 바뀌었습니다";
+  } catch (error) {
+    result = error.message;
+  }
+
+  console.log("props 를 바꾸려 하면:", result);
+  // 콘솔: props 를 바꾸려 하면: Cannot assign to read only property 'name' of object '#<Object>'
+
+  return (
+    <div className="output">
+      받은 이름: {props.name}
+      <br />
+      <span className="error">{result}</span>
+    </div>
+  );
+}
+
+// 에러 메시지를 우리말로 옮기면 "읽기 전용 속성에는 대입할 수 없습니다" 입니다.
+// React 는 개발 중에 props 객체를 아예 못 고치게 잠가 둡니다.
+//
+// 왜 이렇게까지 막아 둘까요? 이유는 두 가지입니다.
+//
+//   1. 부모는 자기가 준 값이 그대로 있을 것이라고 믿습니다.
+//      자식이 몰래 바꾸면 화면에 보이는 값과 부모가 아는 값이 달라집니다.
+//      그리고 어느 자식이 바꿨는지 찾을 방법이 없습니다.
+//
+//   2. 바꿔 봤자 화면은 다시 그려지지 않습니다.
+//      값을 바꿔서 화면을 바꾸는 방법은 따로 있습니다. 04단원의 state 입니다.
+//
+// 그럼 값을 가공해서 쓰고 싶을 때는 어떻게 할까요?
+// '읽는' 것은 얼마든지 자유입니다. 읽어서 '새 값' 을 만들면 됩니다.
+
+function OrderLine({ name, price, count = 1 }) {
+  const total = price * count; // 읽어서 새 변수를 만드는 것은 괜찮습니다
+  const label = `${name} ${count}개`;
+
+  return (
+    <div className="output">
+      {label} — 합계 {total}원
+    </div>
+  );
+}
+
+// props 를 고친 것이 아니라, props 를 읽어서 total 과 label 을 새로 만들었습니다.
+// 이건 아무 문제가 없습니다. 앞으로 이 방식을 계속 씁니다.
+
+// ✏️ 직접 해보기 4 — OrderLine 에 count={3} 을 넘겨 합계가 어떻게 바뀌는지 보세요.
+
+// ── 섹션 5: 너무 잘게 쪼개지 마세요 ──
+
+// 쪼개는 게 좋다고 해서 무조건 잘게 나누면 오히려 읽기 어려워집니다.
+// 아래는 지나치게 쪼갠 예입니다.
+
+function NameText({ value }) {
+  return <strong>{value}</strong>;
+}
+
+function PriceText({ value }) {
+  return <span>{value}원</span>;
+}
+
+function TooSmallRow({ name, price }) {
+  return (
+    <div className="output">
+      <NameText value={name} /> — <PriceText value={price} />
+    </div>
+  );
+}
+
+// 화면 ④ 는 앞의 메뉴 줄과 똑같이 나옵니다.
+// 그런데 한 줄을 이해하려고 세 곳을 왔다 갔다 해야 합니다.
+// <strong>{name}</strong> 은 그 자리에 그냥 두는 편이 훨씬 잘 읽힙니다.
+//
+// 판단이 어려울 때 쓸 만한 기준입니다.
+//
+//   쪼갠다   — 두 번 이상 쓰인다 / 이름이 자연스럽게 붙는다 / 혼자서도 뜻이 통한다
+//   안 쪼갠다 — 한 번만 쓰인다 / 이름이 "그냥 글자" 처럼 어색하다 / 한 줄짜리다
+//
+// 처음부터 완벽하게 나눌 필요는 없습니다.
+// 한 덩어리로 쓰다가 두 번째로 같은 모양이 나올 때 쪼개도 늦지 않습니다.
+//
+// 참고로 지금은 컴포넌트를 전부 한 파일에 쓰고 있습니다.
+// 파일을 나누는 것은 08단원에서 배웁니다.
+
+// ✏️ 직접 해보기 5 — TooSmallRow 를 NameText·PriceText 없이 한 컴포넌트로 다시 쓰고
+//                    화면이 같은지 확인하세요.
+
+// ── 섹션 6: 자주 하는 실수 ──
+
+// ⚠️ [SyntaxError] 라고 적힌 것은 주석을 풀지 말고 눈으로만 보세요.
+//    풀면 파일 전체가 멈춰서 화면이 통째로 비어 버립니다. 다시 // 를 붙이면 돌아옵니다.
+
+// [실수 1] props 를 직접 고침
+//   섹션 4에서 확인했습니다. TypeError 가 납니다.
+//   try / catch 로 감싸지 않으면 그 지점부터 화면이 안 그려집니다.
+
+// [실수 2] props 로 받은 '객체 안의 값' 을 고침 ★ 이건 에러도 안 납니다
+
+const sharedUser = { name: "이서연", age: 22 };
+
+function UserBadge({ user }) {
+  return (
+    <div className="output">
+      {user.name} — {user.age}세
+    </div>
+  );
+}
+
+function SecretChanger({ user }) {
+  user.age = 99; // props 객체는 잠겨 있지만, 그 '안' 의 객체는 안 잠겨 있습니다
+
+  console.log("원본 객체의 나이:", sharedUser.age);
+  // 콘솔: 원본 객체의 나이: 99
+
+  return <div className="output">여기서 몰래 user.age 를 99로 바꿨습니다</div>;
+}
+
+//   화면 ⑥ 을 보세요. 같은 sharedUser 를 넘겼는데
+//   위 배지는 22세, 아래 배지는 99세로 나옵니다.
+//   SecretChanger 가 그 사이에서 원본 객체를 고쳤기 때문입니다.
+//
+//   에러도 경고도 없습니다. 화면만 조용히 어긋납니다.
+//   그리고 sharedUser 를 쓰는 다른 화면도 전부 함께 바뀝니다.
+//   props 로 받은 것은 안쪽까지 손대지 않는다고 생각하세요.
+//   객체를 안 건드리고 바꾸는 방법은 07단원에서 제대로 배웁니다.
+
+// [실수 3] 쪼개 놓고 props 를 안 넘김
+
+function ForgotProps({ name, price }) {
+  return (
+    <div className="output">
+      <strong>{name}</strong> — {price}원
+    </div>
+  );
+}
+
+//   화면 ⑦ 의 첫 줄입니다. <ForgotProps /> 로만 썼습니다.
+//   "— 원" 만 남습니다. 에러는 없습니다. (개념02 섹션5)
+//   쪼갠 직후에 화면이 비면 이것부터 확인하세요.
+
+// [실수 4] return 다음 줄에서 JSX 를 시작함 ★ 조용히 사라집니다
+
+function ReturnNewLine() {
+  return;
+  <div className="output">이 줄은 화면에 안 나옵니다</div>;
+}
+
+//   화면 ⑦ 의 두 번째 자리입니다. 아무것도 안 나옵니다. 에러도 없습니다.
+//   return 뒤에서 줄을 바꾸면 자바스크립트가 거기서 문장을 끝내 버립니다.
+//   02단원 개념05에서 배운 ASI 입니다. 그래서 여러 줄 JSX 는 소괄호로 감쌉니다.
+//
+//     return (
+//       <div>...</div>
+//     );
+
+// [실수 5] 컴포넌트 이름에 하이픈을 씀
+// function Menu-Row() {
+//   return <p>메뉴</p>;
+// }
+//   실수: [SyntaxError] 입니다. 화면이 통째로 빕니다.
+//         HTML 태그 이름에는 하이픈을 쓰지만 함수 이름에는 못 씁니다.
+//         MenuRow 처럼 붙여 쓰고 단어마다 대문자로 시작하세요.
+
+// ============================================================
+// 화면에 그리기
+// ============================================================
+
+export default function Concept05() {
+  return (
+    <div>
+      <h1>개념 05 — 컴포넌트 쪼개기</h1>
+
+      <p className="guide">
+        왼쪽 목록에서 이 예제를 고르면 이 화면이 나옵니다. <strong>F12 → Console</strong> 도 함께 보세요.
+        <br />
+        <br />
+        이 파일에는 <strong>일부러 잘못 만든 컴포넌트</strong>가 들어 있습니다. 화면 ⑤ ~ ⑦ 이 그렇습니다. 무엇이 잘못됐는지 코드와 함께 확인하세요.
+      </p>
+
+      <>
+        <div className="demo">
+          <h3>① 안 쪼갠 메뉴판</h3>
+          <BigMenuBoard />
+        </div>
+
+        <div className="demo">
+          <h3>② 쪼갠 메뉴판 — 화면은 ① 과 똑같습니다</h3>
+          <MenuBoard />
+        </div>
+
+        <div className="demo">
+          <h3>③ props 로 값만 바꿔 여러 개</h3>
+          <MenuCard name="아메리카노" price={4000} note="가장 많이 팔립니다" />
+          <MenuCard name="라떼" price={4500} note="우유가 들어갑니다" />
+          <MenuCard name="케이크" price={6000} />
+          <MenuCard name="삼각김밥" price={1200} />
+        </div>
+
+        <div className="demo">
+          <h3>④ 읽어서 새 값 만들기 / 너무 잘게 쪼갠 예</h3>
+          <OrderLine name="아메리카노" price={4000} />
+          <TooSmallRow name="라떼" price={4500} />
+        </div>
+
+        <div className="demo">
+          <h3>⑤ props 를 바꾸려고 하면 (실수 1)</h3>
+          <TryChangeProps name="김민준" />
+        </div>
+
+        <div className="demo">
+          <h3>⑥ props 안의 객체를 바꾸면 (실수 2)</h3>
+          <UserBadge user={sharedUser} />
+          <SecretChanger user={sharedUser} />
+          <UserBadge user={sharedUser} />
+        </div>
+
+        <div className="demo">
+          <h3>⑦ props 를 안 넘김 / return 다음 줄 (실수 3 · 4)</h3>
+          <ForgotProps />
+          <ReturnNewLine />
+        </div>
+      </>
+
+      <Summary
+        items={[
+          "같은 모양이 반복되거나, 이름을 붙일 수 있거나, 너무 길면 컴포넌트로 쪼갭니다.",
+          <>쪼개면 <strong>고칠 곳이 한 곳</strong>이 됩니다. 이것이 쪼개는 가장 큰 이유입니다.</>,
+          "달라지는 값만 props 로 빼고, 같은 부분은 컴포넌트 안에 둡니다.",
+          <><strong>props 는 읽기 전용입니다.</strong> 자식에서 고치려고 하면 <code>TypeError: Cannot assign to read only property</code> 가 납니다.</>,
+          <>props 로 받은 <strong>객체 안의 값</strong>은 에러 없이 바뀝니다. 원본까지 함께 바뀌므로 더 위험합니다. 손대지 마세요.</>,
+          "읽어서 새 변수를 만드는 것은 자유입니다. 값을 바꿔 화면을 바꾸는 것은 04단원입니다.",
+          "너무 잘게 쪼개면 오히려 읽기 어려워집니다. 두 번째로 반복될 때 쪼개도 늦지 않습니다.",
+        ]}
+      />
+    </div>
+  );
+}
+
+// ============================================================
+// 직접 해보기 정답
+// ============================================================
+//
+// 1) 세 군데를 고쳐야 합니다. BigMenuBoard 안의 <small> 이 세 개이기 때문입니다.
+//    // 화면: ① 의 세 줄이 모두 "오늘의 추천" 으로 바뀝니다.
+//    → 두 군데만 고치면 한 줄만 옛날 문구로 남습니다. 이런 사고가 실제로 자주 납니다.
+//      ② 의 MenuBoard 는 MenuRow 한 곳만 고치면 세 줄이 다 바뀝니다.
+//
+// 2) MenuBoard 안에 한 줄 넣습니다.
+//
+//      <MenuRow name="삼각김밥" price={1200} />
+//
+// 화면: 메뉴판에 "삼각김밥 — 1200원 / 가장 많이 팔립니다" 가 늘어납니다.
+//    → <small> 문구는 MenuRow 가 가지고 있으므로 자동으로 따라옵니다.
+//
+// 3) <MenuCard name="물" price={0} />
+//    // 화면: 물 — 0원 / 설명 없음
+//    → note 를 안 넘겼으므로 기본값이 쓰였습니다. (개념03 섹션3)
+//
+// 4) <OrderLine name="아메리카노" price={4000} count={3} />
+//    // 화면: 아메리카노 3개 — 합계 12000원
+//    → props 를 고친 것이 아니라 읽어서 total 을 새로 만든 것입니다.
+//      count 를 안 넘기면 기본값 1이 쓰여 "아메리카노 1개 — 합계 4000원" 이 됩니다.
+//
+// 5) function SmallRow({ name, price }) {
+//      return (
+//        <div className="output">
+//          <strong>{name}</strong> — <span>{price}원</span>
+//        </div>
+//      );
+//    }
+//    // 화면: 라떼 — 4500원  (TooSmallRow 와 완전히 같습니다)
+//    → 화면이 같다면 굳이 컴포넌트 두 개를 더 만들 이유가 없습니다.

@@ -1,0 +1,617 @@
+// ============================================================
+// 05단원 연습문제 정답 — 조건부 렌더링과 리스트
+// ------------------------------------------------------------
+// 실행: 실습프로젝트에서 npm run dev → 왼쪽 목록에서 이 예제를 고르세요.
+//       F12 → Console 도 함께 보세요.
+// ============================================================
+
+import { useState } from "react";
+
+console.log("정답 파일을 열었습니다. 콘솔은 아직 깨끗합니다.");
+// 콘솔: 정답 파일을 열었습니다. 콘솔은 아직 깨끗합니다.
+
+// ── 문제에서 함께 쓰는 데이터 ──
+
+const menu = [
+  { id: "americano", name: "아메리카노", price: 4000, soldOut: false },
+  { id: "latte", name: "라떼", price: 4500, soldOut: true },
+  { id: "cake", name: "케이크", price: 6000, soldOut: false },
+  { id: "gimbap", name: "삼각김밥", price: 1200, soldOut: true },
+];
+
+const users = [
+  { id: 101, name: "김민준", age: 20 },
+  { id: 102, name: "이서연", age: 22 },
+  { id: 103, name: "박지훈", age: 28 },
+];
+
+const todos = [
+  { id: 1, text: "우유 사기", done: true },
+  { id: 2, text: "책 반납", done: false },
+  { id: 3, text: "청소하기", done: false },
+];
+
+// ───── 문제 1 ─────
+
+function Q1() {
+  const isOpen = true;
+
+  return (
+    <div className="demo">
+      <h3>문제 1 — 삼항 연산자</h3>
+      <div className="output">
+        {isOpen ? <p>영업 중입니다</p> : <p>준비 중입니다</p>}
+      </div>
+    </div>
+  );
+}
+// 화면: 영업 중입니다
+
+// JSX 중괄호 안에는 값만 들어갑니다. if 는 문장이라 못 씁니다.
+// 삼항은 둘 중 하나를 '값' 으로 돌려주므로 들어갈 수 있습니다.
+// {isOpen ? "영업 중입니다" : "준비 중입니다"} 처럼 글자만 골라도 맞습니다.
+
+// ───── 문제 2 ─────
+
+function Q2() {
+  const newCount = 3;
+
+  return (
+    <div className="demo">
+      <h3>문제 2 — && 로 있을 때만 보이기</h3>
+      <div className="output">
+        {newCount > 0 && <p>새 알림 {newCount}개</p>}
+      </div>
+    </div>
+  );
+}
+// 화면: 새 알림 3개
+
+// ★ 왼쪽이 newCount 가 아니라 newCount > 0 인 것이 핵심입니다.
+//   {newCount && ...} 라고 쓰면 0일 때 화면에 0 이 찍힙니다(개념05).
+//   && 는 왼쪽이 거짓이면 '왼쪽 값' 을 그대로 돌려주고,
+//   React 는 숫자 0 을 화면에 그리기 때문입니다.
+
+// ───── 문제 3 ─────
+
+function Q3() {
+  const point = 70;
+  let badge;
+
+  if (point >= 100) {
+    badge = <p>VIP 회원입니다</p>;
+  } else if (point >= 50) {
+    badge = <p>일반 회원입니다</p>;
+  } else {
+    badge = <p>신규 회원입니다</p>;
+  }
+
+  return (
+    <div className="demo">
+      <h3>문제 3 — 변수에 담아 두기</h3>
+      <div className="output">
+        <p>이서연님 · {point}점</p>
+        {badge}
+      </div>
+    </div>
+  );
+}
+// 화면: 이서연님 · 70점
+// 화면: 일반 회원입니다
+
+// return 밖은 평범한 함수 안이라 if 를 마음껏 쓸 수 있습니다.
+// if 를 못 쓰는 곳은 JSX 의 중괄호 안뿐입니다.
+// 조건이 셋 이상이면 삼항을 겹쳐 쓰는 것보다 이 방법이 훨씬 읽기 좋습니다.
+// 순서가 중요합니다. >= 50 을 위에 두면 100점도 거기서 걸려 버립니다.
+
+// ───── 문제 4 ─────
+
+function ProfileCard({ user }) {
+  if (!user) {
+    return <p>회원 정보가 없습니다</p>;
+  }
+
+  return (
+    <p>
+      {user.name} ({user.age}세)
+    </p>
+  );
+}
+
+function Q4() {
+  return (
+    <div className="demo">
+      <h3>문제 4 — 일찍 return</h3>
+      <div className="output">
+        <ProfileCard user={users[0]} />
+      </div>
+    </div>
+  );
+}
+// 화면: 김민준 (20세)
+// 화면(user={null} 로 바꾸면): 회원 정보가 없습니다
+
+// 함수는 return 을 만나면 거기서 끝납니다. 컴포넌트도 함수입니다.
+// 그래서 위에서 걸리면 아래 return 은 아예 실행되지 않습니다.
+//
+// 이 한 줄이 없으면 user 가 null 일 때 user.name 을 읽다가
+// TypeError: Cannot read properties of null (reading 'name') 이 납니다.
+// 이 에러는 화면을 통째로 지웁니다. 다른 문제의 상자까지 전부 사라집니다.
+
+// ───── 문제 5 ─────
+
+function Q5() {
+  const fruits = ["사과", "포도", "딸기"];
+
+  return (
+    <div className="demo">
+      <h3>문제 5 — map 으로 목록 그리기</h3>
+      <div className="output">
+        <ul>
+          {fruits.map((fruit) => (
+            <li key={fruit}>{fruit}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+// 화면: 사과 / 포도 / 딸기
+
+// 화살표 뒤를 소괄호 ( 로 열었습니다. 그러면 return 을 안 써도 됩니다.
+// 중괄호 { 로 열면 함수 몸통이 되어 return 이 꼭 필요합니다.
+// return 을 빠뜨리면 에러 없이 목록만 통째로 사라집니다(개념02 섹션 5).
+//
+// 세 값이 서로 겹치지 않으므로 값 자체를 key 로 썼습니다.
+
+// ───── 문제 6 ─────
+
+function Q6() {
+  return (
+    <div className="demo">
+      <h3>문제 6 — 객체 배열 그리기</h3>
+      <div className="output">
+        <ul>
+          {users.map((user) => (
+            <li key={user.id}>
+              {user.name} ({user.age}세)
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+// 화면: 김민준 (20세) / 이서연 (22세) / 박지훈 (28세)
+
+// 객체 안에서 필요한 값을 꺼내 씁니다. {user} 라고 통째로 넣으면
+// Objects are not valid as a React child 에러가 납니다.
+// 데이터에 id 가 있으니 그것을 key 로 썼습니다. 가장 안전합니다.
+
+// ───── 문제 7 ─────
+
+function MenuRow({ name, price }) {
+  return (
+    <li>
+      {name} — {price}원
+    </li>
+  );
+}
+
+function Q7() {
+  return (
+    <div className="demo">
+      <h3>문제 7 — 컴포넌트에 넘기기</h3>
+      <div className="output">
+        <ul>
+          {menu.map((item) => (
+            <MenuRow key={item.id} name={item.name} price={item.price} />
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+// 화면: 아메리카노 — 4000원 / 라떼 — 4500원 / 케이크 — 6000원 / 삼각김밥 — 1200원
+
+// ★ key 를 MenuRow 에 붙였습니다. MenuRow 안쪽 <li> 가 아닙니다.
+//   key 는 'map 이 직접 돌려주는 것' 에 붙입니다.
+//   여기서 map 이 돌려주는 것은 <MenuRow /> 입니다.
+//   안쪽 <li> 에 붙이면 key 경고가 그대로 납니다.
+
+// ───── 문제 8 ─────
+
+function Q8() {
+  const orders = [
+    { id: 1, name: "아메리카노" },
+    { id: 2, name: "라떼" },
+    { id: 3, name: "아메리카노" },
+  ];
+
+  return (
+    <div className="demo">
+      <h3>문제 8 — 무엇을 key 로 쓸까</h3>
+      <div className="output">
+        <ul>
+          {orders.map((order) => (
+            <li key={order.id}>
+              {order.id}번 · {order.name}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+// 화면: 1번 · 아메리카노 / 2번 · 라떼 / 3번 · 아메리카노
+
+// name 을 key 로 쓰면 "아메리카노" 가 두 번 나와서 겹칩니다.
+// 그러면 콘솔에 이런 경고가 납니다.
+//   Encountered two children with the same key, `아메리카노`.
+//   Keys should be unique so that components maintain their identity
+//   across updates.
+//
+// 좋은 key 의 조건은 '형제끼리 안 겹칠 것' 과 '다시 그려도 안 바뀔 것' 입니다.
+// 여기서는 주문 번호 id 가 둘 다 만족합니다.
+
+// ───── 문제 9 ─────
+
+function Q9() {
+  const [list, setList] = useState(todos);
+
+  return (
+    <div className="demo">
+      <h3>문제 9 — index 를 key 로 쓰면</h3>
+
+      <button onClick={() => setList(list.slice(1))}>맨 앞 항목 지우기</button>
+      <button onClick={() => setList(todos)}>처음으로 되돌리기</button>
+
+      <div className="output">
+        <ul>
+          {list.map((todo) => (
+            <li key={todo.id}>
+              {todo.text} <input defaultValue={todo.text} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+// 화면: 우유 사기 [우유 사기] / 책 반납 [책 반납] / 청소하기 [청소하기]
+// 화면(맨 앞 항목 지우기를 누르면): 책 반납 [책 반납] / 청소하기 [청소하기]
+
+// 고친 곳은 key={index} → key={todo.id} 한 곳뿐입니다.
+// map 의 두 번째 인자 index 도 이제 안 쓰므로 지웠습니다.
+//
+// key 가 index 이면 지운 항목이 아니라 '마지막 자리' 가 없어진 것으로 계산됩니다.
+// 남은 줄은 그대로 두고 글자만 위로 밀기 때문에,
+// React 가 손대지 않는 입력칸의 글자가 엉뚱한 줄에 남습니다.
+// key 가 id 이면 지운 항목의 줄이 통째로 사라지므로 어긋나지 않습니다.
+
+// ───── 문제 10 ─────
+
+function Q10() {
+  return (
+    <div className="demo">
+      <h3>문제 10 — 걸러서 그리기</h3>
+      <div className="output">
+        <ul>
+          {menu
+            .filter((item) => !item.soldOut)
+            .map((item) => (
+              <li key={item.id}>{item.name}</li>
+            ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+// 화면: 아메리카노 / 케이크
+
+// filter 가 먼저, map 이 나중입니다. 순서를 바꾸면 안 됩니다.
+// map 을 먼저 하면 filter 가 받는 것이 화면 조각이라 soldOut 을 볼 수 없습니다.
+// 그러면 조용히 빈 목록이 됩니다(개념04 섹션 5).
+
+// ───── 문제 11 ─────
+
+function Q11() {
+  return (
+    <div className="demo">
+      <h3>문제 11 — 원본을 지키며 정렬하기</h3>
+      <div className="output">
+        <p>정렬한 목록</p>
+        <ul>
+          {[...menu]
+            .sort((a, b) => a.price - b.price)
+            .map((item) => (
+              <li key={item.id}>
+                {item.name} — {item.price}원
+              </li>
+            ))}
+        </ul>
+
+        <p>원본 확인</p>
+        <ul>
+          {menu.map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+// 화면: 정렬한 목록 — 삼각김밥 1200 / 아메리카노 4000 / 라떼 4500 / 케이크 6000
+// 화면: 원본 확인 — 아메리카노 / 라떼 / 케이크 / 삼각김밥
+
+// ★ [...menu] 로 복사한 다음 sort 했습니다.
+//   sort 는 filter·map 과 달리 원본을 바꿔 버립니다.
+//   menu.sort(...) 라고 썼다면 아래 '원본 확인' 목록의 순서까지 바뀝니다.
+//   menu.slice().sort(...) 라고 써도 같습니다(JS자료 08단원 개념06).
+
+// ───── 문제 12 ─────
+
+function Q12() {
+  const cart = [];
+
+  return (
+    <div className="demo">
+      <h3>문제 12 — 비었을 때 처리</h3>
+      <div className="output">
+        {cart.length === 0 && <p>장바구니가 비었습니다</p>}
+
+        <p>[{cart.length > 0 && <span>담긴 상품이 있습니다</span>}]</p>
+      </div>
+    </div>
+  );
+}
+// 화면: 장바구니가 비었습니다
+// 화면: []
+
+// 두 곳을 고쳤습니다.
+//   ① 비었을 때 안내 문구를 추가했습니다. cart.length === 0 은 true / false 입니다.
+//   ② {cart.length && ...} 를 {cart.length > 0 && ...} 로 바꿨습니다.
+//
+// ②를 안 고치면 대괄호 안에 0 이 남습니다.
+// cart.length 가 0 이고, && 가 그 0 을 그대로 돌려주고,
+// React 가 숫자 0 을 화면에 그리기 때문입니다.
+// 삼항으로 {cart.length ? <span>...</span> : null} 이라고 써도 됩니다.
+
+// ───── 문제 13 ───── [응용]
+
+function Q13() {
+  const [mode, setMode] = useState("all");
+
+  let shown;
+  if (mode === "sale") {
+    shown = menu.filter((item) => !item.soldOut);
+  } else if (mode === "soldout") {
+    shown = menu.filter((item) => item.soldOut);
+  } else {
+    shown = menu;
+  }
+
+  return (
+    <div className="demo">
+      <h3>문제 13 [응용] — 필터 버튼</h3>
+
+      <button className={mode === "all" ? "on" : ""} onClick={() => setMode("all")}>
+        전체
+      </button>
+      <button className={mode === "sale" ? "on" : ""} onClick={() => setMode("sale")}>
+        판매중
+      </button>
+      <button
+        className={mode === "soldout" ? "on" : ""}
+        onClick={() => setMode("soldout")}
+      >
+        품절
+      </button>
+
+      <div className="output">
+        <ul>
+          {shown.map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+// 화면: 아메리카노 / 라떼 / 케이크 / 삼각김밥 (전체 버튼이 파랗습니다)
+// 화면(판매중을 누르면): 아메리카노 / 케이크
+// 화면(품절을 누르면): 라떼 / 삼각김밥
+
+// 목록을 세 벌 만들어 두고 갈아 끼운 것이 아닙니다.
+// 원본 menu 는 하나뿐이고, 바뀌는 것은 mode state 하나뿐입니다.
+// 화면을 그릴 때마다 원본에서 다시 걸러 냅니다.
+//
+// 버튼 색은 className={mode === "all" ? "on" : ""} 로 붙였습니다.
+// 02단원에서 배운 속성 자리 중괄호에 삼항을 넣은 것입니다.
+
+// ───── 문제 14 ───── [도전]
+
+function Q14() {
+  const [hideSoldOut, setHideSoldOut] = useState(false);
+  const [sortByPrice, setSortByPrice] = useState(false);
+
+  // ① 먼저 거릅니다
+  let shown = hideSoldOut ? menu.filter((item) => !item.soldOut) : menu;
+
+  // ② 그다음 정렬합니다. 반드시 복사해서 정렬합니다.
+  if (sortByPrice) {
+    shown = [...shown].sort((a, b) => a.price - b.price);
+  }
+
+  return (
+    <div className="demo">
+      <h3>문제 14 [도전] — 거르기 + 정렬 + 개수 + 빈 상태</h3>
+
+      <button
+        className={hideSoldOut ? "on" : ""}
+        onClick={() => setHideSoldOut(!hideSoldOut)}
+      >
+        품절 감추기
+      </button>
+      <button
+        className={sortByPrice ? "on" : ""}
+        onClick={() => setSortByPrice(!sortByPrice)}
+      >
+        싼 것부터
+      </button>
+
+      <div className="output">
+        <p>{shown.length}개 보이는 중</p>
+
+        {shown.length === 0 ? (
+          <p>조건에 맞는 메뉴가 없습니다</p>
+        ) : (
+          <ul>
+            {shown.map((item) => (
+              <li key={item.id}>
+                {item.name} — {item.price}원 {item.soldOut && "(품절)"}
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </div>
+  );
+}
+// 화면: 4개 보이는 중
+// 화면: 아메리카노 — 4000원 / 라떼 — 4500원 (품절) / 케이크 — 6000원 / 삼각김밥 — 1200원 (품절)
+// 화면(품절 감추기를 누르면): 2개 보이는 중 · 아메리카노 — 4000원 / 케이크 — 6000원
+// 화면(싼 것부터도 누르면): 2개 보이는 중 · 아메리카노 — 4000원 / 케이크 — 6000원
+// 화면(품절 감추기를 다시 눌러 끄면): 4개 보이는 중 ·
+//        삼각김밥 1200 / 아메리카노 4000 / 라떼 4500 / 케이크 6000
+//
+// 버튼은 글자가 안 바뀝니다. 지금 켜져 있는지는 파란 배경(on)으로 알려 줍니다.
+
+// 이 문제에서 챙길 것이 네 가지입니다.
+//
+// (1) 순서 — 거르기가 먼저, 정렬이 나중입니다.
+//     반대로 하면 정렬해 놓고 거르게 되어 쓸데없는 일을 하게 됩니다.
+//     게다가 map 을 먼저 하면 아예 걸러지지도 않습니다(개념04 섹션 5).
+//
+// (2) 복사 — [...shown] 의 복사를 빼면 큰일 납니다.
+//     hideSoldOut 이 false 일 때 shown 은 '원본 menu 그 자체' 입니다.
+//     그 상태로 sort 하면 원본 menu 가 영영 정렬돼 버립니다.
+//     그러면 [원래 순서] 를 눌러도 원래 순서로 안 돌아옵니다.
+//     문제 11의 '원본 확인' 목록도 같이 바뀝니다.
+//
+// (3) 개수 — shown.length 를 그대로 씁니다.
+//     따로 state 로 세어 두면 목록과 어긋납니다(07단원에서 자세히).
+//
+// (4) 빈 상태 — 삼항으로 갈랐습니다.
+//     {shown.length && <ul>...} 라고 쓰면 비었을 때 화면에 0 이 찍힙니다.
+//     지금 데이터로는 빈 목록이 안 나오니, 확인하려면
+//     menu 의 soldOut 을 전부 true 로 바꾸고 [품절 감추기] 를 눌러 보세요.
+
+// ───── 문제 15 ───── (에러 확인)
+
+// 검증: 경고허용 Each child in a list should have a unique "key" prop
+function BadList() {
+  const names = ["아메리카노", "라떼", "케이크"];
+
+  return (
+    <ul>
+      {names.map((name) => (
+        <li>{name}</li>
+      ))}
+    </ul>
+  );
+}
+
+function Q15() {
+  const [show, setShow] = useState(false);
+
+  return (
+    <div className="demo">
+      <h3>문제 15 — 에러 확인</h3>
+
+      <button onClick={() => setShow(!show)}>
+        {show ? "감추기" : "key 없이 그려 보기"}
+      </button>
+
+      <div className="output">
+        {show ? <BadList /> : <p>아직 안 그렸습니다. 콘솔도 깨끗합니다.</p>}
+      </div>
+    </div>
+  );
+}
+// 화면: 아직 안 그렸습니다. 콘솔도 깨끗합니다.
+// 화면(누르면): 아메리카노 / 라떼 / 케이크 + 콘솔에 빨간 경고
+
+// 콘솔에 나오는 글은 이렇습니다.
+//
+//   Each child in a list should have a unique "key" prop.
+//
+//   Check the render method of `BadList`. See
+//   https://reactjs.org/link/warning-keys for more information.
+//       at li
+//       at BadList
+//       at div
+//       at div
+//       at Q15
+//       at div
+//       at App
+//
+// 빈칸의 답:
+//
+//   경고의 첫 줄은?
+//     Each child in a list should have a unique "key" prop.
+//     → "목록의 각 자식은 겹치지 않는 key 를 가져야 한다" 는 뜻입니다.
+//
+//   어느 컴포넌트를 보라고 하나?
+//     BadList 입니다. Check the render method of `BadList` 라고 알려 줍니다.
+//     그 아래 at 줄들은 그 컴포넌트가 어디에 들어 있는지 알려 주는 목록입니다.
+//     맨 위의 at li 가 문제가 난 태그입니다.
+//
+//   고치려면 무엇을 해야 하나?
+//     <li key={name}>{name}</li> 처럼 key 를 붙입니다.
+//     이 목록은 이름이 서로 겹치지 않으므로 이름을 key 로 써도 됩니다.
+//
+//   감췄다가 다시 눌러도 경고가 또 나오나요? 왜?
+//     안 나옵니다. 같은 컴포넌트에 대해서는 한 번만 알려 주기 때문입니다.
+//     같은 경고가 콘솔을 가득 채우는 것을 막으려고 React 가 그렇게 만들었습니다.
+//     다시 보고 싶으면 왼쪽에서 다른 예제를 골랐다 돌아온 뒤 버튼을 누르세요.
+//
+// ★ 이 경고는 페이지를 멈추지 않습니다. 화면도 제대로 나옵니다.
+//   그래서 그냥 넘어가기 쉽습니다.
+//   하지만 key 가 없으면 목록이 바뀔 때 자리 번호로만 비교하게 되어,
+//   개념03 섹션 4에서 본 것과 같은 문제가 생깁니다.
+
+// ── 전체 화면 그리기 ──
+
+export default function ExerciseAnswers() {
+  return (
+    <div>
+      <h1>05단원 연습문제 정답 — 조건부 렌더링과 리스트</h1>
+
+      <p className="guide">
+        먼저 스스로 풀어 본 다음에 보세요. 직접 눌러 보면서 <strong>F12 → Console</strong> 도 함께 확인하세요.
+        <br />
+        <br />
+        ★ 이 파일도 문제 15의 [key 없이 그려 보기] 를 누르면 <strong>일부러</strong> 경고가 납니다. 그 버튼을 누르기 전까지 콘솔은 깨끗합니다.
+      </p>
+
+      <div>
+        <Q1 />
+        <Q2 />
+        <Q3 />
+        <Q4 />
+        <Q5 />
+        <Q6 />
+        <Q7 />
+        <Q8 />
+        <Q9 />
+        <Q10 />
+        <Q11 />
+        <Q12 />
+        <Q13 />
+        <Q14 />
+        <Q15 />
+      </div>
+    </div>
+  );
+}

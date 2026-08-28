@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>14단원 개념01 - Open API 가 무엇인가</title>
+    <style>
+      body {
+        font-family: "맑은 고딕", sans-serif;
+        line-height: 1.7;
+        max-width: 700px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+      h1 {
+        border-bottom: 3px solid #333;
+        padding-bottom: 8px;
+      }
+      .guide {
+        background: #fff8dc;
+        border-left: 4px solid #f0c040;
+        padding: 12px 16px;
+      }
+      .demo {
+        background: #f5f5f5;
+        border: 1px solid #ddd;
+        padding: 16px;
+        margin: 20px 0;
+      }
+      .demo h3 {
+        margin: 14px 0 6px;
+        font-size: 15px;
+        color: #555;
+      }
+      button {
+        padding: 8px 16px;
+        font-size: 15px;
+        font-family: inherit;
+        cursor: pointer;
+        margin-right: 6px;
+      }
+      .output {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin-top: 8px;
+        min-height: 24px;
+      }
+      ul {
+        padding-left: 22px;
+        margin: 0;
+      }
+      li {
+        margin: 4px 0;
+      }
+      pre {
+        background: #fff;
+        border: 1px solid #ccc;
+        padding: 10px;
+        overflow-x: auto;
+        font-size: 13px;
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>개념 01 — Open API 가 무엇인가</h1>
+
+    <p class="guide">
+      <strong>인터넷 연결이 필요합니다.</strong> 브라우저로 열고 버튼을 눌러 보세요.
+      <strong>F12 → Console</strong> 과 <strong>Network</strong> 탭을 함께 보세요.
+      <br /><br />
+      <strong>인터넷이 막혀 있어 안 된다면</strong> 아래
+      <code>&lt;script&gt;</code> 바로 위의 <code>오프라인_대체.js</code> 줄에서 주석 기호를
+      지우세요. 인터넷 없이도 똑같이 동작합니다.
+      <br /><br />
+      <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
+      <code>&lt;style&gt;</code> 과 <code>&lt;body&gt;</code> 는 화면 모양을 만드는 코드입니다.
+      <code>&lt;script&gt;</code> 안부터 읽으세요.
+    </p>
+
+    <div class="demo">
+      <h3>① 서울 날씨 받아오기</h3>
+      <button id="weatherBtn">지금 서울 날씨</button>
+      <div class="output" id="out1">버튼을 눌러 보세요</div>
+
+      <h3>② 응답을 통째로 보기</h3>
+      <button id="rawBtn">받은 것 그대로</button>
+      <pre id="out2">버튼을 눌러 보세요</pre>
+
+      <h3>③ 보낸 값과 받은 값 비교</h3>
+      <button id="diffBtn">비교해 보기</button>
+      <div class="output" id="out3">버튼을 눌러 보세요</div>
+    </div>
+
+    <!-- 인터넷이 막혀 이 파일이 동작하지 않으면, 바로 아래 줄을 감싼 주석 기호를 지워서 켜세요. -->
+    <!-- <script src="오프라인_대체.js"></script> -->
+    <script>
+      // ── 섹션 1: Open API 는 '남이 켜 둔 서버' 입니다 ──
+      //
+      // 12단원에서 jsonplaceholder 를 불렀습니다.
+      //
+      //   fetch("https://jsonplaceholder.typicode.com/posts/1")
+      //
+      // 그것도 Open API 였습니다. 다만 **연습용 가짜 데이터**였습니다.
+      // 글 제목이 전부 라틴어처럼 생긴 뜻 없는 글자였던 걸 기억하세요.
+      //
+      // 이번 단원에서는 **진짜 데이터**를 주는 서버를 부릅니다.
+      // 날씨, 지도, 환율, 공공데이터 같은 것들입니다.
+      //
+      // ★ 부르는 방법은 12단원과 **똑같습니다.** fetch 그대로입니다.
+      //   달라지는 것은 세 가지뿐입니다.
+      //
+      //     1) 문서를 읽어야 합니다 (무슨 값을 어떻게 보내는지)
+      //     2) 키가 필요할 수 있습니다 (개념04)
+      //     3) 안 되는 경우가 생깁니다 (개념05)
+
+      // ✏️ 직접 해보기 1 — 12단원에서 쓰던 jsonplaceholder 주소를 브라우저 주소창에 그냥 넣어 보세요.
+      //                      (https://jsonplaceholder.typicode.com/posts/1)
+
+      // ── 섹션 2: 문서를 읽는 법 ──
+      //
+      // API 문서에서 확인할 것은 딱 네 가지입니다.
+      //
+      //   ① 주소      어디로 보내나
+      //   ② 방식      GET 인가 POST 인가
+      //   ③ 보낼 값    무엇을 꼭 넣어야 하나
+      //   ④ 응답 모양   무엇이 어떤 이름으로 오나
+      //
+      // 이번에 쓸 곳은 Open-Meteo 입니다. **키가 필요 없습니다.**
+      //
+      //   ① 주소   https://api.open-meteo.com/v1/forecast
+      //   ② 방식   GET
+      //   ③ 보낼 값
+      //        latitude    위도   (꼭 필요)
+      //        longitude   경도   (꼭 필요)
+      //        current     지금 값 중 무엇을 받을지
+      //        timezone    시간대
+      //   ④ 응답  { latitude, longitude, current: { time, temperature_2m, ... } }
+      //
+      // ★ ④를 미리 안 보고 코드를 쓰면 `undefined` 만 잔뜩 보게 됩니다.
+      //   **응답 모양을 먼저 눈으로 확인하세요.** 섹션 4에서 그 방법을 봅니다.
+
+      // ✏️ 직접 해보기 2 — open-meteo.com 문서에서 위 네 가지(주소·방식·보낼 값·응답 모양)를
+      //                      직접 찾아보세요. 5분이면 충분합니다.
+
+      const 날씨주소 = "https://api.open-meteo.com/v1/forecast";
+      const 서울 = { 위도: 37.5665, 경도: 126.978 };
+
+      // ── 섹션 3: 진짜로 불러 봅니다 ──
+
+      async function 서울날씨() {
+        const 주소 = new URL(날씨주소);
+        주소.searchParams.set("latitude", 서울.위도);
+        주소.searchParams.set("longitude", 서울.경도);
+        주소.searchParams.set("current", "temperature_2m,relative_humidity_2m");
+        주소.searchParams.set("timezone", "Asia/Seoul");
+
+        const 응답 = await fetch(주소);
+        const 자료 = await 응답.json();
+        return 자료;
+      }
+
+      document.getElementById("weatherBtn").addEventListener("click", async () => {
+        const 칸 = document.getElementById("out1");
+        칸.textContent = "받는 중...";
+
+        const 자료 = await 서울날씨();
+
+        칸.textContent =
+          `${자료.current.time} 기준 ` +
+          `${자료.current.temperature_2m}${자료.current_units.temperature_2m}, ` +
+          `습도 ${자료.current.relative_humidity_2m}${자료.current_units.relative_humidity_2m}`;
+
+        console.log(자료.current);
+        // 콘솔: { time: '2026-08-19T12:45', interval: 900, temperature_2m: 29.5, relative_humidity_2m: 70 }
+        //
+        // ★ 숫자는 누를 때마다 다릅니다. **진짜 지금 날씨**니까요.
+        //   이 자료의 다른 곳과 달리 값을 못 박을 수 없습니다.
+        //   모양(어떤 이름의 값이 오는지)만 같으면 맞은 것입니다.
+      });
+
+      // ✏️ 직접 해보기 3 — 서울 좌표를 부산(35.1796, 129.0756)으로 바꾸고 눌러 보세요.
+
+      // ★ `주소.searchParams.set(...)` 이 무엇인지는 개념02 에서 자세히 봅니다.
+      //   지금은 "물음표 뒤에 값을 붙이는 안전한 방법" 정도로 알아 두세요.
+
+      // ── 섹션 4: 응답 모양을 먼저 봅니다 ──
+      //
+      // ★★ 새 API 를 쓸 때 제일 먼저 할 일입니다.
+      //   문서를 믿지 말고 **직접 받아서 눈으로 보세요.** 문서가 낡은 경우가 많습니다.
+
+      document.getElementById("rawBtn").addEventListener("click", async () => {
+        const 자료 = await 서울날씨();
+
+        // JSON.stringify 의 세 번째 인자가 들여쓰기입니다. (12단원 개념03 섹션 7)
+        document.getElementById("out2").textContent = JSON.stringify(자료, null, 2);
+
+        console.log(자료);
+      });
+
+      // 받으면 이런 모양입니다.
+      //
+      //   {
+      //     "latitude": 37.55,
+      //     "longitude": 127,
+      //     "generationtime_ms": 0.05257129669189453,
+      //     "utc_offset_seconds": 32400,
+      //     "timezone": "Asia/Seoul",
+      //     "timezone_abbreviation": "GMT+9",
+      //     "elevation": 34,
+      //     "current_units": {
+      //       "time": "iso8601",
+      //       "interval": "seconds",
+      //       "temperature_2m": "°C",
+      //       "relative_humidity_2m": "%"
+      //     },
+      //     "current": {
+      //       "time": "2026-08-19T12:45",
+      //       "interval": 900,
+      //       "temperature_2m": 29.5,
+      //       "relative_humidity_2m": 70
+      //     }
+      //   }
+      //
+      // ★ 눈여겨볼 것
+      //
+      //   · 값이 `current` 안에 한 겹 더 들어 있습니다.
+      //     `자료.temperature_2m` 이 아니라 `자료.current.temperature_2m` 입니다.
+      //     한 겹을 빠뜨려서 undefined 가 나오는 일이 제일 흔합니다.
+      //
+      //   · 단위가 **따로** 옵니다. `current_units` 에 있습니다.
+      //     "29.5" 만 보고 섭씨라고 단정하면 안 됩니다. API 마다 다릅니다.
+      //
+      //   · `time` 이 글자입니다. Date 가 아닙니다.
+      //     JSON 에는 날짜라는 것이 없습니다. (12단원 개념03 섹션 7)
+
+      // ✏️ 직접 해보기 4 — current 에 wind_speed_10m 을 더해 보세요.
+      //                      값과 함께 current_units 에 단위가 하나 더 생기는지 확인하세요.
+
+      // ── 섹션 5: ★ 보낸 값과 받은 값이 다릅니다 ──
+
+      document.getElementById("diffBtn").addEventListener("click", async () => {
+        const 자료 = await 서울날씨();
+
+        const 줄들 = [
+          `보낸 위도: ${서울.위도}   받은 위도: ${자료.latitude}`,
+          `보낸 경도: ${서울.경도}   받은 경도: ${자료.longitude}`,
+        ];
+
+        document.getElementById("out3").textContent = 줄들.join("  /  ");
+        console.log(줄들.join("\n"));
+        // 콘솔: 보낸 위도: 37.5665   받은 위도: 37.55
+        // 콘솔: 보낸 경도: 126.978   받은 경도: 127
+      });
+
+      // ★★★ 다릅니다. 오류가 아닙니다.
+      //
+      //   이 API 는 지구를 격자로 나눠 놓고 **제일 가까운 칸**의 값을 줍니다.
+      //   내가 보낸 좌표가 아니라 그 칸의 좌표를 돌려주는 것입니다.
+      //
+      //   ★ 이런 건 문서에 적혀 있습니다. 안 읽으면 "값이 틀렸는데요?" 가 됩니다.
+      //     API 마다 이런 규칙이 하나씩 있습니다. 반드시 문서를 한 번 훑으세요.
+      //
+      // ★★ 그럼 격자 간격이 얼마냐 — 이 자료를 만들면서 **한 번 틀렸습니다.**
+      //
+      //   서울이 37.5665 → 37.55 로 떨어지는 걸 보고 "0.05도 간격이구나" 했습니다.
+      //   그런데 다른 도시로 재 보니 안 맞았습니다.
+      //
+      //     보낸 값                받은 값
+      //     37.5665, 126.978  →   37.55,  127          ← 0.05 로 떨어짐
+      //     35.1796, 129.0756 →   35.2,   129.0625     ← ★ 0.05 가 아닙니다
+      //     33.4996, 126.5312 →   33.5,   126.5
+      //     0, 0              →   0.035149384, 0       ← ★★ 딱 떨어지지도 않습니다
+      //
+      //   ★★★ 서울 하나만 보고 규칙을 정했다가 틀린 것입니다.
+      //     예보 모델이 지역마다 달라서 간격도 다릅니다. 규칙은 문서에 있습니다.
+      //
+      //   ★ 배울 것은 격자 간격이 아니라 **하나만 보고 규칙을 정하지 않는다**입니다.
+      //     API 를 쓸 때 "몇 개 해 보니 이렇더라" 는 자주 틀립니다.
+      //
+      // ★★ 더 중요한 습관 — **보낸 것과 받은 것을 비교해 보는 것**입니다.
+      //   Network 탭에서 요청 주소와 응답을 나란히 보면 대부분의 문제가 여기서 풀립니다.
+
+      // ✏️ 직접 해보기 5 — 위도와 경도를 둘 다 0 으로 바꿔서 눌러 보세요.
+      //                      받은 위도가 무엇으로 나옵니까? 왜 딱 떨어지지 않을까요?
+
+      // ── 섹션 6: 어떤 API 를 고르나 ──
+      //
+      // 연습할 API 를 고를 때 세 가지를 봅니다.
+      //
+      //   키가 필요한가       없으면 바로 씁니다. 있으면 가입해야 합니다 (개념04)
+      //   브라우저에서 되나    CORS 가 막힌 곳이 많습니다 (개념05)
+      //   횟수 제한이 있나     하루 몇 번, 분당 몇 번 (개념05)
+      //
+      // 키 없이 브라우저에서 바로 되는 곳 (이 단원에서 씁니다)
+      //
+      //   Open-Meteo          https://open-meteo.com          날씨
+      //   JSONPlaceholder     https://jsonplaceholder.typicode.com   연습용 가짜 데이터
+      //
+      // 키가 필요한 곳 (개념04 에서 설명만 합니다)
+      //
+      //   공공데이터포털       https://www.data.go.kr          날씨·교통·보건 등
+      //   카카오 지도          https://developers.kakao.com    주소 → 좌표
+      //
+      // ★ 공공데이터포털은 이 과정의 주제(제조 현장)와 맞는 자료가 많습니다.
+      //   그런데 **브라우저에서 직접 못 부릅니다.** 왜 그런지는 개념05 에서 봅니다.
+
+      // ✏️ 직접 해보기 6 — 개념02 를 열기 전에, 지금 주소가 어떻게 만들어지는지
+      //                      Network 탭의 Request URL 로 확인해 보세요.
+
+      // ── 섹션 7: 자주 하는 실수 ──
+      //
+      // [실수 1] 응답의 한 겹을 빠뜨림
+      //
+      //   const 자료 = await 응답.json();
+      //   console.log(자료.temperature_2m);
+      //   // 콘솔: undefined
+      //
+      //   → `자료.current.temperature_2m` 입니다.
+      //     ★ undefined 가 나오면 **그 위 단계를 찍어 보세요.** `console.log(자료)` 부터.
+      //
+      // ✏️ 직접 해보기 7 — 일부러 `자료.temperature_2m` 을 찍어 undefined 를 눈으로 보세요.
+      //                      그 다음 `자료` 를 통째로 찍어 어디에 있는지 찾으세요.
+
+      // [실수 2] `.json()` 을 안 붙임
+      //
+      //   const 자료 = await fetch(주소);
+      //   console.log(자료.current);
+      //   // 콘솔: undefined
+      //
+      //   → fetch 가 주는 것은 응답 **봉투**입니다. 안을 꺼내야 합니다.
+      //     `const 자료 = await (await fetch(주소)).json();`
+      //     (12단원 개념03 섹션 1)
+      //
+      // [실수 3] 문서를 안 보고 이름을 짐작
+      //
+      //   주소.searchParams.set("temp", "true");
+      //
+      //   → 이름이 틀리면 **오류가 안 납니다.** 그냥 무시됩니다.
+      //     응답에 그 값이 없을 뿐입니다. 그래서 더 찾기 어렵습니다.
+      //     ★ 값이 안 오면 제일 먼저 **보낸 주소**를 확인하세요.
+      //
+      // [실수 4] 단위를 짐작
+      //
+      //   → `current_units` 를 보세요. km/h 인지 m/s 인지 API 마다 다릅니다.
+      //
+      // [실수 5] 인터넷이 없는 곳에서 되게 하려고 애씀
+      //
+      //   → 이 단원은 인터넷이 필요합니다. 막혀 있으면 `오프라인_대체.js` 를 켜세요.
+      //     ★ 대체본은 **같은 모양**의 값을 돌려줍니다. 코드는 안 고쳐도 됩니다.
+    </script>
+  </body>
+</html>

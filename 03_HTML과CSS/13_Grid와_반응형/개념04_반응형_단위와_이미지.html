@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>13단원 개념04 - 반응형 단위와 이미지</title>
+    <link rel="stylesheet" href="../공통.css" />
+    <style>
+      /* ── 섹션 1 : % 는 부모 기준 ── */
+      .pct-parent {
+        max-width: 400px;
+        background: #f4f4f4;
+        border: 1px solid #bbbbbb;
+        padding: 10px;
+      }
+      /* 화면: 폭 1280 에서 안쪽이 400px 인 회색 상자입니다 */
+
+      .pct-half {
+        width: 50%;
+        background: #dbe7fb;
+        border: 1px solid #9ab8e8;
+        padding: 4px;
+        box-sizing: border-box;
+      }
+      /* 화면: 부모 안쪽 400px 의 절반인 200px 입니다 */
+
+      .pct-quarter {
+        width: 25%;
+        background: #ffe0b3;
+        border: 1px solid #e8a33d;
+        padding: 4px;
+        box-sizing: border-box;
+      }
+      /* 화면: 부모 안쪽 400px 의 4분의 1인 100px 입니다 */
+
+      /* ── 섹션 2 : vw 와 vh ── */
+      .vw-half {
+        width: 50vw;
+        background: #d9f0d9;
+        border: 1px solid #8cc48c;
+        padding: 6px;
+        box-sizing: border-box;
+      }
+      /* 화면: 폭 1280 에서 640px, 폭 480 에서 240px 입니다 */
+
+      .vw-quarter {
+        width: 25vw;
+        background: #d9f0d9;
+        border: 1px solid #8cc48c;
+        padding: 6px;
+        box-sizing: border-box;
+      }
+      /* 화면: 폭 1280 에서 320px, 폭 480 에서 120px 입니다 */
+
+      .vh-box {
+        height: 20vh;
+        background: #f0e0f0;
+        border: 1px solid #c8a0c8;
+        padding: 6px;
+        box-sizing: border-box;
+      }
+      /* 화면: 창 높이가 900px 일 때 180px 입니다. 창 높이를 바꾸면 같이 바뀝니다 */
+
+      .ref-pct {
+        width: 50%;
+        background: #dbe7fb;
+        border: 1px solid #9ab8e8;
+        padding: 4px;
+        box-sizing: border-box;
+      }
+      /* 화면: 부모(400px) 의 절반인 200px 입니다 */
+
+      .ref-vw {
+        width: 50vw;
+        background: #ffd9d9;
+        border: 1px solid #e0a0a0;
+        padding: 4px;
+        box-sizing: border-box;
+      }
+      /* 화면: 부모와 상관없이 화면의 절반인 640px 이라서 부모 밖으로 나갑니다 */
+
+      /* ── 섹션 3 : 이미지가 넘치지 않게 ── */
+      .spill-frame {
+        overflow-x: auto;
+      }
+      /* 화면: 폭 1280 에서는 아무 변화가 없습니다.
+               창을 폭 480px 쯤까지 좁히면 그때부터 이 상자 안에 가로 스크롤 막대가 생깁니다 */
+
+      .photo-frame {
+        max-width: 320px;
+        border: 2px solid #bbbbbb;
+        padding: 8px;
+        margin-bottom: 10px;
+      }
+      /* 화면: 안쪽이 320px 인 액자 상자입니다 */
+
+      .photo-good {
+        max-width: 100%;
+      }
+      /* 화면: 400px 짜리 그림이 액자에 맞춰 320px 로 줄어듭니다 (높이도 160px 로 같이) */
+
+      /* ── 섹션 4 : min() max() clamp() ── */
+      .fn-min {
+        width: min(500px, 100%);
+        background: #dbe7fb;
+        border: 1px solid #9ab8e8;
+        padding: 6px;
+        box-sizing: border-box;
+      }
+      /* 화면: 폭 1280 에서 500px, 폭 480 에서 404px 입니다 */
+
+      .fn-max {
+        width: max(200px, 30%);
+        background: #ffe0b3;
+        border: 1px solid #e8a33d;
+        padding: 6px;
+        box-sizing: border-box;
+      }
+      /* 화면: 폭 1280 에서 247px, 폭 480 에서 200px 아래로는 안 내려갑니다 */
+
+      .fn-clamp {
+        width: clamp(200px, 50%, 380px);
+        background: #d9f0d9;
+        border: 1px solid #8cc48c;
+        padding: 6px;
+        box-sizing: border-box;
+      }
+      /* 화면: 폭 1280 에서 380px, 폭 768 에서 346px, 폭 480 에서 202px 입니다 */
+
+      .fn-fs {
+        font-size: clamp(16px, 2.5vw, 28px);
+        margin: 0;
+      }
+      /* 화면: 폭 1280 에서 28px, 폭 768 에서 19.2px, 폭 480 에서 16px 입니다 */
+
+      /* ── 섹션 5 : object-fit ── */
+      .thumb-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+      .thumb {
+        width: 200px;
+        height: 200px;
+        border: 1px solid #bbbbbb;
+        box-sizing: border-box;
+        background: #ffffff;
+      }
+      /* 화면: 200 × 200 정사각형 액자 세 개가 가로로 놓입니다 */
+
+      .fit-cover {
+        object-fit: cover;
+      }
+      /* 화면: 그림이 원래 비율 그대로 액자 높이에 맞고, 넘치는 좌우가 잘려 해가 안 보입니다 */
+
+      .fit-contain {
+        object-fit: contain;
+      }
+      /* 화면: 그림 전체(200 × 100) 가 다 보이고 위아래에 흰 여백이 생깁니다 */
+    </style>
+  </head>
+  <body>
+    <!-- ============================================================
+         13단원 · 개념 04 — 반응형 단위와 이미지
+         ------------------------------------------------------------
+         실행: 이 파일을 더블클릭해서 브라우저로 여세요.
+              F12 → Ctrl+Shift+M 으로 폭을 480, 768, 1280 으로 바꿔 가며 보세요.
+              (기기 툴바 쓰는 법은 개념03 섹션 3 에 있습니다)
+         ============================================================
+
+         개념03 에서 @media 로 배치를 바꾸는 법을 배웠습니다.
+         그런데 미디어쿼리만으로 반응형을 만들려고 하면 금방 지칩니다.
+         중단점을 아무리 많이 잡아도 그 사이 폭에서는 여전히 어색하기 때문입니다.
+
+             px 로만 만든 화면 + 미디어쿼리
+             ┌────┐  ┌────┐  ┌────┐   중단점마다 계단처럼 툭툭 끊깁니다
+             360     600      900
+
+             유연한 단위로 만든 화면
+             ┌──────────────────┐     모든 폭에서 부드럽게 늘고 줄어듭니다
+
+         그래서 순서가 이렇습니다.
+
+             1) 먼저 유연한 값(%, fr, vw, max-width) 으로 만듭니다
+             2) 그래도 못생겨지는 자리에만 @media 를 씁니다
+
+         이 파일에서는 1번에 쓰는 값들을 배웁니다.
+
+             %          부모를 기준으로 한 비율
+             vw / vh    화면(뷰포트) 을 기준으로 한 비율
+             max-width  "이보다 커지지는 마라" 는 상한선
+             min max clamp   여러 값 중에 골라 쓰는 함수
+             object-fit 사진을 액자에 어떻게 맞출지
+
+         마음가짐 하나만 먼저 정하고 시작합니다.
+         "폭은 되도록 정하지 않는다. 정해야 한다면 상한선만 정한다."
+    ============================================================ -->
+
+    <h1 class="doc-head">개념 04 — 반응형 단위와 이미지</h1>
+    <p class="doc-sub">13단원 · Grid 와 반응형</p>
+
+    <p class="doc-guide">
+      이 파일은 <strong>고정된 px 대신 쓸 값들</strong>을 모아 놓은 곳입니다.
+      <code>%</code>, <code>vw</code>, <code>max-width: 100%</code>,
+      <code>clamp()</code>, <code>object-fit</code> 을 차례로 봅니다.
+      폭을 바꿔 가며 봐야 하므로 <strong>F12 → Ctrl+Shift+M</strong> 을 켜 두세요.
+    </p>
+
+    <!-- ══════════ 섹션 1: % 는 부모 기준 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 1 — % 는 언제나 부모를 기준으로 합니다</h2>
+      <p class="doc-desc">
+        <code>width: 50%</code> 는 화면의 절반이 아닙니다.
+        <strong>부모 요소 안쪽 폭의 절반</strong>입니다. 이 차이가 나중에 큰 혼란을 만듭니다.
+      </p>
+
+      <!--
+        아래 회색 상자가 부모입니다. 안쪽 폭이 400px 입니다.
+        그 안에 자식 둘을 넣었습니다.
+
+            .pct-half    { width: 50%; }    → 400 × 0.5 = 200px
+            .pct-quarter { width: 25%; }    → 400 × 0.25 = 100px
+
+        기준이 되는 400 은 화면 폭도 아니고 상자 바깥 폭도 아닙니다.
+        부모의 콘텐츠 영역(테두리와 안쪽 여백을 뺀 부분) 폭입니다. 10단원 박스 모델입니다.
+
+        부모가 바뀌면 자식도 같이 바뀝니다. 그래서 % 는 저절로 반응형이 됩니다.
+        창을 좁혀 부모가 300px 이 되면 절반짜리 자식은 150px 이 됩니다.
+        아무 계산도 미디어쿼리도 필요 없습니다.
+
+        ★ 여기서 회색 부모에는 width 가 아니라 max-width 를 썼습니다.
+
+            .pct-parent { max-width: 400px; }
+
+        "400px 을 넘지는 마라" 는 뜻입니다. 자리가 400px 보다 좁으면 그만큼만 씁니다.
+        width: 400px 이었다면 폭 360px 짜리 휴대폰에서 화면 밖으로 나갔을 것입니다.
+        max-width 는 10단원에서 배운 상한선 속성입니다.
+        섹션 3 에서 이것을 이미지에 쓰는 법을 봅니다.
+
+        ★ % 가 안 먹는 경우
+
+            부모의 폭이 정해져 있지 않으면 % 계산이 안 됩니다.
+            폭은 대부분 저절로 정해지니 별 문제가 없지만, 높이는 다릅니다.
+            height: 100% 를 썼는데 아무 일도 안 일어난다면 거의 항상 이 경우입니다.
+            "부모 높이가 얼마인지 모르는데 그 100% 를 어떻게 계산하나" 인 것입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 부모 안쪽 400px 안의 50% 와 25%</p>
+        <div class="pct-parent" id="pctParent">
+          <div class="pct-half" id="pctHalf">width: 50% — 200px</div>
+          <div class="pct-quarter" id="pctQuarter">25%</div>
+        </div>
+        <!-- 화면: 회색 상자 안에 파란 띠(200px) 와 그보다 짧은 주황 띠(100px) 가
+                  위아래로 놓입니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 1 — <code>.pct-parent</code> 의 <code>max-width</code> 를
+        <code>200px</code> 으로 바꿔 보세요. 자식 둘의 폭이 각각 몇 px 이 될지
+        먼저 계산해 보고 나서 확인하세요. 확인했으면 400px 으로 되돌리세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 2: vw 와 vh ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 2 — vw 와 vh 는 화면을 기준으로 합니다</h2>
+      <p class="doc-desc">
+        <code>vw</code> 는 <strong>뷰포트 폭의 100분의 1</strong>,
+        <code>vh</code> 는 <strong>뷰포트 높이의 100분의 1</strong> 입니다.
+        부모가 무엇이든 상관하지 않습니다.
+      </p>
+
+      <!--
+        이름부터 봅시다.
+
+            vw = viewport width      1vw = 화면 가로의 1%
+            vh = viewport height     1vh = 화면 세로의 1%
+
+        그러니 이렇게 됩니다.
+
+            폭 1280 인 창에서   50vw = 640px,  25vw = 320px
+            폭  480 인 창에서   50vw = 240px,  25vw = 120px
+            높이 900 인 창에서  20vh = 180px
+
+        % 와 vw 는 둘 다 "비율" 이지만 기준이 완전히 다릅니다.
+
+            %    부모 기준     부모가 좁으면 같이 좁아집니다
+            vw   화면 기준     부모가 아무리 좁아도 화면 크기만 봅니다
+
+        아래 두 번째 상자에서 이 차이를 눈으로 볼 수 있습니다.
+        회색 부모(안쪽 400px) 안에 50% 와 50vw 를 나란히 넣었습니다.
+
+            파란 띠 (50%)   200px   부모 안에 얌전히 들어갑니다
+            빨간 띠 (50vw)  640px   부모를 뚫고 오른쪽으로 삐져나갑니다
+
+        vw 가 잘못된 단위라는 뜻이 아닙니다. 기준이 다를 뿐입니다.
+        화면 전체를 덮는 큰 제목이나 배너처럼 진짜로 화면 크기를 따라야 하는 곳에서는
+        vw 가 정답입니다. 다만 상자 안의 폭을 정할 때 vw 를 쓰면 대개 사고가 납니다.
+
+        ★ 100vw 를 조심하세요
+
+        100vw 는 "화면 가로 전체" 입니다. 딱 맞을 것 같지만 거의 항상 넘칩니다.
+        이유가 두 가지입니다.
+
+            1) 그 상자가 화면 맨 왼쪽에서 시작하지 않습니다.
+               부모의 여백만큼 오른쪽에서 시작해 놓고 화면 전체 폭을 차지하니
+               그 여백만큼 오른쪽으로 넘칩니다.
+            2) 세로 스크롤 막대가 있으면 100vw 는 그 막대 폭까지 포함합니다.
+               실제로 쓸 수 있는 폭보다 15px 쯤 넓습니다.
+
+        가로 스크롤 막대가 생기는 원인 1위가 바로 이 100vw 입니다.
+        가로로 꽉 채우고 싶으면 그냥 폭을 안 정하거나 width: 100% 를 쓰세요.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 1 — 50vw, 25vw, 20vh</p>
+        <div class="vw-half" id="vwHalf">width: 50vw</div>
+        <div class="vw-quarter" id="vwQuarter">25vw</div>
+        <div class="vh-box" id="vhBox">height: 20vh</div>
+        <!-- 화면: 폭 1280 · 높이 900 인 창에서 초록 띠가 640px, 그 아래가 320px,
+                  보라 상자의 높이가 180px 입니다 -->
+      </div>
+
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 2 — 같은 "절반" 인데 기준이 다릅니다</p>
+        <div class="pct-parent">
+          <div class="ref-pct" id="refPct">50% — 부모의 절반 (200px)</div>
+          <div class="ref-vw" id="refVw">50vw — 화면의 절반 (640px)</div>
+        </div>
+        <!-- 화면: 회색 부모 안에서 파란 띠는 부모 안에 들어가고,
+                  빨간 띠는 부모 오른쪽 테두리를 뚫고 나가 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>vh</code> 는 브라우저 창 높이를 기준으로 하므로
+        <strong>창 크기를 세로로 바꿔도 값이 달라집니다.</strong>
+        위 보라 상자의 180px 은 창 높이가 900px 일 때의 값입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 2 — <code>.vw-half</code> 를 <code>width: 100vw;</code> 로
+        바꾸고 저장한 뒤, 페이지 맨 아래를 보세요. <strong>가로 스크롤 막대</strong>가 생깁니다.
+        왜 화면 폭인데도 넘치는지 위 설명에서 찾아 읽고, 확인했으면 50vw 로 되돌리세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 3: 이미지가 넘치지 않게 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 3 — max-width: 100% 로 이미지를 가둡니다</h2>
+      <p class="doc-desc">
+        이미지는 <strong>원래 크기대로 그려집니다.</strong> 부모보다 커도 봐주지 않습니다.
+        반응형에서 가로 스크롤이 생기는 원인 대부분이 사진입니다.
+      </p>
+
+      <!--
+        아래 두 액자는 똑같이 안쪽 폭이 320px 입니다.
+        그 안에 가로 400px 짜리 같은 그림을 넣었습니다.
+
+            [위] CSS 를 아무것도 안 준 img
+                 → 400px 그대로 그려져서 액자 오른쪽으로 80px 삐져나갑니다
+
+            [아래] .photo-good { max-width: 100%; }
+                 → 320px 으로 줄어들어 액자 안에 딱 들어갑니다
+
+        max-width 는 "최대 이만큼" 이라는 상한선입니다. 10단원에서 배웠습니다.
+        100% 는 부모 안쪽 폭입니다. 둘을 합치면 이런 뜻이 됩니다.
+
+            "부모보다 커지지는 마라. 부모보다 작으면 원래 크기 그대로 있어라."
+
+        width: 100% 와 헷갈리기 쉽습니다. 차이가 있습니다.
+
+            width: 100%       부모보다 작은 그림도 억지로 늘립니다 → 흐릿해집니다
+            max-width: 100%   작은 그림은 그대로 두고, 큰 것만 줄입니다 → 안전합니다
+
+        그래서 사진에는 거의 항상 max-width: 100% 를 씁니다.
+
+        ★ 높이는 건드리지 마세요
+
+        위 액자의 그림은 320 × 160 이 되었습니다. 원래 400 × 200 이었으니
+        가로세로 비율이 그대로 유지되었습니다. height 를 아예 안 정했기 때문입니다.
+        브라우저가 가로에 맞춰 세로를 알아서 계산해 준 것입니다.
+
+            max-width: 100%;              → 비율 유지. 안전합니다
+            max-width: 100%; height: 200px;  → 가로만 줄고 세로는 200 고정 → 찌그러집니다
+
+        비율을 유지한 채로 액자를 꽉 채우고 싶다면 섹션 5 의 object-fit 을 씁니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 위는 그냥 넣은 것, 아래는 max-width: 100%</p>
+        <div class="spill-frame">
+          <div class="photo-frame">
+            <img class="photo-bad" id="photoBad" src="이미지/풍경.svg" alt="산이 있는 풍경 그림" />
+          </div>
+        </div>
+        <div class="photo-frame">
+          <img class="photo-good" id="photoGood" src="이미지/풍경.svg" alt="산이 있는 풍경 그림" />
+        </div>
+        <!-- 화면: 위 액자에서는 그림이 400 × 200 그대로라 오른쪽 테두리를 뚫고 나갑니다.
+                  아래 액자에서는 320 × 160 으로 줄어 액자 안에 들어갑니다 -->
+      </div>
+
+      <p class="doc-note">
+        위쪽 액자만 <code>.spill-frame</code> 이라는 껍데기로 한 번 더 감싸고
+        <code>overflow-x: auto</code> 를 걸어 두었습니다(10단원).
+        그렇게 하지 않으면 창을 폭 480px 쯤까지 좁혔을 때
+        <strong>이 자료 페이지 전체에 가로 스크롤이 생기기</strong> 때문입니다.
+        여러분이 만드는 페이지에서 이 일이 벌어지면 감싸서 가리지 말고
+        아래처럼 사진 자체를 고치세요.
+      </p>
+
+      <p class="doc-note">
+        새 프로젝트를 시작할 때 CSS 맨 위에
+        <code>img { max-width: 100%; }</code> 한 줄을 미리 넣어 두는 사람이 많습니다.
+        사진 때문에 화면이 깨지는 일을 통째로 막아 주기 때문입니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 3 — <code>.photo-good</code> 에 <code>height: 240px;</code> 를
+        한 줄 더 넣어 보세요. 그림이 어떻게 되는지 확인하고 지우세요.
+        "높이를 건드리면 안 된다" 를 눈으로 확인하는 것이 목적입니다.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 4: min max clamp ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 4 — min(), max(), clamp() 맛보기</h2>
+      <p class="doc-desc">
+        값을 하나만 쓰는 대신 <strong>여러 값 중에서 고르게</strong> 할 수 있습니다.
+        이름은 무섭지만 하는 일은 아주 단순합니다.
+      </p>
+
+      <!--
+        세 함수의 뜻은 이름 그대로입니다.
+
+            min(a, b)         a 와 b 중 작은 쪽을 씁니다
+            max(a, b)         a 와 b 중 큰 쪽을 씁니다
+            clamp(최소, 기준, 최대)   기준을 쓰되 최소와 최대를 벗어나지 않게 합니다
+
+        ★ min() 이 "최소" 가 아니라는 점을 조심하세요
+
+        min(500px, 100%) 는 "최소 500px" 이 아닙니다. "둘 중 작은 쪽" 입니다.
+
+            폭이 넓을 때   100% = 824px, 500px  → 작은 쪽인 500px 을 씁니다
+            폭이 좁을 때   100% = 404px, 500px  → 작은 쪽인 404px 을 씁니다
+
+        결과적으로 "최대 500px 까지만 커지고 좁아지면 따라 줄어드는" 상자가 됩니다.
+        max-width: 500px 과 사실상 같은 일을 한 줄로 한 것입니다.
+
+        ★ max() 는 바닥을 깔아 줍니다
+
+        max(200px, 30%) 는 "둘 중 큰 쪽" 이므로 아무리 좁아져도 200px 아래로는
+        안 내려갑니다. 너무 작아져서 글자가 세로로 쌓이는 것을 막을 때 씁니다.
+
+            폭 1280 → 30% 는 247px, 200px 보다 크므로 247px
+            폭  480 → 30% 는 121px, 200px 보다 작으므로 200px
+
+        ★ clamp() 는 위 둘을 합친 것입니다
+
+            clamp(200px, 50%, 380px)
+
+            기본은 50% 를 쓰되, 200px 보다 작아지지 말고 380px 보다 커지지도 마라.
+
+            폭 1280 → 50% 는 412px → 상한 380px 에 걸립니다
+            폭  768 → 50% 는 346px → 그대로 346px
+            폭  480 → 50% 는 202px → 그대로 202px
+
+        순서는 항상 작은 것부터입니다. 최소, 기준, 최대. 헷갈리면 이렇게 읽으세요.
+        "적어도 이만큼, 보통은 이만큼, 많아야 이만큼."
+
+        ★ 글자 크기에 쓰면 특히 좋습니다
+
+            font-size: clamp(16px, 2.5vw, 28px);
+
+        화면이 넓어지면 제목이 커지고 좁아지면 작아지는데,
+        16px 아래로는 안 내려가서 읽을 수 있고 28px 위로는 안 올라가서 안 깨집니다.
+        미디어쿼리를 세 개 쓸 일을 한 줄로 끝냅니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 폭을 바꿔 가며 보세요</p>
+        <div class="fn-min" id="fnMin">width: min(500px, 100%)</div>
+        <div class="fn-max" id="fnMax">width: max(200px, 30%)</div>
+        <div class="fn-clamp" id="fnClamp">width: clamp(200px, 50%, 380px)</div>
+        <p class="fn-fs" id="fnFs">font-size: clamp(16px, 2.5vw, 28px)</p>
+        <!-- 화면: 폭 1280 에서 파란 띠 500px, 주황 띠 247px, 초록 띠 380px 이고
+                  맨 아래 글자는 28px 입니다.
+                  폭 480 에서는 404px, 200px, 202px 이 되고 글자는 16px 이 됩니다 -->
+      </div>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 4 — 기기 툴바로 폭을 <strong>1280 → 768 → 480</strong> 으로
+        바꾸면서 네 줄이 각각 어떻게 변하는지 보세요.
+        그다음 <code>.fn-clamp</code> 의 최댓값 <code>380px</code> 을
+        <code>600px</code> 으로 바꾸면 폭 1280 에서 몇 px 이 될지 계산하고 확인하세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 5: object-fit ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 5 — object-fit 으로 사진을 액자에 맞춥니다</h2>
+      <p class="doc-desc">
+        크기가 제각각인 사진들을 <strong>같은 크기 액자에 예쁘게</strong> 넣는 방법입니다.
+        카드 목록을 만들 때 반드시 필요합니다.
+      </p>
+
+      <!--
+        카드 목록을 만들면 사진 크기가 제각각이라 줄이 안 맞습니다.
+        그래서 액자 크기를 못 박습니다.
+
+            .thumb { width: 200px; height: 200px; }
+
+        여기 400 × 200 짜리 가로로 긴 그림을 넣으면 어떻게 될까요?
+        아무것도 안 주면 그림이 액자 모양에 맞춰 억지로 늘어납니다. 찌그러집니다.
+        object-fit 은 "찌그러뜨리지 말고 이렇게 맞춰라" 를 정하는 속성입니다.
+
+            fill      (기본값) 액자 모양대로 잡아 늘립니다 → 찌그러집니다
+            cover     비율을 지킨 채 액자를 꽉 채웁니다   → 넘치는 부분이 잘립니다
+            contain   비율을 지킨 채 전부 보이게 넣습니다 → 남는 자리에 여백이 생깁니다
+
+            원래 그림          fill              cover            contain
+            ┌────────┐        ┌────┐           ┌────┐           ┌────┐
+            │ 가로로 긴 │       │찌그러짐│         │잘림 │           │    │
+            └────────┘        │      │          │     │           │그림 │
+                              └────┘           └────┘           │    │
+                                                                 └────┘
+
+        어느 것을 쓸까요.
+
+            사진 목록, 카드 썸네일   → cover. 줄이 딱 맞아 보기 좋습니다
+            로고, 도표, 잘리면 안 되는 것 → contain. 다 보여야 하니까요
+            fill 은 거의 안 씁니다. 사람 얼굴이 찌그러집니다
+
+        아래 세 액자는 크기가 200 × 200 으로 모두 같고, 같은 그림이 들어 있습니다.
+        차이는 object-fit 값뿐입니다.
+      -->
+      <div class="doc-demo">
+        <p class="doc-demo-label">실제 결과 — 왼쪽부터 fill(기본), cover, contain</p>
+        <div class="thumb-row">
+          <img class="thumb" id="thumbFill" src="이미지/풍경.svg" alt="풍경 그림 — 기본" />
+          <img class="thumb fit-cover" id="thumbCover" src="이미지/풍경.svg"
+               alt="풍경 그림 — cover" />
+          <img class="thumb fit-contain" id="thumbContain" src="이미지/풍경.svg"
+               alt="풍경 그림 — contain" />
+        </div>
+        <!-- 화면: 세 액자 모두 200 × 200 정사각형입니다.
+                  왼쪽은 그림이 세로로 늘어나 해가 동그라미가 아니라 긴 타원이 되었고,
+                  가운데는 그림이 원래 비율을 지킨 채 높이에 맞춰지고 넘치는 좌우가 잘려
+                  해가 아예 안 보이고,
+                  오른쪽은 그림 전체(200 × 100) 가 다 보이고 위아래에 흰 여백이 있습니다 -->
+      </div>
+
+      <p class="doc-note">
+        <code>object-fit</code> 은 <strong>액자 크기가 정해져 있을 때만</strong> 뜻이 있습니다.
+        <code>width</code> 와 <code>height</code> 를 둘 다 정하지 않으면 맞출 액자가 없어서
+        아무 일도 안 일어납니다.
+      </p>
+
+      <p class="doc-try">
+        ✏️ 직접 해보기 5 — <code>.thumb</code> 의 <code>height</code> 를
+        <code>120px</code> 으로 바꿔 보세요. 세 액자가 가로로 납작해집니다.
+        그 상태에서 cover 와 contain 이 어떻게 달라지는지 다시 비교해 보세요.
+      </p>
+    </section>
+
+    <!-- ══════════ 섹션 6: 자주 하는 실수 ══════════ -->
+    <section class="doc-sec">
+      <h2 class="doc-sec-title">섹션 6 — 자주 하는 실수</h2>
+      <p class="doc-desc">
+        여기 실수들은 대부분 <strong>넓은 화면에서는 안 보입니다.</strong>
+        폭을 좁혀 봐야 드러납니다. 그래서 기기 툴바를 켜 놓는 습관이 중요합니다.
+      </p>
+
+      <!-- [실수 1] 100vw -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 1 — 가로를 꽉 채우려고 100vw 를 씀</span>
+        <div class="doc-code">.banner {
+  width: 100vw;
+}</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 페이지 아래에
+          <strong>가로 스크롤 막대가 생깁니다.</strong> 좌우로 흔들리는 페이지가 됩니다.
+          그 상자가 화면 맨 왼쪽에서 시작하지 않는데 화면 전체 폭을 차지하기 때문이고,
+          세로 스크롤 막대가 있으면 그 폭(약 15px)까지 더해지기 때문입니다.
+          <strong>가로로 꽉 채우고 싶으면 폭을 아예 안 정하거나
+          <code>width: 100%</code> 를 쓰세요.</strong>
+        </p>
+      </div>
+
+      <!-- [실수 2] 이미지에 max-width 를 안 줌 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 2 — 사진에 max-width: 100% 를 안 줌</span>
+        <div class="doc-code">&lt;img src="사진.jpg" alt="사진" /&gt;
+/* CSS 없음 */</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> PC 에서는 멀쩡한데
+          휴대폰에서 열면 <strong>사진 한 장 때문에 페이지 전체가 옆으로 밀립니다.</strong>
+          요즘 사진은 가로가 3000px 이 넘습니다. 폭 360px 화면에서 그대로 그려집니다.
+          <code>img { max-width: 100%; }</code> 한 줄로 막습니다.
+        </p>
+      </div>
+
+      <!-- [실수 3] height 를 같이 못 박음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 3 — max-width 와 함께 height 를 px 로 못 박음</span>
+        <div class="doc-code">img {
+  max-width: 100%;
+  height: 180px;
+}</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 창을 좁힐수록
+          <strong>사진이 가로로만 눌려서 찌그러집니다.</strong> 가로는 따라 줄어드는데
+          세로는 180px 에 묶여 있기 때문입니다.
+          비율을 지키려면 <code>height</code> 를 아예 안 쓰거나
+          <code>object-fit: cover</code> 를 같이 쓰세요.
+        </p>
+      </div>
+
+      <!-- [실수 4] % 를 화면 기준으로 착각 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 4 — % 를 화면 기준으로 착각함</span>
+        <div class="doc-code">/* 화면의 절반으로 만들고 싶어서 */
+.side {
+  width: 50%;
+}</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 생각보다 훨씬 작게 나옵니다.
+          <code>%</code> 는 <strong>부모 기준</strong>이라, 부모가 이미 400px 이면
+          50% 는 200px 입니다. 화면이 1280px 이어도 640px 이 되지 않습니다.
+          진짜로 화면 기준이 필요하면 <code>vw</code> 를 씁니다.
+        </p>
+      </div>
+
+      <!-- [실수 5] height: 100% 가 안 먹음 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 5 — height: 100% 를 썼는데 아무 일도 안 일어남</span>
+        <div class="doc-code">.box {
+  height: 100%;
+}</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 높이가 안 바뀝니다.
+          부모의 높이가 정해져 있지 않으면 "그 100%" 를 계산할 수가 없어서
+          브라우저가 이 줄을 무시합니다. 폭은 저절로 정해지지만 높이는 아닙니다.
+          화면 높이를 채우고 싶다면 <code>height: 100vh</code> 를 쓰세요.
+        </p>
+      </div>
+
+      <!-- [실수 6] clamp 순서 -->
+      <div class="doc-bad">
+        <span class="doc-bad-tag">실수 6 — clamp() 의 순서를 헷갈림</span>
+        <div class="doc-code">font-size: clamp(28px, 2.5vw, 16px);</div>
+        <p>
+          <strong>무슨 일이 일어나나요:</strong> 글자가 항상 28px 로만 나옵니다.
+          최소가 28px 이고 최대가 16px 이라 말이 안 되는 조건이 되어,
+          브라우저가 최솟값을 그대로 씁니다.
+          순서는 <strong>최소, 기준, 최대</strong> 입니다.
+          "적어도 이만큼, 보통은 이만큼, 많아야 이만큼" 으로 읽으세요.
+        </p>
+      </div>
+    </section>
+
+    <div class="doc-summary">
+      <p class="doc-summary-title">── 정리 ──</p>
+      <p>
+        1. <code>%</code> 는 <strong>부모</strong> 기준,
+        <code>vw</code>/<code>vh</code> 는 <strong>화면</strong> 기준입니다.
+      </p>
+      <p>2. <code>100vw</code> 는 거의 항상 가로 스크롤을 만듭니다. <code>100%</code> 를 쓰세요.</p>
+      <p>
+        3. 사진에는 <code>max-width: 100%</code> 를 겁니다.
+        <code>height</code> 는 건드리지 않아야 비율이 유지됩니다.
+      </p>
+      <p>4. <code>min()</code> 은 작은 쪽, <code>max()</code> 는 큰 쪽을 고릅니다. "최소/최대" 가 아닙니다.</p>
+      <p>5. <code>clamp(최소, 기준, 최대)</code> 는 미디어쿼리 여러 개를 한 줄로 대신합니다.</p>
+      <p>6. <code>object-fit: cover</code> 는 액자를 꽉 채우고 자릅니다. 썸네일의 기본입니다.</p>
+      <p>7. 폭은 되도록 정하지 말고, 정해야 하면 <strong>상한선(max-width)</strong> 만 정하세요.</p>
+    </div>
+
+    <!-- ============================================================
+         ✏️ 직접 해보기 정답
+         ============================================================
+
+         1) .pct-parent 를 이렇게 바꿉니다.
+
+                max-width: 200px;
+
+            → 부모 안쪽이 200px 이 되므로 파란 띠는 100px, 주황 띠는 50px 이 됩니다.
+              % 는 부모 안쪽 폭을 기준으로 하니 부모가 절반이 되면 자식도 절반이 됩니다.
+              자식의 CSS 는 한 글자도 안 고쳤다는 점이 중요합니다.
+
+         2) .vw-half 를 이렇게 바꿉니다.
+
+                width: 100vw;
+
+            → 초록 띠가 화면 폭만큼 넓어지면서 페이지 맨 아래에 가로 스크롤 막대가 생깁니다.
+              이 띠는 왼쪽에서 228px 떨어진 자리에서 시작하는데 폭은 화면 전체(1280px)
+              이므로, 오른쪽으로 228px 만큼 넘칩니다.
+              여기에 세로 스크롤 막대 폭까지 더해집니다.
+              확인했으면 50vw 로 되돌리세요.
+
+         3) .photo-good 에 이렇게 한 줄을 더합니다.
+
+                height: 240px;
+
+            → 가로는 320px 인데 세로가 240px 이 되어 그림이 세로로 늘어납니다.
+              원래 400 × 200 이던 그림이 320 × 240 이 되었으니 비율이 깨진 것입니다.
+              산이 위로 길쭉하고 뾰족해지고, 해도 동그라미가 아니라
+              세로로 긴 타원이 됩니다. 확인했으면 지우세요.
+
+         4) 폭을 바꾸면 이렇게 변합니다.
+
+                폭 1280   500px / 247px / 380px / 글자 28px
+                폭  768   500px / 208px / 346px / 글자 19.2px
+                폭  480   404px / 200px / 202px / 글자 16px
+
+            .fn-clamp 의 최댓값을 600px 으로 바꾸면
+
+                width: clamp(200px, 50%, 600px);
+
+            → 폭 1280 에서 50% 는 412px 입니다. 최댓값 600px 에 안 걸리므로
+              412px 이 그대로 쓰입니다. 380px 이던 띠가 412px 로 넓어집니다.
+
+         5) .thumb 를 이렇게 바꿉니다.
+
+                height: 120px;
+
+            → 액자가 200 × 120 으로 납작해집니다.
+              왼쪽(fill) 은 400 × 200 을 200 × 120 에 맞추므로 가로는 0.5배,
+              세로는 0.6배가 됩니다. 세로로 20% 늘어난 정도라 아까보다 훨씬 덜 찌그러집니다.
+              가운데(cover) 는 240 × 120 으로 그린 뒤 좌우를 20px 씩만 자릅니다.
+              오른쪽(contain) 은 200 × 100 이 되어 위아래 흰 여백이 10px 씩으로 얇아집니다.
+              액자 비율이 그림 비율에 가까울수록 세 값의 차이가 줄어든다는 뜻입니다.
+    ============================================================ -->
+
+    <!-- ===== 아래는 자료 자동 검사용입니다. 학습 내용이 아니니 넘어가세요. =====
+    검증
+      #pctParent | ~width | 422
+      #pctHalf | ~width | 200
+      #pctQuarter | ~width | 100
+      #vwHalf | ~width | 640
+      #vwQuarter | ~width | 320
+      #vhBox | ~height | 180
+      #refPct | ~width | 200
+      #refVw | ~width | 640
+      #photoBad | ~width | 400
+      #photoBad | ~height | 200
+      #photoGood | ~width | 320
+      #photoGood | ~height | 160
+      #fnMin | ~width | 500
+      #fnMax | ~width | 247
+      #fnClamp | ~width | 380
+      #fnFs | font-size | 28px
+      #thumbCover | object-fit | cover
+      #thumbContain | object-fit | contain
+      #thumbFill | ~height | 200
+      @폭 768
+      #fnMin | ~width | 500
+      #fnMax | ~width | 208
+      #fnClamp | ~width | 346
+      #fnFs | font-size | 19.2px
+      #vwHalf | ~width | 384
+      @폭 480
+      #pctHalf | ~width | 191
+      #vwHalf | ~width | 240
+      #vwQuarter | ~width | 120
+      #photoGood | ~width | 320
+      #fnMin | ~width | 404
+      #fnMax | ~width | 200
+      #fnClamp | ~width | 202
+      #fnFs | font-size | 16px
+    -->
+  </body>
+</html>

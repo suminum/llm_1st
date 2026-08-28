@@ -1,0 +1,457 @@
+// ============================================================
+// 04단원 · 개념 02 — useState 시작
+// ------------------------------------------------------------
+// 실행: 실습프로젝트에서 npm run dev → 왼쪽 목록에서 이 예제를 고르세요.
+//       버튼을 눌러 보세요. F12 → Console 도 함께.
+// ============================================================
+//
+// 개념01에서 버튼에 이벤트를 붙였습니다.
+// 누르면 콘솔에는 잘 찍혔습니다. 그런데 화면은 한 글자도 안 바뀌었습니다.
+//
+// 이 파일에서 화면을 바꿉니다.
+// 다만 곧바로 답을 알려 주지 않겠습니다.
+// 먼저 '보통 변수' 로 해 보고, 왜 안 되는지 눈으로 확인합니다.
+// 그 뒤에 useState 가 무엇을 대신해 주는지 보면 훨씬 잘 남습니다.
+
+// React 가 주는 도구는 파일 맨 위에서 import 로 꺼내 씁니다.
+// 중괄호 안에 필요한 이름을 적습니다. 이 문법 자체는 08단원에서 자세히 다룹니다.
+// 지금은 "useState 를 쓰려면 이 줄이 필요하다" 까지만 알면 됩니다.
+
+import { useState } from "react";
+import Summary from "../_ui/Summary.jsx";
+
+console.log("useState 를 꺼냈습니다. 정체는:", typeof useState);
+// 콘솔: useState 를 꺼냈습니다. 정체는: function
+// useState 는 '함수' 입니다. 특별한 문법이 아니라 그냥 함수입니다.
+
+// ── 섹션 1: 보통 변수로 해 보면 어떻게 되나 ──
+
+// JS자료 11단원에서는 이렇게 셌습니다. 잘 됐습니다.
+//
+//     let count = 0;
+//     btn.addEventListener("click", () => {
+//       count++;
+//       out.textContent = count;   // ← 화면 고치기를 '내가' 했습니다
+//     });
+//
+// React 에서는 마지막 줄을 쓰지 않습니다. 화면 고치기는 React 의 일입니다.
+// 그럼 변수만 올리면 React 가 알아서 화면을 고쳐 줄까요? 해 봅시다.
+
+let outsideCount = 0; // 컴포넌트 '밖' 에 만든 보통 변수
+
+function BrokenCounter({ 다시그리기 }) {
+  let insideCount = 0; // 컴포넌트 '안' 에 만든 보통 변수
+
+  function handleClick() {
+    outsideCount = outsideCount + 1;
+    insideCount = insideCount + 1;
+
+    console.log("밖의 변수:", outsideCount, "/ 안의 변수:", insideCount);
+    // 콘솔: 밖의 변수: 1 / 안의 변수: 1
+  }
+
+  return (
+    <div className="demo">
+      <h3>① 보통 변수로 세어 보기 — 화면이 안 바뀝니다</h3>
+      <div className="output" id="brokenOut">
+        화면에 보이는 값 — 밖: {outsideCount} / 안: {insideCount}
+      </div>
+      <button id="btnBrokenUp" onClick={handleClick}>
+        +1
+      </button>
+      <button id="btnRedraw" onClick={다시그리기}>
+        화면 다시 그리기
+      </button>
+    </div>
+  );
+}
+
+// 데모 ① 의 +1 을 세 번 눌러 보세요.
+// 콘솔의 숫자는 1, 2, 3 으로 잘 올라갑니다. 값은 분명히 바뀌었습니다.
+// 그런데 화면은 계속 0 입니다.
+// 화면(누르면): 화면에 보이는 값 — 밖: 0 / 안: 0
+//
+// 이유는 간단합니다.
+// BrokenCounter 함수는 화면을 그릴 때 한 번 실행되고 끝났습니다.
+// 그때 outsideCount 가 0이었으니 화면에는 0이 박혔습니다.
+// 그 뒤로 변수를 아무리 바꿔도, 함수를 다시 실행하지 않으면 화면은 그대로입니다.
+//
+// React 는 변수를 지켜보고 있지 않습니다.
+// "값이 바뀌었으니 다시 그려라" 라고 알려 주는 장치가 따로 필요합니다.
+
+// 정말 값이 올라간 게 맞는지 확인해 봅시다.
+// ① 의 '화면 다시 그리기' 버튼을 누르면 이 상자를 처음부터 다시 만듭니다.
+//
+// 그 버튼이 어떻게 그렇게 하는지는 이 파일 맨 아래에 있습니다.
+// 미리 말하면 — 지금부터 배울 useState 를 썼습니다.
+// 여기서는 "누르면 이 상자가 처음부터 다시 그려진다" 까지만 보면 됩니다.
+
+// +1 을 세 번 누른 뒤 '화면 다시 그리기' 를 눌러 보세요. 두 가지가 보입니다.
+//
+//   밖: 3  ← 값은 진짜로 올라가 있었습니다. 화면만 안 따라온 것입니다.
+//   안: 0  ← 다시 실행되면서 let insideCount = 0 이 처음부터 다시 실행됐습니다.
+//
+// 그래서 보통 변수로는 어느 쪽에 둬도 안 됩니다.
+//   밖에 두면  → 값은 남지만 화면이 안 따라옵니다.
+//   안에 두면  → 다시 그릴 때마다 처음 값으로 되돌아갑니다.
+//
+// 필요한 것은 두 가지를 동시에 해 주는 물건입니다.
+//   (1) 다시 그려도 값을 기억하고
+//   (2) 값이 바뀌면 다시 그리라고 React 에게 알려 주는 것
+//
+// 그게 useState 입니다.
+
+// ✏️ 직접 해보기 1 — 데모 ① 의 +1 을 다섯 번 누른 뒤
+//                    '화면 다시 그리기' 를 누르면 밖의 값이 몇으로 나올까요?
+//                    먼저 예상하고 눌러서 확인하세요.
+
+// ── 섹션 2: useState 로 고치기 ──
+
+// 쓰는 모양은 한 줄입니다.
+//
+//     const [count, setCount] = useState(0);
+//            ^^^^^  ^^^^^^^^            ^
+//            현재 값  바꾸는 함수        시작값
+//
+// 그리고 값을 바꿀 때는 대입이 아니라 함수를 부릅니다.
+//
+//     setCount(count + 1);
+//
+// 이 한 줄이 두 가지 일을 합니다.
+//   ① 다음 값을 React 에게 맡깁니다
+//   ② "이 컴포넌트를 다시 그려라" 라고 알립니다
+//
+// ②가 바로 섹션 1에서 없던 그 장치입니다.
+
+function GoodCounter() {
+  const [count, setCount] = useState(0);
+
+  function handleClick() {
+    setCount(count + 1);
+    console.log("setCount 를 불렀습니다. 곧 화면이 따라옵니다.");
+    // 콘솔: setCount 를 불렀습니다. 곧 화면이 따라옵니다.
+  }
+
+  return (
+    <div className="demo">
+      <h3>② useState 로 세기 — 화면이 따라옵니다</h3>
+      <div className="output" id="goodOut">
+        담긴 아메리카노: {count}잔
+      </div>
+      <button id="btnGoodUp" onClick={handleClick}>
+        +1
+      </button>
+    </div>
+  );
+}
+
+// 화면(누르면): 담긴 아메리카노: 1잔
+// 세 번 누르면 3잔이 됩니다. 이번에는 화면이 따라옵니다.
+//
+// 코드에서 화면을 고치는 줄을 한 줄도 안 썼다는 점을 보세요.
+// textContent 도 없고 innerHTML 도 없습니다.
+// setCount 를 부르면 React 가 GoodCounter 를 다시 실행하고,
+// 그때 나온 새 화면 설명을 실제 화면에 반영합니다.
+//
+// 이런 값을 state(상태)라고 부릅니다. 우리말로는 '상태' 지만
+// 이 자료에서는 코드에 나오는 그대로 state 라고 쓰겠습니다.
+//
+// state 는 "바뀌면 화면도 같이 바뀌어야 하는 값" 입니다.
+// 바뀌어도 화면과 상관없는 값이라면 state 로 만들 필요가 없습니다.
+
+// ✏️ 직접 해보기 2 — 시작값을 0 대신 5 로 바꿔 보세요.
+//                    왼쪽에서 다른 예제를 골랐다 돌아오면 화면이 몇으로 시작할까요?
+
+// ── 섹션 3: 대괄호는 왜 붙나 — 배열 구조분해 ──
+
+// const [count, setCount] 의 대괄호가 낯설 수 있습니다.
+// 새 문법이 아닙니다. JS자료 09단원 개념01에서 배운 배열 구조분해입니다.
+
+const coffee = ["아메리카노", 4000];
+const [coffeeName, coffeePrice] = coffee;
+
+console.log(coffeeName, coffeePrice);
+// 콘솔: 아메리카노 4000
+
+// 왼쪽 대괄호는 '배열을 만드는 것' 이 아니라 '순서대로 꺼내는 틀' 입니다.
+//
+// useState(0) 은 두 칸짜리 배열을 돌려줍니다.
+//
+//     [ 0번 칸 , 1번 칸 ]
+//       현재 값   그 값을 바꾸는 함수
+//
+// 그래서 이렇게 써도 똑같이 동작합니다. 구조분해를 안 쓴 모양입니다.
+//
+//     const state = useState(0);
+//     const count = state[0];
+//     const setCount = state[1];
+//
+// 세 줄을 한 줄로 줄인 것이 const [count, setCount] = useState(0) 입니다.
+//
+// 이름은 마음대로 지어도 됩니다. 위치만 맞으면 됩니다.
+// 다만 거의 모든 React 코드가 [x, setX] 로 씁니다.
+// 남이 읽기 쉬우니 이 관례를 따르세요.
+//
+//     const [count, setCount] = useState(0);
+//     const [isOpen, setIsOpen] = useState(false);
+//     const [userName, setUserName] = useState("김민준");
+//
+// 정말 두 칸짜리 배열인지 컴포넌트 안에서 확인해 봅시다.
+
+function PairCheck() {
+  const [count, setCount] = useState(0);
+
+  console.log("0번 칸:", count, "/ 1번 칸의 정체:", typeof setCount);
+  // 콘솔: 0번 칸: 0 / 1번 칸의 정체: function
+
+  return (
+    <div className="demo">
+      <h3>③ 두 칸의 정체 확인 — 콘솔을 보세요</h3>
+      <div className="output" id="pairOut">
+        지금 값: {count}
+      </div>
+      <button id="btnPairUp" onClick={() => setCount(count + 1)}>
+        +1 (누를 때마다 콘솔에 한 줄 더 찍힙니다)
+      </button>
+    </div>
+  );
+}
+
+// console.log 를 컴포넌트 함수 안, return 위에 적었습니다.
+// 그래서 이 줄은 '다시 그릴 때마다' 실행됩니다.
+// 버튼을 누르면 콘솔에 0번 칸이 1, 2, 3 으로 바뀌며 다시 찍힙니다.
+// 왜 다시 실행되는지는 개념03에서 자세히 봅니다.
+//
+// 위 버튼처럼 onClick 안에 화살표 함수를 바로 적어도 됩니다.
+// 짧은 일 하나뿐이면 이렇게 쓰는 편이 읽기 좋습니다.
+
+// ✏️ 직접 해보기 3 — PairCheck 의 두 이름을 [num, setNum] 으로 바꿔 보세요.
+//                    (return 안에서 쓰는 곳도 같이 바꿔야 합니다)
+
+// ── 섹션 4: 시작값 정하기 ──
+
+// useState 의 괄호 안에 적은 값이 시작값입니다. 무엇이든 넣을 수 있습니다.
+//
+//     useState(0)          숫자
+//     useState("")         빈 문자열
+//     useState(false)      불리언
+//     useState([])         빈 배열
+//     useState({})         빈 객체
+//
+// 중요한 규칙이 하나 있습니다.
+// 시작값은 '맨 처음 그릴 때 딱 한 번' 만 쓰입니다.
+// 두 번째 렌더링부터는 React 가 기억해 둔 값을 줍니다.
+// 그래서 useState(10) 이라고 적혀 있어도 화면에는 12가 보일 수 있습니다.
+
+function StartAtTen() {
+  const [count, setCount] = useState(10);
+
+  return (
+    <div className="demo">
+      <h3>④ 시작값 10 — 되돌리려면 직접 넣어야 합니다</h3>
+      <div className="output" id="tenOut">
+        남은 케이크: {count}조각
+      </div>
+      <button id="btnTenDown" onClick={() => setCount(count - 1)}>
+        한 조각 먹기
+      </button>
+      <button id="btnTenReset" onClick={() => setCount(10)}>
+        10으로 되돌리기
+      </button>
+    </div>
+  );
+}
+
+// 화면(누르면): 남은 케이크: 9조각
+//
+// '한 조각 먹기' 를 눌러 9가 된 다음, 코드의 useState(10) 은 그대로인데도
+// 화면이 10으로 돌아가지 않는다는 점을 확인하세요.
+// 되돌리려면 setCount(10) 처럼 직접 넣어 줘야 합니다.
+//
+// 왼쪽에서 다른 예제를 골랐다 돌아오면 처음부터 다시 그리므로 다시 10이 됩니다.
+// state 는 브라우저 메모리에만 있습니다. 새로고침하면 사라집니다.
+
+// ✏️ 직접 해보기 4 — '한 조각 더 굽기' 버튼을 만들어 1씩 늘려 보세요.
+
+// ── 섹션 5: state 는 컴포넌트마다 따로 있다 ──
+
+// 섹션 1의 outsideCount 는 컴포넌트 밖에 있었습니다.
+// 그런 변수는 컴포넌트를 두 개 만들어도 '하나' 를 같이 씁니다.
+//
+// state 는 다릅니다. 컴포넌트가 화면에 놓인 개수만큼 따로 생깁니다.
+// 03단원에서 같은 컴포넌트를 여러 번 썼던 것을 떠올려 보세요.
+// 아래는 같은 컴포넌트를 두 번 쓴 것입니다. 값은 각자 따로 셉니다.
+
+function CupCounter({ owner, btnId }) {
+  const [cups, setCups] = useState(0);
+
+  function handleClick() {
+    setCups(cups + 1);
+    console.log(owner, "님이 한 잔 더 마셨습니다");
+    // 콘솔: 김민준 님이 한 잔 더 마셨습니다
+    // 콘솔: 이서연 님이 한 잔 더 마셨습니다
+  }
+
+  return (
+    <div className="output">
+      {owner}: {cups}잔{" "}
+      <button id={btnId} onClick={handleClick}>
+        한 잔 더
+      </button>
+    </div>
+  );
+}
+
+// 매개변수 자리의 { owner, btnId } 는 03단원 개념03의 props 구조분해입니다.
+// btnId 는 버튼마다 다른 id 를 붙이려고 넘긴 값입니다.
+// 한 화면에 같은 id 가 두 개 있으면 안 되기 때문입니다.
+
+function TwinCounters() {
+  return (
+    <div className="demo">
+      <h3>⑤ 같은 컴포넌트 두 개 — 값은 각자 따로</h3>
+      <CupCounter owner="김민준" btnId="btnCupA" />
+      <CupCounter owner="이서연" btnId="btnCupB" />
+    </div>
+  );
+}
+
+// 김민준 쪽을 세 번 눌러도 이서연 쪽은 0 그대로입니다.
+// "state 는 컴포넌트 안에 들어 있다" 는 뜻이 이것입니다.
+// 두 값을 같이 움직이게 하고 싶다면 방법이 따로 있습니다. 07단원에서 배웁니다.
+
+// ✏️ 직접 해보기 5 — TwinCounters 안에 박지훈 몫을 하나 더 넣어 보세요.
+//                    btnId 는 다른 값으로 지어야 합니다.
+
+// ── 섹션 6: 자주 하는 실수 ──
+
+// ⚠️ [SyntaxError] 라고 적힌 것은 주석을 풀지 말고 눈으로만 보세요.
+//    풀면 파일 전체가 멈춰서 화면이 통째로 비어 버립니다. 다시 // 를 붙이면 돌아옵니다.
+
+// [실수 1] 대괄호 대신 중괄호로 꺼냈다
+//   const { count, setCount } = useState(0);
+// 실수: 에러가 안 납니다. 그런데 두 값 모두 undefined 가 됩니다.
+//       useState 가 돌려주는 것은 배열이라 '순서' 로 꺼내야 하는데,
+//       중괄호는 '이름' 으로 꺼내는 문법이기 때문입니다.
+//       화면에는 아무 숫자도 안 보이고, 버튼을 누르면 그제서야
+//       TypeError: setCount is not a function 이 뜹니다.
+//
+// 실제로 어떻게 되는지 배열로 흉내 내 봅시다.
+
+const wrongPair = ["아메리카노", 4000];
+const { itemName, itemPrice } = wrongPair;
+
+console.log("중괄호로 꺼내면:", itemName, itemPrice);
+// 콘솔: 중괄호로 꺼내면: undefined undefined
+// 배열에는 itemName 이라는 이름의 칸이 없습니다. 그래서 undefined 입니다.
+
+// [실수 2] state 에 직접 대입했다
+//   count = count + 1;
+// 실수: 버튼을 누르는 순간 이런 에러가 납니다.
+//         TypeError: Assignment to constant variable.
+//       const 로 받았으니 대입이 막힙니다. 값을 바꾸려면 setCount 를 부릅니다.
+//       그리고 const 가 아니었다 해도, 대입만으로는 화면이 안 바뀝니다.
+//       섹션 1에서 본 그대로입니다.
+
+// [실수 3] useState 를 꺼내지 않았다
+//   const [count, setCount] = useState(0);   // 파일 맨 위에 import 줄이 없을 때
+// 실수: ReferenceError: useState is not defined
+//       화면이 통째로 빕니다.
+//       파일 맨 위에 import { useState } from "react"; 가 꼭 있어야 합니다.
+//       이 줄이 없으면 useState 라는 이름 자체가 없습니다.
+
+// [실수 4] set 함수를 컴포넌트 밖에서 부르려고 했다
+//   setCount(1);   // 컴포넌트 밖, 그냥 script 한복판에서
+// 실수: ReferenceError: setCount is not defined
+//       setCount 는 컴포넌트 함수 '안' 에서 만들어집니다. 밖에서는 이름 자체가 없습니다.
+
+// [실수 5] set 을 부른 바로 다음 줄에서 값을 읽었다
+//   setCount(count + 1);
+//   console.log(count);   // ← 아직 옛날 값입니다
+// 실수: 에러는 없는데 값이 하나 뒤처져 보입니다. 아주 헷갈리는 실수입니다.
+//       왜 그런지는 개념05에서 제대로 다룹니다.
+
+// [실수 6] 두 이름 사이에 쉼표를 빠뜨렸다
+//   const [count setCount] = useState(0);
+// 실수: [SyntaxError] 입니다. 파일 전체가 안 돌아가고 화면이 통째로 빕니다.
+//         [PARSE_ERROR] Expected `,` or `]` but found `Identifier`
+//       메시지 아래에 문제의 줄과 위치가 그림으로 같이 나옵니다.
+//       구조분해의 대괄호 안은 쉼표로 나눕니다. [count, setCount] 가 맞습니다.
+
+// ── 마지막: 위에서 만든 컴포넌트를 한 화면에 모으기 ──
+
+export default function Concept02() {
+  // ★ 위 섹션 1에서 쓴 '화면 다시 그리기' 버튼의 정체입니다.
+  //   숫자를 하나 바꾸면 React 가 key 가 달라진 것을 보고
+  //   그 안을 통째로 버리고 처음부터 다시 만듭니다.
+  //   더블클릭으로 열던 시절에는 root.render 를 손으로 다시 불렀습니다.
+  //   Vite 프로젝트에서는 root 가 main.jsx 에 하나뿐이라 이렇게 합니다.
+  const [다시그린횟수, 다시그리기] = useState(0);
+
+  return (
+    <div>
+      <h1>개념 02 — useState 시작</h1>
+
+      <p className="guide">
+        왼쪽 목록에서 이 예제를 고르면 이 화면이 나옵니다. <strong>F12 → Console</strong> 도 함께 보세요.
+        <br />
+        <br />
+        이 파일의 앞부분은 <strong>일부러 안 되는 코드</strong>입니다. 화면이 안 바뀌는 것이 정상입니다. 왜 안 되는지 본 다음에 고칩니다.
+      </p>
+
+      <div>
+        <div key={다시그린횟수}>
+          <BrokenCounter 다시그리기={() => 다시그리기(다시그린횟수 + 1)} />
+        </div>
+        <GoodCounter />
+        <PairCheck />
+        <StartAtTen />
+        <TwinCounters />
+      </div>
+
+      <Summary
+        items={[
+          "보통 변수는 바꿔도 화면이 안 바뀝니다. 컴포넌트 함수를 다시 실행하지 않기 때문입니다.",
+          "컴포넌트 안의 보통 변수는 다시 그릴 때마다 처음 값으로 되돌아갑니다.",
+          <><strong>const [값, set값] = useState(시작값)</strong> 한 줄이 그 두 문제를 함께 해결합니다.</>,
+          <>값을 바꿀 때는 대입이 아니라 <strong>set 함수</strong>를 부릅니다. 그러면 React 가 다시 그립니다.</>,
+          "대괄호는 JS자료 09단원의 배열 구조분해입니다. 새 문법이 아닙니다.",
+          "시작값은 맨 처음 그릴 때만 쓰입니다. 되돌리려면 set 으로 직접 넣습니다.",
+          "state 는 컴포넌트마다 따로 생깁니다. 같은 컴포넌트를 둘 놓으면 값도 둘입니다.",
+        ]}
+      />
+    </div>
+  );
+}
+
+// ============================================================
+// 직접 해보기 정답
+// ============================================================
+//
+// 1) 밖: 5 / 안: 0 이 나옵니다.
+//    // 화면: 화면에 보이는 값 — 밖: 5 / 안: 0
+//    → 밖의 변수는 값을 기억하고 있었고, 화면만 안 따라온 것입니다.
+//      안의 변수는 컴포넌트 함수가 다시 실행되면서 0으로 새로 만들어졌습니다.
+//
+// 2) const [count, setCount] = useState(5);
+//    // 화면: 담긴 아메리카노: 5잔
+//    → 시작값은 맨 처음 그릴 때만 쓰입니다.
+//      이미 눌러서 값이 올라간 상태라면, 왼쪽에서 다른 예제를 골랐다 돌아와서 눌러야 5부터 다시 시작합니다.
+//
+// 3) const [num, setNum] = useState(0);
+//    console.log("0번 칸:", num, "/ 1번 칸의 정체:", typeof setNum);
+//    ... <div className="output" id="pairOut">지금 값: {num}</div>
+//    ... <button id="btnPairUp" onClick={() => setNum(num + 1)}>
+//    → 동작은 똑같습니다. 이름은 위치만 맞으면 무엇이든 됩니다.
+//      다만 setNum 을 바꾸는 것을 잊으면
+//      ReferenceError: setCount is not defined 가 납니다.
+//
+// 4) <button onClick={() => setCount(count + 1)}>한 조각 더 굽기</button>
+//    // 화면(누르면): 남은 케이크: 11조각
+//    → 시작값 10에서 한 번 누르면 11입니다.
+//
+// 5) <CupCounter owner="박지훈" btnId="btnCupC" />
+//    // 화면: 박지훈: 0잔  [한 잔 더]
+//    → 세 사람의 값이 전부 따로 셉니다.
+//      btnId 를 btnCupA 로 똑같이 적으면 화면에 같은 id 가 둘이 생겨
+//      나중에 그 버튼을 찾을 때 앞의 것만 잡힙니다.
