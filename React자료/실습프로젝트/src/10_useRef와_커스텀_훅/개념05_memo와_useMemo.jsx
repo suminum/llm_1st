@@ -183,9 +183,14 @@ function MemoCompare() {
 
   // (2) useMemo 로 — cart 가 안 바뀌면 계산을 건너뜁니다
   const totalMemo = useMemo(() => {
+    //useMemo의 진짜 목적은 "무조건 처음 한 번만 계산"이 아니라, "비싼 계산의 결과를 재사용해서 불필요한 재계산을 막는 것"**이야.
     const s = performance.now();
     const value = slowTotal(cart, HEAVY);
-    console.log(`useMemo 안에서 계산했습니다`, Math.round(performance.now() - s), "ms");
+    console.log(
+      `useMemo 안에서 계산했습니다`,
+      Math.round(performance.now() - s),
+      "ms",
+    );
     // 콘솔: useMemo 안에서 계산했습니다
     return value;
   }, []); // cart 는 이 파일에서 바뀌지 않으므로 빈 배열입니다
@@ -197,7 +202,7 @@ function MemoCompare() {
         <div>
           useMemo 없이: {totalPlain} 원 (이번 렌더에서 {plainMs}ms 걸림)
         </div>
-        <div>useMemo 로: {totalMemo} 원</div>
+        <div>useMemo 로: {totalMemo} 원(이번 렌더에서 )</div>
         <div>버튼 누른 횟수: {tick}</div>
       </div>
       <div style={{ marginTop: 8 }}>
@@ -239,7 +244,7 @@ function MemoCompare() {
 // 쓰는 법은 컴포넌트를 memo(...) 로 감싸는 것뿐입니다.
 
 const MemoCard = memo(function MemoCard({ name, price }) {
-  console.log(`MemoCard 를 그렸습니다: ${name}`);
+  console.log(`MemoCard 를 그렸습니다: ${name}`); //지금name 아니라 틱으로 값이 갱신되니 새로 그려짐
   // 콘솔: MemoCard 를 그렸습니다: 아메리카노
 
   return (
@@ -269,7 +274,7 @@ function MemoSection() {
   return (
     <div className="demo">
       <h3>④ memo 있고 없고</h3>
-      <MemoCard name="아메리카노" price={4000} />
+      <MemoCard name="아메리카노" price={tick} />
       <PlainCard name="라떼" price={4500} />
       <div className="output">부모의 숫자: {tick}</div>
       <div style={{ marginTop: 8 }}>
@@ -340,7 +345,8 @@ function CallbackSection() {
 
   // (2) 언제나 같은 함수
   const stablePress = useCallback(() => {
-    console.log("useCallback 쪽 버튼을 눌렀습니다");
+    console.log("useCallback 쪽 버튼을 눌렀습니다"); //왜냐하면 useCallback의 주요 목적은:
+    //함수를 다른 곳에 전달할 때 같은 함수 참조를 유지하는 것
     // 콘솔: useCallback 쪽 버튼을 눌렀습니다
   }, []);
 
@@ -518,10 +524,11 @@ export default function Concept05MemoAndUseMemo() {
       <h1>개념 05 — memo 와 useMemo</h1>
 
       <p className="guide">
-        <strong>이 파일의 도구들은 먼저 쓰는 것이 아닙니다.</strong> 느려진 다음에
-        재고, 잰 자리만 고칩니다.
+        <strong>이 파일의 도구들은 먼저 쓰는 것이 아닙니다.</strong> 느려진
+        다음에 재고, 잰 자리만 고칩니다.
         <br />
-        F12 → Console 을 열고 각 데모의 버튼을 눌러 콘솔이 어떻게 달라지는지 보세요.
+        F12 → Console 을 열고 각 데모의 버튼을 눌러 콘솔이 어떻게 달라지는지
+        보세요.
       </p>
 
       <IntroBox />

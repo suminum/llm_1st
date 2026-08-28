@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,14 +98,13 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
       <br /><br />
-      이 파일의 데모에는 <strong>일부러 잘못 만든 화면</strong>이 여러 개 있습니다.
-      어디가 잘못됐는지 눈으로 찾아보세요.
+      이 파일의 데모에는 <strong>일부러 잘못 만든 화면</strong>이 여러 개
+      있습니다. 어디가 잘못됐는지 눈으로 찾아보세요.
     </p>
 
     <div id="root"></div>
@@ -186,20 +185,22 @@
       // 개념01에서 배운 삼항을 그대로 씁니다. 조건은 "개수가 0이냐" 입니다.
 
       function CartView({ items }) {
+        if (items === emptyCart) {
+          return <p>장바구니가 비었습니다. 메뉴를 담아 보세요.</p>;
+        }
         return (
+          //삼항보다는 If 로 빠르게 리턴
+
           <div>
             <p>장바구니 ({items.length}개)</p>
-            {items.length === 0 ? (
-              <p>장바구니가 비었습니다. 메뉴를 담아 보세요.</p>
-            ) : (
-              <ul>
-                {items.map((item) => (
-                  <li key={item.id}>
-                    {item.name} — {item.price}원
-                  </li>
-                ))}
-              </ul>
-            )}
+
+            <ul>
+              {items.map((item) => (
+                <li key={item.id}>
+                  {item.name} — {item.price}원
+                </li>
+              ))}
+            </ul>
           </div>
         );
       }
@@ -216,6 +217,7 @@
 
             <div className="output">
               <CartView items={cart} />
+              //{}로 텍스트가 아닌 해당 함수로 인식
             </div>
           </div>
         );
@@ -265,7 +267,8 @@
 
             <div className="output">
               <p>아래 대괄호 안을 보세요.</p>
-              <p>[{cart.length && <span>담긴 상품이 있습니다</span>}]</p>
+              <p>[{cart.length && <span>담긴 상품이 있습니다</span>}]</p>// &&
+              는 왼쪽이 거짓이면 '왼쪽 값을 그대로' 돌려줍니다.
             </div>
           </div>
         );
@@ -296,7 +299,7 @@
       //
       // [2단계] React 는 0 을 화면에 그린다
       //   개념01 섹션 4에서 확인했습니다.
-      //     null · undefined · true · false → 안 그려진다
+      //     null · undefined · true · false → 안 그려진다반환은 되는데 화면에 찍히는건 0만
       //     숫자 0 · 문자열                  → 그려진다
       //
       //   그래서 0 이 화면에 나옵니다.
@@ -353,9 +356,22 @@
             <button onClick={() => setCart(fullCart)}>담은 상태로 보기</button>
 
             <div className="output">
-              <p>① {"{cart.length && ...}"} → [{cart.length && <span>있음</span>}]</p>
-              <p>② {"{cart.length > 0 && ...}"} → [{cart.length > 0 && <span>있음</span>}]</p>
-              <p>③ {"{cart.length !== 0 && ...}"} → [{cart.length !== 0 && <span>있음</span>}]</p>
+              <p>
+                ① {"{Boolean(cart.length) && ...}"} → [
+                {Boolean(cart.length) && <span>있음</span>}]
+              </p>
+              <p>
+                ① {"{!!cart.length && ...}"} → [
+                {!!cart.length && <span>있음</span>}]
+              </p>
+              <p>
+                ② {"{cart.length > 0 && ...}"} → [
+                {cart.length > 0 && <span>있음</span>}]
+              </p>
+              <p>
+                ③ {"{cart.length !== 0 && ...}"} → [
+                {cart.length !== 0 && <span>있음</span>}]
+              </p>
               <p>
                 ④ {"{cart.length ? ... : null}"} → [
                 {cart.length ? <span>있음</span> : null}]
@@ -387,7 +403,9 @@
 
       const emptyTodos = [];
 
-      console.log(emptyTodos.filter((todo) => todo.done).length / emptyTodos.length);
+      console.log(
+        emptyTodos.filter((todo) => todo.done).length / emptyTodos.length,
+      );
       // 콘솔: NaN
 
       // 0 / 0 은 NaN 입니다. 에러가 아니라 값입니다(JS자료 01단원).
@@ -403,7 +421,9 @@
           <div className="demo">
             <h3>섹션 5 — NaN 도 화면에 나옵니다</h3>
 
-            <button onClick={() => setTodos(emptyTodos)}>빈 목록으로 보기</button>
+            <button onClick={() => setTodos(emptyTodos)}>
+              빈 목록으로 보기
+            </button>
             <button
               onClick={() =>
                 setTodos([
@@ -417,10 +437,7 @@
 
             <div className="output">
               <p>① 그냥 계산 → 완료율 {rate}%</p>
-              <p>
-                ② 비었는지 먼저 확인 → 완료율{" "}
-                {todos.length > 0 ? rate : 0}%
-              </p>
+              <p>② 비었는지 먼저 확인 → 완료율 {!!todos.length && rate}%</p>
             </div>
           </div>
         );
@@ -472,9 +489,13 @@
 
             <div className="output">
               <p>장바구니는 비어 있습니다.</p>
-              <p>[{emptyCart && <span>담긴 상품이 있습니다</span>}] ← 배열 자체를 물어봄</p>
               <p>
-                [{emptyCart.length > 0 && <span>담긴 상품이 있습니다</span>}] ← 개수를 물어봄
+                [{emptyCart && <span>담긴 상품이 있습니다</span>}] ← 배열 자체를
+                물어봄
+              </p>
+              <p>
+                [{emptyCart.length > 0 && <span>담긴 상품이 있습니다</span>}] ←
+                개수를 물어봄
               </p>
             </div>
           </div>
@@ -574,8 +595,8 @@
       <h2>정리</h2>
       <ol>
         <li>
-          빈 배열에 <code>map</code> 을 써도 에러가 안 납니다. 화면에 아무것도 안 나올
-          뿐입니다.
+          빈 배열에 <code>map</code> 을 써도 에러가 안 납니다. 화면에 아무것도
+          안 나올 뿐입니다.
         </li>
         <li>
           그래서 <strong>비었을 때 안내 문구</strong>를 직접 보여 줘야 합니다.
@@ -586,20 +607,22 @@
           <strong>화면에 0 을 찍습니다.</strong> 에러도 경고도 안 납니다.
         </li>
         <li>
-          이유는 두 가지가 겹쳐서입니다. <code>&amp;&amp;</code> 는 왼쪽이 거짓이면
-          <strong>왼쪽 값을 그대로</strong> 돌려주고, React 는
+          이유는 두 가지가 겹쳐서입니다. <code>&amp;&amp;</code> 는 왼쪽이
+          거짓이면 <strong>왼쪽 값을 그대로</strong> 돌려주고, React 는
           <strong>숫자 0 을 화면에 그립니다.</strong>
         </li>
         <li>
           고치는 법은 하나입니다. <code>&amp;&amp;</code> 왼쪽을
-          <code>length &gt; 0</code> 처럼 <strong>참·거짓이 나오는 식</strong>으로 만드세요.
+          <code>length &gt; 0</code> 처럼
+          <strong>참·거짓이 나오는 식</strong>으로 만드세요.
         </li>
         <li>
-          <code>NaN</code> 도 화면에 그대로 나옵니다. 개수로 나누는 계산은 비었을 때를
-          먼저 확인하세요.
+          <code>NaN</code> 도 화면에 그대로 나옵니다. 개수로 나누는 계산은
+          비었을 때를 먼저 확인하세요.
         </li>
         <li>
-          <strong>빈 배열은 참입니다.</strong> <code>{items &amp;&amp; ...}</code> 가 아니라
+          <strong>빈 배열은 참입니다.</strong>
+          <code>{items &amp;&amp; ...}</code> 가 아니라
           <code>{items.length &gt; 0 &amp;&amp; ...}</code> 라고 쓰세요.
         </li>
       </ol>

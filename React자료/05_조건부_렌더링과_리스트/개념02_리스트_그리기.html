@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,15 +98,14 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
       <br /><br />
       이 파일에는 <code>key</code> 라는 것이 계속 나옵니다.
-      <strong>무엇인지는 개념03에서 배웁니다.</strong> 지금은 "목록을 그릴 때 같이 적는
-      것" 이라고만 알고 넘어가세요.
+      <strong>무엇인지는 개념03에서 배웁니다.</strong> 지금은 "목록을 그릴 때
+      같이 적는 것" 이라고만 알고 넘어가세요.
     </p>
 
     <div id="root"></div>
@@ -144,7 +143,7 @@
 
       // 먼저 아는 것부터 확인합시다. 여기까지는 React 와 아무 상관 없습니다.
 
-      const menuNames = ["아메리카노", "라떼", "케이크"];
+      const menuNames = ["아메리카노", "라떼", "케이크", "삼각김밥"];
 
       console.log(menuNames.map((name) => `${name} 있습니다`));
       // 콘솔: ['아메리카노 있습니다', '라떼 있습니다', '케이크 있습니다']
@@ -294,7 +293,7 @@
               <ul>
                 {list.map((item) => (
                   <li key={item.id}>
-                    {item.name} — {item.price}원
+                    {item.name} — {item.price}원 -({item.name.length})
                   </li>
                 ))}
               </ul>
@@ -338,6 +337,7 @@
         return (
           <li>
             {name} — {price}원 {price >= 4500 ? "(비쌈)" : ""}
+            {price <= 1200 && "싸다,."}
           </li>
         );
       }
@@ -393,7 +393,7 @@
               <ul>
                 {todos.map((todo) => (
                   <li key={todo.id} className={todo.done ? "done" : ""}>
-                    {todo.text} {todo.done && "(완료)"}
+                    {todo.text} {todo.done ? "(완료)" : "(할일)"}
                   </li>
                 ))}
               </ul>
@@ -578,22 +578,23 @@
           달라진 것은 하나뿐입니다. 콜백이 돌려주는 값이
           <strong>글자가 아니라 화면 조각</strong>입니다.
         </li>
+        <li>React 는 화면 조각이 든 배열을 받으면 순서대로 전부 그립니다.</li>
         <li>
-          React 는 화면 조각이 든 배열을 받으면 순서대로 전부 그립니다.
-        </li>
-        <li>
-          여러 줄짜리 화면 조각을 돌려줄 때는 <strong>소괄호</strong>로 감쌉니다.
-          중괄호를 쓰면 <code>return</code> 이 필요합니다.
+          여러 줄짜리 화면 조각을 돌려줄 때는 <strong>소괄호</strong>로
+          감쌉니다. 중괄호를 쓰면 <code>return</code> 이 필요합니다.
         </li>
         <li>
           <code>return</code> 을 빠뜨리거나 <code>forEach</code> 를 쓰면
-          <strong>에러 없이 목록만 사라집니다.</strong> 목록이 비면 여기부터 보세요.
+          <strong>에러 없이 목록만 사라집니다.</strong> 목록이 비면 여기부터
+          보세요.
         </li>
         <li>
-          한 줄이 길어지면 컴포넌트로 떼어 내고 <code>props</code> 로 값을 넘깁니다.
+          한 줄이 길어지면 컴포넌트로 떼어 내고 <code>props</code> 로 값을
+          넘깁니다.
         </li>
         <li>
-          <code>map</code> 안에서 삼항·<code>&amp;&amp;</code> 를 그대로 쓸 수 있습니다.
+          <code>map</code> 안에서 삼항·<code>&amp;&amp;</code> 를 그대로 쓸 수
+          있습니다.
         </li>
       </ol>
     </div>

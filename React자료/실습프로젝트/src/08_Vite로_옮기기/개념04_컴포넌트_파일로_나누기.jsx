@@ -27,7 +27,7 @@
 
 import { useState } from "react";
 import Summary from "../_ui/Summary.jsx";
-
+import MenuRow2 from "./_부품/MenuRow2.jsx";
 import MenuBoard from "./_부품/MenuBoard.jsx";
 import MenuCard from "./_부품/MenuCard.jsx";
 import MenuRow from "./_부품/MenuRow.jsx";
@@ -136,9 +136,9 @@ function Section2Demo() {
       <h3>② 옮긴 뒤 — MenuRow 를 import 해서 세 번</h3>
       <div className="output">
         <h4>동네 카페 메뉴판</h4>
-        <MenuRow name="아메리카노" price={4000} />
-        <MenuRow name="라떼" price={4500} />
-        <MenuRow name="케이크" price={6000} />
+        <MenuRow2 name="아메리카노" price={4000} />
+        <MenuRow2 name="라떼" price={4500} />
+        <MenuRow2 name="케이크" price={6000} />
       </div>
       {/* 화면: ① 과 똑같습니다 */}
     </div>
@@ -474,16 +474,18 @@ export default function Concept04SplitFiles() {
       <h1>개념 04 — 컴포넌트 파일로 나누기</h1>
 
       <p className="guide">
-        이 파일이 쓰는 부품은 <code>src/08_Vite로_옮기기/_부품/</code> 안에 있습니다.
-        <strong> MenuRow.jsx · MenuBoard.jsx · MenuCard.jsx</strong> 를 함께 열어 놓고
-        보세요.
+        이 파일이 쓰는 부품은 <code>src/08_Vite로_옮기기/_부품/</code> 안에
+        있습니다.
+        <strong> MenuRow.jsx · MenuBoard.jsx · MenuCard.jsx</strong> 를 함께
+        열어 놓고 보세요.
         <br />
-        <br />
-        세 파일 모두 <strong>03단원 개념05의 코드를 그대로 옮긴 것</strong>입니다. 앞에{" "}
+        <br />세 파일 모두{" "}
+        <strong>03단원 개념05의 코드를 그대로 옮긴 것</strong>입니다. 앞에{" "}
         <code>export default</code> 가 붙은 것 말고는 달라진 데가 없습니다.
         <br />
         <br />
-        <strong>F12 → Console</strong> 도 함께 열어 두세요. 섹션 4는 콘솔로 확인합니다.
+        <strong>F12 → Console</strong> 도 함께 열어 두세요. 섹션 4는 콘솔로
+        확인합니다.
       </p>
 
       <button onClick={() => setRestartKey(restartKey + 1)}>
@@ -503,7 +505,7 @@ export default function Concept04SplitFiles() {
           "컴포넌트를 파일로 옮기는 것은 세 단계입니다. 새 파일 만들기 → 함수를 통째로 옮기고 export default 붙이기 → 쓰는 쪽에 import 줄 넣기. 함수 안은 한 글자도 안 고칩니다.",
           "03단원의 '한 파일 안에서 쪼개기' 는 그 파일 안에서만 이득이지만, 파일로 쪼개면 프로젝트 전체에서 고칠 곳이 한 곳이 됩니다.",
           "부품도 다른 부품을 import 할 수 있습니다. MenuBoard 를 쓰는 쪽은 그 안의 MenuRow 를 몰라도 됩니다.",
-          "JSX 는 Vite 가 자동으로 react/jsx-runtime 의 함수로 바꿔 줍니다. 그래서 import React from \"react\"; 를 안 써도 됩니다. typeof React 는 undefined 입니다.",
+          'JSX 는 Vite 가 자동으로 react/jsx-runtime 의 함수로 바꿔 줍니다. 그래서 import React from "react"; 를 안 써도 됩니다. typeof React 는 undefined 입니다.',
           "자동으로 들어오는 것은 JSX 를 바꾸는 함수뿐입니다. useState 같은 훅은 직접 import 해야 합니다.",
           "두 곳 이상에서 쓰이거나 길어지면 파일로 빼고, 한 번만 쓰이는 작은 것은 그대로 둡니다. 파일 이름은 컴포넌트 이름 그대로 짓습니다.",
           "import 해서 쓸 부품은 _부품 같은 하위 폴더에 둡니다. 단원 폴더 바로 아래에 두면 왼쪽 메뉴에 예제처럼 나타납니다.",

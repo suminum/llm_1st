@@ -127,21 +127,24 @@ function NoOkCheckDemo() {
     async function loadPost() {
       try {
         // 9999번 글은 없습니다. 서버가 404 로 대답합니다.
-        const res = await fetch(`${BASE_URL}/posts/9999`);
+        const res = await fetch(`${BASE_URL}/posts/9999`); //연결이 안됟ㄹ떄만 실패 그래서 catch 로 404 안남
 
         console.log("[확인 안 함] res.ok 는", res.ok);
         // 콘솔: [확인 안 함] res.ok 는 false
-        console.log("[확인 안 함] res.status 는", res.status);
-        // 콘솔: [확인 안 함] res.status 는 404
 
         const data = await res.json();
+        if (!res.ok) {
+          throw new Error(`서버 응답 오류 (${res.status})`);
+        } //잡혀서 아래 두줄은 실행 안됨
+        console.log("[확인 안 함] res.status 는", res.status);
+        // 콘솔: [확인 안 함] res.status 는 404
 
         console.log("[확인 안 함] 받은 데이터의 title 은", data.title);
         // 콘솔: [확인 안 함] 받은 데이터의 title 은 undefined
 
         setTitle(data.title);
       } catch (error) {
-        // 여기로 오지 않습니다. 그것을 보여 주려고 일부러 로그를 넣어 두었습니다.
+        // 여기로 오지 않습니다. 그것을 보여 주려고 일부러 로그를 넣어 두었습니다. 근데 throw으로 catch로 이동
         console.log("[확인 안 함] catch 로 왔습니다:", error.message);
       } finally {
         setLoading(false);
@@ -212,12 +215,13 @@ function CompleteDemo() {
     // 고른 값에 따라 주소를 정합니다
     let url = `${BASE_URL}/posts/1`;
     if (target === "없는글") url = `${BASE_URL}/posts/9999`;
-    if (target === "안되는주소") url = "https://이런서버는없습니다-abcxyz.example/posts/1";
+    if (target === "안되는주소")
+      url = "https://이런서버는없습니다-abcxyz.example/posts/1";
 
     async function loadPost() {
       // 새로 시작할 때마다 상태를 초기화합니다. 지난번 에러가 남아 있으면 안 되니까요.
       setLoading(true);
-      setError(null);
+      // setError(null);
       setPost(null);
 
       try {
@@ -262,9 +266,11 @@ function CompleteDemo() {
       {/* 순서대로 갈라 줍니다. 로딩 → 에러 → 성공 */}
       {loading && <p className="output">불러오는 중...</p>}
       {!loading && error !== null && <p className="output error">{error}</p>}
-      {!loading && error === null && post !== null && (
-        <p className="output">{post.title}</p>
-      )}
+      {!loading &&
+        error === null &&
+        post !== null && ( //여러줄이여서 ()로 묶은거 사실 필요없음
+          <p className="output">{post.title}</p>
+        )}
       {/* 화면(누르면): [없는 글] → 글을 불러오지 못했습니다. 잠시 후 다시 시도해 주세요. */}
     </div>
   );
@@ -372,17 +378,16 @@ export default function Concept04LoadingAndError() {
       <h1>개념 04 — 로딩과 에러</h1>
 
       <p className="guide">
-        <strong>인터넷 연결이 필요합니다.</strong> <strong>F12 → Console</strong> 을 함께
-        열어 두세요.
+        <strong>인터넷 연결이 필요합니다.</strong>{" "}
+        <strong>F12 → Console</strong> 을 함께 열어 두세요.
         <br />
+        <br />이 파일은 <strong>일부러 실패하는 요청</strong>을 보냅니다. 그래서
+        콘솔에 <code>Failed to load resource ... 404</code> 같은 빨간 줄이
+        나옵니다. <strong>정상입니다.</strong> 우리 코드가 낸 에러가 아니라
+        브라우저가 알려 주는 것입니다.
         <br />
-        이 파일은 <strong>일부러 실패하는 요청</strong>을 보냅니다. 그래서 콘솔에{" "}
-        <code>Failed to load resource ... 404</code> 같은 빨간 줄이 나옵니다.{" "}
-        <strong>정상입니다.</strong> 우리 코드가 낸 에러가 아니라 브라우저가 알려 주는
-        것입니다.
-        <br />
-        <br />② 번 상자는 <strong>일부러 틀리게 만든 예제</strong>입니다. 제목 자리가 비어
-        있는 것이 정상입니다.
+        <br />② 번 상자는 <strong>일부러 틀리게 만든 예제</strong>입니다. 제목
+        자리가 비어 있는 것이 정상입니다.
       </p>
 
       <LoadingDemo />

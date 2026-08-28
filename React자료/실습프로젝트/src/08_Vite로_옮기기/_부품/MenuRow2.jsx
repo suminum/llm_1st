@@ -12,7 +12,7 @@
 //   이유는 개념04 섹션 4에서 설명합니다.
 // ============================================================
 
-export default function MenuRow({ name, price }) {
+export default function MenuRow2({ name, price }) {
   return (
     <div>
       <strong>{name}</strong> — {price}원

@@ -73,12 +73,13 @@ function StrictModeDemo() {
   const [tick, setTick] = useState(0);
 
   useEffect(() => {
+    //페이지 다그리고 나서 실행할 함수를 넣어주면 됨
     console.log("① effect 실행 — tick 은 " + tick);
     // 콘솔: ① effect 실행 — tick 은 0
     // 콘솔: ① effect 실행 — tick 은 1
 
     return () => {
-      console.log("② 정리 함수 실행 — tick 은 " + tick);
+      console.log("② 정리 함수 실행 — tick 은 " + tick); //페이지에서 벗어나는 순간 실행할 함수를 넣어줌
       // 콘솔: ② 정리 함수 실행 — tick 은 0
     };
   }, [tick]);
@@ -158,6 +159,7 @@ function SafeTimer() {
     let safety = 0; // 학생 PC 를 지키기 위한 안전장치입니다 (아래 설명)
 
     const id = setInterval(() => {
+      //타이머 생성
       safety += 1;
       console.log("[안전한 타이머] " + safety + "번째 신호");
       // 콘솔: [안전한 타이머] 1번째 신호
@@ -177,9 +179,7 @@ function SafeTimer() {
     };
   }, []);
 
-  return (
-    <p className="output">안전한 타이머: {count}번째 신호까지 받음</p>
-  );
+  return <p className="output">안전한 타이머: {count}번째 신호까지 받음</p>;
 }
 
 // [정리 함수가 없는 타이머] — 일부러 빠뜨렸습니다
@@ -194,7 +194,9 @@ function LeakyTimer() {
 
     const id = setInterval(() => {
       safety += 1;
-      console.log("[새는 타이머] " + safety + "번째 신호 — 화면에서 지워도 계속 나옵니다");
+      console.log(
+        "[새는 타이머] " + safety + "번째 신호 — 화면에서 지워도 계속 나옵니다",
+      );
       // 콘솔: [새는 타이머] 1번째 신호 — 화면에서 지워도 계속 나옵니다
 
       setCount(safety);
@@ -359,7 +361,7 @@ function SubscribeDemo() {
   return (
     <div className="demo">
       <h3>④ 창 크기 구독하기</h3>
-      <p className="output">지금 창 너비: {width}px</p>
+      <p className="output">지금 창 높이: {window.innerHeight}px</p>
       {/* 화면: 지금 창 너비: 1280px  ← 숫자는 여러분 창 크기에 따라 다릅니다 */}
     </div>
   );
@@ -416,14 +418,15 @@ export default function Concept02Cleanup() {
       <h1>개념 02 — 정리 함수</h1>
 
       <p className="guide">
-        <strong>F12 → Console</strong> 을 열고 보세요. 이 파일은 콘솔이 주인공입니다.
+        <strong>F12 → Console</strong> 을 열고 보세요. 이 파일은 콘솔이
+        주인공입니다.
         <br />
         <br />
-        콘솔에 같은 줄이 <strong>두 번씩</strong> 찍히는 이유를 이 파일에서 설명합니다.
-        먼저 섹션 1을 읽으세요.
+        콘솔에 같은 줄이 <strong>두 번씩</strong> 찍히는 이유를 이 파일에서
+        설명합니다. 먼저 섹션 1을 읽으세요.
         <br />
-        <br />이 파일의 타이머들은 <strong>6초 뒤 스스로 멈추게</strong> 해 두었습니다.
-        실습 중에 브라우저가 느려지지 않게 하려는 안전장치입니다.
+        <br />이 파일의 타이머들은 <strong>6초 뒤 스스로 멈추게</strong> 해
+        두었습니다. 실습 중에 브라우저가 느려지지 않게 하려는 안전장치입니다.
       </p>
 
       <StrictModeDemo />

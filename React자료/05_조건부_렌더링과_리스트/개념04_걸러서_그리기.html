@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,8 +98,7 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
@@ -206,6 +205,19 @@
                   ))}
               </ul>
             </div>
+
+            <h3>섹션 1 — 끝난 것만 그리기</h3>
+
+            <div className="output">
+              <p>끝난 것만</p>
+              <ul>
+                {todos
+                  .filter((todo) => todo.done)
+                  .map((todo) => (
+                    <li key={todo.id}>{todo.text}</li>
+                  ))}
+              </ul>
+            </div>
           </div>
         );
       }
@@ -243,6 +255,8 @@
           shown = todos.filter((todo) => !todo.done);
         } else if (mode === "done") {
           shown = todos.filter((todo) => todo.done);
+        } else if (mode === "short") {
+          shown = todos.filter((todo) => todo.text.length <= 4);
         } else {
           shown = todos;
         }
@@ -251,13 +265,30 @@
           <div className="demo">
             <h3>섹션 2 — 버튼으로 조건 갈아 끼우기</h3>
 
-            <button className={mode === "all" ? "on" : ""} onClick={() => setMode("all")}>
+            <button
+              className={mode === "all" ? "on" : ""}
+              onClick={() => setMode("all")}
+            >
               전체
             </button>
-            <button className={mode === "todo" ? "on" : ""} onClick={() => setMode("todo")}>
+            <button
+              className={mode === "todo" ? "on" : ""}
+              onClick={() => setMode("todo")}
+            >
               안 끝난 것
             </button>
-            <button className={mode === "done" ? "on" : ""} onClick={() => setMode("done")}>
+
+            <button
+              className={mode === "short" ? "on" : ""}
+              onClick={() => setMode("short")}
+            >
+              네글자 이하
+            </button>
+
+            <button
+              className={mode === "done" ? "on" : ""}
+              onClick={() => setMode("done")}
+            >
               끝난 것
             </button>
 
@@ -377,6 +408,8 @@
           shown = [...menu].sort((a, b) => a.price - b.price);
         } else if (order === "name") {
           shown = [...menu].sort((a, b) => a.name.localeCompare(b.name));
+        } else if (order === "expensive") {
+          shown = [...menu].sort((a, b) => b.price - a.price);
         } else {
           shown = menu;
         }
@@ -385,13 +418,28 @@
           <div className="demo">
             <h3>섹션 3 — 정렬해서 그리기</h3>
 
-            <button className={order === "none" ? "on" : ""} onClick={() => setOrder("none")}>
+            <button
+              className={order === "none" ? "on" : ""}
+              onClick={() => setOrder("none")}
+            >
               원래 순서
             </button>
-            <button className={order === "cheap" ? "on" : ""} onClick={() => setOrder("cheap")}>
+            <button
+              className={order === "cheap" ? "on" : ""}
+              onClick={() => setOrder("cheap")}
+            >
               싼 것부터
             </button>
-            <button className={order === "name" ? "on" : ""} onClick={() => setOrder("name")}>
+            <button
+              className={order === "expensive" ? "on" : ""}
+              onClick={() => setOrder("expensive")}
+            >
+              비싼 것부터
+            </button>
+            <button
+              className={order === "name" ? "on" : ""}
+              onClick={() => setOrder("name")}
+            >
               이름순
             </button>
 
@@ -444,22 +492,30 @@
         const doneCount = todos.filter((todo) => todo.done).length;
         const undoneCount = todos.length - doneCount;
 
-        const shown = mode === "undone" ? todos.filter((todo) => !todo.done) : todos;
+        const shown =
+          mode === "undone" ? todos.filter((todo) => !todo.done) : todos;
 
         return (
           <div className="demo">
             <h3>섹션 4 — 개수 세기</h3>
 
-            <button className={mode === "all" ? "on" : ""} onClick={() => setMode("all")}>
+            <button
+              className={mode === "all" ? "on" : ""}
+              onClick={() => setMode("all")}
+            >
               전체 보기
             </button>
-            <button className={mode === "undone" ? "on" : ""} onClick={() => setMode("undone")}>
+            <button
+              className={mode === "undone" ? "on" : ""}
+              onClick={() => setMode("undone")}
+            >
               남은 것만 보기
             </button>
 
             <div className="output">
               <p>
-                전체 {todos.length}개 · 완료 {doneCount}개 · 남음 {undoneCount}개
+                전체 {todos.length}개 · 완료 {doneCount}개 · 남음 {undoneCount}
+                개 완료율 : {((doneCount / todos.length) * 100).toFixed(1)}%
               </p>
               <p>지금 보고 있는 줄: {shown.length}개</p>
               <ul>
@@ -525,12 +581,13 @@
               <p>① map + 삼항 (화면은 맞아 보입니다)</p>
               <ul>
                 {todos.map((todo) =>
-                  todo.done ? <li key={todo.id}>{todo.text}</li> : null
+                  todo.done ? <li key={todo.id}>{todo.text}</li> : null,
                 )}
               </ul>
               <p>
                 ① 이 만든 배열의 길이:{" "}
-                {todos.map((todo) => (todo.done ? todo.text : null)).length}개 ← 틀렸습니다
+                {todos.map((todo) => (todo.done ? todo.text : null)).length}개 ←
+                틀렸습니다
               </p>
 
               <p>② filter + map</p>
@@ -542,7 +599,8 @@
                   ))}
               </ul>
               <p>
-                ② 가 만든 배열의 길이: {todos.filter((todo) => todo.done).length}개 ← 맞습니다
+                ② 가 만든 배열의 길이:{" "}
+                {todos.filter((todo) => todo.done).length}개 ← 맞습니다
               </p>
             </div>
           </div>
@@ -566,9 +624,13 @@
 
       // [실수 3] filter 에 조건이 아니라 계산식을 넣음
 
-      console.log(menu.filter((item) => item.price - 4000).map((item) => item.name));
+      console.log(
+        menu.filter((item) => item.price - 4000).map((item) => item.name),
+      );
       // 콘솔: ['라떼', '케이크', '삼각김밥']
-      console.log(menu.filter((item) => item.price >= 4000).map((item) => item.name));
+      console.log(
+        menu.filter((item) => item.price >= 4000).map((item) => item.name),
+      );
       // 콘솔: ['아메리카노', '라떼', '케이크']
 
       // 실수: 위 줄은 "4000원짜리를 뺀 목록" 이 됐습니다.
@@ -680,26 +742,28 @@
       <h2>정리</h2>
       <ol>
         <li>
-          걸러서 그릴 때는 <code>filter</code> 를 먼저, <code>map</code> 을 나중에
-          씁니다. 순서를 바꾸면 조용히 빈 목록이 됩니다.
+          걸러서 그릴 때는 <code>filter</code> 를 먼저, <code>map</code> 을
+          나중에 씁니다. 순서를 바꾸면 조용히 빈 목록이 됩니다.
         </li>
         <li>
-          보여 줄 조건은 <strong>state 에 담습니다.</strong> 원본 배열은 손대지 않고,
-          그릴 때마다 다시 걸러 냅니다.
+          보여 줄 조건은 <strong>state 에 담습니다.</strong> 원본 배열은 손대지
+          않고, 그릴 때마다 다시 걸러 냅니다.
         </li>
         <li>
           <code>sort</code> 는 <strong>원본을 바꿉니다.</strong>
           <code>filter</code>·<code>map</code> 과 다릅니다.
         </li>
         <li>
-          그래서 정렬은 항상 <code>[...배열].sort(...)</code> 처럼 복사한 뒤에 합니다.
+          그래서 정렬은 항상 <code>[...배열].sort(...)</code> 처럼 복사한 뒤에
+          합니다.
         </li>
         <li>
-          개수는 <code>filter(...).length</code> 로 셉니다. 따로 state 에 담아 두지
-          않습니다. 어긋날 수 있기 때문입니다.
+          개수는 <code>filter(...).length</code> 로 셉니다. 따로 state 에 담아
+          두지 않습니다. 어긋날 수 있기 때문입니다.
         </li>
         <li>
-          <code>map</code> 은 개수를 안 바꿉니다. 걸러 낸 것처럼 보여도 길이는 그대로입니다.
+          <code>map</code> 은 개수를 안 바꿉니다. 걸러 낸 것처럼 보여도 길이는
+          그대로입니다.
         </li>
       </ol>
     </div>

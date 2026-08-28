@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -99,8 +99,7 @@
     <p class="guide">
       script 안의 <strong>TODO</strong> 자리에 코드를 쓰고 저장한 뒤, 브라우저를
       <strong>새로고침(F5)</strong>하고 직접 눌러서 확인하세요.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       1~12는 기본, 13은 [응용], 14는 [도전], 15는 에러 확인입니다.
       <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
@@ -146,7 +145,9 @@
           <div className="demo">
             <h3>문제 1 — 버튼에 이벤트 붙이기</h3>
             {/* TODO: 아래 button 에 onClick 을 붙이세요 */}
-            <button id="q1Btn">인사하기</button>
+            <button id="q1Btn" onClick={handleClick}>
+              인사하기
+            </button>
           </div>
         );
       }
@@ -168,9 +169,13 @@
         return (
           <div className="demo">
             <h3>문제 2 — 인자 넘기기</h3>
-            {/* TODO: 두 버튼에 각각 onClick 을 붙이세요 */}
-            <button id="q2BtnA">김민준</button>
-            <button id="q2BtnB">이서연</button>
+
+            <button id="q2BtnA" onClick={() => greet("김민준")}>
+              김민준
+            </button>
+            <button id="q2BtnB" onClick={() => greet("이서연")}>
+              이서연
+            </button>
           </div>
         );
       }
@@ -183,16 +188,25 @@
       //                  보통 변수로 만든 것입니다.
 
       function Q3() {
+        let [count, counter] = useState(0);
+
+        function add() {
+          console.log("add 함수 실행됨");
+          counter(count + 1); //값 직접 변경하지 않기
+          console.log("더해서 count 갱신");
+        }
         // TODO: 여기에 useState 를 쓰세요
 
         return (
           <div className="demo">
             <h3>문제 3 — 카운터 만들기</h3>
             <div className="output" id="q3Out">
-              담은 개수: (여기에 count 를 넣으세요)
+              담은 개수: {count}
             </div>
             {/* TODO: 이 버튼에 onClick 을 붙이세요 */}
-            <button id="q3Btn">+1</button>
+            <button id="q3Btn" onClick={add}>
+              +1
+            </button>
           </div>
         );
       }
@@ -207,17 +221,30 @@
       //                  useState(6) 이 적혀 있다고 저절로 6으로 돌아가지 않습니다.
 
       function Q4() {
+        let [count, counter] = useState(6);
         // TODO: 시작값이 6인 state 를 만드세요
+        function eat() {
+          counter(count--);
+          console.log("먹음" + count);
+        }
+        function bake() {
+          counter(count++);
+          console.log("구음", count);
+        }
 
         return (
           <div className="demo">
             <h3>문제 4 — 시작값과 되돌리기</h3>
             <div className="output" id="q4Out">
-              남은 케이크: (여기에 개수)조각
+              남은 케이크: {count}조각
             </div>
             {/* TODO: 두 버튼에 onClick 을 붙이세요 */}
-            <button id="q4BtnEat">한 조각 먹기</button>
-            <button id="q4BtnBake">새로 굽기</button>
+            <button id="q4BtnEat" onClick={eat}>
+              한 조각 먹기
+            </button>
+            <button id="q4BtnBake" onClick={bake}>
+              새로 굽기
+            </button>
           </div>
         );
       }
@@ -234,6 +261,7 @@
         const [count, setCount] = useState(0);
 
         // TODO: 여기에 console.log 를 한 줄 쓰세요
+        console.log("Q5 그리는 중");
 
         return (
           <div className="demo">
@@ -258,16 +286,22 @@
 
       function Q6() {
         // TODO: state 두 개를 만드세요
+        let [a, b] = useState(0);
+        let [c, d] = useState(0);
 
         return (
           <div className="demo">
             <h3>문제 6 — state 두 개</h3>
             <div className="output" id="q6Out">
-              아메리카노 (여기)잔 / 라떼 (여기)잔
+              아메리카노 {a}잔 / 라떼 {c}잔
             </div>
             {/* TODO: 두 버튼에 onClick 을 붙이세요 */}
-            <button id="q6BtnA">아메리카노 +1</button>
-            <button id="q6BtnB">라떼 +1</button>
+            <button id="q6BtnA" onClick={() => b(a + 1)}>
+              아메리카노 +1
+            </button>
+            <button id="q6BtnB" onClick={() => d(c + 1)}>
+              라떼 +1
+            </button>
           </div>
         );
       }
@@ -282,17 +316,27 @@
 
       function Q7() {
         // TODO: 문자열 state 를 만드세요
+        let [state, fun] = useState("");
+        function chooseMenu(a) {
+          fun(a);
+        }
 
         return (
           <div className="demo">
             <h3>문제 7 — 문자열 state</h3>
             <div className="output" id="q7Out">
-              오늘의 메뉴: (여기)
+              오늘의 메뉴: {state}
             </div>
             {/* TODO: 세 버튼에 onClick 을 붙이세요 */}
-            <button id="q7BtnA">아메리카노</button>
-            <button id="q7BtnB">라떼</button>
-            <button id="q7BtnC">케이크</button>
+            <button id="q7BtnA" onClick={() => chooseMenu("아메리카노")}>
+              아메리카노
+            </button>
+            <button id="q7BtnB" onClick={() => chooseMenu("라떼")}>
+              라떼
+            </button>
+            <button id="q7BtnC" onClick={() => chooseMenu("케이크")}>
+              케이크
+            </button>
           </div>
         );
       }
@@ -308,15 +352,26 @@
 
       function Q8() {
         // TODO: 참/거짓 state 를 만들고, 화면에 쓸 글자도 만드세요
+        const [state, fun] = useState(true);
+        function toggle() {
+          fun(!state);
+          if (state === false) {
+            console.log("꺼짐");
+          } else {
+            console.log("켜짐");
+          }
+        }
 
         return (
           <div className="demo">
             <h3>문제 8 — 켜고 끄기</h3>
             <div className="output" id="q8Out">
-              (여기에 상태 글자)
+              {state}
             </div>
             {/* TODO: 버튼에 onClick 을 붙이고 글자도 바뀌게 하세요 */}
-            <button id="q8Btn">켜기</button>
+            <button id="q8Btn" onClick={toggle}>
+              {state ? "켜기" : "끄기"}
+            </button>
           </div>
         );
       }
@@ -332,6 +387,7 @@
       function Q9() {
         const [americano, setAmericano] = useState(0);
         const [cake, setCake] = useState(0);
+        let total = cake * 6000 + americano * 4000;
 
         // TODO: 합계를 계산하는 보통 변수를 만드세요
 
@@ -339,7 +395,7 @@
           <div className="demo">
             <h3>문제 9 — 합계는 계산해서</h3>
             <div className="output" id="q9Out">
-              아메리카노 {americano}개 + 케이크 {cake}개 = (여기에 합계)원
+              아메리카노 {americano}개 + 케이크 {cake}개 = {total}원
             </div>
             <button id="q9BtnA" onClick={() => setAmericano(americano + 1)}>
               아메리카노 담기
@@ -363,6 +419,8 @@
 
         function handleClick() {
           // TODO: set 함수를 두 번 불러 2가 오르게 하세요
+          setCount((prev) => prev + 1);
+          setCount((prev) => prev + 1);
         }
 
         return (
@@ -391,7 +449,8 @@
         const [count, setCount] = useState(0);
 
         function handleClick() {
-          setCount(count + 1);
+          setCount(count + 1); //"다음 렌더링에서는 count를 count + 1로 바꿔줘."
+          console.log("set 직후:", count);
           // TODO: 여기에 console.log 를 한 줄 쓰세요
         }
 
@@ -419,7 +478,9 @@
         const [user, setUser] = useState({ name: "김민준", age: 20 });
 
         function birthday() {
+          let copy = { ...user, age: user.age + 1 };
           // TODO: 새 객체를 만들어 setUser 에 넣으세요
+          setUser(copy);
         }
 
         return (
@@ -451,19 +512,43 @@
       function Q13() {
         // TODO: state 세 개를 만드세요
 
+        const [menu, menuc] = useState("");
+        const [pack, packf] = useState(false);
+        const [one, onec] = useState(0);
+        let total = 0;
+
+        // function receipt() {
+        //   const price = menu === "아메리카노" ? 4000 : 4500;
+        //   const num = one === true ? price * 2 : price;
+        //   const total = pack === true ? num + 500 : num;
+        //   return total;
+        // }
+
+        const price = menu === "아메리카노" ? 4000 : 4500;
+        const num = one === true ? price * 2 : price;
+        total = pack === true ? num + 500 : num;
+
         // TODO: 가격과 합계를 계산하는 보통 변수를 만드세요
 
         return (
           <div className="demo">
             <h3>문제 13 [응용] — 커피 주문</h3>
             <div className="output" id="q13Out">
-              (메뉴) · (잔 수)잔 · (포장 여부) · (합계)원
+              {menu} · {one + 1}잔 · · {total}원
             </div>
             {/* TODO: 각 버튼에 onClick 을 붙이세요 */}
-            <button id="q13BtnA">아메리카노</button>
-            <button id="q13BtnL">라떼</button>
-            <button id="q13BtnPlus">한 잔 더</button>
-            <button id="q13BtnPack">포장 바꾸기</button>
+            <button id="q13BtnA" onClick={() => menuc("아메리카노")}>
+              아메리카노
+            </button>
+            <button id="q13BtnL" onClick={() => menuc("라떼")}>
+              라떼
+            </button>
+            <button id="q13BtnPlus" onClick={() => onec(true)}>
+              한 잔 더
+            </button>
+            <button id="q13BtnPack" onClick={() => packf(!pack)}>
+              포장 바꾸기
+            </button>
           </div>
         );
       }

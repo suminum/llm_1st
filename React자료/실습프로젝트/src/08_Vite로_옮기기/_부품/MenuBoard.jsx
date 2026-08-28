@@ -22,6 +22,7 @@ export default function MenuBoard() {
       <MenuRow name="아메리카노" price={4000} />
       <MenuRow name="라떼" price={4500} />
       <MenuRow name="케이크" price={6000} />
+      <MenuRow name="삼각김밥" price={1200} />
     </div>
   );
 }

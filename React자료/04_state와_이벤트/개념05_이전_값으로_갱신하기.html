@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,14 +98,13 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
       <br /><br />
-      이 파일은 <strong>"분명히 맞게 썼는데 값이 이상한"</strong> 경우를 다룹니다. 앞부분의
-      예제는 일부러 틀린 코드입니다.
+      이 파일은 <strong>"분명히 맞게 썼는데 값이 이상한"</strong> 경우를
+      다룹니다. 앞부분의 예제는 일부러 틀린 코드입니다.
     </p>
 
     <div id="root"></div>
@@ -141,10 +140,14 @@
         const [count, setCount] = useState(0);
 
         function addTwice() {
-          setCount(count + 1);
-          setCount(count + 1);
+          //이렇게 해도 함수형 갱신이 안됨 밖에 count를 쓰기 떄문
+          setCount(() => prev + 1);
+          setCount(() => prev + 1);
 
-          console.log("setCount 를 두 번 불렀습니다. 이번 렌더의 count:", count);
+          console.log(
+            "setCount 를 두 번 불렀습니다. 이번 렌더의 count:",
+            count,
+          );
           // 콘솔: setCount 를 두 번 불렀습니다. 이번 렌더의 count: 0
         }
 
@@ -308,10 +311,15 @@
           });
 
           setCount((prev) => {
+            //인자를 리엑트가 직접 최신값으로 넣어줌
+
             console.log("두 번째 갱신 함수가 받은 prev:", prev);
             // 콘솔: 두 번째 갱신 함수가 받은 prev: 1
             return prev + 1;
           });
+          //setCount(count + 1);       // 값 전달
+          // setCount(prev => prev + 1); // 함수 전달
+          //함수를 전달하면 React가 최신 state를 prev에 넣어서 순서대로 계산할 수 있는 것
         }
 
         return (
@@ -557,23 +565,28 @@
       <h2>정리</h2>
       <ol>
         <li>
-          set 함수는 값을 즉시 바꾸지 않습니다. <strong>다음 렌더링에서</strong> 바뀝니다.
+          set 함수는 값을 즉시 바꾸지 않습니다.
+          <strong>다음 렌더링에서</strong> 바뀝니다.
         </li>
         <li>그래서 set 을 부른 바로 다음 줄에서 읽으면 아직 옛날 값입니다.</li>
         <li>
-          한 렌더 안의 count 는 고정된 숫자입니다. setCount(count + 1) 을 두 번 써도 둘 다
-          같은 값을 넣습니다.
+          한 렌더 안의 count 는 고정된 숫자입니다. setCount(count + 1) 을 두 번
+          써도 둘 다 같은 값을 넣습니다.
         </li>
         <li>
-          <strong>setCount((prev) =&gt; prev + 1)</strong> 로 쓰면 React 가 그 시점의 값을
-          prev 로 건네줍니다.
+          <strong>setCount((prev) =&gt; prev + 1)</strong> 로 쓰면 React 가 그
+          시점의 값을 prev 로 건네줍니다.
         </li>
-        <li>함수형은 앞의 결과가 뒤로 이어집니다. 두 번 부르면 2가 오릅니다.</li>
         <li>
-          지금 값을 바탕으로 다음 값을 만들 때는 함수형을 쓰세요. 상관없는 값을 넣을 때는
-          그냥 값으로 충분합니다.
+          함수형은 앞의 결과가 뒤로 이어집니다. 두 번 부르면 2가 오릅니다.
         </li>
-        <li>갱신 함수는 계산해서 <strong>값을 돌려주는 일만</strong> 합니다.</li>
+        <li>
+          지금 값을 바탕으로 다음 값을 만들 때는 함수형을 쓰세요. 상관없는 값을
+          넣을 때는 그냥 값으로 충분합니다.
+        </li>
+        <li>
+          갱신 함수는 계산해서 <strong>값을 돌려주는 일만</strong> 합니다.
+        </li>
       </ol>
     </div>
   </body>

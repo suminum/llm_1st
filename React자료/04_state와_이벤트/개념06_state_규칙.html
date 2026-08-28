@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,14 +98,13 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
       <br /><br />
-      이 파일에서 다루는 실수는 <strong>에러가 나지 않습니다.</strong> 콘솔이 조용한데
-      화면만 안 바뀝니다. 그래서 가장 찾기 어렵습니다.
+      이 파일에서 다루는 실수는 <strong>에러가 나지 않습니다.</strong> 콘솔이
+      조용한데 화면만 안 바뀝니다. 그래서 가장 찾기 어렵습니다.
     </p>
 
     <div id="root"></div>
@@ -296,6 +295,11 @@
 
           setItems(nextItems);
         }
+        function addCake() {
+          const nextItems = ["cake", ...items];
+          console.log("새 배열을 만들었습니다:", nextItems);
+          setItems(nextItems);
+        }
 
         function birthdayRight() {
           const nextUser = { ...user, age: user.age + 1 }; // 새 객체
@@ -310,13 +314,16 @@
           <div className="demo">
             <h3>③ 새로 만들어 넣기 — 이번에는 화면이 따라옵니다</h3>
             <div className="output" id="fixedOut">
-              담긴 것: {items.join(", ")} (모두 {items.length}개) / 손님: {user.name} (
-              {user.age}세)
+              담긴 것: {items.join(", ")} (모두 {items.length}개) / 손님:{" "}
+              {user.name} ({user.age}세)
             </div>
             <button id="btnAddRight" onClick={addRight}>
               라떼 담기 (올바른 방법)
             </button>
-            <button id="btnBirthdayRight" onClick={birthdayRight}>
+            <button id="btnAddRight" onClick={addCake}>
+              cake 담기 (올바른 방법)
+            </button>
+            <button id="btnBirthdayRight" onClick={addRight}>
               생일 축하 (올바른 방법)
             </button>
           </div>
@@ -385,7 +392,7 @@
         const [count, setCount] = useState(1);
 
         // 조건은 훅이 아니라 값에만 씁니다. 이건 보통 변수입니다.
-        const price = isMember ? 3600 : 4000;
+        const price = isMember ? 4000 * 0.9 : 4000;
         const total = price * count;
         const memberText = isMember ? "회원" : "비회원";
 
@@ -538,24 +545,29 @@
       <h2>정리</h2>
       <ol>
         <li>
-          배열·객체 state 를 <strong>직접 고치면</strong> 에러 없이 화면만 안 바뀝니다. 가장
-          찾기 어려운 실수입니다.
+          배열·객체 state 를 <strong>직접 고치면</strong> 에러 없이 화면만 안
+          바뀝니다. 가장 찾기 어려운 실수입니다.
         </li>
         <li>
-          React 는 예전 값과 새 값의 <strong>주소</strong>를 비교합니다. push 는 주소를 바꾸지
-          않습니다.
+          React 는 예전 값과 새 값의 <strong>주소</strong>를 비교합니다. push 는
+          주소를 바꾸지 않습니다.
         </li>
         <li>
           바꿀 때는 <strong>새 배열·새 객체</strong>를 만들어 넣습니다.
           <code>[...items, 새것]</code> / <code>{ ...user, 바꿀것 }</code>
         </li>
-        <li>이 원칙을 불변성이라고 부릅니다. 뜻은 "원본을 건드리지 않는다" 입니다.</li>
+        <li>
+          이 원칙을 불변성이라고 부릅니다. 뜻은 "원본을 건드리지 않는다" 입니다.
+        </li>
         <li>빼기·고치기·중첩 객체는 07단원에서 제대로 다룹니다.</li>
         <li>
-          훅은 <strong>컴포넌트 안, 맨 위에서만</strong> 부릅니다. if·for·다른 함수 안에서
-          부르지 않습니다.
+          훅은 <strong>컴포넌트 안, 맨 위에서만</strong> 부릅니다. if·for·다른
+          함수 안에서 부르지 않습니다.
         </li>
-        <li>조건에 따라 달라져야 하면 훅이 아니라 <strong>값</strong>을 조건으로 정합니다.</li>
+        <li>
+          조건에 따라 달라져야 하면 훅이 아니라 <strong>값</strong>을 조건으로
+          정합니다.
+        </li>
       </ol>
     </div>
   </body>

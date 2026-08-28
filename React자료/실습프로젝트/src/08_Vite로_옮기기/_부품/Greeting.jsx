@@ -14,3 +14,6 @@
 export default function Greeting({ name }) {
   return <p className="output">{name}님, 안녕하세요.</p>;
 }
+export function Annyeong({ name }) {
+  return <p className="output">{name}님, 안녕~~.</p>;
+}

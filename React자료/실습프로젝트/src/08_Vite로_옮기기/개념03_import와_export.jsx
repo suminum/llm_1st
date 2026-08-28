@@ -31,10 +31,16 @@
 
 import { useState } from "react";
 import Summary from "../_ui/Summary.jsx";
+import { riceBallPrice } from "./_부품/menuPrices.js";
 
 import Greeting from "./_부품/Greeting.jsx";
-import Hello from "./_부품/Greeting.jsx";
-import { americanoPrice, lattePrice, formatPrice, shopLabel } from "./_부품/menuPrices.js";
+import { Annyeong } from "./_부품/Greeting.jsx";
+import {
+  americanoPrice,
+  lattePrice,
+  formatPrice,
+  shopLabel,
+} from "./_부품/menuPrices.js";
 import { cakePrice as dessertPrice } from "./_부품/menuPrices.js";
 import PriceTag, { defaultNote } from "./_부품/PriceTag.jsx";
 
@@ -83,6 +89,7 @@ function Section1Demo() {
       {/* 화면: 김민준님, 안녕하세요. */}
       <Greeting name="이서연" />
       {/* 화면: 이서연님, 안녕하세요. */}
+      <Greeting name="박지훈" />
     </div>
   );
 }
@@ -116,7 +123,7 @@ function Section1Demo() {
 // 이름만 다르지 알맹이는 같은 물건입니다. 아래에서 확인합니다.
 
 function Section2Demo() {
-  const same = Greeting === Hello;
+  const same = Annyeong === Greeting;
 
   console.log(same);
   // 콘솔: true
@@ -127,10 +134,11 @@ function Section2Demo() {
   return (
     <div className="demo">
       <h3>② 같은 파일, 이름만 다르게 가져오기</h3>
-      <Hello name="박지훈" />
+      <Annyeong name="박지훈" />
       {/* 화면: 박지훈님, 안녕하세요. */}
-      <p className="output">Greeting 과 Hello 가 같은 물건인가: {String(same)}</p>
-      {/* 화면: Greeting 과 Hello 가 같은 물건인가: true */}
+      <p className="output">
+        Greeting 과 anyoeng 가 같은 물건인가: {String(same)}
+      </p>
     </div>
   );
 }
@@ -165,7 +173,7 @@ function Section2Demo() {
 //
 // 가져올 때는 중괄호 안에 이름을 적습니다. 필요한 것만 골라 담으면 됩니다.
 //
-//     import { americanoPrice, lattePrice, formatPrice } from "./_부품/menuPrices.js";
+//   import { americanoPrice, lattePrice, formatPrice } from "./_부품/menuPrices.js";
 //
 // ★ export default 와 결정적으로 다른 점이 있습니다.
 //
@@ -179,7 +187,7 @@ function Section2Demo() {
 //     import { cakePrice as dessertPrice } from "./_부품/menuPrices.js";
 //
 // "cakePrice 를 주는데, 여기서는 dessertPrice 라고 부르겠다" 는 뜻입니다.
-// as 는 이름이 겹칠 때 씁니다. 두 파일에서 똑같이 formatPrice 를 가져와야 한다면
+// as 는 이름이 겹칠 때 씁니다. 두 파일에서 똑같이 formatPrice 를 가져와야 한다면 alias 별명
 // 한쪽을 as 로 바꿔야 합니다. 겹치지 않는데 굳이 바꾸지는 마세요. 찾기만 어려워집니다.
 
 function Section3Demo() {
@@ -192,7 +200,7 @@ function Section3Demo() {
   console.log(formatPrice(americanoPrice));
   // 콘솔: 4000원
 
-  console.log(dessertPrice);
+  console.log(dessertPrice); //cakPrice
   // 콘솔: 6000
 
   // ★ export 를 안 붙인 것은 밖으로 안 나옵니다.
@@ -233,6 +241,7 @@ function Section3Demo() {
         {/* 화면: 라떼 4500원 */}
         <li>케이크 {formatPrice(dessertPrice)}</li>
         {/* 화면: 케이크 6000원 */}
+        <li>삼각김밥 {formatPrice(riceBallPrice)}</li>
       </ul>
     </div>
   );
@@ -310,13 +319,16 @@ function Section4Demo() {
       {open && (
         <div className="output">
           <div>
-            <code>&quot;react&quot;</code> — node_modules 에서 찾습니다 (남이 만든 도구)
+            <code>&quot;react&quot;</code> — node_modules 에서 찾습니다 (남이
+            만든 도구)
           </div>
           <div>
-            <code>&quot;../_ui/Summary.jsx&quot;</code> — 한 단계 위로 나가서 찾습니다
+            <code>&quot;../_ui/Summary.jsx&quot;</code> — 한 단계 위로 나가서
+            찾습니다
           </div>
           <div>
-            <code>&quot;./_부품/Greeting.jsx&quot;</code> — 나와 같은 폴더에서 찾습니다
+            <code>&quot;./_부품/Greeting.jsx&quot;</code> — 나와 같은 폴더에서
+            찾습니다
           </div>
         </div>
       )}
@@ -479,16 +491,18 @@ export default function Concept03ImportExport() {
       <h1>개념 03 — import 와 export</h1>
 
       <p className="guide">
-        이 파일은 <strong>왼쪽 목록에서 골라</strong> 봅니다. 더블클릭이 아닙니다.
+        이 파일은 <strong>왼쪽 목록에서 골라</strong> 봅니다. 더블클릭이
+        아닙니다.
         <br />
         <br />
-        <strong>F12 → Console</strong> 도 함께 열어 두세요. 이 파일은 콘솔에 나오는 값이
-        많습니다. 같은 줄이 <strong>두 번씩</strong> 찍히는 것은 정상입니다(개념02 3부의
-        StrictMode).
+        <strong>F12 → Console</strong> 도 함께 열어 두세요. 이 파일은 콘솔에
+        나오는 값이 많습니다. 같은 줄이 <strong>두 번씩</strong> 찍히는 것은
+        정상입니다(개념02 3부의 StrictMode).
         <br />
-        <br />
-        이 파일이 쓰는 부품은 <code>src/08_Vite로_옮기기/_부품/</code> 안에 있습니다. 그
-        폴더의 파일들도 같이 열어 놓고 보세요.{" "}
+        <br />이 파일이 쓰는 부품은 <code>
+          src/08_Vite로_옮기기/_부품/
+        </code>{" "}
+        안에 있습니다. 그 폴더의 파일들도 같이 열어 놓고 보세요.{" "}
         <strong>하위 폴더라서 왼쪽 목록에는 안 나타납니다.</strong>
       </p>
 
@@ -511,7 +525,7 @@ export default function Concept03ImportExport() {
           "이름 있는 export 는 개수 제한이 없습니다. 가져올 때 중괄호 안에 이름을 정확히 적어야 하고, 바꾸고 싶으면 as 를 씁니다.",
           "경로는 ./ 면 같은 폴더, ../ 면 한 단계 위, 아무것도 없으면 node_modules 의 도구입니다. ./ 를 빠뜨리면 Failed to resolve import 가 납니다.",
           "경로는 늘 그 줄이 적힌 파일을 기준으로 읽습니다. 같은 파일이라도 어디서 부르느냐에 따라 경로가 달라집니다.",
-          "01~07단원의 const { useState } = React; 가 import { useState } from \"react\"; 로 바뀌었을 뿐, useState 자체는 똑같습니다.",
+          '01~07단원의 const { useState } = React; 가 import { useState } from "react"; 로 바뀌었을 뿐, useState 자체는 똑같습니다.',
           "import 는 파일 맨 위에만 쓸 수 있습니다. 함수 안이나 조건문 안에는 못 씁니다.",
         ]}
       />

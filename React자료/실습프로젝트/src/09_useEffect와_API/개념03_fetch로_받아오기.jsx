@@ -33,16 +33,16 @@ const BASE_URL = "https://jsonplaceholder.typicode.com";
 // 먼저 useEffect 없이 해 보면 왜 필요한지 알 수 있습니다.
 // 컴포넌트 본문에 fetch 를 그냥 적었다고 생각해 봅시다.
 //
-//     function PostView() {
-//       const [post, setPost] = useState(null);
-//
-//       fetch(`${BASE_URL}/posts/1`)          ← 본문에 그냥 적으면
-//         .then((res) => res.json())
-//         .then((data) => setPost(data));     ← 여기서 state 를 바꾸고
-//
-//       return <p>{post.title}</p>;
-//     }
-//
+// function PostView() {
+//   const [post, setPost] = useState(null);
+
+//   fetch(`${BASE_URL}/posts/1`)          ← 본문에 그냥 적으면
+//     .then((res) => res.json())
+//     .then((data) => setPost(data));     ← 여기서 state 를 바꾸고
+
+//   return <p>{post.title}</p>;
+// }
+
 // 이 코드는 이렇게 돕니다.
 //
 //     화면을 그린다 → 요청을 보낸다 → 데이터가 온다 → state 를 바꾼다
@@ -67,6 +67,17 @@ function RenderCountDemo() {
   // 이 자리에 fetch 를 두면, 이 줄이 찍힐 때마다 요청이 한 번씩 나갑니다.
   console.log("[섹션 1] 본문 실행 — 여기에 fetch 를 두면 요청이 나갑니다");
   // 콘솔: [섹션 1] 본문 실행 — 여기에 fetch 를 두면 요청이 나갑니다
+
+  // function PostView() {
+  //   const [post, setPost] = useState(null);
+  //   console.log("fetch");
+
+  //   fetch(`${BASE_URL}/posts/1`)
+  //     .then((res) => res.json())
+  //     .then((data) => setPost(data));
+
+  //   return <p>{post.title}</p>;
+  // }
 
   return (
     <div className="demo">
@@ -198,7 +209,7 @@ function OnePostDemo() {
 
 function PostListDemo() {
   // 목록이니 빈 배열로 시작합니다. 이러면 map 을 바로 써도 안전합니다.
-  const [posts, setPosts] = useState([]);
+  const [posts, setPosts] = useState(null); //[]를 null로 바꾸면 정상작동 하는가??
 
   useEffect(() => {
     async function loadPosts() {
@@ -216,15 +227,21 @@ function PostListDemo() {
   }, []);
 
   return (
+    //return으로 화면을 만든 다음 useEffect가 실행되고 그 안에서 setPosts가 실행되는 흐름이야.
     <div className="demo">
       <h3>③ 목록 받아서 그리기</h3>
       <ul>
-        {posts.map((post) => (
-          // key 는 05단원 개념03에서 배운 그것입니다. 서버가 준 id 를 쓰면 딱 좋습니다.
-          <li key={post.id}>
-            {post.id}. {post.title}
-          </li>
-        ))}
+        {posts?.map(
+          //null이기 때문에 map 을 실행안함 undifined반환하면 그냥 빈 ul을 반환함 {}에서는 map을 사용할 수 없음
+          (
+            post, //.? 하면 에러가 안남??
+          ) => (
+            // key 는 05단원 개념03에서 배운 그것입니다. 서버가 준 id 를 쓰면 딱 좋습니다.
+            <li key={post.id}>
+              {post.id}. {post.title}
+            </li>
+          ),
+        )}
       </ul>
       {/* 화면: 1. sunt aut facere... / 2. qui est esse / 3. ea molestias quasi... */}
     </div>
@@ -287,7 +304,19 @@ function FirstRenderDemo() {
       </div>
     );
   }
-
+  // return (
+  //      <div className="demo">
+  //        <h3>③ 첫 렌더에는 데이터가 없다</h3>
+  //        {user === null ? (
+  //          <p className="output">사용자 정보를 기다리는 중</p>
+  //        ) : (
+  //          <div className="output">
+  //            <p>이름: {user.name}</p>
+  //            <p>이메일: {user.email}</p>
+  //          </div>
+  //        )}
+  //      </div>
+  //    );
   // 여기까지 왔다면 user 는 반드시 객체입니다. 마음 놓고 점을 찍어도 됩니다.
   return (
     <div className="demo">
@@ -404,15 +433,18 @@ export default function Concept03FetchInEffect() {
       <h1>개념 03 — fetch 로 받아오기</h1>
 
       <p className="guide">
-        <strong>인터넷 연결이 필요합니다.</strong> <strong>F12 → Console</strong> 과{" "}
-        <strong>Network</strong> 탭을 함께 보면 요청이 나가는 것이 보입니다.
+        <strong>인터넷 연결이 필요합니다.</strong>{" "}
+        <strong>F12 → Console</strong> 과 <strong>Network</strong> 탭을 함께
+        보면 요청이 나가는 것이 보입니다.
         <br />
         <br />
-        인터넷이 막힌 실습실이라면 실습프로젝트 폴더의 <code>index.html</code> 에서{" "}
-        <code>오프라인_대체.js</code> 줄을 감싼 주석만 지우세요.
+        인터넷이 막힌 실습실이라면 실습프로젝트 폴더의 <code>
+          index.html
+        </code>{" "}
+        에서 <code>오프라인_대체.js</code> 줄을 감싼 주석만 지우세요.
         <br />
-        <br />⑤ 번 상자는 <strong>일부러 틀리게 만든 예제</strong>입니다. 제목 자리가
-        비어 있는 것이 정상입니다.
+        <br />⑤ 번 상자는 <strong>일부러 틀리게 만든 예제</strong>입니다. 제목
+        자리가 비어 있는 것이 정상입니다.
       </p>
 
       <button onClick={() => setRestartKey(restartKey + 1)}>

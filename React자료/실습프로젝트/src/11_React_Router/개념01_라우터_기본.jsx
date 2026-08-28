@@ -57,12 +57,14 @@ function StateWayDemo() {
       <div className="output">
         {page === "home" && <p>홈 — 어서 오세요. 오늘도 좋은 하루 되세요.</p>}
         {page === "about" && <p>소개 — 2020년에 문을 연 작은 카페입니다.</p>}
-        {page === "menu" && <p>메뉴 — 아메리카노 4000원 / 라떼 4500원 / 케이크 6000원</p>}
+        {page === "menu" && (
+          <p>메뉴 — 아메리카노 4000원 / 라떼 4500원 / 케이크 6000원</p>
+        )}
       </div>
 
       <p>
-        화면은 잘 바뀝니다. 그런데 <strong>브라우저 주소창을 보세요.</strong> 한 글자도
-        안 바뀝니다.
+        화면은 잘 바뀝니다. 그런데 <strong>브라우저 주소창을 보세요.</strong> 한
+        글자도 안 바뀝니다.
       </p>
     </div>
   );
@@ -103,6 +105,7 @@ function StateWayDemo() {
 //
 //   Link          — 주소를 바꾸는 링크입니다. 개념02에서 자세히 배웁니다.
 //                   지금은 "누르면 저 주소로 가는 것" 정도로만 보세요.
+//<a href=""></a>와 같은 역할
 
 // ✏️ 직접 해보기 2 — 위 네 가지 중에서 '브라우저 주소가 바뀐 것을 알아채는' 일을
 //                    맡은 것은 무엇일까요? (정답은 파일 맨 아래에)
@@ -136,9 +139,13 @@ function MenuPage() {
 function StartHere() {
   return (
     <p>
-      지금 주소는 이 예제가 아는 주소가 아닙니다. 위의 링크 중 하나를 눌러 시작하세요.
+      지금 주소는 이 예제가 아는 주소가 아닙니다. 위의 링크 중 하나를 눌러
+      시작하세요.
     </p>
   );
+}
+function Hours() {
+  return <p>영업시간 — 10시부터 22시까지</p>;
 }
 
 function RouterWayDemo() {
@@ -151,23 +158,31 @@ function RouterWayDemo() {
         {/* ② 링크는 Routes 바깥에 두었습니다. 화면이 바뀌어도 링크는 그대로 남습니다. */}
         <nav>
           <Link to="/r1">홈</Link> | <Link to="/r1/about">소개</Link> |{" "}
-          <Link to="/r1/menu">메뉴</Link> | <Link to="/r1/aboutt">소개(오타)</Link>
+          <Link to="/r1/menu">메뉴</Link> |{" "}
+          <Link to="/r1/aboutt">소개(오타)</Link>|{" "}
+          <Link to="/r1/hours">영업시간</Link>
         </nav>
 
         {/* ③ 여기가 주소에 따라 갈아 끼워지는 자리입니다. */}
         <div className="output">
           <Routes>
             <Route path="/r1" element={<HomePage />} />
+            // '만들어진 화면'
+            <Route path="/r1/hours" element={<Hours />} />
+            // '만들어진 화면'
             <Route path="/r1/about" element={<AboutPage />} />
+            // '만들어진 화면'
             <Route path="/r1/menu" element={<MenuPage />} />
+            // '만들어진 화면'
             <Route path="*" element={<StartHere />} />
+            // '만들어진 화면'
           </Routes>
         </div>
 
         <p>
-          이번에는 링크를 누를 때마다 <strong>주소창이 바뀝니다.</strong> 그리고 화면이
-          깜빡이지 않습니다. 페이지를 새로 받아 오는 것이 아니라 React 가 그 자리만
-          다시 그렸기 때문입니다.
+          이번에는 링크를 누를 때마다 <strong>주소창이 바뀝니다.</strong> 그리고
+          화면이 깜빡이지 않습니다. 페이지를 새로 받아 오는 것이 아니라 React 가
+          그 자리만 다시 그렸기 때문입니다.
         </p>
       </div>
     </BrowserRouter>
@@ -180,7 +195,8 @@ function RouterWayDemo() {
 //   element={HomePage}       ← 틀립니다. 함수 자체를 넣은 것입니다
 //
 // 04단원에서 onClick 에는 함수를 넣고 괄호를 붙이면 안 된다고 배웠습니다.
-// element 는 반대입니다. 여기에는 '만들어진 화면'을 넣습니다.
+// element 는 반대입니다. 여기에는 '만들어진 화면' 을 넣습니다.
+
 // 헷갈리면 이렇게 기억하세요. onClick 은 나중에 부를 것, element 는 그릴 것입니다.
 
 // ✏️ 직접 해보기 3 — 데모 ② 의 '홈' '소개' '메뉴' 를 차례로 눌러 주소창을 보세요.
@@ -322,14 +338,17 @@ export default function Concept01RouterBasic() {
       <h1>개념 01 — 라우터 기본</h1>
 
       <p className="guide">
-        아래 데모 ① 과 ② 는 같은 화면 세 개를 보여 줍니다. 다른 것은 하나뿐입니다.
-        <strong> ① 은 주소가 안 바뀌고 ② 는 바뀝니다.</strong> 링크를 누를 때마다
-        브라우저 주소창을 꼭 보세요.
+        아래 데모 ① 과 ② 는 같은 화면 세 개를 보여 줍니다. 다른 것은
+        하나뿐입니다.
+        <strong> ① 은 주소가 안 바뀌고 ② 는 바뀝니다.</strong> 링크를 누를
+        때마다 브라우저 주소창을 꼭 보세요.
         <br />
         <br />
-        <strong>예제 안에서 주소를 옮긴 뒤에는 새로고침(F5)을 하지 마세요.</strong> 앱이
-        처음부터 다시 시작해서 왼쪽 메뉴 선택이 풀립니다. 그때는 왼쪽 메뉴에서 이 예제를
-        다시 고르면 됩니다. 이유는 섹션 5에 적어 두었습니다.
+        <strong>
+          예제 안에서 주소를 옮긴 뒤에는 새로고침(F5)을 하지 마세요.
+        </strong>{" "}
+        앱이 처음부터 다시 시작해서 왼쪽 메뉴 선택이 풀립니다. 그때는 왼쪽
+        메뉴에서 이 예제를 다시 고르면 됩니다. 이유는 섹션 5에 적어 두었습니다.
       </p>
 
       <StateWayDemo />
@@ -341,7 +360,7 @@ export default function Concept01RouterBasic() {
           "react-router-dom 을 쓰면 주소가 화면을 정합니다. 이 프로젝트에는 이미 설치돼 있습니다.",
           "BrowserRouter 는 주소를 지켜보고, Routes 는 맞는 것 하나를 고르고, Route 는 주소와 화면을 짝짓습니다.",
           "Route 는 path 에 주소를, element 에 그릴 화면을 넣습니다. element={<Home />} 처럼 화살괄호까지 씁니다.",
-          "path 는 한 글자도 틀리면 안 되고, 아무 데도 안 맞으면 화면이 조용히 빕니다. path=\"*\" 로 대비합니다.",
+          'path 는 한 글자도 틀리면 안 되고, 아무 데도 안 맞으면 화면이 조용히 빕니다. path="*" 로 대비합니다.',
           "진짜 앱은 BrowserRouter 를 맨 바깥에 한 번만 둡니다. 이 자료만 예제마다 하나씩 둡니다.",
         ]}
       />

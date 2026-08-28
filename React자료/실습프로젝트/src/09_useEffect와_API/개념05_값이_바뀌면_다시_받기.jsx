@@ -32,9 +32,9 @@ const BASE_URL = "https://jsonplaceholder.typicode.com";
 // ── 섹션 1: 의존성에 값 넣기 ──
 
 function UserPickerDemo() {
-  const [userId, setUserId] = useState(1);
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [userId, setUserId] = useState(1); //지금 새 데이터를 가져오는 중이냐"
+  const [user, setUser] = useState(null); //현재 가지고 있는 데이터가 있냐"
+  const [loading, setLoading] = useState(true); //받아올떄 상태가 true 여야 함
 
   useEffect(() => {
     async function loadUser() {
@@ -49,11 +49,11 @@ function UserPickerDemo() {
       // 콘솔: [사용자 고르기] 3번을 받아왔습니다: Clementine Bauch
 
       setUser(data);
-      setLoading(false);
+      setLoading(false); //왜 여기서 로딩여부를 묻는거임 그냥 user 가 비어있는지 확인하는조건으로 대체 안됨?
     }
 
     loadUser();
-  }, [userId]); // ★ userId 가 바뀔 때마다 다시 받아옵니다
+  }, [userId]); // ★ 버튼을 눌러서 userId 가 바뀔 때마다 다시 받아옵니다 같은 버튼 눌렀을떄 다시 불러오게 하지 않기위해서 불필요한 트레픽 방지
 
   return (
     <div className="demo">
@@ -62,6 +62,7 @@ function UserPickerDemo() {
       <button onClick={() => setUserId(1)}>1번</button>
       <button onClick={() => setUserId(2)}>2번</button>
       <button onClick={() => setUserId(3)}>3번</button>
+      <button onClick={() => setUserId(4)}>4번</button>
 
       {loading ? (
         <p className="output">불러오는 중...</p>
@@ -120,7 +121,9 @@ function SearchDemo() {
       const res = await fetch(`${BASE_URL}/posts?userId=${keyword}&_limit=3`);
       const data = await res.json();
 
-      console.log(`[검색] userId 가 ${keyword} 인 글 ${data.length}개를 받았습니다`);
+      console.log(
+        `[검색] userId 가 ${keyword} 인 글 ${data.length}개를 받았습니다`,
+      );
       // 콘솔: [검색] userId 가 1 인 글 3개를 받았습니다
 
       setPosts(data);
@@ -212,6 +215,9 @@ function RaceProblemDemo() {
   const [name, setName] = useState("아직 없음");
 
   useEffect(() => {
+    //클로저 = 함수가 만들어질 당시 주변에 있던 변수를 기억하고 있는 것
+    //"loadUser가 userId가 있는 바깥 환경을 기억하기 때문에 사용할 수 있다"
+    //그리고 이건 React의 기능이 아니라 JavaScript 자체의 개념이야.
     async function loadUser() {
       console.log(`[문제] ${userId}번 요청을 보냈습니다`);
       // 콘솔: [문제] 2번 요청을 보냈습니다
@@ -225,7 +231,9 @@ function RaceProblemDemo() {
         await wait(SLOW_MS); // 1번만 일부러 늦게 도착하게 만듭니다
       }
 
-      console.log(`[문제] ${userId}번 응답 도착 → 화면에 그립니다: ${data.name}`);
+      console.log(
+        `[문제] ${userId}번 응답 도착 → 화면에 그립니다: ${data.name}`,
+      );
       // 콘솔: [문제] 2번 응답 도착 → 화면에 그립니다: Ervin Howell
       // 콘솔: [문제] 1번 응답 도착 → 화면에 그립니다: Leanne Graham
 
@@ -312,8 +320,9 @@ function RaceFixedDemo() {
   const [name, setName] = useState("아직 없음");
 
   useEffect(() => {
+    //cleanup을 했다고 해서 이미 실행 중인 loadUser()가 중단되는 건 아니야.
     // 이 effect 만의 표시입니다. 처음에는 "아직 쓸모 있음" 입니다.
-    let ignore = false;
+    let ignore = false; //계속 생겨남
 
     async function loadUser() {
       console.log(`[해결] ${userId}번 요청을 보냈습니다`);
@@ -321,12 +330,13 @@ function RaceFixedDemo() {
       // 콘솔: [해결] 1번 요청을 보냈습니다
       // 콘솔: [해결] 3번 요청을 보냈습니다
 
-      const res = await fetch(`${BASE_URL}/users/${userId}`);
+      const res = await fetch(`${BASE_URL}/users/${userId}`); //비동기 여서 가능함  데이터가 올떄까지 기다렸다가
       const data = await res.json();
 
       if (userId === SLOW_ID) {
         await wait(SLOW_MS);
       }
+      //응답도착하고 ignore 검사
 
       if (ignore) {
         console.log(`[해결] ${userId}번 응답 — 지금 화면과 안 맞아서 버립니다`);
@@ -335,7 +345,9 @@ function RaceFixedDemo() {
         return; // state 를 건드리지 않고 끝냅니다
       }
 
-      console.log(`[해결] ${userId}번 응답 도착 → 화면에 그립니다: ${data.name}`);
+      console.log(
+        `[해결] ${userId}번 응답 도착 → 화면에 그립니다: ${data.name}`,
+      );
       // 콘솔: [해결] 2번 응답 도착 → 화면에 그립니다: Ervin Howell
 
       setName(data.name);
@@ -344,6 +356,15 @@ function RaceFixedDemo() {
     loadUser();
 
     return () => {
+      //즉 cleanup의 역할은
+
+      //  "이 함수 실행을 취소한다"
+
+      // 가 아니라
+
+      // "이 함수가 나중에 끝나더라도 결과를 사용하지 못하게 표시한다"
+
+      // 바로 정리되거나  도착할떄  이 리턴값을  돌려줌  1번이 0.5초걸리는데 그 안에 다른 애가 0.2초걸리는애를 실행시키면 기존 꺼는 바로 리턴되어서 나오기도 전에  falsee되버림
       // 이 effect 가 물러날 때 표시를 바꿔 둡니다.
       ignore = true;
     };
@@ -359,7 +380,8 @@ function RaceFixedDemo() {
       <h3>④ [해결] 늦게 온 응답은 버립니다</h3>
       <p className="output">지금 화면에 그린 이름: {name}</p>
       {/* 화면: 지금 화면에 그린 이름: Ervin Howell */}
-      <button onClick={runRace}>1번 → 곧바로 2번 고르기</button>
+      <button onClick={runRace}>1번 → 곧바로 2번 고르기</button>//이거 자체가
+      지금 12번 바로 눌러줌
       {/* 화면(누르면): Ervin Howell 그대로입니다. 되돌아가지 않습니다 */}
       <button onClick={() => setUserId(3)}>3번 고르기 (평범하게)</button>
       {/* 화면(누르면): 지금 화면에 그린 이름: Clementine Bauch */}
@@ -432,15 +454,15 @@ export default function Concept05RefetchOnChange() {
       <h1>개념 05 — 값이 바뀌면 다시 받기</h1>
 
       <p className="guide">
-        <strong>인터넷 연결이 필요합니다.</strong> <strong>F12 → Console</strong> 을 함께
-        열어 두세요. 요청이 몇 번 나가는지 콘솔로 세어 볼 수 있습니다.
+        <strong>인터넷 연결이 필요합니다.</strong>{" "}
+        <strong>F12 → Console</strong> 을 함께 열어 두세요. 요청이 몇 번
+        나가는지 콘솔로 세어 볼 수 있습니다.
         <br />
-        <br />③ 번 상자는 <strong>일부러 틀리게 만든 예제</strong>입니다. 화면이 뒤늦게
-        옛날 이름으로 되돌아가는 것이 정상입니다. ④ 번이 고친 것입니다.
+        <br />③ 번 상자는 <strong>일부러 틀리게 만든 예제</strong>입니다. 화면이
+        뒤늦게 옛날 이름으로 되돌아가는 것이 정상입니다. ④ 번이 고친 것입니다.
         <br />
-        <br />
-        이 연습용 서버의 사람 이름은 <strong>영어</strong>입니다. Leanne Graham 처럼 나오는
-        것이 정상입니다.
+        <br />이 연습용 서버의 사람 이름은 <strong>영어</strong>입니다. Leanne
+        Graham 처럼 나오는 것이 정상입니다.
       </p>
 
       <UserPickerDemo />

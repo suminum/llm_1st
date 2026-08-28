@@ -144,7 +144,11 @@ function OutsideBadge() {
   const user = useContext(UserContext);
   console.log("Provider 밖에서 꺼낸 이름: " + user.name);
   // 콘솔: Provider 밖에서 꺼낸 이름: 손님
-  return <div className="output">{user.name} 님 ({user.age}세)</div>;
+  return (
+    <div className="output">
+      {user.name} 님 ({user.age}세)
+    </div>
+  );
 }
 
 // 화면: 손님 님 (0세)
@@ -224,7 +228,7 @@ function LoginButton() {
   const { login, logout } = useContext(AuthContext);
   return (
     <div className="output">
-      <button onClick={() => login("이서연", 22)}>로그인</button>
+      <button onClick={() => login("박지훈", 28)}>로그인</button>
       <button onClick={logout}>로그아웃</button>
     </div>
   );
@@ -251,7 +255,8 @@ function AuthPage() {
 }
 
 function AuthProviderDemo() {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(null); //이값이 전역변수가 아니라 state 변수로 변하는걸 리엑트가 감지하고 화면을 렌더링 해야하기 때문에
+  //굳이굳이 provider로 전달을 하는거임 ㄹㅇㄹㅇㄹㅇㄹㅇㄹㅇ
 
   function login(name, age) {
     setUser({ name: name, age: age });
@@ -269,6 +274,7 @@ function AuthProviderDemo() {
   // 이렇게 하면 아래 어느 컴포넌트든 login() 을 부를 수 있습니다.
   return (
     <AuthContext.Provider value={{ user: user, login: login, logout: logout }}>
+      //함수도 전달이 됨
       <AuthPage />
     </AuthContext.Provider>
   );
@@ -300,9 +306,11 @@ function GreetingBox() {
   // useContext 를 두 번 부르면 상자 두 개에서 각각 꺼냅니다.
   const hello = lang === "ko" ? "안녕하세요" : "Hello";
   return (
-    <div className="output">
-      {hello}, {user.name}
-    </div>
+    <UserContext.Provider name={"박지훈"}>
+      <div className="output">
+        {hello}, {user.name}
+      </div>
+    </UserContext.Provider>
   );
 }
 
@@ -388,8 +396,9 @@ export default function Concept02ContextBasic() {
       <h1>개념 02 — Context 기본</h1>
 
       <p className="guide">
-        <strong>세 단계</strong>만 기억하세요. <code>createContext</code> 로 상자를
-        만들고, <code>Provider</code> 로 값을 넣고, <code>useContext</code> 로 꺼냅니다.
+        <strong>세 단계</strong>만 기억하세요. <code>createContext</code> 로
+        상자를 만들고, <code>Provider</code> 로 값을 넣고,{" "}
+        <code>useContext</code> 로 꺼냅니다.
         <br />
         <strong>F12 → Console</strong> 도 함께 보세요.
       </p>

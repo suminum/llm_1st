@@ -23,7 +23,7 @@
 // ★ 인터넷이 막힌 실습실이라면 실습프로젝트 폴더의 index.html 에서
 //   오프라인_대체.js 줄을 감싼 주석만 지우세요.
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Summary from "../_ui/Summary.jsx";
 
 const BASE_URL = "https://jsonplaceholder.typicode.com";
@@ -38,7 +38,9 @@ const BASE_URL = "https://jsonplaceholder.typicode.com";
 //                  한 줄도 안 나오면 useEffect 를 안 썼거나 함수를 안 넘긴 것입니다.
 
 function Problem01() {
-  // TODO: 여기에 useEffect 를 쓰세요 (의존성 배열을 잊지 마세요)
+  useEffect(() => {
+    console.log("09단원 시작합니다");
+  }, []);
 
   return (
     <div className="demo">
@@ -59,6 +61,7 @@ function Problem01() {
 
 function Problem02() {
   const [tick, setTick] = useState(0);
+  useEffect(() => console.log("다시 그려졌습니다"));
 
   // TODO: 여기에 useEffect 를 쓰세요
 
@@ -82,6 +85,9 @@ function Problem02() {
 function Problem03() {
   const [count, setCount] = useState(0);
   const [menu, setMenu] = useState("아메리카노");
+  useEffect(() => {
+    console.log("지금 잔 수 : " + count);
+  }, [count]);
 
   // TODO: 여기에 useEffect 를 쓰세요
 
@@ -92,7 +98,9 @@ function Problem03() {
         {menu} {count}잔
       </p>
       <button onClick={() => setCount(count + 1)}>잔 수 +1</button>
-      <button onClick={() => setMenu(menu === "아메리카노" ? "라떼" : "아메리카노")}>
+      <button
+        onClick={() => setMenu(menu === "아메리카노" ? "라떼" : "아메리카노")}
+      >
         메뉴 바꾸기
       </button>
     </div>
@@ -111,6 +119,9 @@ function Problem04() {
   const [todoCount, setTodoCount] = useState(0);
 
   // TODO: 여기에 useEffect 를 쓰세요
+  useEffect(() => {
+    document.title = "할일" + todoCount + "개";
+  }, [todoCount]);
 
   return (
     <div className="demo">
@@ -137,11 +148,23 @@ function Problem05() {
   const [seconds, setSeconds] = useState(0);
 
   // TODO: 여기에 useEffect 를 쓰세요. 정리 함수도 함께 쓰세요.
+  const timerRef = useRef(null);
+  useEffect(() => {
+    console.log("타이머실행");
+    timerRef.current = setInterval(() => setSeconds((a) => a + 1), 1000); //함수형 업데이트
+    return () => clearInterval(timerRef.current); //함수 자체를 return해야 해.
+  }, []);
 
   return (
     <div className="demo">
       <h3>문제 5 — 타이머와 정리 함수</h3>
       <p className="output">{seconds}초</p>
+      <button
+        className="output"
+        onClick={() => clearInterval(timerRef.current)}
+      >
+        멈추기
+      </button>
     </div>
   );
 }
@@ -174,6 +197,14 @@ function Problem07() {
 
   // TODO: 여기에 useEffect 를 쓰세요
   //       안에 async 함수를 만들고, 만든 함수를 부르는 것을 잊지 마세요.
+  useEffect(() => {
+    async function render() {
+      const res = await fetch(`${BASE_URL}/posts/3`);
+      const data = await res.json();
+      setTitle(data.title);
+    }
+    render();
+  }, []);
 
   return (
     <div className="demo">
@@ -193,13 +224,26 @@ function Problem07() {
 
 function Problem08() {
   const [users, setUsers] = useState([]);
+  useEffect(() => {
+    async function render() {
+      const res = await fetch(`${BASE_URL}/users?_limit=3`);
+      const data = await res.json();
+      console.log([...data]);
+      setUsers([...data]);
+    }
+    render();
+  }, []);
 
   // TODO: 여기에 useEffect 를 쓰세요
 
   return (
     <div className="demo">
       <h3>문제 8 — 목록 받아서 그리기</h3>
-      <ul>{/* TODO: users 를 map 으로 그리세요 */}</ul>
+      <ul>
+        {users?.map((user) => (
+          <li key={user.name}>{user.name}</li>
+        ))}
+      </ul>
     </div>
   );
 }
@@ -215,6 +259,21 @@ function Problem08() {
 function Problem09() {
   const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (!loading) {
+      return;
+    }
+    async function isState() {
+      const res = await fetch(`${BASE_URL}/posts/3`);
+      const data = await res.json();
+      console.log("로딩중 문제 9번");
+      setTitle(data.title);
+      return setLoading(false);
+    }
+
+    isState();
+  }, []);
 
   // TODO: 여기에 useEffect 를 쓰세요
 
@@ -241,7 +300,21 @@ function Problem10() {
 
   // TODO: 여기에 useEffect 를 쓰세요
   //       try / catch 로 감싸고, catch 안에서 setMessage("에러가 났습니다") 도 해 주세요.
-
+  useEffect(() => {
+    async function loadPost() {
+      try {
+        const res = await fetch(`${BASE_URL}/posts/9999`);
+        if (!res.ok) {
+          throw new Error("서버 응답 오류 (404)");
+        }
+        const data = await res.json();
+        setMessage(data.title);
+      } catch (err) {
+        console.log("문제10 에러:", err.message);
+      }
+    }
+    loadPost();
+  }, []);
   return (
     <div className="demo">
       <h3>문제 10 — res.ok 확인하기</h3>
@@ -267,12 +340,39 @@ function Problem11() {
   const [error, setError] = useState(null);
 
   // TODO: 여기에 useEffect 를 쓰세요
+  useEffect(() => {
+    async function isState() {
+      setLoading(true);
+      setError(null);
+      try {
+        const res = await fetch(`${BASE_URL}/posts/9999`);
+
+        if (!res.ok) {
+          throw new error("글을 불러오지 못했습니다.");
+        }
+        const data = await res.json();
+
+        setPost(data);
+      } catch (err) {
+        setError("글을 불러오지 못했습니다");
+
+        console.log("문제11번 오류", err.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+    isState();
+  }, []);
 
   return (
     <div className="demo">
       <h3>문제 11 — 세 갈래 화면</h3>
-      {/* TODO: loading / error / 성공 세 가지를 갈라서 그리세요 */}
-      <p className="output">여기에 세 갈래 화면을 그리세요</p>
+
+      <p className="output">
+        {loading && <p>불러오는 중</p>}
+        {!loading && error !== null && <p>{error}</p>}
+        {!loading && error === null && <p>{post.title}</p>}
+      </p>
     </div>
   );
 }
@@ -291,9 +391,21 @@ function Problem11() {
 function Problem12() {
   const [userId, setUserId] = useState(1);
   const [name, setName] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); //랜더링 될떄 다시 ture안됨 이건그냥 초기값 추후에는 저장된 값
 
   // TODO: 여기에 useEffect 를 쓰세요
+  useEffect(() => {
+    setLoading(true);
+
+    async function loaduser() {
+      const res = await fetch(`${BASE_URL}/users?_limit=5`);
+      const data = await res.json();
+
+      setName(data[userId].name);
+      return setLoading(false);
+    }
+    loaduser();
+  }, [userId]);
 
   return (
     <div className="demo">
@@ -328,6 +440,27 @@ function wait(ms) {
 function Problem13() {
   const [userId, setUserId] = useState(2);
   const [name, setName] = useState("아직 없음");
+  useEffect(() => {
+    let ignore = false;
+
+    async function loading() {
+      const res = await fetch(`${BASE_URL}/users/${userId}`);
+      const data = await res.json();
+      if (userId === 1) {
+        await wait(250);
+      }
+
+      if (ignore) {
+        return;
+      }
+      setName(data.name);
+    }
+
+    loading();
+    return () => {
+      ignore = true;
+    }; //함수형태로 return
+  }, [userId]);
 
   // TODO: 여기에 useEffect 를 쓰세요.
   //       1번을 받아올 때는 res.json() 뒤에 await wait(250); 을 넣어 일부러 늦추세요.
@@ -370,9 +503,14 @@ function Problem13() {
 
 function Problem14() {
   const [count, setCount] = useState(0);
+  return useEffect(() => {
+    console.log("문제14 effect 실행 — 숫자를 1 올립니다");
+    // 콘솔: 문제14 effect 실행 — 숫자를 1 올립니다
 
+    setCount((prev) => prev + 1);
+  }, []);
   // TODO: 여기에 고친 useEffect 를 쓰세요
-
+  //현재 count 값을 직접 참조하지 않고, React가 가진 최신 state를 이용하는 방식이야.
   return (
     <div className="demo">
       <h3>문제 14 — 무한 루프 고치기</h3>
@@ -389,21 +527,23 @@ export default function Unit09Exercises() {
       <h1>09단원 연습문제 (14문항)</h1>
 
       <p className="guide">
-        각 상자의 <strong>TODO</strong> 자리를 채우세요. 저장하면 화면이 저절로 다시
-        그려집니다.
+        각 상자의 <strong>TODO</strong> 자리를 채우세요. 저장하면 화면이 저절로
+        다시 그려집니다.
         <br />
         <br />
-        <strong>F12 → Console</strong> 을 함께 열어 두세요. 콘솔로 확인하는 문제가 많습니다.
-        같은 줄이 두 번씩 찍히는 것은 정상입니다(개념02 StrictMode).
+        <strong>F12 → Console</strong> 을 함께 열어 두세요. 콘솔로 확인하는
+        문제가 많습니다. 같은 줄이 두 번씩 찍히는 것은 정상입니다(개념02
+        StrictMode).
         <br />
         <br />
-        7번부터는 <strong>인터넷 연결이 필요합니다.</strong> 막혀 있다면 실습프로젝트
-        폴더의 <code>index.html</code> 에서 <code>오프라인_대체.js</code> 줄을 감싼 주석만
-        지우세요.
+        7번부터는 <strong>인터넷 연결이 필요합니다.</strong> 막혀 있다면
+        실습프로젝트 폴더의 <code>index.html</code> 에서{" "}
+        <code>오프라인_대체.js</code> 줄을 감싼 주석만 지우세요.
         <br />
         <br />
         10 · 11번은 <strong>일부러 없는 글을 요청</strong>합니다. 콘솔에 빨간{" "}
-        <code>Failed to load resource ... 404</code> 줄이 나오는 것이 정상입니다.
+        <code>Failed to load resource ... 404</code> 줄이 나오는 것이
+        정상입니다.
       </p>
 
       <Problem01 />

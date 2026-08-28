@@ -26,6 +26,7 @@ import Summary from "../_ui/Summary.jsx";
 // 세는 대상만 다르고 코드는 똑같습니다.
 
 function CoffeeCounterOld() {
+  //반복되는 동작
   const [count, setCount] = useState(0);
 
   function increase() {
@@ -51,6 +52,7 @@ function CoffeeCounterOld() {
 }
 
 function CakeCounterOld() {
+  //반복되는 동작 222222
   // 위와 완전히 같은 코드입니다. 이름만 케이크로 바꿨습니다.
   const [count, setCount] = useState(0);
 
@@ -109,6 +111,7 @@ function SectionOne() {
 // 그리고 컴포넌트가 필요로 하는 것들을 return 으로 돌려줍니다.
 
 function useCounter(initial = 0) {
+  ////반복되는 화면이 아닌 반복되는 동작을 묶는게 카스텀 훅 화면는 각각 다르다
   // 훅 안에서 훅을 부릅니다. 이게 됩니다. 커스텀 훅은 컴포넌트와 같은 취급을 받습니다.
   const [count, setCount] = useState(initial);
 
@@ -124,13 +127,13 @@ function useCounter(initial = 0) {
 
   // 아래는 { count: count, increase: increase, ... } 를 짧게 쓴 것입니다.
   // 키 이름과 변수 이름이 같으면 한 번만 써도 됩니다. '속성 축약' 이라고 부릅니다.
-  return { count, increase, decrease, reset };
+  return { count, increase, decrease, reset }; //하나의 객체로 한개만 리턴
 }
 
 // 쓰는 쪽은 이렇게 짧아집니다.
 
 function CoffeeCounterNew() {
-  const coffee = useCounter(0);
+  const coffee = useCounter(0); //객체 훅사용
 
   function handleIncrease() {
     coffee.increase();
@@ -152,7 +155,7 @@ function CoffeeCounterNew() {
 
 function CakeCounterNew() {
   // 같은 훅을 부르고, 시작값만 다르게 줬습니다.
-  const cake = useCounter(2);
+  const cake = useCounter(2); //훅사용
 
   return (
     <div className="output">
@@ -262,7 +265,7 @@ function useInput(initialValue = "") {
 
   // 이벤트 객체를 받아 값을 꺼내는 일까지 훅이 맡습니다.
   function onChange(e) {
-    setValue(e.target.value);
+    setValue(e.target.value); //input에 현재 입력되어 있는 값이
   }
 
   function clear() {
@@ -546,9 +549,11 @@ export default function Concept03CustomHook() {
       <h1>개념 03 — 커스텀 훅</h1>
 
       <p className="guide">
-        커스텀 훅은 <strong>새 문법이 아닙니다.</strong> 훅을 부르는 코드를 함수로 묶은 것입니다.
+        커스텀 훅은 <strong>새 문법이 아닙니다.</strong> 훅을 부르는 코드를
+        함수로 묶은 것입니다.
         <br />
-        섹션 1과 섹션 2의 화면은 똑같습니다. <strong>코드만</strong> 비교해서 보세요.
+        섹션 1과 섹션 2의 화면은 똑같습니다. <strong>코드만</strong> 비교해서
+        보세요.
       </p>
 
       <SectionOne />

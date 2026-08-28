@@ -508,9 +508,8 @@ export default function Concept01ElementRef() {
 
       <p className="guide">
         F12 → Console 을 함께 열어 두세요. 이 파일은 콘솔에도 결과를 찍습니다.
-        <br />
-        각 데모의 버튼을 <strong>파일에 적힌 순서대로</strong> 눌러 보세요.
-        순서가 다르면 다른 결과가 나옵니다.
+        <br />각 데모의 버튼을 <strong>파일에 적힌 순서대로</strong> 눌러
+        보세요. 순서가 다르면 다른 결과가 나옵니다.
       </p>
 
       <DirectDom />

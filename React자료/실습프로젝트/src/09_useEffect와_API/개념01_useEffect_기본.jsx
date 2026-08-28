@@ -59,9 +59,9 @@ import Summary from "../_ui/Summary.jsx";
 // 두 번 실행하면 요청이 두 번 나가거나 타이머가 두 개 생기면, 그게 부작용입니다.
 
 // ✏️ 직접 해보기 1 — 아래 다섯 가지 중 부작용인 것을 골라 보세요. (정답은 파일 맨 아래에)
-//                    (가) 가격 4000 에 개수를 곱해 총액을 만든다
+//                    (가) 가격 4000 에 개수를 곱해 총액을 만든다 x
 //                    (나) 서버에 "이 글 조회수 +1" 요청을 보낸다
-//                    (다) 목록을 filter 로 걸러 화면에 그린다
+//                    (다) 목록을 filter 로 걸러 화면에 그린다X
 //                    (라) 브라우저 탭 제목을 "장바구니 3개" 로 바꾼다
 //                    (마) 1초마다 도는 타이머를 켠다
 
@@ -95,6 +95,8 @@ function OrderDemo() {
     console.log("② useEffect — 화면이 다 그려진 뒤입니다");
     // 콘솔: ② useEffect — 화면이 다 그려진 뒤입니다
   });
+  console.log("3함수 본문 — 화면 설명을 만드는 중입니다");
+  //r결과 13132
 
   return (
     <div className="demo">
@@ -143,22 +145,22 @@ function DepsDemo() {
 
   // [A] 배열을 안 씀 — 다시 그릴 때마다
   useEffect(() => {
-    console.log("A) 배열 없음 — 실행");
+    console.log("A) 배열 없음 —다시그릴때마다 실행");
     // 콘솔: A) 배열 없음 — 실행
   });
 
   // [B] 빈 배열 — 처음 한 번만
   useEffect(() => {
-    console.log("B) [] — 실행");
+    console.log("B) [] —처음 한번만 실행");
     // 콘솔: B) [] — 실행
   }, []);
 
   // [C] [count] — count 가 바뀌었을 때만
   useEffect(() => {
-    console.log(`C) [count] — 실행 (count 는 ${count})`);
+    console.log(`C) [count] — 바뀌었을떄 실행 (count 는 ${count})`);
     // 콘솔: C) [count] — 실행 (count 는 0)
     // 콘솔: C) [count] — 실행 (count 는 1)
-  }, [count]);
+  }, [color]);
 
   return (
     <div className="demo">
@@ -218,7 +220,7 @@ function TitleDemo() {
 
   useEffect(() => {
     // 화면 밖(브라우저 탭)을 건드립니다. 전형적인 부작용입니다.
-    document.title = `장바구니 ${cartCount}개`;
+    document.title = `커피 ${cartCount}잔`;
 
     console.log("브라우저 탭 제목을 바꿨습니다:", document.title);
     // 콘솔: 브라우저 탭 제목을 바꿨습니다: 장바구니 0개
@@ -228,9 +230,11 @@ function TitleDemo() {
   return (
     <div className="demo">
       <h3>③ 담을 때마다 탭 제목이 바뀝니다</h3>
-      <p className="output">장바구니: 아메리카노 {cartCount}개</p>
+      <p className="output">커피 {cartCount}잔</p>
       {/* 화면: 장바구니: 아메리카노 0개 */}
-      <button onClick={() => setCartCount(cartCount + 1)}>아메리카노 담기</button>
+      <button onClick={() => setCartCount(cartCount + 1)}>
+        아메리카노 담기
+      </button>
       {/* 화면(누르면): 장바구니: 아메리카노 1개 — 브라우저 탭 글자도 함께 바뀝니다 */}
     </div>
   );
@@ -329,17 +333,18 @@ export default function Concept01EffectBasics() {
       <h1>개념 01 — useEffect 기본</h1>
 
       <p className="guide">
-        <strong>F12 → Console</strong> 을 함께 열어 두세요. 이 파일은 화면보다 콘솔에
-        더 많은 것이 나옵니다.
+        <strong>F12 → Console</strong> 을 함께 열어 두세요. 이 파일은 화면보다
+        콘솔에 더 많은 것이 나옵니다.
         <br />
         <br />
-        콘솔에 같은 줄이 <strong>두 번씩</strong> 찍힙니다. 정상입니다. 이유는 개념02에서
-        설명합니다.
+        콘솔에 같은 줄이 <strong>두 번씩</strong> 찍힙니다. 정상입니다. 이유는
+        개념02에서 설명합니다.
         <br />
         <br />
         <strong>인터넷이 막힌 실습실이라면</strong> 실습프로젝트 폴더의{" "}
-        <code>index.html</code> 에서 <code>오프라인_대체.js</code> 줄을 감싼 주석만
-        지우세요. 이 단원의 데이터 예제가 인터넷 없이도 똑같이 돌아갑니다.
+        <code>index.html</code> 에서 <code>오프라인_대체.js</code> 줄을 감싼
+        주석만 지우세요. 이 단원의 데이터 예제가 인터넷 없이도 똑같이
+        돌아갑니다.
       </p>
 
       <button onClick={() => setRestartKey(restartKey + 1)}>

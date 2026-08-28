@@ -27,7 +27,13 @@
 //   이 파일이 쓰는 주소 앞머리는 /r3 입니다.
 //   그리고 이동한 뒤 새로고침(F5)을 하면 왼쪽 메뉴 선택이 풀립니다. 하지 마세요.
 
-import { BrowserRouter, Routes, Route, Link, useParams } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Link,
+  useParams,
+} from "react-router-dom";
 import Summary from "../_ui/Summary.jsx";
 
 // ── 섹션 1: 목록에서 상세로 ──
@@ -52,7 +58,7 @@ import Summary from "../_ui/Summary.jsx";
 // 화면에 쓸 데이터입니다. 07단원까지 쓰던 것과 같은 모양입니다.
 // id 는 숫자입니다. 이 점을 섹션 4에서 다시 봅니다.
 const menuItems = [
-  { id: 1, name: "아메리카노", price: 4000 },
+  { id: 1, name: "아메리카노", price: 4000 }, //여기서 아이디는 숫자
   { id: 2, name: "라떼", price: 4500 },
   { id: 3, name: "케이크", price: 6000 },
   { id: 4, name: "삼각김밥", price: 1200 },
@@ -151,6 +157,9 @@ console.log(Number(sampleId) === 2);
 function MenuDetail() {
   const params = useParams();
   const { id } = params; // params.id 와 같습니다
+  const a = { a: 1, b: 2, c: 3 };
+  const { d, e, f } = a;
+  console.log(d, e, f);
 
   // 틀린 방법 — 문자열과 숫자를 === 로 비교합니다
   const wrongFound = menuItems.find((item) => item.id === id);
@@ -163,8 +172,7 @@ function MenuDetail() {
       <h4>상세 화면</h4>
 
       <p>
-        useParams() 가 준 것:{" "}
-        <strong>{JSON.stringify(params)}</strong>
+        useParams() 가 준 것: <strong>{JSON.stringify(params)}</strong>
         {/* JSON.stringify 는 값을 글자로 바꿔 보여 줍니다. JS자료 12단원에서 썼습니다. */}
         {/* 화면: {"id":"2"} — 2 에 따옴표가 붙어 있습니다. 문자열이라는 뜻입니다. */}
       </p>
@@ -183,7 +191,9 @@ function MenuDetail() {
 
       <p>
         Number() 로 바꿔 찾은 결과:{" "}
-        <strong>{found ? found.name + " " + found.price + "원" : "못 찾았습니다"}</strong>
+        <strong>
+          {found ? found.name + " " + found.price + "원" : "못 찾았습니다"}
+        </strong>
       </p>
 
       <p>
@@ -319,17 +329,17 @@ export default function Concept03UrlParams() {
       <h1>개념 03 — URL 파라미터</h1>
 
       <p className="guide">
-        아래 데모에서 <strong>메뉴 목록 → 아무 메뉴</strong> 순서로 눌러 보세요. 상세
-        화면마다 주소가 다릅니다. 그 주소를 복사해 두면 나중에 그 화면으로 바로 갈 수
-        있습니다.
+        아래 데모에서 <strong>메뉴 목록 → 아무 메뉴</strong> 순서로 눌러 보세요.
+        상세 화면마다 주소가 다릅니다. 그 주소를 복사해 두면 나중에 그 화면으로
+        바로 갈 수 있습니다.
         <br />
         <br />
-        <strong>가장 중요한 것은 상세 화면 위쪽 두 줄입니다.</strong> useParams 가 준 값이
-        따옴표에 싸여 있는 것을 보세요. 숫자처럼 보여도 문자열입니다.
+        <strong>가장 중요한 것은 상세 화면 위쪽 두 줄입니다.</strong> useParams
+        가 준 값이 따옴표에 싸여 있는 것을 보세요. 숫자처럼 보여도 문자열입니다.
         <br />
-        <br />
-        이 예제에서는 <strong>새로고침(F5)을 하지 마세요.</strong> 왼쪽 메뉴 선택이 풀려서
-        다른 예제가 열립니다. 그때는 왼쪽 메뉴에서 다시 고르면 됩니다.
+        <br />이 예제에서는 <strong>새로고침(F5)을 하지 마세요.</strong> 왼쪽
+        메뉴 선택이 풀려서 다른 예제가 열립니다. 그때는 왼쪽 메뉴에서 다시
+        고르면 됩니다.
       </p>
 
       <Demo />

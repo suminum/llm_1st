@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
@@ -98,8 +98,7 @@
 
     <p class="guide">
       이 파일은 브라우저로 <strong>더블클릭</strong>해서 엽니다.
-      <strong>F12 → Console</strong> 도 함께 보세요.
-      <br /><br />
+      <strong>F12 → Console</strong> 도 함께 보세요. <br /><br />
       <strong>HTML 과 CSS 는 몰라도 됩니다.</strong> 위쪽
       <code>&lt;style&gt;</code> 은 화면 모양을 만드는 코드입니다.
       <code>&lt;script type="text/babel"&gt;</code> 안부터 읽으세요.
@@ -136,10 +135,15 @@
       function TwoCounters() {
         const [americano, setAmericano] = useState(0);
         const [latte, setLatte] = useState(0);
+        const [Cake, setCake] = useState(0);
 
         function addAmericano() {
           setAmericano(americano + 1);
-          console.log("아메리카노를 담았습니다. 지금까지:", americano + 1, "잔");
+          console.log(
+            "아메리카노를 담았습니다. 지금까지:",
+            americano + 1,
+            "잔",
+          );
           // 콘솔: 아메리카노를 담았습니다. 지금까지: 1 잔
         }
 
@@ -148,18 +152,26 @@
           console.log("라떼를 담았습니다. 지금까지:", latte + 1, "잔");
           // 콘솔: 라떼를 담았습니다. 지금까지: 1 잔
         }
+        function addCake() {
+          setCake(Cake + 1);
+          console.log("Ckae를 담았습니다. 지금까지:", Cake + 1, "잔");
+          // 콘솔: 라떼를 담았습니다. 지금까지: 1 잔
+        }
 
         return (
           <div className="demo">
-            <h3>① state 두 개 — 따로 셉니다</h3>
+            <h3>① state 세 개 — 따로 셉니다</h3>
             <div className="output" id="twoOut">
-              아메리카노 {americano}잔 / 라떼 {latte}잔
+              아메리카노 {americano}잔 / 라떼 {latte}잔/케이스 {Cake}조각
             </div>
             <button id="btnAmericano" onClick={addAmericano}>
               아메리카노 +1
             </button>
             <button id="btnLatte" onClick={addLatte}>
               라떼 +1
+            </button>
+            <button id="btnLatte" onClick={addCake}>
+              cake +1
             </button>
           </div>
         );
@@ -212,6 +224,7 @@
             <button id="btnPickCake" onClick={() => pick("케이크")}>
               케이크
             </button>
+            <button onClick={() => pick("삼김")}>삼김</button>
           </div>
         );
       }
@@ -253,7 +266,7 @@
         // 삼항 연산자는 JS자료 03단원, 그리고 이 자료 02단원 개념02에서 봤습니다.
         const packText = isPacked ? "포장" : "매장에서 마시기";
         const boxClass = isPacked ? "output on" : "output";
-        const buttonText = isPacked ? "매장으로 바꾸기" : "포장으로 바꾸기";
+        const buttonText = isPacked ? "포장on" : "포장off";
 
         return (
           <div className="demo">
@@ -320,7 +333,24 @@
         function rename() {
           const nextUser = { ...user, name: "이서연" };
 
-          console.log("이름만 바꿨습니다:", nextUser.name, "/ 나이는 그대로:", nextUser.age === user.age);
+          console.log(
+            "이름만 바꿨습니다:",
+            nextUser.name,
+            "/ 나이는 그대로:",
+            nextUser.age === user.age,
+          );
+          // 콘솔: 이름만 바꿨습니다: 이서연 / 나이는 그대로: true
+
+          setUser(nextUser);
+        }
+
+        function addCity() {
+          const nextUser = { ...user, city: (user.city = "seoul") }; //새배열 을 복붙해서 만듬
+          //.push가 안됨 odject라서
+
+          console.log("도시를 추가했습니다.");
+          console.log("새 객체를 만들어 넣습니다:", nextUser);
+
           // 콘솔: 이름만 바꿨습니다: 이서연 / 나이는 그대로: true
 
           setUser(nextUser);
@@ -330,13 +360,16 @@
           <div className="demo">
             <h3>④ 객체 하나로 묶기 (맛보기)</h3>
             <div className="output" id="profileOut">
-              {user.name} ({user.age}세)
+              {user.name} ({user.age}세 {user.city})
             </div>
             <button id="btnBirthday" onClick={birthday}>
               생일 축하 (나이 +1)
             </button>
             <button id="btnRename" onClick={rename}>
               이름을 이서연으로
+            </button>
+            <button id="btnRename" onClick={addCity}>
+              도시를 서울로
             </button>
           </div>
         );
@@ -366,14 +399,23 @@
       function Cart() {
         const [americanoCount, setAmericanoCount] = useState(0);
         const [cakeCount, setCakeCount] = useState(0);
+        const [latteCount, setlatteCount] = useState(0);
+        //const [addtotal, settotal]=useState(0);
 
         // ↓ state 가 아닙니다. 렌더링할 때마다 다시 계산되는 보통 변수입니다.
-        const total = americanoCount * 4000 + cakeCount * 6000;
+        const total =
+          americanoCount * 4000 + cakeCount * 6000 + latteCount * 4500;
         const itemCount = americanoCount + cakeCount;
 
         function addAmericano() {
           setAmericanoCount(americanoCount + 1);
           console.log("아메리카노 담기 — 합계는 따로 안 고칩니다");
+          // 콘솔: 아메리카노 담기 — 합계는 따로 안 고칩니다
+        }
+        function addlatte() {
+          setlatteCount(latteCount + 1);
+          console.log("latte 담기 — 합계 고칩니다");
+
           // 콘솔: 아메리카노 담기 — 합계는 따로 안 고칩니다
         }
 
@@ -386,6 +428,7 @@
         function clear() {
           setAmericanoCount(0);
           setCakeCount(0);
+          setlatteCount(0);
           console.log("장바구니를 비웠습니다");
           // 콘솔: 장바구니를 비웠습니다
         }
@@ -394,8 +437,8 @@
           <div className="demo">
             <h3>⑤ 합계는 state 가 아닙니다</h3>
             <div className="output" id="cartOut">
-              아메리카노 {americanoCount}개 + 케이크 {cakeCount}개 = 모두 {itemCount}개,{" "}
-              {total}원
+              아메리카노 {americanoCount}개 + 케이크 {cakeCount}개 + latte
+              {latteCount}= 모두 {itemCount}개, {total}원
             </div>
             <button id="btnCartAmericano" onClick={addAmericano}>
               아메리카노 담기
@@ -403,6 +446,7 @@
             <button id="btnCartCake" onClick={addCake}>
               케이크 담기
             </button>
+            <button onClick={addlatte}>latte 담기</button>
             <button id="btnCartClear" onClick={clear}>
               비우기
             </button>
@@ -564,22 +608,29 @@
     <div class="summary">
       <h2>정리</h2>
       <ol>
-        <li>useState 는 필요한 만큼 여러 줄 적습니다. 서로 영향을 주지 않습니다.</li>
-        <li>state 에는 숫자·문자열·참거짓·객체 등 무엇이든 담을 수 있습니다.</li>
+        <li>
+          useState 는 필요한 만큼 여러 줄 적습니다. 서로 영향을 주지 않습니다.
+        </li>
+        <li>
+          state 에는 숫자·문자열·참거짓·객체 등 무엇이든 담을 수 있습니다.
+        </li>
         <li>참/거짓을 뒤집을 때는 <strong>set값(!값)</strong> 을 씁니다.</li>
         <li>
-          한 번에 하나만 고르는 값은 <strong>고른 것 하나</strong>를 state 로 둡니다. 버튼마다
-          두지 않습니다.
+          한 번에 하나만 고르는 값은 <strong>고른 것 하나</strong>를 state 로
+          둡니다. 버튼마다 두지 않습니다.
         </li>
         <li>
-          따로 바뀌는 값은 따로 둡니다. 항상 같이 다니는 값만 객체로 묶습니다. 처음에는
-          나누는 쪽이 안전합니다.
+          따로 바뀌는 값은 따로 둡니다. 항상 같이 다니는 값만 객체로 묶습니다.
+          처음에는 나누는 쪽이 안전합니다.
         </li>
         <li>
-          객체 state 를 바꿀 때는 <strong>{ ...기존값, 바꿀것 }</strong> 으로 새 객체를
-          만듭니다. 자세히는 07단원입니다.
+          객체 state 를 바꿀 때는 <strong>{ ...기존값, 바꿀것 }</strong> 으로 새
+          객체를 만듭니다. 자세히는 07단원입니다.
         </li>
-        <li>다른 state 로 계산할 수 있는 값은 state 로 두지 않고 그때그때 계산합니다.</li>
+        <li>
+          다른 state 로 계산할 수 있는 값은 state 로 두지 않고 그때그때
+          계산합니다.
+        </li>
       </ol>
     </div>
   </body>

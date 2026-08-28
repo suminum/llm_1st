@@ -84,7 +84,9 @@ function Answer03() {
       </p>
       {/* 화면: 아메리카노 0잔 */}
       <button onClick={() => setCount(count + 1)}>잔 수 +1</button>
-      <button onClick={() => setMenu(menu === "아메리카노" ? "라떼" : "아메리카노")}>
+      <button
+        onClick={() => setMenu(menu === "아메리카노" ? "라떼" : "아메리카노")}
+      >
         메뉴 바꾸기
       </button>
       {/* 화면(누르면): 아메리카노 1잔 → 라떼 1잔 */}
@@ -204,7 +206,7 @@ function Answer08() {
 
       console.log(
         "문제8 이름들:",
-        data.map((user) => user.name)
+        data.map((user) => user.name),
       );
       // 콘솔: 문제8 이름들: ['Leanne Graham', 'Ervin Howell', 'Clementine Bauch']
 
@@ -481,14 +483,14 @@ function Answer13() {
 function Answer14() {
   const [count, setCount] = useState(0);
 
-  useEffect(() => {
+  
+  return (useEffect(() => {
     console.log("문제14 effect 실행 — 숫자를 1 올립니다");
     // 콘솔: 문제14 effect 실행 — 숫자를 1 올립니다
 
     setCount((prev) => prev + 1);
   }, []);
 
-  return (
     <div className="demo">
       <h3>문제 14 — 무한 루프 고치기</h3>
       <p className="output">숫자: {count}</p>
@@ -514,16 +516,17 @@ export default function Unit09Answers() {
       <h1>09단원 연습문제 정답 (14문항)</h1>
 
       <p className="guide">
-        먼저 스스로 풀어 본 다음에 보세요. 답이 달라도 결과가 같으면 맞은 것입니다.
+        먼저 스스로 풀어 본 다음에 보세요. 답이 달라도 결과가 같으면 맞은
+        것입니다.
         <br />
         <br />
-        <strong>F12 → Console</strong> 을 함께 열어 두세요. 같은 줄이 두 번씩 찍히는 것은
-        정상입니다(개념02 StrictMode).
+        <strong>F12 → Console</strong> 을 함께 열어 두세요. 같은 줄이 두 번씩
+        찍히는 것은 정상입니다(개념02 StrictMode).
         <br />
         <br />
         10 · 11번은 <strong>일부러 없는 글을 요청</strong>합니다. 콘솔에 빨간{" "}
-        <code>Failed to load resource ... 404</code> 줄이 나오는 것이 정상입니다. 우리
-        코드가 낸 에러가 아니라 브라우저가 알려 주는 것입니다.
+        <code>Failed to load resource ... 404</code> 줄이 나오는 것이
+        정상입니다. 우리 코드가 낸 에러가 아니라 브라우저가 알려 주는 것입니다.
       </p>
 
       <Answer01 />
