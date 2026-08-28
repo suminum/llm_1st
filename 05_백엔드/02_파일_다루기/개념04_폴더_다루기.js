@@ -26,7 +26,6 @@ const 연습폴더 = path.join(__dirname, "연습_업로드");
 // force: true 는 "없어도 에러 내지 말라" 는 뜻입니다.
 fs.rmSync(연습폴더, { recursive: true, force: true });
 
-
 // ── 섹션 1: 폴더 만들기 ──
 
 fs.mkdirSync(연습폴더);
@@ -50,7 +49,6 @@ if (!fs.existsSync(연습폴더)) {
 }
 
 // ✏️ 직접 해보기 1 — "임시폴더" 를 만들고 existsSync 로 확인해 보세요.
-
 
 // ── 섹션 2: 여러 단계를 한 번에 ──
 
@@ -78,7 +76,10 @@ console.log("두 번 만들어도 에러가 안 났습니다");
 //   확인할 필요도 없고, 몇 단계든 한 번에 만들어집니다.
 
 // ✏️ 직접 해보기 2 — 연습폴더 안에 "docs/pdf" 를 한 번에 만들어 보세요.
-
+console.log(" ✏️ 직접 해보기 2 — 연습폴더 안에 를 한 번에 만들어 보세요.");
+const 깊은경로2 = path.join(연습폴더, "docs/pdf");
+fs.mkdirSync(깊은경로2, { recursive: true });
+console.log(fs.existsSync(깊은경로));
 
 // ── 섹션 3: 폴더 안 목록 보기 ──
 
@@ -102,13 +103,19 @@ console.log(목록.sort());
 //   순서가 중요하면 직접 정렬하세요. (JS자료 08단원의 sort)
 
 // 확장자로 걸러내는 것은 지금까지 배운 것으로 됩니다.
-const pdf목록 = fs.readdirSync(연습폴더).filter((name) => path.extname(name) === ".pdf");
+const pdf목록 = fs
+  .readdirSync(연습폴더)
+  .filter((name) => path.extname(name) === ".pdf");
 console.log(pdf목록);
 // 출력: [ '작업표준서.pdf' ]
 
 // ✏️ 직접 해보기 3 — 깊은경로 폴더의 목록을 출력해 보세요.
+// console.log(깊은경로);
+// fs.readFileSync(깊은경로, "utf-8");
+console.log(fs.readdirSync(깊은경로));
 
-
+const 깊은경로폴더목록 = fs.readdirSync(깊은경로);
+console.log(깊은경로폴더목록);
 // ── 섹션 4: 파일인가 폴더인가 ──
 
 // 목록에는 파일과 폴더가 섞여 나옵니다. 구분하려면 statSync 를 씁니다.
@@ -148,7 +155,9 @@ console.log(파일정보.mtime.constructor.name);
 
 // 파일과 폴더를 한 번에 구분하는 더 편한 방법도 있습니다.
 const 항목들 = fs.readdirSync(연습폴더, { withFileTypes: true });
-const 구분 = 항목들.map((e) => `${e.name}:${e.isDirectory() ? "폴더" : "파일"}`).sort();
+const 구분 = 항목들
+  .map((e) => `${e.name}:${e.isDirectory() ? "폴더" : "파일"}`)
+  .sort();
 
 console.log(구분);
 // 출력: [ '2026:폴더', '검사성적서.xlsx:파일', '작업표준서.pdf:파일' ]
@@ -156,8 +165,15 @@ console.log(구분);
 // withFileTypes: true 를 주면 이름 대신 '정보가 담긴 객체' 가 나옵니다.
 // statSync 를 하나씩 부르는 것보다 훨씬 빠릅니다.
 
-// ✏️ 직접 해보기 4 — 연습폴더에서 '폴더만' 골라 이름을 출력해 보세요.
-
+//
+console.log(
+  " ✏️ 직접 해보기 4 — 연습폴더에서 '폴더만' 골라 이름을 출력해 보세요.",
+);
+const 폴더만 = fs
+  .readdirSync(연습폴더, { withFileTypes: true })
+  .filter((e) => e.isDirectory())
+  .map((e) => e.name);
+console.log(폴더만);
 
 // ── 섹션 5: 지우기 ──
 
@@ -196,7 +212,12 @@ console.log(fs.existsSync(깊은경로));
 
 // ✏️ 직접 해보기 5 — 폴더를 만들고, 안에 파일을 하나 넣고,
 //                    rmdirSync 로 지워 보세요. 무슨 에러가 나나요?
+const 빈폴더2 = path.join(연습폴더, "빈폴더");
+fs.mkdirSync(빈폴더2);
+const 깊은경로3 = path.join(빈폴더2, "깊은경로3");
+fs.mkdirSync(깊은경로3, { recursive: true });
 
+fs.rmdirSync(빈폴더2);
 
 // ── 섹션 6: 실전 — 업로드 폴더 준비하기 ──
 
@@ -234,13 +255,12 @@ console.log(fs.existsSync(저장경로));
 // 달라지는 것은 "파일 내용이 어디서 오느냐" 뿐입니다.
 
 // 뒷정리 — 연습용이라 통째로 지웁니다.
-fs.rmSync(연습폴더, { recursive: true, force: true });
+//fs.rmSync(연습폴더, { recursive: true, force: true });
 console.log(fs.existsSync(연습폴더));
 // 출력: false
 
 // ✏️ 직접 해보기 6 — 저장폴더만들기 에 new Date(2026, 11, 25) 를 넣으면
 //                    어떤 폴더가 만들어질까요? 먼저 예상하고 확인하세요.
-
 
 // ── 섹션 7: 자주 하는 실수 ──
 
@@ -276,7 +296,6 @@ console.log(fs.existsSync(연습폴더));
 //   실수: EPERM 이나 EISDIR 에러가 납니다.
 //         파일은 unlink, 폴더는 rmdir 또는 rm 입니다.
 
-
 // ── 정리 ──
 
 // 1. mkdirSync(경로, { recursive: true }) — 여러 단계를 한 번에, 있어도 안전.
@@ -286,7 +305,6 @@ console.log(fs.existsSync(연습폴더));
 // 5. 파일은 unlinkSync, 빈 폴더는 rmdirSync, 내용 있는 폴더는 rmSync + recursive.
 // 6. 지우는 것은 되돌릴 수 없다. 경로를 반드시 확인하고 지운다.
 // 7. 파일을 쓰기 전에 폴더를 먼저 만든다. 폴더는 자동으로 안 생긴다.
-
 
 // ============================================================
 // 직접 해보기 정답

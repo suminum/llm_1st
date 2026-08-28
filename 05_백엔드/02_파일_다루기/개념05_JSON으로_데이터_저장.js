@@ -34,7 +34,6 @@ if (fs.existsSync(데이터파일)) {
   fs.unlinkSync(데이터파일);
 }
 
-
 // ── 섹션 1: 저장하기 ──
 
 const 문서들 = [
@@ -49,14 +48,14 @@ const 글자 = JSON.stringify(문서들);
 console.log(typeof 글자);
 // 출력: string
 
-console.log(글자.slice(0, 30));
+console.log(글자);
 // 출력: [{"id":1,"title":"작업표준서","writ
 // 한 줄로 쭉 이어진 글자입니다. 30글자만 잘라 봤는데도 벌써 답답합니다.
 // 문서가 100개면 한 줄이 수천 글자가 됩니다. 사람이 열어 볼 수가 없습니다.
 
 // 사람도 읽을 수 있게 줄바꿈과 들여쓰기를 넣을 수 있습니다.
 const 예쁜글자 = JSON.stringify(문서들, null, 2);
-console.log(예쁜글자.split("\n").length);
+console.log(예쁜글자.split("\n"));
 // 출력: 14
 //
 //     JSON.stringify(값, null, 2)
@@ -66,15 +65,16 @@ console.log(예쁜글자.split("\n").length);
 // 두 번째 자리는 지금 안 쓰니 null 로 둡니다.
 // 세 번째가 들여쓰기입니다. 보통 2 를 씁니다.
 
-fs.writeFileSync(데이터파일, 예쁜글자, "utf-8");
+fs.writeFileSync(데이터파일, 예쁜글자, "utf-8"); //데이터 파일안에다 넣겠다
 console.log(fs.existsSync(데이터파일));
+console.log(typeof 데이터파일); //w주소니깐 /Users/umsumin/연습/문서목록.json 문자열
+
 // 출력: true
 
 // 탐색기에서 문서목록.json 을 열어 보세요. 사람이 읽을 수 있는 모양입니다.
 
 // ✏️ 직접 해보기 1 — JSON.stringify(문서들) 과 JSON.stringify(문서들, null, 2) 를
 //                    각각 파일로 저장해 열어 보고 차이를 확인하세요.
-
 
 // ── 섹션 2: 읽기 ──
 
@@ -97,13 +97,13 @@ console.log(읽은배열[0].title);
 //   JS자료 14단원 localStorage 에서 배운 것과 똑같습니다.
 
 // parse 를 빼먹으면 어떻게 되나
-console.log(읽은글자.length);
+console.log(읽은글자);
 // 출력: 164
 // 배열 길이 2 가 아니라 '글자 수' 가 나옵니다. 에러도 안 납니다.
 // "왜 length 가 이상하지?" 싶으면 parse 를 빼먹었는지 보세요.
 
 // ✏️ 직접 해보기 2 — 읽은배열 에서 writer 만 뽑아 배열로 출력해 보세요.
-
+console.log(읽은배열.map((e) => e.writer));
 
 // ── 섹션 3: 파일이 없을 때 ──
 
@@ -119,6 +119,16 @@ function 불러오기() {
 
 function 저장하기(목록) {
   fs.writeFileSync(데이터파일, JSON.stringify(목록, null, 2), "utf-8");
+  //js 객체를 문자열로 만들고  write로 json 파일로 만들어서" 데이터 파일이라는 파일에" 넣음
+  //   JS 객체/배열
+  //    ↓ stringify
+  // 문자열
+  //    ↓ writeFileSync
+  // JSON 파일
+  //    ↓ readFileSync
+  // 문자열
+  //    ↓ parse
+  // JS 객체/배열
 }
 
 console.log(불러오기().length);
@@ -137,7 +147,6 @@ console.log(불러오기().length);
 // ✏️ 직접 해보기 3 — 문서목록.json 을 손으로 지우고 불러오기() 를 실행해 보세요.
 //                    에러가 날까요, 빈 배열이 나올까요?
 
-
 // ── 섹션 4: 추가·수정·삭제 ──
 
 // [추가] — id 를 어떻게 정할까요?
@@ -146,7 +155,7 @@ function 추가하기(title, writer) {
 
   // 지금까지 쓴 id 중 가장 큰 것 + 1
   const 다음id = 목록.length === 0 ? 1 : Math.max(...목록.map((d) => d.id)) + 1;
-
+  //목록 아이디 배열중에 가장 큰값 +1
   const 새문서 = { id: 다음id, title, writer, size: 0 };
 
   저장하기([...목록, 새문서]); // 원본을 바꾸지 않고 새 배열로 (JS자료 09단원)
@@ -158,6 +167,8 @@ console.log(추가된것.id);
 // 출력: 3
 console.log(불러오기().length);
 // 출력: 3
+const addedfile = 추가하기("구애", "선우정아");
+console.log(addedfile.id);
 
 // Math.max(...배열) 은 JS자료 09단원의 스프레드입니다.
 // Math.max 는 배열을 통째로 못 받아서 펼쳐 넣습니다.
@@ -168,8 +179,9 @@ console.log(불러오기().length);
 
 // [수정] — 하나만 바꾼 새 배열
 function 수정하기(id, 바꿀내용) {
+  //d는 배열중 하나의 객체인데 ...d는 객체를 풀어서 안에 id titel등 요소임
   const 목록 = 불러오기();
-  const 새목록 = 목록.map((d) => (d.id === id ? { ...d, ...바꿀내용 } : d));
+  const 새목록 = 목록.map((d) => (d.id === id ? { ...d, ...바꿀내용 } : d)); //바꿀내용 뒤에 겹치는건 갱신됨
   저장하기(새목록);
 }
 
@@ -206,7 +218,6 @@ console.log(못찾은것 ? 못찾은것.writer : "없음");
 
 // ✏️ 직접 해보기 4 — 문서를 하나 더 추가하고, 그 id 가 몇이 되는지 확인하세요.
 
-
 // ── 섹션 5: 이 방식의 한계 — 왜 데이터베이스가 필요한가 ──
 
 // JSON 파일로도 저장은 됩니다. 그런데 실제 서비스에는 못 씁니다.
@@ -239,7 +250,6 @@ console.log(fs.existsSync(데이터파일));
 
 // ✏️ 직접 해보기 5 — 위 ①번 상황을 코드로 흉내 내 보세요.
 //                    (힌트: 불러오기() 를 두 번 하고, 각각에 추가한 뒤 저장하기)
-
 
 // ── 섹션 6: 자주 하는 실수 ──
 
@@ -280,7 +290,6 @@ console.log(fs.existsSync(데이터파일));
 //   실수: 못 찾으면 undefined 라서 TypeError 가 납니다.
 //         ?. 를 쓰거나 if 로 확인하세요.
 
-
 // ── 정리 ──
 
 // 1. 변수는 서버를 끄면 사라진다. 남기려면 파일이나 데이터베이스에 저장해야 한다.
@@ -291,7 +300,6 @@ console.log(fs.existsSync(데이터파일));
 // 6. 고칠 때는 map, 지울 때는 filter, 찾을 때는 find. JS자료 08단원 그대로다.
 // 7. 이 방식은 동시 접근·성능·검색·서버 여러 대에서 한계가 있다.
 //    그래서 PART 4 에서 데이터베이스를 배운다.
-
 
 // ============================================================
 // 직접 해보기 정답

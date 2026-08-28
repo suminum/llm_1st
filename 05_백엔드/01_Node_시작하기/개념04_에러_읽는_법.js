@@ -16,7 +16,6 @@
 //
 // 이 파일은 그 읽는 법만 다룹니다. 이 단원에서 가장 실용적인 파일입니다.
 
-
 // ── 섹션 1: 에러는 세 부분으로 되어 있다 ──
 
 // 에러를 일부러 하나 내 보고, 그 안을 뜯어 봅시다.
@@ -47,12 +46,15 @@ try {
 // ✏️ 직접 해보기 1 — try 안의 user 를 undefined 로 바꿔 보세요.
 //                    error.message 가 어떻게 달라지나요?
 
-
 // ── 섹션 2: 스택 — 어디서 났는지 ──
 
 try {
   const user = null;
   console.log(user.length);
+  console.log(error.stack);
+  console.log("error.stack");
+  console.log("error.stack");
+  console.log("error.stack");
 } catch (error) {
   const firstLine = error.stack.split("\n")[1];
 
@@ -88,7 +90,6 @@ try {
 
 // ✏️ 직접 해보기 2 — 위 try 안에서 error.stack 을 통째로 찍어 보세요.
 //                    몇 줄이 나오고, 그중 내 파일은 몇 번째 줄인가요?
-
 
 // ── 섹션 3: 자주 만나는 에러 다섯 가지 ──
 
@@ -164,7 +165,6 @@ try {
 //                    터미널에 실제로 어떻게 빨갛게 나오는지 눈으로 보세요.
 //                    (확인했으면 지우세요. 안 지우면 뒤 코드가 실행 안 됩니다)
 
-
 // ── 섹션 4: 에러가 나도 서버는 안 죽게 ──
 
 // 서버는 하루 종일 켜져 있어야 합니다.
@@ -196,7 +196,6 @@ console.log(안전하게계산(null));
 // ✏️ 직접 해보기 4 — 안전하게계산("문자열") 을 넣으면 어떻게 될까요?
 //                    먼저 예상하고 실행해 보세요.
 
-
 // ── 섹션 5: console.log 로 원인 좁히기 ──
 
 // 에러 메시지만으로 안 풀릴 때가 있습니다. 그때 쓰는 방법입니다.
@@ -205,7 +204,7 @@ console.log(안전하게계산(null));
 //   console.log(value);              ← 여러 개 찍으면 뭐가 뭔지 모릅니다
 //   console.log("계산 전 value:", value);   ← 이렇게
 
-const order = { id: 1, items: ["라떼"] };
+const order = { id: 1, items: ["라떼"], customer: "손님" };
 
 console.log("주문 확인:", order);
 // 출력: 주문 확인: { id: 1, items: [ '라떼' ] }
@@ -220,7 +219,9 @@ console.log(order.customer);
 // 여기가 비어 있으니 order.customer.name 은 TypeError 가 납니다.
 
 // [요령 3] 자료형을 의심하세요
-console.log(typeof order.id, typeof order.items);
+console.log(typeof order.id, typeof order.items, typeof customer);
+console.log("order.customer?.name");
+console.log(order.customer?.name);
 // 출력: number object
 // 숫자인 줄 알았는데 문자열인 경우가 정말 많습니다.
 // 특히 터미널 인자, 요청으로 들어온 값은 전부 문자열입니다.
@@ -232,7 +233,6 @@ console.log(typeof order.id, typeof order.items);
 
 // ✏️ 직접 해보기 5 — order 에 customer 를 추가한 뒤
 //                    order.customer.name 을 안전하게 꺼내 보세요. (JS자료 07단원의 ?. )
-
 
 // ── 섹션 6: 자주 하는 실수 ──
 
@@ -259,7 +259,6 @@ console.log(typeof order.id, typeof order.items);
 //   백엔드 에러는 **터미널에 나옵니다.** 브라우저 화면은 그냥 멈춰 있습니다.
 //   서버를 만들면 터미널을 항상 한쪽에 띄워 두세요.
 
-
 // ── 정리 ──
 
 // 1. 에러는 종류(name) + 설명(message) + 위치(stack) 세 부분이다.
@@ -270,7 +269,6 @@ console.log(typeof order.id, typeof order.items);
 // 6. try/catch 로 잡되, catch 를 비워 두지 않는다.
 // 7. 막히면 점 왼쪽을 찍어 보고, 자료형을 의심하고, 이름표를 붙여 찍는다.
 // 8. 백엔드 에러는 브라우저가 아니라 터미널에 나온다.
-
 
 // ============================================================
 // 직접 해보기 정답
