@@ -14,7 +14,6 @@
 //       documents.js
 //       equipments.js
 
-
 // ============================================================
 // 1부 — nodemon
 // ============================================================
@@ -76,7 +75,6 @@
 //   ★ "고쳤는데 반영이 안 돼요" 의 절반은
 //     nodemon 이 아예 안 켜져 있는 경우입니다. node 로 켜 놓고 착각한 것입니다.
 
-
 // ============================================================
 // 2부 — 파일 나누기
 // ============================================================
@@ -87,7 +85,6 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
-
 
 // ── 섹션 1: 왜 나누나 ──
 
@@ -107,11 +104,11 @@ app.use(express.json());
 // 그래서 '자원별로 파일을 나눕니다'.
 // 문서 관련은 routes/documents.js, 설비 관련은 routes/equipments.js 로.
 
-
 // ── 섹션 2: 라우터 데려오기 ──
 
-const documentsRouter = require("./routes/documents");
+const documentsRouter = require("./routes/documents"); //해당 파일안에 선언되어있는 라우터 데려옴
 const equipmentsRouter = require("./routes/equipments");
+const healthRouter = require("./routes/health");
 
 // ★ "./" 로 시작하는 것에 주의하세요.
 //   ./routes/documents  → 내 폴더 아래 routes 폴더의 documents.js
@@ -120,11 +117,11 @@ const equipmentsRouter = require("./routes/equipments");
 //
 // ★ 확장자 .js 는 생략할 수 있습니다. 붙여도 됩니다.
 
-
 // ── 섹션 3: 주소 앞부분을 정해서 붙이기 ──
 
-app.use("/documents", documentsRouter);
-app.use("/equipments", equipmentsRouter);
+app.use("/documents", documentsRouter); //그 라우터를 주소 앞부분에 라우팅함
+app.use("/equipments", equipmentsRouter); //라우터를 라우팅?
+app.use("/1", healthRouter); //라우터를 라우팅?
 
 // 이 두 줄이 하는 일
 //
@@ -144,12 +141,7 @@ app.use("/equipments", equipmentsRouter);
 //
 //   documents.js 는 한 글자도 안 고쳐도 됩니다.
 
-
 // ── 섹션 4: 잘 붙었는지 확인 ──
-
-app.get("/health", (req, res) => {
-  res.json({ status: "ok" });
-});
 
 // 확인: GET /health
 // 응답: 200 {"status":"ok"}
@@ -184,7 +176,6 @@ app.get("/health", (req, res) => {
 // 라우트를 다른 파일에 적었는데도 똑같이 동작합니다.
 // 옮겼을 뿐 달라진 것은 없습니다.
 
-
 // ── 섹션 5: 404 와 에러 처리기는 여전히 맨 아래 ──
 
 app.use((req, res) => {
@@ -213,11 +204,9 @@ app.use((err, req, res, next) => {
 // ★ 라우터를 아무리 많이 붙여도 이 두 개는 항상 맨 마지막입니다.
 //   app.use("/documents", ...) 보다 위에 두면 문서 라우트가 전부 404 가 됩니다.
 
-
 app.listen(PORT, () => {
   console.log(`서버가 켜졌습니다.  http://localhost:${PORT}/documents`);
 });
-
 
 // ============================================================
 // 실무 폴더 구조 미리 보기
@@ -254,7 +243,6 @@ app.listen(PORT, () => {
 //   파일이 200줄쯤 되면 그때 나누세요.
 //   50줄짜리를 다섯 파일로 쪼개면 오히려 보기 어렵습니다.
 
-
 // ============================================================
 // 직접 해 볼 것
 // ============================================================
@@ -281,7 +269,6 @@ app.listen(PORT, () => {
 //                    이제 어떤 주소로 들어가야 나오나요?
 //                    (힌트: /documents/documents)
 
-
 // ── 자주 하는 실수 ──
 
 // [실수 1] 라우터 파일 안에 전체 주소를 씀
@@ -306,7 +293,6 @@ app.listen(PORT, () => {
 
 // [실수 6] nodemon 을 안 켜 놓고 반영이 안 된다고 함
 //   터미널 맨 위에 [nodemon] 이 보이는지 확인하세요.
-
 
 // ── 정리 ──
 

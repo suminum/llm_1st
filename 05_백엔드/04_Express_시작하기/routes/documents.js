@@ -13,7 +13,6 @@ const express = require("express");
 //   누군가(app)가 데려다 붙여 줘야 동작합니다.
 const router = express.Router();
 
-
 // 데이터는 일단 여기 둡니다. PART 4 에서 데이터베이스로 옮깁니다.
 let 문서들 = [
   { id: 1, title: "작업표준서" },
@@ -21,7 +20,6 @@ let 문서들 = [
 ];
 
 let 다음번호 = 3;
-
 
 // ★★ 주소를 쓸 때 "/documents" 를 적지 않습니다.
 //   여기서는 '/' 하나만 적습니다.
@@ -73,7 +71,6 @@ router.delete("/:id", (req, res) => {
   문서들 = 문서들.filter((문서) => 문서.id !== 번호);
   res.sendStatus(204);
 });
-
 
 // ★ 만든 라우터를 내보냅니다. 01단원에서 배운 module.exports 그대로입니다.
 module.exports = router;
