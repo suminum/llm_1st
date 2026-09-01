@@ -20,7 +20,6 @@ const http = require("http");
 
 const PORT = process.env.PORT || 3000;
 
-
 // ── 섹션 0: 반복부터 없애고 갑시다 ──
 
 // 개념03 끝에서 불편한 점 네 가지를 봤습니다.
@@ -28,7 +27,9 @@ const PORT = process.env.PORT || 3000;
 // Express 없이도 우리가 직접 고칠 수 있습니다. 함수로 묶으면 됩니다.
 
 function JSON응답(res, 상태코드, 데이터) {
-  res.writeHead(상태코드, { "Content-Type": "application/json; charset=utf-8" });
+  res.writeHead(상태코드, {
+    "Content-Type": "application/json; charset=utf-8",
+  });
   res.end(JSON.stringify(데이터));
 }
 
@@ -40,7 +41,6 @@ function JSON응답(res, 상태코드, 데이터) {
 // "같은 코드를 세 번 이상 쓰고 있다" 싶으면 함수로 묶으세요. 서버 코드도 똑같습니다.
 //
 // 나머지 ①③④ 는 함수로 못 고칩니다. 그래서 Express 가 필요합니다.
-
 
 // ── 섹션 1: 본문은 왜 한 번에 안 오나 ──
 
@@ -66,7 +66,6 @@ function JSON응답(res, 상태코드, 데이터) {
 // 11단원(JS자료)에서 배운 addEventListener 와 똑같은 모양입니다.
 // "무슨 일이 생기면 이 함수를 실행해 줘" 라는 뜻입니다.
 // 버튼 클릭 대신 '데이터 도착' 이 그 일입니다.
-
 
 // ── 섹션 2: 본문 모으는 함수 ──
 
@@ -111,7 +110,6 @@ function 본문읽기(req) {
 //   reject(에러) → await 자리에서 에러가 납니다. try/catch 로 잡힙니다.
 //   하나만 부르면 됩니다. 부르는 순간 그 Promise 는 끝납니다.
 
-
 const server = http.createServer(async (req, res) => {
   // ★ 콜백 앞에 async 가 붙었습니다.
   //   안에서 await 를 쓰려면 반드시 있어야 합니다.
@@ -120,7 +118,6 @@ const server = http.createServer(async (req, res) => {
 
   const 주소 = new URL(req.url, `http://${req.headers.host}`);
   const 경로 = 주소.pathname;
-
 
   // ── 섹션 3: 메서드와 쿼리 꺼내 보기 ──
 
@@ -142,7 +139,6 @@ const server = http.createServer(async (req, res) => {
 
   // 나이가 문자열 "20" 인 것을 보세요. 쿼리는 무엇을 넣든 항상 글자입니다.
   // 숫자로 쓰려면 Number() 로 바꿔야 합니다. (개념01 실수 3)
-
 
   // ── 섹션 4: 헤더 읽기 ──
 
@@ -167,7 +163,6 @@ const server = http.createServer(async (req, res) => {
   //   user-agent      어떤 프로그램이 보냈나 (크롬인지 Postman 인지)
   //   content-type    본문이 무슨 형식인가 (application/json)
   //   authorization   로그인 증표 — PART 4 에서 씁니다
-
 
   // ── 섹션 5: 본문 읽기 ──
 
@@ -219,7 +214,6 @@ const server = http.createServer(async (req, res) => {
   // 확인: POST /memos {"title":"작업표준서"}
   // 응답: 201 {"받은제목":"작업표준서","글자수":5}
 
-
   // ── 섹션 7: PUT 도 본문 읽는 법은 똑같습니다 ──
 
   if (경로 === "/memos" && req.method === "PUT") {
@@ -238,7 +232,6 @@ const server = http.createServer(async (req, res) => {
 
   // POST 든 PUT 이든 PATCH 든 본문 읽는 코드는 완전히 같습니다.
   // 메서드는 '의도' 를 나타낼 뿐, 데이터가 오는 방식은 하나입니다.
-
 
   // ── 섹션 8: GET 에는 본문이 없습니다 ──
 
@@ -259,18 +252,15 @@ const server = http.createServer(async (req, res) => {
   //   본문이 없으면 end 가 바로 오고, 빈 글자가 나옵니다.
   //   "await 를 걸면 GET 이 멈추는 것 아닌가?" 하는 걱정은 안 해도 됩니다.
 
-
   JSON응답(res, 404, { error: "그런 주소가 없습니다" });
 
   // 확인: GET /없는주소
   // 응답: 404 {"error":"그런 주소가 없습니다"}
 });
 
-
 server.listen(PORT, () => {
   console.log(`서버가 켜졌습니다.  http://localhost:${PORT}`);
 });
-
 
 // ============================================================
 // Postman — POST 를 보내는 도구
@@ -347,7 +337,6 @@ server.listen(PORT, () => {
 //     (윈도우 PowerShell 에서는 줄 끝의 ^ 대신 ` 를 씁니다.
 //      한 줄로 붙여 쓰면 그런 것 신경 안 써도 됩니다)
 
-
 // ============================================================
 // 직접 해 볼 것
 // ============================================================
@@ -373,7 +362,6 @@ server.listen(PORT, () => {
 //
 // ✏️ 직접 해보기 4 — /memos 에 DELETE 로 요청을 보내면 지금 무엇이 나오나요?
 //                    왜 그렇게 나오는지 코드에서 짚어 보세요.
-
 
 // ── 자주 하는 실수 ──
 
@@ -405,7 +393,6 @@ server.listen(PORT, () => {
 //   Postman 에서는 담아지지만, 브라우저 fetch 는 거부합니다.
 //   → TypeError: Request with GET/HEAD method cannot have body
 //   GET 으로 값을 보낼 때는 쿼리(?q=...)를 씁니다.
-
 
 // ── 정리 ──
 

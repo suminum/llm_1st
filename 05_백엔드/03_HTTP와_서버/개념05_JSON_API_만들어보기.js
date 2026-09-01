@@ -26,23 +26,33 @@
 //   그때 이 파일을 옆에 놓고 비교해 보세요. 절반으로 줄어듭니다.
 
 const http = require("http");
+const fs = require("fs");
 
 const PORT = process.env.PORT || 3000;
-
 
 // ── 섹션 1: 데이터는 어디에 두나 ──
 
 // 지금은 그냥 변수에 담아 둡니다. 이걸 '메모리에 둔다' 고 합니다.
 //
 // let 인 이유: 추가·삭제하면서 배열 자체를 바꿔 끼울 것이기 때문입니다.
+let 문서들;
 
-let 문서들 = [
-  { id: 1, title: "작업표준서", type: "표준" },
-  { id: 2, title: "검사성적서", type: "성적" },
-];
+try {
+  const 데이터 = fs.readFileSync("documents.json", "utf-8");//해당 파일이  없으면 생성해줌
+  문서들 = JSON.parse(데이터);
+} catch (오류) {
+  if (오류.code === "ENOENT") {
+    문서들 = [];
+  } else {
+    throw 오류;
+  }
+}
+function 저장하기() {
+  fs.writeFileSync("documents.json", JSON.stringify(문서들, null, 2), "utf-8");
+}
 
 // 새 문서에 붙일 번호입니다. 하나 만들 때마다 1씩 올립니다.
-let 다음번호 = 3;
+let 다음번호 = 1;
 
 // ★ 여기에는 큰 문제가 있습니다. 미리 알고 가세요.
 //
@@ -56,11 +66,12 @@ let 다음번호 = 3;
 //   지금 단계에서는 '서버가 어떻게 생겼는지' 에만 집중합니다.
 //   저장 방법은 나중에 갈아 끼우면 됩니다. 그래서 이 순서로 배웁니다.
 
-
 // ── 섹션 2: 응답 도우미 ──
 
 function JSON응답(res, 상태코드, 데이터) {
-  res.writeHead(상태코드, { "Content-Type": "application/json; charset=utf-8" });
+  res.writeHead(상태코드, {
+    "Content-Type": "application/json; charset=utf-8",
+  });
   res.end(JSON.stringify(데이터));
 }
 
@@ -81,13 +92,11 @@ function 본문읽기(req) {
   });
 }
 
-
 const server = http.createServer(async (req, res) => {
   console.log(`${req.method} ${req.url}`);
 
   const 주소 = new URL(req.url, `http://${req.headers.host}`);
   const 경로 = 주소.pathname;
-
 
   // ── 섹션 3: 주소에서 번호 꺼내기 ──
 
@@ -107,6 +116,13 @@ const server = http.createServer(async (req, res) => {
 
   const 첫조각 = 조각들[0];
   const 번호글자 = 조각들[1];
+  //
+  // ✏️ 직접 해보기 1 — 목록에 정렬을 추가해 보세요.
+  //                    ?sort=desc 이면 id 가 큰 것부터 나오게 합니다.
+  //                    (힌트: [...문서들].sort((a, b) => b.id - a.id)
+  //                     원본을 정렬하면 진짜로 순서가 바뀌어 버립니다.
+  //                     복사본을 만들어 정렬하세요)
+  //
 
   if (첫조각 !== "documents") {
     JSON응답(res, 404, { error: "그런 주소가 없습니다" });
@@ -116,17 +132,25 @@ const server = http.createServer(async (req, res) => {
   // 확인: GET /없는주소
   // 응답: 404 {"error":"그런 주소가 없습니다"}
 
-
   // ── 섹션 4: 목록 보기 (Read) ──
-
-  if (번호글자 === undefined && req.method === "GET") {
-    const 종류 = 주소.searchParams.get("type");
+  if (req.method === "GET") {
+    if (번호글자 === undefined) {
+      if (주소.searchParams.get("sort") === "desc") {
+        const 결과 = [...문서들].sort((a, b) => b.id - a.id);
+        JSON응답(res, 200, 결과);
+        return;
+      }
+      if (주소.searchParams.get("q") === "표준") {
+        const 결과 = [...문서들].filter((a) => a.title.includes("표준"));
+        JSON응답(res, 200, 결과);
+        return;
+      }
+    }
 
     // 쿼리가 없으면 전부, 있으면 걸러서 돌려줍니다.
     // 쿼리는 '있어도 되고 없어도 되는 것' 에 씁니다. (개념01)
-    const 결과 = 종류 ? 문서들.filter((문서) => 문서.type === 종류) : 문서들;
 
-    JSON응답(res, 200, 결과);
+    JSON응답(res, 200, 문서들);
     return;
   }
 
@@ -140,7 +164,6 @@ const server = http.createServer(async (req, res) => {
   //   ?type=없는종류 로 요청하면 빈 배열 [] 과 200 이 나옵니다.
   //   "목록을 달라" 는 요청은 성공했고, 그 목록이 비어 있을 뿐입니다.
   //   빈 목록은 정상이지 에러가 아닙니다. 이걸 헷갈리는 사람이 아주 많습니다.
-
 
   // ── 섹션 5: 하나만 보기 ──
 
@@ -157,7 +180,7 @@ const server = http.createServer(async (req, res) => {
     // 확인: GET /documents/abc
     // 응답: 400 {"error":"번호는 숫자여야 합니다"}
 
-    const 문서 = 문서들.find((문서) => 문서.id === 번호);
+    const 문서 = 문서들.find((문서) => 문서.id === 번호); //앞에있는거 먼저찾는 순서대로
 
     // find 는 못 찾으면 undefined 를 줍니다. 반드시 확인해야 합니다.
     if (!문서) {
@@ -169,7 +192,6 @@ const server = http.createServer(async (req, res) => {
     // 응답: 404 {"error":"99번 문서가 없습니다"}
 
     JSON응답(res, 200, 문서);
-    return;
   }
 
   // 확인: GET /documents/1
@@ -182,7 +204,6 @@ const server = http.createServer(async (req, res) => {
   //     목록 요청 + 결과 0건  → 200 []       (성공, 비어 있음)
   //     개별 요청 + 못 찾음   → 404          (실패)
 
-
   // ── 섹션 6: 새로 만들기 (Create) ──
 
   if (번호글자 === undefined && req.method === "POST") {
@@ -190,7 +211,7 @@ const server = http.createServer(async (req, res) => {
 
     let 데이터;
     try {
-      데이터 = JSON.parse(글자 || "{}");
+      데이터 = JSON.parse(글자 || "{}");//글자에 실제 들어온 문자열 데이터 
     } catch {
       JSON응답(res, 400, { error: "JSON 형식이 아닙니다" });
       return;
@@ -211,18 +232,16 @@ const server = http.createServer(async (req, res) => {
       title: 데이터.title,
       type: 데이터.type || "기타", // 안 주면 기본값
     };
+    문서들.push(새문서); // ← 이거 추가
+    다음번호 += 1; // ← 번호도 하나 증가
 
-    다음번호 += 1;
-    문서들.push(새문서);
+    저장하기();
+
+    JSON응답(res, 201, 새문서);
+    return;
 
     // 201 은 '만들었다' 입니다. 200 이 아닙니다. (개념02)
     // Location 헤더로 "만든 것은 이 주소에 있다" 를 알려 주는 게 예의입니다.
-    res.writeHead(201, {
-      "Content-Type": "application/json; charset=utf-8",
-      Location: `/documents/${새문서.id}`,
-    });
-    res.end(JSON.stringify(새문서));
-    return;
   }
 
   // 확인: POST /documents {"title":"설비점검표","type":"점검"}
@@ -232,7 +251,6 @@ const server = http.createServer(async (req, res) => {
   //   보낸 쪽은 id 를 모릅니다. 서버가 정해 주니까요.
   //   돌려주지 않으면 화면을 새로 그리려고 목록을 또 불러와야 합니다.
   //   만든 결과를 돌려주면 요청 한 번을 아낍니다. 습관처럼 돌려주세요.
-
 
   // ── 섹션 7: 고치기 (Update) ──
 
@@ -258,6 +276,7 @@ const server = http.createServer(async (req, res) => {
     // ?? 는 "왼쪽이 null 이나 undefined 일 때만 오른쪽" 입니다. (JS자료 09단원)
     문서.title = 데이터.title ?? 문서.title;
     문서.type = 데이터.type ?? 문서.type;
+    저장하기();
 
     JSON응답(res, 200, 문서);
     return;
@@ -274,7 +293,6 @@ const server = http.createServer(async (req, res) => {
   //   "일부러 빈 값으로 고치고 싶다" 를 살리려면 ?? 여야 합니다.
   //   숫자 0 을 다룰 때도 똑같은 함정이 있습니다.
 
-
   // ── 섹션 8: 지우기 (Delete) ──
 
   if (번호글자 !== undefined && req.method === "DELETE") {
@@ -288,6 +306,7 @@ const server = http.createServer(async (req, res) => {
 
     // filter 는 '남길 것' 을 고릅니다. 지울 것을 빼고 새 배열을 만듭니다.
     문서들 = 문서들.filter((문서) => 문서.id !== 번호);
+    저장하기();
 
     // 지웠으니 돌려줄 내용이 없습니다. 204 입니다.
     내용없음(res);
@@ -304,7 +323,6 @@ const server = http.createServer(async (req, res) => {
   //   splice 로 원본에서 빼내는 방법도 있지만,
   //   "새로 만들어 갈아 끼우기" 가 실수가 적습니다. (React 에서도 이 방식입니다)
 
-
   // ── 섹션 9: 경로는 맞는데 메서드가 다른 경우 ──
 
   JSON응답(res, 405, { error: "이 주소에서는 쓸 수 없는 방법입니다" });
@@ -313,11 +331,9 @@ const server = http.createServer(async (req, res) => {
   // 응답: 405 {"error":"이 주소에서는 쓸 수 없는 방법입니다"}
 });
 
-
 server.listen(PORT, () => {
   console.log(`서버가 켜졌습니다.  http://localhost:${PORT}/documents`);
 });
-
 
 // ── 지우고 나서 목록을 다시 보면 ──
 //
@@ -329,7 +345,6 @@ server.listen(PORT, () => {
 // 다음번호 는 4 인 채로 남아 있습니다. 3 으로 되돌리지 않습니다.
 // 지워진 번호를 재활용하면 옛날 기록과 헷갈리기 때문입니다.
 // (02단원 연습문제 14에서 본 것과 같은 이야기입니다)
-
 
 // ============================================================
 // Postman 으로 순서대로 해 보기
@@ -352,7 +367,6 @@ server.listen(PORT, () => {
 // 8번이 오늘의 마지막 교훈입니다.
 // 2번에서 만든 문서는 서버를 끄는 순간 사라집니다.
 // 그래서 데이터베이스가 필요합니다.
-
 
 // ============================================================
 // 직접 해 볼 것
@@ -379,12 +393,11 @@ server.listen(PORT, () => {
 //                        번호가 처음부터 다시 시작해 겹칩니다
 //
 //                    다 만들었으면 위 8번 시나리오를 다시 해 보세요.
-//                    이번에는 서버를 껐다 켜도 3번 문서가 남아 있어야 합니다.
+//                    이번에는 서버를 껐다 c켜도 3번 문서가 남아 있어야 합니다.
 //
 // ✏️ 직접 해보기 4 — 지금 이 서버는 두 사람이 동시에 POST 하면 어떻게 될까요?
 //                    ✏️3 을 파일로 만들었다면 무슨 일이 생길까요?
 //                    (02단원 개념05 마지막에 적힌 네 가지 이유를 다시 읽어 보세요)
-
 
 // ── 자주 하는 실수 ──
 
@@ -419,7 +432,6 @@ server.listen(PORT, () => {
 //   문서들[번호] = 데이터
 //   → 보낸 쪽이 title 만 보냈다면 id 와 type 이 통째로 사라집니다.
 //   속성 하나씩 골라 덮으세요.
-
 
 // ── 정리 ──
 

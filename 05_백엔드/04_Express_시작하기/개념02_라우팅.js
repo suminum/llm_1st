@@ -106,7 +106,7 @@ app.get("/lines/:line/equipments/:id", (req, res) => {
 });
 
 // 확인: GET /lines/A/equipments/7
-// 응답: 200 {"line":"A","id":"7"}
+// 응답: 200 {"line":"A","id":"7"}//: 앞에 있는 인자 임의로 넣기 가능
 
 // req.params 는 객체입니다. 콜론이 붙은 것들이 전부 들어 있습니다.
 //

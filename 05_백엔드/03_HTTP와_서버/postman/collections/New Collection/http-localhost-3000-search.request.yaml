@@ -1,0 +1,6 @@
+$kind: http-request
+name: http://localhost:3000/search
+description: ""
+url: http://localhost:3000/about
+method: GET
+order: 1788144189017
