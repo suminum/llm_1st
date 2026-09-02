@@ -121,7 +121,7 @@ const healthRouter = require("./routes/health");
 
 app.use("/documents", documentsRouter); //그 라우터를 주소 앞부분에 라우팅함
 app.use("/equipments", equipmentsRouter); //라우터를 라우팅?
-app.use("/1", healthRouter); //라우터를 라우팅?
+app.use("health", healthRouter); //라우터를 라우팅?
 
 // 이 두 줄이 하는 일
 //
@@ -177,15 +177,17 @@ app.use("/1", healthRouter); //라우터를 라우팅?
 // 옮겼을 뿐 달라진 것은 없습니다.
 
 // ── 섹션 5: 404 와 에러 처리기는 여전히 맨 아래 ──
-
-app.use((req, res) => {
+//Express는 에러가 발생하면 일반 미들웨어를 건너뛰고 에러 처리 미들웨어를 찾으러 가.
+//정상적인 요청 중에서 아무 라우트에도 걸리지 않은 경우에 아래에 있는  404 미들웨어에 걸림 
+app.use((req, res) => {//일반 미들웨어 구조임 
   res.status(404).json({ error: "그런 주소가 없습니다" });
+  //이번에 보낼 HTTP 응답의 상태 코드를 404로 설정해라."
 });
 
 // 확인: GET /없는주소
 // 응답: 404 {"error":"그런 주소가 없습니다"}
 
-app.use((err, req, res, next) => {
+app.use((err, req, res, next) => {//에러 처리 미들웨어구조임 
   console.error(`[에러] ${req.method} ${req.path} — ${err.message}`);
 
   if (err.type === "entity.parse.failed") {

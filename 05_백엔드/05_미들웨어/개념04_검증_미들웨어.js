@@ -30,7 +30,6 @@ function HttpError(코드, 메시지) {
   return 에러;
 }
 
-
 // ── 섹션 1: 가장 단순한 검증 미들웨어 ──
 
 // 필수 값 이름들을 받아서, 그것들이 본문에 있는지 확인하는 미들웨어를 만듭니다.
@@ -41,7 +40,9 @@ function 필수값(...키들) {
 
   return (req, res, next) => {
     const 본문 = req.body || {};
-    const 빠진것 = 키들.filter((키) => 본문[키] === undefined || 본문[키] === "");
+    const 빠진것 = 키들.filter(
+      (키) => 본문[키] === undefined || 본문[키] === "",
+    );
 
     if (빠진것.length > 0) {
       throw HttpError(400, `${빠진것.join(", ")} 을(를) 넣어 주세요`);
@@ -73,7 +74,6 @@ app.post("/notes", 필수값("title", "content"), (req, res) => {
 //   수량: 0 을 보냈는데 "수량을 넣어 주세요" 가 나오면 이것 때문입니다.
 //   빈 글자는 따로 걸러 냈습니다. 0 은 통과시킵니다.
 
-
 // ── 섹션 2: 규칙을 표로 적는 검증기 ──
 
 // 필수 말고도 확인할 게 많습니다.
@@ -81,13 +81,17 @@ app.post("/notes", 필수값("title", "content"), (req, res) => {
 //
 // 이걸 if 로 다 쓰면 또 길어집니다. '규칙 표' 를 만들어 넘기는 방식으로 만듭니다.
 
+// { 키: "name", 필수: true, 타입: "string", 최소길이: 2, 최대길이: 20 },
 function 한줄검사(규칙, 값) {
+  //name .line cuount.세개를 돌며  본문안 해당 키값포함  객체를 검사 ( {} ,키값 해당 검사 )
   // 값이 없을 때
   if (값 === undefined || 값 === "") {
+    //name line 만 필수
     return 규칙.필수 ? "필수입니다" : null; // 필수가 아니면 통과
   }
 
   if (규칙.타입 && typeof 값 !== 규칙.타입) {
+    //
     return `${규칙.타입} 이어야 합니다 (지금은 ${typeof 값})`;
   }
 
@@ -114,13 +118,16 @@ function 한줄검사(규칙, 값) {
   return null; // 문제 없음
 }
 
+//{ 키: "name", 필수: true, 타입: "string", 최소길이: 2, 최대길이: 20 },....
 function 검증(규칙들) {
+  //
   return (req, res, next) => {
     const 본문 = req.body || {};
     const 항목 = [];
 
     for (const 규칙 of 규칙들) {
-      const 이유 = 한줄검사(규칙, 본문[규칙.키]);
+      //규칙을 돌면서 요청 본문이랑 규칙하나의 키값을 한주럭ㅁ사에 넣음
+      const 이유 = 한줄검사(규칙, 본문[규칙.키]); //규칙 객체하나랑 그 규칙키값에 해당하는 값 하나
 
       if (이유) {
         항목.push({ 키: 규칙.키, 이유 });
@@ -128,7 +135,9 @@ function 검증(규칙들) {
     }
 
     if (항목.length > 0) {
-      return res.status(400).json({ error: "입력값이 올바르지 않습니다", 항목 });
+      return res
+        .status(400)
+        .json({ error: "입력값이 올바르지 않습니다", 항목 });
     }
 
     next();
@@ -139,7 +148,6 @@ function 검증(규칙들) {
 //   에러 객체에 '항목 배열' 을 담아 넘기려면 에러 처리기도 고쳐야 합니다.
 //   구조가 다른 응답은 그 자리에서 보내는 편이 간단합니다.
 //   (에러 처리기까지 손보는 방법은 06단원에서 봅니다)
-
 
 const 설비규칙 = [
   { 키: "name", 필수: true, 타입: "string", 최소길이: 2, 최대길이: 20 },
@@ -187,7 +195,6 @@ app.post("/equipments", 검증(설비규칙), (req, res) => {
 //   zod, joi, express-validator 같은 도구가 이미 있습니다. 훨씬 강력합니다.
 //   그래도 한 번 만들어 봐야 그 도구들이 무슨 일을 하는지 압니다.
 //   TS 를 배우면 zod 를 쓰게 될 텐데, 구조가 이것과 똑같습니다.
-
 
 // ── 섹션 3: 경로 파라미터를 미리 다듬기 (app.param) ──
 
@@ -238,12 +245,16 @@ app.delete("/things/:id", (req, res) => {
 //   app.param 의 함수는 Express 5 도 async 자동 처리 대상이 아닐 수 있어
 //   next(에러) 로 넘기는 것이 확실합니다. 습관을 들여 두면 안전합니다.
 
-
 // ── 섹션 4: 검증 미들웨어를 겹쳐 쓰기 ──
 
-app.post("/reports/:id", 필수값("title"), 검증([{ 키: "title", 최대길이: 10 }]), (req, res) => {
-  res.status(201).json({ 번호: req.번호, title: req.body.title });
-});
+app.post(
+  "/reports/:id",
+  필수값("title"),
+  검증([{ 키: "title", 최대길이: 10 }]),
+  (req, res) => {
+    res.status(201).json({ 번호: req.번호, title: req.body.title });
+  },
+);
 
 // 확인: POST /reports/3
 // 응답: 400 {"error":"title 을(를) 넣어 주세요"}
@@ -257,7 +268,6 @@ app.post("/reports/:id", 필수값("title"), 검증([{ 키: "title", 최대길�
 // 앞에서부터 차례로 실행되고, 하나라도 걸리면 거기서 끝납니다.
 // 순서가 중요합니다. "있는가" 를 먼저 보고 "적당한가" 를 나중에 봅니다.
 
-
 app.use((req, res) => {
   res.status(404).json({ error: "그런 주소가 없습니다" });
 });
@@ -265,14 +275,14 @@ app.use((req, res) => {
 app.use((err, req, res, next) => {
   console.error(`[에러] ${req.method} ${req.path} — ${err.message}`);
   const 코드 = err.status || 500;
-  res.status(코드).json({ error: 코드 === 500 ? "서버에서 문제가 생겼습니다" : err.message });
+  res
+    .status(코드)
+    .json({ error: 코드 === 500 ? "서버에서 문제가 생겼습니다" : err.message });
 });
-
 
 app.listen(PORT, () => {
   console.log(`서버가 켜졌습니다.  http://localhost:${PORT}/things/1`);
 });
-
 
 // ============================================================
 // 검증을 어디에서 하나 — 정리
@@ -292,7 +302,6 @@ app.listen(PORT, () => {
 //   안 됩니다. 프론트 검사는 '사용자 편의' 입니다.
 //   Postman 이나 curl 로 보내면 프론트를 통째로 건너뜁니다.
 //   서버 검증이 진짜 방어선입니다. 프론트 검증은 있으면 좋은 것일 뿐입니다.
-
 
 // ============================================================
 // 직접 해 볼 것
@@ -317,7 +326,6 @@ app.listen(PORT, () => {
 // ✏️ 직접 해보기 6 — 필수값 을 쿼리에도 쓸 수 있게 고쳐 보세요.
 //                    필수쿼리("q") 처럼 만들면 됩니다.
 
-
 // ── 자주 하는 실수 ──
 
 // [실수 1] !값 으로 필수를 확인
@@ -341,7 +349,6 @@ app.listen(PORT, () => {
 // [실수 6] app.param 의 이름을 라우트와 다르게 씀
 //   app.param("id") 는 :id 에만 걸립니다. :equipmentId 에는 안 걸립니다.
 //   조용히 안 걸려서 "왜 숫자가 아니지?" 로 헤매게 됩니다.
-
 
 // ── 정리 ──
 

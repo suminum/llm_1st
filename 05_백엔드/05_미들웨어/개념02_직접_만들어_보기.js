@@ -134,7 +134,12 @@ app.get("/request-id", (req, res) => {
 // ── 섹션 4: 응답에 헤더 붙이기 ──
 
 app.use((req, res, next) => {
-  res.set("X-Request-Id", String(req.요청번호));
+  res.set("X-Request-Id", String(req.요청번호));//응답의 헤더(header)에 정보를 추가하는 거야.
+  //헤더는 요청이나 응답에 대한 부가 정보를 전달하는 공간이라고 생각하면 돼.요청 응답 각각 헤더 바디 주소url 이 있는데
+  //아래 코드는 응답res  붙이는거임 
+  //Host: localhost:3000
+// Content-Type: application/json
+// X-Request-Id: 123
   res.set("X-App-Name", "equipment-api"); // ★ 영어여야 합니다. 아래 설명을 보세요
   next();
 });
@@ -244,11 +249,12 @@ app.get("/search", (req, res) => {
 // 그럼 어떻게 하나 — 다른 이름에 담습니다.
 
 app.use((req, res, next) => {
-  req.정리된쿼리 = {};
+  req.정리된쿼리 = {};//새로운 객체공간 만들어서 
 
   for (const 키 of Object.keys(req.query)) {
-    const 값 = req.query[키];
+    const 값 = req.query[키]; //키값 해당하는 값을 순환하며 새공가넹 넣음 
     req.정리된쿼리[키] = typeof 값 === "string" ? 값.trim() : 값;
+    //Express의 일반적인 req.query에서는 쿼리 값이 보통 문자열로 들어오지만 혹심 모르니깐 삼항연산자
   }
 
   next();

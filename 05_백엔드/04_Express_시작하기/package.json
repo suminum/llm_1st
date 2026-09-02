@@ -7,8 +7,8 @@
   "type": "commonjs",
   "main": "개념01_Express_시작하기.js",
   "scripts": {
-    "dev": "nodemon 개념05_nodemon과_파일_나누기.js.js",
-    "start": "node 개념05_nodemon과_파일_나누기.js.js",
+    "dev": "nodemon 개념05_nodemon과_파일_나누기.js",
+    "start": "node 개념05_nodemon과_파일_나누기.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
