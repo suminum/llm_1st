@@ -29,7 +29,6 @@ const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 
-
 // ───── 문제 1 ───── 출처 판단 함수
 // 연습문제.js 문제 3의 허용인가(출처) 를 여기로 가져오세요.
 // 그리고 cors 가 쓸 수 있는 모양으로 감싸세요.
@@ -44,8 +43,34 @@ app.use(express.json());
 // 허용목록: ["http://localhost:5500", "http://localhost:5173"]
 // 그리고 example.com 과 그 하위 도메인
 
-// TODO: 여기에 코드를 쓰세요
+// TODO: 여기에 코드를
+const 허용목록 = ["http://localhost:5500", "http://localhost:5173"];
 
+function 허용인가(출처) {
+  // Postman·curl·같은 출처 요청에는 Origin 이 없습니다.
+  if (출처 === undefined) return true;
+
+  if (허용목록.includes(출처)) return true;
+
+  try {
+    // ★ 글자로 비교하지 않고 hostname 을 꺼내서 비교합니다.
+    //   includes("example.com") 로 하면 example.com.evil.net 이 통과합니다.
+    const 호스트 = new URL(출처).hostname;
+    return 호스트 === "example.com" || 호스트.endsWith(".example.com");
+  } catch {
+    return false;
+  }
+}
+
+function 출처판단(출처, 알려주기) {
+  //출처 검사할값
+  // ★ 거절할 때 에러를 던지지 마세요. 500 이 됩니다.
+  알려주기(null, 허용인가(출처)); //에러 ,결과 -> 검사 결과를 전달할 함수
+}
+app.use("/public-api", cors());
+app.get("/public-api/notice ", (req, res) => {
+  res.json({ data: { 제목: "8월 정기 점검 안내", 작성일: "2026-08-01" } });
+});
 
 // ───── 문제 2 ───── 공개 API 는 아무나
 // /public-api 아래를 아무 출처나 읽을 수 있게 하세요.
@@ -60,7 +85,10 @@ app.use(express.json());
 //   로그인이 필요 없고, 누가 봐도 상관없고, 쿠키를 안 쓰는 자료인가요?
 
 // TODO: 여기에 코드를 쓰세요
-
+app.use("/api", cors()); //q보통 cors 조건검사는위에서 거침 이 주소가 접근가능한 주소인지
+app.get("/public-api/notice", (req, res) => {
+  res.json({ data: { 제목: "8월 정기 점검 안내", 작성일: "2026-08-01" } });
+});
 
 // ───── 문제 3 ───── 내부 API 는 허용 목록만
 // /api 아래에 cors 를 붙이세요. 옵션은 이렇게 주세요.
@@ -89,7 +117,6 @@ app.use(express.json());
 
 // TODO: 여기에 코드를 쓰세요
 
-
 // ───── 문제 4 ───── 프리플라이트
 // POST /api/v1/equipments 와 DELETE /api/v1/equipments/:id 를 만드세요.
 //
@@ -112,7 +139,6 @@ app.use(express.json());
 
 // TODO: 여기에 코드를 쓰세요
 
-
 // ───── 문제 5 ───── 정적 파일
 // public 폴더를 정적으로 서비스하세요.
 //
@@ -126,7 +152,6 @@ app.use(express.json());
 
 // TODO: 여기에 코드를 쓰세요
 
-
 // ───── 문제 6 ───── 404 와 에러 처리기
 // 개념03·04 와 같습니다.
 //
@@ -135,11 +160,9 @@ app.use(express.json());
 
 // TODO: 여기에 코드를 쓰세요
 
-
 app.listen(PORT, () => {
   console.log(`서버가 켜졌습니다.  http://localhost:${PORT}`);
 });
-
 
 // ============================================================
 // 세 가지 방법으로 확인하기
@@ -177,7 +200,6 @@ app.listen(PORT, () => {
 //   CORS 로는 아무것도 못 막습니다.
 //   진짜로 막으려면 05단원의 인증을 붙여야 합니다.
 
-
 // ============================================================
 // 다 만든 뒤 답해 보세요
 // ============================================================
@@ -206,7 +228,6 @@ app.listen(PORT, () => {
 // ⑥ 정적 파일을 API 라우트 위에 두면 무엇이 위험한가요?
 //    실제로 public 안에 api 폴더를 만들어 확인해 보세요.
 //    __________________________________________
-
 
 // ============================================================
 // 잘 안 될 때 보는 곳

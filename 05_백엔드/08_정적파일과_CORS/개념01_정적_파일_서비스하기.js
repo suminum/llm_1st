@@ -25,16 +25,21 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-
+app.get("/test", (req, res) => {
+  res.json({ message: "테스트 성공" });
+});
 // ── 섹션 1: 한 줄이면 됩니다 ──
 
-app.use(express.static(path.join(__dirname, "public")));
+//app.use(express.static(path.join(__dirname, "public"))); //이 폴더안에있는것만 반환 밖에 파일은 못함
+//이걸 씀으로 써 app.get(경로,라우터 가능 )-> express.static이란 조건 (get: 경로확인후 있으면 끝내고
+// 없으면  함수실행함
+//__dirname: 이 노드가 실행되는 파일 위치
 
 // 이 한 줄이 하는 일
 //
 //   요청이 오면 public 폴더에서 같은 이름의 파일을 찾습니다.
 //   있으면 그 파일을 보내고 끝냅니다. (next() 를 안 부릅니다)
-//   없으면 next() 를 불러 아래 라우트로 넘깁니다.
+//   없으면 next() 를 불러 아래 라우트로 넘깁니다.//없다고 에러 안남
 //
 //   GET /              →  public/index.html
 //   GET /css/공통.css   →  public/css/공통.css
@@ -58,8 +63,7 @@ app.use(express.static(path.join(__dirname, "public")));
 // 확인: GET /js/화면.js
 // 응답: 200
 
-
-// ── 섹션 2: index.html 은 자동입니다 ──
+// ── 섹션 2: index.html 은 자동입니다 ──//npm 실행할떄 index.html 을 가장먼저 기본값으로 실행
 
 // GET / 로 요청하면 public/index.html 을 찾아 줍니다.
 // 아무 폴더나 마찬가지입니다. /docs/ 면 public/docs/index.html 을 찾습니다.
@@ -67,7 +71,6 @@ app.use(express.static(path.join(__dirname, "public")));
 // ★ 이건 아주 오래된 약속입니다.
 //   웹 서버는 폴더를 요청받으면 index.html 을 찾습니다.
 //   그래서 홈 화면 파일 이름을 index.html 로 짓는 것입니다.
-
 
 // ── 섹션 3: 없는 파일은 아래로 넘어갑니다 ──
 
@@ -80,6 +83,18 @@ app.get("/api/v1/equipments", (req, res) => {
   });
 });
 
+//물어보고 싶은거
+app.get("/css1", (req, res, next) => {
+  //인코딩 문제였다
+
+  console.log("지나감");
+  //express가 직접 다음 미들웨어를 찾아서 넣어줌  등록된 순서대로
+  next();
+});
+
+app.get("/css1", (req, res) => {
+  res.json({ message: "안녕" });
+});
 // 확인: GET /api/v1/equipments
 // 응답: 200 {"data":[{"id":1,"name":"컨베이어 1호","line":"A","status":"가동"},{"id":2,"name":"프레스 1호","line":"B","status":"정지"}]}
 
@@ -97,7 +112,6 @@ app.get("/api/v1/equipments", (req, res) => {
 //   그래서 API 주소에 /api 접두어를 붙이고,
 //   public 안에는 api 라는 이름을 안 쓰는 것이 안전합니다. (06단원 개념01)
 
-
 // ── 섹션 4: 없는 파일을 요청하면 ──
 
 // 확인: GET /없는파일.png
@@ -111,7 +125,6 @@ app.get("/api/v1/equipments", (req, res) => {
 //   API 서버라면 JSON 입니다.
 //   화면까지 주는 서버라면, 브라우저 주소창으로 들어온 것에는 HTML 이 낫습니다.
 //   이 자료는 API 가 중심이라 JSON 으로 통일합니다.
-
 
 // ── 섹션 5: ★ 상위 폴더로 못 나갑니다 ──
 
@@ -145,7 +158,6 @@ app.get("/api/v1/equipments", (req, res) => {
 //
 //   express.static 을 쓰세요. 남이 이미 고민해서 막아 둔 것을 쓰는 게 낫습니다.
 
-
 // ── 섹션 6: 옵션 몇 가지 ──
 
 // 자주 쓰는 것만 봅니다.
@@ -173,7 +185,7 @@ app.get("/api/v1/equipments", (req, res) => {
 
 app.use(
   "/docs",
-  express.static(path.join(__dirname, "public"), { index: false })
+  express.static(path.join(__dirname, "public"), { index: false }),
 );
 
 // 확인: GET /docs/css/공통.css
@@ -190,26 +202,27 @@ app.use(
 //   위에서부터 찾다가 처음 있는 것을 줍니다.
 //   (09단원에서는 접두어를 붙인 변형 app.use("/uploads", express.static(...)) 을 씁니다)
 
-
 // ── 섹션 7: 404 와 에러 처리기 ──
 
 // ★ 07단원에서는 없는 주소를 ROUTE_NOT_FOUND 로 구분했지만,
 //   이 단원의 서버는 '없는 파일' 의 404 까지 겸하므로 NOT_FOUND 하나로 씁니다.
 app.use((req, res) => {
-  res.status(404).json({ error: { code: "NOT_FOUND", message: "찾을 수 없습니다" } });
+  res
+    .status(404)
+    .json({ error: { code: "NOT_FOUND", message: "찾을 수 없습니다" } });
 });
 
 app.use((err, req, res, next) => {
   console.error(`[에러] ${req.method} ${req.path} — ${err.message}`);
-  res.status(500).json({ error: { code: "INTERNAL_ERROR", message: "서버에서 문제가 생겼습니다" } });
+  res.status(500).json({
+    error: { code: "INTERNAL_ERROR", message: "서버에서 문제가 생겼습니다" },
+  });
 });
-
 
 app.listen(PORT, () => {
   console.log(`서버가 켜졌습니다.  http://localhost:${PORT}`);
   console.log("브라우저로 열어서 버튼을 눌러 보세요.");
 });
-
 
 // ============================================================
 // 브라우저로 확인하기
@@ -244,7 +257,6 @@ app.listen(PORT, () => {
 //   같은 출처라서 아무 문제가 없습니다.
 //   출처가 다르면? 그때부터 CORS 이야기가 시작됩니다. 개념02 에서 봅니다.
 
-
 // ============================================================
 // 정적 파일을 어디서 줄 것인가
 // ============================================================
@@ -267,7 +279,6 @@ app.listen(PORT, () => {
 // ★ ②와 ③은 반드시 CORS 를 만납니다.
 //   여러분이 만들 프로젝트도 대부분 ②나 ③입니다.
 //   그래서 이 단원이 필요합니다.
-
 
 // ============================================================
 // 직접 해 볼 것
@@ -303,7 +314,6 @@ app.listen(PORT, () => {
 //                    Express 가 어떻게 알았을까요?
 //                    (힌트: 파일 확장자를 봅니다)
 
-
 // ── 자주 하는 실수 ──
 
 // [실수 1] express.static 에 __dirname 을 안 씀
@@ -327,7 +337,6 @@ app.listen(PORT, () => {
 // [실수 6] API 주소와 파일 이름이 겹침
 //   public 에 api 폴더가 있으면 API 라우트가 안 걸립니다.
 //   에러도 안 나서 원인을 찾기 어렵습니다.
-
 
 // ── 정리 ──
 

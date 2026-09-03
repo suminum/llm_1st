@@ -3,6 +3,9 @@
 // ------------------------------------------------------------
 // 실행: node 개념05_morgan과_파일_나누기.js
 //       끄려면 Ctrl + C
+// npm --save--dev 이거는 옵션
+//ls -a. -는 옵션 추가 : 안보이는 파일 까지 넣어줘
+//ls -la
 //
 // ★ 이 파일도 터미널을 함께 보세요.
 // ============================================================
@@ -23,15 +26,15 @@
 
 const express = require("express");
 const morgan = require("morgan");
-
-const { 번호붙이기, 요청기록 } = require("./middlewares/기록");
-const { 인증, 역할확인 } = require("./middlewares/인증");
+//함수2개
+const { 번호붙이기, 요청기록 } = require("./middlewares/기록"); //함수2개
+//실제 원본과 같은 이름
+const { 인증, 역할확인 } = require("./middlewares/인증"); //함수2개
 const { 필수값, 검증 } = require("./middlewares/검증");
 const { HttpError } = require("./utils/HttpError");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
 
 // ── 섹션 1: morgan — 남이 만든 기록 미들웨어 ──
 
@@ -61,14 +64,14 @@ morgan.token("reqid", (req) => (req.요청번호 ? `#${req.요청번호}` : "-")
 
 app.use(번호붙이기); // morgan 보다 먼저 실행되어야 :reqid 를 채울 수 있습니다
 app.use(morgan(":reqid :method :url :status :response-time ms - :user"));
-
+// 함수실행시간 등등 상태정보 알려주는게 모건 비동기 처리함
+//언제 user 들어오냐가 관건 -> 인증할떄 user 들어옴  req.user = 사용자;
 app.use(express.json());
 
 // ★ 우리가 만든 요청기록 대신 morgan 을 쓰고 있습니다.
 //   둘 다 켜면 같은 내용이 두 번 나옵니다.
 //   요청기록 이 어떻게 생겼는지 보고 싶으면 아래 줄의 주석을 지우세요.
 // app.use(요청기록);
-
 
 // ── 섹션 2: 공개 주소 ──
 
@@ -83,8 +86,8 @@ app.get("/health", (req, res) => {
 //   #1 GET /health 200 2.431 ms - -
 //   맨 끝의 - 는 로그인을 안 했다는 뜻입니다. (:user 자리)
 
-
 // ── 섹션 3: 로그인이 필요한 주소 ──
+//순서: mogun 번호 붙이기 인증
 
 app.get("/me", 인증, (req, res) => {
   res.json({ 이름: req.user.name, 역할: req.user.role });
@@ -103,8 +106,9 @@ app.get("/me", 인증, (req, res) => {
 //   인증 미들웨어가 req.user 를 붙여 뒀기 때문입니다.
 //   morgan 은 응답이 끝난 뒤에 찍기 때문에, 그때는 req.user 가 이미 있습니다.
 
-
 // ── 섹션 4: 역할까지 확인하는 주소 ──
+//, 번호 붙이기    모건 인증   역활확인 ,라윙
+//=> 모건이 위에서 사용자를 받아서 이미 비동기처리도미
 
 app.delete("/users/:id", 인증, 역할확인("admin"), (req, res) => {
   res.json({ 지운사람: req.params.id, 지시한사람: req.user.name });
@@ -125,7 +129,6 @@ app.get("/reports", 인증, 역할확인("admin", "user"), (req, res) => {
 
 // 확인: GET /reports [Authorization: Bearer key-user-1]
 // 응답: 200 {"보고서":"둘 다 볼 수 있습니다","보는사람":"김민준"}
-
 
 // ── 섹션 5: 검증까지 얹기 ──
 
@@ -167,7 +170,6 @@ app.post("/equipments", 인증, 역할확인("admin"), 검증(설비규칙), (re
 //   검증을 먼저 하면, 로그인도 안 한 사람에게 "name 이 짧습니다" 라고 알려 주게 됩니다.
 //   들어올 자격부터 보고, 내용은 나중에 봅니다.
 
-
 // ── 섹션 6: 404 와 에러 처리기 ──
 
 app.use((req, res) => {
@@ -197,11 +199,9 @@ app.use((err, req, res, next) => {
 //   morgan 의 기록과 짝을 맞춰 볼 수 있습니다.
 //   "#5 요청이 500 이 났고, 그 이유가 이것" 을 한눈에 알 수 있습니다.
 
-
 app.listen(PORT, () => {
   console.log(`서버가 켜졌습니다.  http://localhost:${PORT}/health`);
 });
-
 
 // ============================================================
 // 폴더 구조 정리
@@ -228,7 +228,6 @@ app.listen(PORT, () => {
 //   회사에 가면 영어 이름을 쓰게 될 텐데, 구조는 똑같습니다.
 //   파일 '이름' 은 한글이어도 됩니다. 안 되는 건 라우트 주소와 헤더입니다.
 
-
 // ============================================================
 // morgan 형식 정리
 // ============================================================
@@ -248,7 +247,6 @@ app.listen(PORT, () => {
 // ★ 운영에서는 파일로 남깁니다
 //   터미널에만 찍으면 서버를 껐다 켤 때 사라집니다.
 //   morgan 에 stream 옵션을 주면 파일에 쌓입니다. PART 4 에서 합니다.
-
 
 // ============================================================
 // 직접 해 볼 것
@@ -278,7 +276,6 @@ app.listen(PORT, () => {
 //                    /reports 를 역할확인("admin", "manager") 로 바꿔 보세요.
 //                    user 키로는 403 이 나와야 합니다.
 
-
 // ── 자주 하는 실수 ──
 
 // [실수 1] morgan 을 번호붙이기보다 위에 둠
@@ -303,7 +300,6 @@ app.listen(PORT, () => {
 // [실수 6] 기록에 비밀번호나 증표를 남김
 //   morgan("combined") 는 referrer 와 user-agent 헤더만 남기고 Authorization 은 남기지 않지만,
 //   직접 만든 기록에서 req.headers 를 통째로 찍으면 증표가 그대로 남습니다.
-
 
 // ── 정리 ──
 

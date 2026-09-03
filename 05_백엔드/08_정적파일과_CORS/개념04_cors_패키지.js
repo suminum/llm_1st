@@ -23,7 +23,6 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-
 // ── 섹션 1: 아무 옵션 없이 ──
 
 // cors() 하나면 개념03 섹션 1의 * 방식이 됩니다.
@@ -44,7 +43,6 @@ app.get("/public-api/notice", cors(), (req, res) => {
 //   많은 블로그가 이렇게만 알려 줍니다. 개발 중에는 편합니다.
 //   그런데 그 순간 우리 API 를 아무 사이트나 쓸 수 있게 됩니다.
 //   섹션 2 처럼 목록을 정하세요.
-
 
 // ── 섹션 2: 허용 목록 정하기 ──
 
@@ -69,9 +67,10 @@ const cors설정 = {
   maxAge: 600,
 };
 
-app.use("/api", cors(cors설정));
+app.use("/api", cors(cors설정)); // aoi로 들어온 요청에 대해 조건이 cors안에 있음  안에 조건이 없으면 다 허용
 
 app.get("/api/v1/equipments", (req, res) => {
+  //요청준 주소가 아니라 응답처리해야하는 경로
   res.set("X-Total-Count", "2");
   res.json({
     data: [
@@ -95,7 +94,6 @@ app.get("/api/v1/equipments", (req, res) => {
 // ★ 개념03 과 똑같습니다. 서버는 안 막습니다. 헤더만 안 붙입니다.
 //   막는 것은 브라우저입니다.
 
-
 // front/다른출처.html 의 ⑤ 버튼이 부르는 주소입니다.
 // 08단원의 모든 서버를 같은 페이지로 확인하려고 이름을 맞춰 두었습니다.
 app.get("/api/v1/equipments-with-count", (req, res) => {
@@ -106,7 +104,6 @@ app.get("/api/v1/equipments-with-count", (req, res) => {
 // 확인: GET /api/v1/equipments-with-count [Origin: http://localhost:5500]
 // 응답: 200 {"data":[{"id":1},{"id":2}]}
 // 헤더: access-control-allow-origin=http://localhost:5500 | x-total-count=2 | access-control-expose-headers=X-Total-Count,X-Request-Id
-
 
 // ── 섹션 3: 프리플라이트도 알아서 ──
 
@@ -143,7 +140,6 @@ app.delete("/api/v1/equipments/:id", (req, res) => {
 // 확인: OPTIONS /api/v1/equipments [Origin: http://evil.example.com; Access-Control-Request-Method: POST]
 // 응답: 204
 // 헤더: access-control-allow-origin=(없음)
-
 
 // ── 섹션 4: 조건을 함수로 정하기 ──
 
@@ -230,7 +226,6 @@ app.get("/open-api/stats", (req, res) => {
 //   더 확실하게 하려면 정규식으로 전체를 맞추세요.
 //     /^https:\/\/([a-z0-9-]+\.)?example\.com$/
 
-
 // ── 섹션 5: 개발과 운영을 나누기 ──
 
 app.get("/env-strategy", (req, res) => {
@@ -248,7 +243,6 @@ app.get("/env-strategy", (req, res) => {
 
 // ★ 환경변수는 PART 4 에서 자세히 배웁니다.
 //   지금은 "코드에 주소를 박지 않는다" 만 기억하세요.
-
 
 // ── 섹션 6: 직접 만든 것과 비교 ──
 
@@ -276,22 +270,25 @@ app.get("/compare", (req, res) => {
 // 확인: GET /compare
 // 응답: 200
 
-
 app.use((req, res) => {
-  res.status(404).json({ error: { code: "NOT_FOUND", message: "찾을 수 없습니다" } });
+  res
+    .status(404)
+    .json({ error: { code: "NOT_FOUND", message: "찾을 수 없습니다" } });
 });
 
 app.use((err, req, res, next) => {
   console.error(`[에러] ${req.method} ${req.path} — ${err.message}`);
-  res.status(500).json({ error: { code: "INTERNAL_ERROR", message: "서버에서 문제가 생겼습니다" } });
+  res
+    .status(500)
+    .json({
+      error: { code: "INTERNAL_ERROR", message: "서버에서 문제가 생겼습니다" },
+    });
 });
-
 
 app.listen(PORT, () => {
   console.log(`서버가 켜졌습니다.  http://localhost:${PORT}/api/v1/equipments`);
   console.log(`허용 출처: ${허용출처들.join(", ")}`);
 });
-
 
 // ============================================================
 // cors 옵션 정리
@@ -323,7 +320,6 @@ app.listen(PORT, () => {
 //   즉 아무 헤더나 허락하는 셈입니다.
 //   편하지만, 무엇을 받는지 코드에 안 남습니다. 적어 두는 편이 낫습니다.
 
-
 // ============================================================
 // 직접 해 볼 것
 // ============================================================
@@ -353,7 +349,6 @@ app.listen(PORT, () => {
 // ✏️ 직접 해보기 7 — 07단원의 계층 구조 서버에 cors 를 붙여 보세요.
 //                    어느 파일에 붙이는 게 맞을까요?
 
-
 // ── 자주 하는 실수 ──
 
 // [실수 1] app.use(cors()) 한 줄로 끝냄
@@ -374,7 +369,6 @@ app.listen(PORT, () => {
 
 // [실수 6] credentials: true 와 origin: true 를 함께 씀
 //   origin: true 는 * 를 뜻합니다. 브라우저가 거부합니다.
-
 
 // ── 정리 ──
 

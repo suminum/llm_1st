@@ -211,7 +211,7 @@ app.get("/other-route", (req, res) => {
 //   app.get("/b", 검사세트, ...)
 
 // ── 섹션 7: express.json() 도 미들웨어였습니다 ──
-/echo = 경로
+//echo = 경로
 // req.body = 요청에서 받은 body를 JS로 사용할 수 있게 저장해 놓은 곳
 // express.json() = body를 읽어서 req.body에 넣어주는 미들웨어
 // res.json() = 그 데이터를 응답으로 보내는 것

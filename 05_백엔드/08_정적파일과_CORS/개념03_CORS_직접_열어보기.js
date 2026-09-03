@@ -18,14 +18,13 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 
-
 // ── 섹션 1: 아무나 볼 수 있는 자료라면 ──
 
 // 로그인이 필요 없고, 누가 봐도 상관없는 자료입니다.
 // 공지사항, 공개 통계, 오픈 데이터 같은 것들이죠.
 
 app.get("/public-api/notice", (req, res) => {
-  res.set("Access-Control-Allow-Origin", "*");
+  res.set("Access-Control-Allow-Origin", "*"); //cors는 프롵트에서 응답 받고 다시 응답 줄떄 같이  실행
   res.json({ data: { 제목: "8월 정기 점검 안내" } });
 });
 
@@ -50,7 +49,6 @@ app.get("/public-api/notice", (req, res) => {
 //   · 사내에서만 쓰는 API
 //   * 를 열어 두면 아무 사이트나 우리 API 를 자기 화면에 붙일 수 있습니다.
 
-
 // ── 섹션 2: 정해진 곳만 허락하기 ──
 
 // 우리 프론트엔드만 허락하고 싶습니다.
@@ -71,7 +69,8 @@ app.use((req, res, next) => {
     // ★★ * 가 아니라 '요청한 출처 그대로' 를 돌려줍니다.
     //   Allow-Origin 에는 여러 개를 쉼표로 못 씁니다. 딱 하나만 됩니다.
     //   그래서 매번 "이번 요청의 출처" 를 확인해서 그것만 적어 줍니다.
-    res.set("Access-Control-Allow-Origin", 출처);
+    res.set("Access-Control-Allow-Origin", 출처); //프론트에서 준 요청을 서버 벡엔트가 응답을 할때 cors 실행 그리고  req안에 origin안에 주소가있고
+    //그걸 검사하고 허용출처면 응답에 헤드안에 이 값을 넣음
 
     // ★ Vary: Origin 은 왜 필요한가
     //   중간에 캐시 서버가 있으면, 한 출처에게 준 응답을 다른 출처에게도 줍니다.
@@ -125,7 +124,6 @@ app.get("/api/v1/equipments", (req, res) => {
 // ★ 세 번째 — Origin 이 아예 없으면 헤더도 안 붙습니다.
 //   같은 출처이거나 브라우저가 아닌 경우입니다. 붙일 필요가 없습니다.
 
-
 // ── 섹션 3: 프리플라이트 — 미리 물어보기 ──
 
 // 개념02 의 ✏️5 에서 "POST 를 누르면 요청이 두 개 보인다" 고 했습니다.
@@ -173,7 +171,6 @@ app.get("/preflight-rules", (req, res) => {
 //
 //   즉 "GET 은 되는데 POST 만 안 돼요" 라는 말이 나오면
 //   십중팔구 OPTIONS 를 처리 안 한 것입니다.
-
 
 // ── 섹션 4: OPTIONS 처리하기 ──
 
@@ -226,7 +223,6 @@ app.post("/api/v1/equipments", (req, res) => {
 //   여기에도 Allow-Origin 이 있어야 합니다. OPTIONS 에만 붙이면 안 됩니다.
 //   프리플라이트와 진짜 요청은 별개입니다. 둘 다 허락을 받아야 합니다.
 
-
 app.delete("/api/v1/equipments/:id", (req, res) => {
   console.log(`   ★ DELETE 가 서버까지 도착했습니다. id=${req.params.id}`);
   res.sendStatus(204);
@@ -239,7 +235,6 @@ app.delete("/api/v1/equipments/:id", (req, res) => {
 // ★ 터미널의 ★ 표시를 보세요.
 //   프리플라이트가 막히면 이 줄이 안 찍힙니다. 진짜 요청이 아예 안 오니까요.
 //   Allow-Methods 에서 DELETE 를 빼고 다시 해 보면 확인할 수 있습니다. (✏️4)
-
 
 // ── 섹션 5: 응답 헤더를 읽게 해 주기 ──
 
@@ -272,13 +267,12 @@ app.get("/api/v1/equipments-with-count", (req, res) => {
 //     Expose-Headers 있음  →  "12"
 //   요청은 둘 다 200 으로 성공합니다. 차이는 헤더가 보이느냐뿐입니다.
 
-
 // ── 섹션 6: 쿠키를 함께 보내려면 ──
 
 app.get("/credentials-rules", (req, res) => {
   res.json({
     프론트에서: 'fetch(주소, { credentials: "include" })',
-    서버에서: 'Access-Control-Allow-Credentials: true 를 붙인다',
+    서버에서: "Access-Control-Allow-Credentials: true 를 붙인다",
     금지: "이때는 Allow-Origin 에 * 를 쓸 수 없습니다. 정확한 출처를 적어야 합니다.",
     이유: "* 는 '아무나' 라는 뜻인데, 쿠키까지 아무나 쓰게 하면 개념02 의 은행 시나리오가 그대로 일어납니다.",
     에러메시지:
@@ -295,22 +289,25 @@ app.get("/credentials-rules", (req, res) => {
 //
 //   대신 Allow-Headers 에 Authorization 을 넣어야 합니다. 섹션 4 에 있습니다.
 
-
 app.use((req, res) => {
-  res.status(404).json({ error: { code: "NOT_FOUND", message: "찾을 수 없습니다" } });
+  res
+    .status(404)
+    .json({ error: { code: "NOT_FOUND", message: "찾을 수 없습니다" } });
 });
 
 app.use((err, req, res, next) => {
   console.error(`[에러] ${req.method} ${req.path} — ${err.message}`);
-  res.status(500).json({ error: { code: "INTERNAL_ERROR", message: "서버에서 문제가 생겼습니다" } });
+  res
+    .status(500)
+    .json({
+      error: { code: "INTERNAL_ERROR", message: "서버에서 문제가 생겼습니다" },
+    });
 });
-
 
 app.listen(PORT, () => {
   console.log(`서버가 켜졌습니다.  http://localhost:${PORT}/api/v1/equipments`);
   console.log(`허용 출처: ${허용출처들.join(", ")}`);
 });
-
 
 // ============================================================
 // CORS 헤더 정리
@@ -328,7 +325,6 @@ app.listen(PORT, () => {
 //   Origin                             지금 페이지의 출처
 //   Access-Control-Request-Method      프리플라이트에서 "이 메서드로 갈게요"
 //   Access-Control-Request-Headers     프리플라이트에서 "이 헤더 붙일게요"
-
 
 // ============================================================
 // 직접 해 볼 것
@@ -361,7 +357,6 @@ app.listen(PORT, () => {
 //                    "localhost 로 시작하면 전부 허용" 처럼요.
 //                    개발 중에는 편한데, 실제 서비스에서는 왜 위험할까요?
 
-
 // ── 자주 하는 실수 ──
 
 // [실수 1] Allow-Origin 에 여러 출처를 쉼표로 씀
@@ -386,7 +381,6 @@ app.listen(PORT, () => {
 
 // [실수 7] credentials 를 쓰면서 Allow-Origin 에 * 를 씀
 //   브라우저가 거부합니다. 정확한 출처를 적어야 합니다.
-
 
 // ── 정리 ──
 
