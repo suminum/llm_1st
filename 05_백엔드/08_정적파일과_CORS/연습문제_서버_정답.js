@@ -13,7 +13,6 @@ const PORT = Number(process.env.PORT) || 3000;
 
 app.use(express.json());
 
-
 // ───── 문제 1 ───── 출처 판단 함수
 const 허용목록 = ["http://localhost:5500", "http://localhost:5173"];
 
@@ -34,10 +33,10 @@ function 허용인가(출처) {
 }
 
 function 출처판단(출처, 알려주기) {
+  //출처 검사할값
   // ★ 거절할 때 에러를 던지지 마세요. 500 이 됩니다.
-  알려주기(null, 허용인가(출처));
+  알려주기(null, 허용인가(출처)); //에러 ,결과 -> 검사 결과를 전달할 함수
 }
-
 
 // ───── 문제 2 ───── 공개 API 는 아무나
 app.use("/public-api", cors());
@@ -56,7 +55,6 @@ app.get("/public-api/notice", (req, res) => {
 //   헤더 값에는 한글을 담을 수 없습니다. (05단원 개념02 섹션 4-2)
 //   Origin 에 한글 도메인을 넣으면 요청 자체가 안 나갑니다.
 
-
 // ───── 문제 3 ───── 내부 API 는 허용 목록만
 app.use(
   "/api",
@@ -66,7 +64,7 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
     exposedHeaders: ["X-Total-Count"],
     maxAge: 600,
-  })
+  }),
 );
 
 const 설비들 = [
@@ -95,7 +93,6 @@ app.get("/api/v1/equipments", (req, res) => {
 //   hostname 을 꺼내 비교했기 때문입니다.
 //   그리고 데이터는 그대로 나갔다는 것도 보세요. 서버는 안 막습니다.
 
-
 // front/다른출처.html 의 ⑤ 버튼이 부르는 주소입니다.
 // 08단원의 모든 서버가 같은 페이지로 확인할 수 있게 맞춰 두었습니다.
 app.get("/api/v1/equipments-with-count", (req, res) => {
@@ -107,14 +104,16 @@ app.get("/api/v1/equipments-with-count", (req, res) => {
 // 응답: 200 {"data":[{"id":1,"name":"컨베이어 1호","line":"A","status":"가동"},{"id":2,"name":"프레스 1호","line":"B","status":"정지"}]}
 // 헤더: access-control-allow-origin=http://localhost:5500 | x-total-count=2 | access-control-expose-headers=X-Total-Count
 
-
 // ───── 문제 4 ───── 프리플라이트
 app.post("/api/v1/equipments", (req, res) => {
   const { name, line } = req.body || {};
 
   if (!name || !line) {
     return res.status(400).json({
-      error: { code: "VALIDATION_FAILED", message: "name 과 line 이 필요합니다" },
+      error: {
+        code: "VALIDATION_FAILED",
+        message: "name 과 line 이 필요합니다",
+      },
     });
   }
 
@@ -164,7 +163,6 @@ app.delete("/api/v1/equipments/:id", (req, res) => {
 //   다만 서버 기록을 볼 때 헷갈릴 수 있습니다.
 //   "OPTIONS 가 404 로 잔뜩 찍히는데요?" → 허락 안 한 출처가 두드리고 있는 것입니다.
 
-
 // ───── 문제 5 ───── 정적 파일
 // ★ API 라우트보다 아래에 두었습니다.
 //   public 안에 api 라는 폴더가 생겨도 API 가 먼저 걸리게 하려는 것입니다.
@@ -179,10 +177,11 @@ app.use(express.static(path.join(__dirname, "public")));
 // ★ 같은 출처라 CORS 가 필요 없습니다.
 //   http://localhost:3000 으로 열면 화면과 API 가 같은 곳에서 옵니다.
 
-
 // ───── 문제 6 ───── 404 와 에러 처리기
 app.use((req, res) => {
-  res.status(404).json({ error: { code: "NOT_FOUND", message: "찾을 수 없습니다" } });
+  res
+    .status(404)
+    .json({ error: { code: "NOT_FOUND", message: "찾을 수 없습니다" } });
 });
 
 // 확인: GET /없는주소
@@ -195,12 +194,10 @@ app.use((err, req, res, next) => {
   });
 });
 
-
 app.listen(PORT, () => {
   console.log(`서버가 켜졌습니다.  http://localhost:${PORT}`);
   console.log(`허용 출처: ${허용목록.join(", ")} + *.example.com`);
 });
-
 
 // ============================================================
 // 세 가지 방법으로 확인하기
@@ -221,7 +218,6 @@ app.listen(PORT, () => {
 //
 // ★ ③이 중요합니다. CORS 로는 아무것도 못 막습니다.
 //   진짜로 막으려면 05단원의 인증을 붙여야 합니다.
-
 
 // ============================================================
 // 이 서버의 구조
