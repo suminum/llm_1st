@@ -30,7 +30,7 @@ app.get("/test", (req, res) => {
 });
 // ── 섹션 1: 한 줄이면 됩니다 ──
 
-//app.use(express.static(path.join(__dirname, "public"))); //이 폴더안에있는것만 반환 밖에 파일은 못함
+app.use(express.static(path.join(__dirname, "public"))); //이 폴더안에있는것만 반환 밖에 파일은 못함
 //이걸 씀으로 써 app.get(경로,라우터 가능 )-> express.static이란 조건 (get: 경로확인후 있으면 끝내고
 // 없으면  함수실행함
 //__dirname: 이 노드가 실행되는 파일 위치

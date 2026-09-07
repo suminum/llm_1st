@@ -67,7 +67,7 @@ console.log(Number(process.env.TEST_NUMBER) + 1);
 // 출력: 3001
 
 // true/false 는 더 조심해야 합니다.
-console.log(Boolean(process.env.TEST_FALSE ?? "false"));
+console.log(Boolean(process.env.TEST_FALSE ?? "false"));//??은 null과 undifineda만 인식
 // 출력: true
 
 // ★★★ "false" 라는 글자는 Boolean 으로 바꾸면 true 입니다.
