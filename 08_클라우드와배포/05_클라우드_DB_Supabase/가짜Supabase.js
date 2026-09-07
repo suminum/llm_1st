@@ -32,6 +32,10 @@ const { createClient } = require("@supabase/supabase-js");
 //   시험용 값을 한글로 지으면 이렇게 터집니다.
 const 예시주소 = "https://example.supabase.co";
 const 예시키 = "example-anon-key";
+const { createClient } = require("@supabase/supabase-js");
+const 설정 = require("./설정");
+
+const sb = createClient(설정.SUPABASE_URL, 설정.SUPABASE_ANON_KEY);
 
 // ── JSON 응답 만들기 ──
 
@@ -60,22 +64,32 @@ function 헤더읽기(옵션, 이름) {
 function 기록하는클라이언트(돌려줄것 = []) {
   const 기록 = [];
 
-  const 클라이언트 = createClient(예시주소, 예시키, {
-    auth: { persistSession: false },
-    global: {
-      fetch: async (주소, 옵션 = {}) => {
-        기록.push({
-          방법: 옵션.method ?? "GET",
-          주소: decodeURIComponent(String(주소)).replace(`${예시주소}/rest/v1`, ""),
-          본문: 옵션.body ?? null,
-          Prefer: 헤더읽기(옵션, "Prefer"),
-          Accept: 헤더읽기(옵션, "Accept"),
-        });
+  const 클라이언트 = createClient(
+    예시주소,
+    b_publishable_2I_qycaPGCzdbvmEWbcAoQ_PkqBBJwj,
+    {
+      auth: { persistSession: false },
+      //const { 클라이언트: 기록용, 기록 } = 기록하는클라이언트();
 
-        return JSON응답(돌려줄것);
+      // 이걸 실행하면 가짜Supabase.js의 기록하는클라이언트()가 실행되는 거야.
+      global: {
+        fetch: async (주소, 옵션 = {}) => {
+          기록.push({
+            방법: 옵션.method ?? "GET",
+            주소: decodeURIComponent(String(주소)).replace(
+              `${예시주소}/rest/v1`,
+              "",
+            ),
+            본문: 옵션.body ?? null,
+            Prefer: 헤더읽기(옵션, "Prefer"),
+            Accept: 헤더읽기(옵션, "Accept"),
+          });
+
+          return JSON응답(돌려줄것);
+        },
       },
     },
-  });
+  );
 
   return { 클라이언트, 기록 };
 }
@@ -98,13 +112,33 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
 
   // 다음 요청에서 낼 오류를 미리 정해 둘 수 있습니다
   let 낼오류 = null;
-  const 오류내기 = (몸, 상태) => { 낼오류 = { 몸, 상태 }; };
+  const 오류내기 = (몸, 상태) => {
+    낼오류 = { 몸, 상태 };
+  };
 
   // ★ 조건걸기 가 흉내 낼 줄 아는 연산자들입니다.
-  const 아는연산자 = ["eq", "neq", "gt", "gte", "lt", "lte", "is", "in", "like", "ilike"];
+  const 아는연산자 = [
+    "eq",
+    "neq",
+    "gt",
+    "gte",
+    "lt",
+    "lte",
+    "is",
+    "in",
+    "like",
+    "ilike",
+  ];
 
   // ★ 조건이 아닌 검색값입니다. 조건걸기 는 그냥 지나갑니다.
-  const 조건아닌칸 = ["select", "order", "limit", "offset", "on_conflict", "columns"];
+  const 조건아닌칸 = [
+    "select",
+    "order",
+    "limit",
+    "offset",
+    "on_conflict",
+    "columns",
+  ];
 
   function 검색값에서(검색값, 이름) {
     const 찾은것 = 검색값.find(([칸]) => 칸 === 이름);
@@ -171,15 +205,24 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
         if (연산 === "gte") return Number(실제) >= Number(비교값);
         if (연산 === "lt") return Number(실제) < Number(비교값);
         if (연산 === "lte") return Number(실제) <= Number(비교값);
-        if (연산 === "is") return 비교값 === "null" ? 실제 == null : 실제 != null;
+        if (연산 === "is")
+          return 비교값 === "null" ? 실제 == null : 실제 != null;
         if (연산 === "in") {
-          const 값들 = 비교값.replace(/^\(|\)$/g, "").split(",").map((v) => v.replace(/^"|"$/g, ""));
+          const 값들 = 비교값
+            .replace(/^\(|\)$/g, "")
+            .split(",")
+            .map((v) => v.replace(/^"|"$/g, ""));
           return 값들.includes(String(실제));
         }
         if (연산 === "like" || 연산 === "ilike") {
           const 정규식 = new RegExp(
-            "^" + 비교값.replace(/[.*+?^${}()|[\]\\]/g, "\\$&").replace(/%/g, ".*").replace(/_/g, ".") + "$",
-            연산 === "ilike" ? "i" : ""
+            "^" +
+              비교값
+                .replace(/[.*+?^${}()|[\]\\]/g, "\\$&")
+                .replace(/%/g, ".*")
+                .replace(/_/g, ".") +
+              "$",
+            연산 === "ilike" ? "i" : "",
           );
           return 정규식.test(String(실제));
         }
@@ -263,12 +306,16 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
         // ── ★★★ 흉내 못 내는 요청이면 여기서 큰 소리로 실패합니다 ──
         const 못하는것 = 못흉내내는것(검색값);
         if (못하는것) {
-          return JSON응답({
-            code: "PGRST999",
-            details: "가짜Supabase.js 의 한계입니다. 진짜 Supabase 에서는 됩니다.",
-            hint: "가짜Supabase.js 맨 아래 '이 파일의 한계' 를 보세요.",
-            message: 못하는것,
-          }, 501);
+          return JSON응답(
+            {
+              code: "PGRST999",
+              details:
+                "가짜Supabase.js 의 한계입니다. 진짜 Supabase 에서는 됩니다.",
+              hint: "가짜Supabase.js 맨 아래 '이 파일의 한계' 를 보세요.",
+              message: 못하는것,
+            },
+            501,
+          );
         }
 
         // ── RLS 흉내: 읽기를 막아 둔 경우 ──
@@ -284,12 +331,15 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
           //   PostgREST 는 토큰이 **있으면** 42501 을 403 으로 냅니다.
           //   anon key 도 JWT 라서, 로그인을 안 했어도 토큰은 늘 붙어 갑니다.
           //   그래서 실제로는 거의 항상 403 입니다.
-          return JSON응답({
-            code: "42501",
-            details: null,
-            hint: null,
-            message: `new row violates row-level security policy for table "${url.pathname.split("/").pop()}"`,
-          }, 403);
+          return JSON응답(
+            {
+              code: "42501",
+              details: null,
+              hint: null,
+              message: `new row violates row-level security policy for table "${url.pathname.split("/").pop()}"`,
+            },
+            403,
+          );
         }
 
         let 결과;
@@ -306,7 +356,10 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
 
           const 건너뛰기 = Number(url.searchParams.get("offset") ?? 0);
           const 개수 = url.searchParams.get("limit");
-          결과 = 결과.slice(건너뛰기, 개수 ? 건너뛰기 + Number(개수) : undefined);
+          결과 = 결과.slice(
+            건너뛰기,
+            개수 ? 건너뛰기 + Number(개수) : undefined,
+          );
         } else if (방법 === "POST") {
           const 들어온것 = JSON.parse(옵션.body);
           const 줄들 = Array.isArray(들어온것) ? 들어온것 : [들어온것];
@@ -315,7 +368,9 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
           결과 = [];
 
           for (const 줄 of 줄들) {
-            const 이미있는것 = 겹침칸 ? 자료.find((있는) => 있는[겹침칸] === 줄[겹침칸]) : null;
+            const 이미있는것 = 겹침칸
+              ? 자료.find((있는) => 있는[겹침칸] === 줄[겹침칸])
+              : null;
 
             if (이미있는것) {
               Object.assign(이미있는것, 줄);
@@ -325,16 +380,21 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
 
             // UNIQUE 흉내
             if (설정.겹치면안되는칸) {
-              const 겹치나 = 자료.some((있는) => 있는[설정.겹치면안되는칸] === 줄[설정.겹치면안되는칸]);
+              const 겹치나 = 자료.some(
+                (있는) => 있는[설정.겹치면안되는칸] === 줄[설정.겹치면안되는칸],
+              );
               if (겹치나) {
                 // ★ 키 순서도 진짜 PostgREST 와 맞췄습니다.
                 //   code → details → hint → message 순으로 옵니다.
-                return JSON응답({
-                  code: "23505",
-                  details: `Key (${설정.겹치면안되는칸})=(${줄[설정.겹치면안되는칸]}) already exists.`,
-                  hint: null,
-                  message: `duplicate key value violates unique constraint "설비_${설정.겹치면안되는칸}_key"`,
-                }, 409);
+                return JSON응답(
+                  {
+                    code: "23505",
+                    details: `Key (${설정.겹치면안되는칸})=(${줄[설정.겹치면안되는칸]}) already exists.`,
+                    hint: null,
+                    message: `duplicate key value violates unique constraint "설비_${설정.겹치면안되는칸}_key"`,
+                  },
+                  409,
+                );
               }
             }
 
@@ -363,12 +423,16 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
         // ── Accept 가 pgrst.object 면 서버가 개수를 검사합니다 ──
         if (하나만) {
           if (결과.length !== 1) {
-            return JSON응답({
-              code: "PGRST116",
-              details: `The result contains ${결과.length} rows`,
-              hint: null,
-              message: "JSON object requested, multiple (or no) rows returned",
-            }, 406);
+            return JSON응답(
+              {
+                code: "PGRST116",
+                details: `The result contains ${결과.length} rows`,
+                hint: null,
+                message:
+                  "JSON object requested, multiple (or no) rows returned",
+              },
+              406,
+            );
           }
           return JSON응답(결과[0]);
         }
@@ -394,7 +458,9 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
         //   그리고 limit 으로 자르기 전의 수입니다. 쪽 나누기는 이 값으로 합니다.
         const 개수요청 = /count=(exact|planned|estimated)/.test(Prefer);
         const 범위 = 결과.length > 0 ? `0-${결과.length - 1}` : "*";
-        const 전체 = 개수요청 ? String(방법 === "GET" ? 전체개수 : 결과.length) : "*";
+        const 전체 = 개수요청
+          ? String(방법 === "GET" ? 전체개수 : 결과.length)
+          : "*";
 
         return JSON응답(결과, 방법 === "POST" ? 201 : 200, {
           "Content-Range": `${범위}/${전체}`,
@@ -411,7 +477,6 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
 }
 
 module.exports = { 기록하는클라이언트, 표있는클라이언트, JSON응답 };
-
 
 // ============================================================
 // 이 파일의 한계 — 꼭 읽으세요
