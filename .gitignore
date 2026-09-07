@@ -10,3 +10,5 @@ CLAUDE.md
 # 로그·의존성
 node_modules/
 *.log
+
+*.md
