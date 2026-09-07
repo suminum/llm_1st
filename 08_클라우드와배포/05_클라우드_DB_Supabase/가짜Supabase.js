@@ -118,7 +118,7 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
   //   예전의 이 파일은 모르는 연산자를 만나면 그냥 true 를 돌려줬습니다.
   //   그래서 이런 일이 일어났습니다.
   //
-  //     await sb.from("equipments").select("*").or("line.eq.A,line.eq.B");
+  //     await sb.from("products").select("*").or("category.eq.A,category.eq.B");
   //     → 3줄짜리 표에서 **3줄 전부** 가 돌아왔습니다
   //
   //   막힌 게 아니라 **열린 채로 실패**한 것입니다. (fail-open 이라고 합니다)
@@ -224,7 +224,7 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
   //   그 차이를 모른 채 짜면, 진짜로 갈아 끼운 순간 undefined 가 쏟아집니다.
   //
   // ★ "별칭:칸" 도 진짜에서는 됩니다. 그것까지 흉내 냅니다.
-  //     .select("이름:name")  →  { 이름: "용접로봇 1호" }
+  //     .select("이름:name")  →  { 이름: "USB 허브" }
   function 칸고르기(줄들, select값) {
     if (!줄들 || !select값 || select값 === "*") return 줄들;
 
@@ -333,7 +333,7 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
                   code: "23505",
                   details: `Key (${설정.겹치면안되는칸})=(${줄[설정.겹치면안되는칸]}) already exists.`,
                   hint: null,
-                  message: `duplicate key value violates unique constraint "설비_${설정.겹치면안되는칸}_key"`,
+                  message: `duplicate key value violates unique constraint "상품_${설정.겹치면안되는칸}_key"`,
                 }, 409);
               }
             }
@@ -385,12 +385,12 @@ function 표있는클라이언트(처음자료 = [], 설정 = {}) {
         //     .select("*")                        → Content-Range: 0-2/*
         //     .select("*", { count: "exact" })    → Content-Range: 0-2/3
         //
-        //   개수를 세는 건 비싼 일이라 기본으로는 안 셉니다. (03단원 개념04)
+        //   개수를 세는 건 비싼 일이라 기본으로는 안 셉니다. (DB자료 06단원)
         //   슬래시 뒤의 * 가 "안 세어 봤다" 는 뜻입니다.
         //   0건이면 앞쪽도 * 가 됩니다.
         //
         // ★★★ 전체 개수는 **조건에 맞는 줄의 수**입니다. 표 전체가 아닙니다.
-        //   .eq("line","A") 를 걸었으면 A 라인 줄 수가 옵니다.
+        //   .eq("category","A") 를 걸었으면 A 분류 줄 수가 옵니다.
         //   그리고 limit 으로 자르기 전의 수입니다. 쪽 나누기는 이 값으로 합니다.
         const 개수요청 = /count=(exact|planned|estimated)/.test(Prefer);
         const 범위 = 결과.length > 0 ? `0-${결과.length - 1}` : "*";
@@ -439,7 +439,7 @@ module.exports = { 기록하는클라이언트, 표있는클라이언트, JSON�
 //
 //   "내가 쓴 코드가 어떤 요청을 만드는가"
 //   "오류가 왔을 때 내 코드가 제대로 처리하는가"
-//   "저장소가 04단원의 약속을 지키는가"
+//   "저장소가 02단원의 약속을 지키는가"
 //
 //   확인할 수 없는 것은
 //
